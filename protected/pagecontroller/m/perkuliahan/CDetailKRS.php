@@ -17,8 +17,8 @@ class CDetailKRS extends MainPageM {
         
         $this->createObj('KRS');
 		if (!$this->IsPostBack&&!$this->IsCallback) {	
-            if (!isset($_SESSION['currentPageDetailKRS'])||$_SESSION['currentPageDetailKRS']['page_name']!='mh.perkuliahan.DetailKRS') {
-				$_SESSION['currentPageDetailKRS']=array('page_name'=>'mh.perkuliahan.DetailKRS','page_num'=>0,'DataKRS'=>array(),'DataMHS'=>array());
+            if (!isset($_SESSION['currentPageDetailKRS'])||$_SESSION['currentPageDetailKRS']['page_name']!='m.perkuliahan.DetailKRS') {
+				$_SESSION['currentPageDetailKRS']=array('page_name'=>'m.perkuliahan.DetailKRS','page_num'=>0,'DataKRS'=>array(),'DataMHS'=>array());
 			} 
             
             $this->tbCmbOutputReport->DataSource=$this->setup->getOutputFileType();
@@ -54,7 +54,7 @@ class CDetailKRS extends MainPageM {
             $r=$this->DB->getRecord($str);	           
             $datamhs=$r[1];
             if (!isset($r[1])) {
-                $_SESSION['currentPageDetailKRS']['dataKRS']=array();
+                $_SESSION['currentPageDetailKRS']['DataKRS']=array();
                 throw new Exception("KRS dengan ID ($idkrs) tidak terdaftar.");
             }  
             $datamhs['iddata_konversi']=$this->KRS->isMhsPindahan($datamhs['nim'],true);            

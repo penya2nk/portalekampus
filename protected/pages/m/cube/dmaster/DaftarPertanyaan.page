@@ -306,7 +306,7 @@
                 </header>
                 <div class="main-box-body clearfix">  
                     <div class="table-responsive">
-                        <com:TActiveRepeater ID="RepeaterS" DataKeyField="idkuesioner" AllowPaging="true" AllowCustomPaging="true" OnItemCreated="itemCreated">
+                        <com:TActiveRepeater ID="RepeaterS" DataKeyField="idkuesioner" OnItemCreated="itemCreated">
                             <prop:HeaderTemplate>
                             <table class="table table-striped table-hover">
                                 <thead>
@@ -335,7 +335,7 @@
                                     <td><%# $this->Data['indikator3']%></td>
                                     <td><%# $this->Data['indikator4']%></td>
                                     <td><%# $this->Data['indikator5']%></td>                                                        
-                                    <td width="90">
+                                    <td>
                                         <com:TLinkButton CssClass="table-link" OnClick="Page.editRecord" Attributes.Title="Ubah Pertanyaan">
                                             <prop:Text>
                                                 <span class="fa-stack">

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<application id="Portal E-Kampus v2.0" Mode="Debug">
+	<paths>
+		<using namespace="System.Security.*"/>		
+		<using namespace="System.Web.UI.ActiveControls.*"/>        				
+		<using namespace="Application.MainPage"/>			            
+		<using namespace="Application.logic.LogicFactory"/> 
+        <using namespace="Application.lib.CustomControls.*" />        
+        <using namespace="Application.lib.NModalPanel.NModalPanel" />
+	</paths>
+	<services>
+		<service id="page" class="TPageService" DefaultPage="Home">
+			<modules>
+				<module id="db" class="Application.lib.Database.DBFactory"/>
+				<module id="logic" class="LogicFactory"/> 
+                <module id="cache" class="System.Caching.TDbCache" />                               
+                <module id="error" class="Application.lib.Exception.TErrorHandler" ErrorTemplatePath="Application.lib.Exception.templates" />
+			</modules>            
+            <pages StatePersisterClass="System.Web.UI.TCachePageStatePersister" StatePersister.CacheModuleID="cache" StatePersister.CacheTimeout="7200" />
+		</service>
+        <service id="soap" class="System.Web.Services.TSoapService">
+            <soap id="akademik" provider="Application.pages.ws.AkademikService" />
+        </service>             
+	</services>        
+    <parameters>
+        <parameter id="db_host" value=""/>
+        <parameter id="db_username" value=""/>
+        <parameter id="db_userpassword" value=""/>
+        <parameter id="db_name" value=""/>
+        <parameter id="db_type" value="mysql"/>		
+        <parameter id="address_lokal" value=""/>
+        <parameter id="address_lan" value=""/>        
+        <parameter id="address_internet" value=""/>                        
+    </parameters>      
+</application>

@@ -1,0 +1,66 @@
+<%@ Title="Portal E-Kampus - Login" %>
+<com:TContent ID="messagewelcome">      
+    Login ke dalam Portal E-Kampus
+</com:TContent>
+<com:TContent ID="maincontent">      
+    <div class="form-group">
+        <com:TRequiredFieldValidator ValidationGroup="userlogin" Display="Dynamic" ControlToValidate="txtUsername" FocusOnError="true" ErrorMessage="Isi Username" />        
+        <div class="input-group" id="divUsername">
+            <div class="input-group-addon"><i class="fa fa-user"></i></div>
+            <com:TTextBox ID="txtUsername" CssClass="form-control" Attributes.placeholder="Username" Attributes.autofocus="true" />                           
+        </div>
+    </div>
+    <div class="form-group">
+        <com:TRequiredFieldValidator ValidationGroup="userlogin" Display="Dynamic" ControlToValidate="txtPassword" FocusOnError="true" ErrorMessage="Isi Password" />                                    
+        <div class="input-group" id="divPassword">
+            <div class="input-group-addon"><i class="fa fa-asterisk"></i></div>
+            <com:TTextBox ID="txtPassword" Attributes.placeholder="Password" CssClass="form-control" TextMode="Password" />                                 
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-8 text-left">
+            <com:TDropDownList ID="cmbGoingTo" CssClass="form-control">
+                <com:TListItem Value="none" Text=" "/>
+				<com:TListItem Value="m" Text="Manajemen"/>
+				<com:TListItem Value="d" Text="Dosen"/>
+				<com:TListItem Value="dw" Text="Dosen Wali"/>
+				<com:TListItem Value="mh" Text="Mahasiswa"/>
+				<com:TListItem Value="mb" Text="Mahasiswa Baru"/>
+				<com:TListItem Value="ot" Text="Orang Tua Wali"/>
+            </com:TDropDownList>
+            <com:TRequiredFieldValidator ControlToValidate="cmbGoingTo" Display="Dynamic" ValidationGroup="userlogin" ErrorMessage="Pilih Login Sebagai !!!" InitialValue="none" />
+        </div>
+        <div class="col-xs-4">
+            <div class="form-group text-right">                
+                <com:TActiveCustomButton ID="btnLogin" CssClass="btn btn-success text-uppercase" ValidationGroup="userlogin" Onclick="doLogin">                            
+                    <prop:Text>
+                         Login
+                    </prop:Text>
+                    <prop:ClientSide.OnPreDispatch>                            
+                        $('<%=$this->btnLogin->ClientId%>').disabled='disabled';						
+                        Pace.stop();
+                        Pace.start();
+                    </prop:ClientSide.OnPreDispatch>
+                    <prop:ClientSide.OnLoading>
+                        $('<%=$this->btnLogin->ClientId%>').disabled='disabled';									                            
+                        Pace.start();
+                    </prop:ClientSide.OnLoading>
+                    <prop:ClientSide.onComplete>                                    
+                        $('<%=$this->btnLogin->ClientId%>').disabled='';																								                                                                                                        
+                        Pace.stop();
+                    </prop:ClientSide.OnComplete>
+                </com:TActiveCustomButton>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">                        
+            <com:TActiveCustomValidator ControlToValidate="txtUsername" Display="Dynamic" OnServerValidate="checkUsernameFormat" CssClass="has-error help-block" ValidationGroup="userlogin" />
+            <com:TActiveCustomValidator ControlToValidate="txtUsername" Display="Dynamic" OnServerValidate="checkUsernameAndPassword" CssClass="has-error help-block" ValidationGroup="userlogin" />            
+        </div>
+    </div>    				    
+    <div class="mar-btm"><em>- atau -</em></div>
+    <a class="btn btn-primary btn-lg btn-block" href="http://oldportal.stisipolrajahaji.ac.id">
+        Login ke Portal E-Kampus Lama
+    </a>           
+</com:TContent>

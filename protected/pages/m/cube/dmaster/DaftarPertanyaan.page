@@ -1,0 +1,393 @@
+<%@ Title="Kuesioner - Daftar Pertanyaan"%>
+<com:TContent ID="moduleheader">
+	<i class="fa fa-question-circle"></i> Daftar Pertanyaan<br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
+</com:TContent>
+<com:TContent ID="configtools">    
+    <%include Application.layouts.cube.FilterMode2%>
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li><a href="#">DATA MASTER</a></li>    
+    <li><a href="#">KUESIONER</a></li>    
+    <li class="active"><span>DAFTAR PERTANYAAN</span></li
+</com:TContent>
+<com:TContent ID="csscontent">
+<link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/css/libs/nifty-component.css"/>
+</com:TContent>
+<com:TContent ID="maincontent">	
+<com:TPanel Visible="<%= $this->getEditProcess(false) %>" CssClass="row">	
+    <com:THiddenField ID="hiddenid" />         
+    <div class="col-lg-12">
+        <div class="main-box">
+            <header class="main-box-header clearfix">
+                <h2 class="pull-left"><i class="fa fa-edit"></i> Ubah Kuesioner</h2>
+                <div class="icon-box pull-right">                                       
+                    <a class="btn pull-right" href="<%=$this->constructUrl('dmaster.DaftarPertanyaan',true)%>">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </header> 
+            <div class="main-box-body clearfix">
+                <div class="form-horizontal">
+                    <div class="form-group" id="divEditKelompokPertanyaan">
+                        <label class="col-lg-2 control-label">Kelompok Pertanyaan :</label>
+                        <div class="col-lg-5">
+                            <com:TDropDownList ID="cmbEditKelompokPertanyaan" CssClass="form-control" />
+                            <com:TRequiredFieldValidator ID="FieldEditKelompokPertanyaan" InitialValue="none" ControlToValidate="cmbEditKelompokPertanyaan" ValidationGroup="editkuesioner" ErrorMessage="Pilih Kelompok Pertanyaan" Display="Dynamic" CssClass="has-error help-block" FocusOnError="true">	
+                                <prop:ClientSide.OnValidationError>
+                                    $('divEditKelompokPertanyaan').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldEditKelompokPertanyaan->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divEditKelompokPertanyaan').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divEditPertanyaan">
+                        <label class="col-lg-2 control-label">Aspek yang Dinilai :</label>
+                        <div class="col-lg-5">
+                            <com:TTextBox ID="txtEditPertanyaan" TextMode="MultiLine" CssClass="form-control" />
+                            <com:TRequiredFieldValidator ID="FieldEditPertanyaan" ControlToValidate="txtEditPertanyaan" ValidationGroup="editkuesioner" ErrorMessage="Isi Aspek yang Dinilai" Display="Dynamic" CssClass="has-error help-block" FocusOnError="true">	
+                                <prop:ClientSide.OnValidationError>
+                                    $('divEditPertanyaan').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldEditPertanyaan->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divEditPertanyaan').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divEditUrutan">
+                        <label class="col-lg-2 control-label">Urutan Ke :</label>
+                        <div class="col-lg-1">
+                            <com:TTextBox ID="txtEditUrutan" CssClass="form-control" Width="50px" Attributes.OnKeyUp="formatangka(this,true)" />
+                        </div>
+                    </div>
+                    <div class="form-group" id="divEditIndikator1">
+                        <label class="col-lg-2 control-label">Indikator ke 1 :</label>
+                        <div class="col-lg-4">
+                            <com:TTextBox ID="txtEditIndikator1" CssClass="form-control" Width="150px" /> <span class="help-block">Contoh: sangat buruk, intinya yang memiliki makna bernilai 1</span>
+                            <com:TRequiredFieldValidator ID="FieldEditIndikator1" ControlToValidate="txtEditIndikator1" ValidationGroup="editkuesioner" ErrorMessage="Isi Label untuk indikator ke 1" Display="Dynamic" CssClass="has-error help-block" FocusOnError="true">	
+                                <prop:ClientSide.OnValidationError>
+                                    $('divEditIndikator1').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldEditIndikator1->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divEditIndikator1').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divEditIndikator2">
+                        <label class="col-lg-2 control-label">Indikator ke 2 :</label>
+                        <div class="col-lg-4">
+                            <com:TTextBox ID="txtEditIndikator2" CssClass="form-control" Width="150px" /> <span class="help-block">Contoh: buruk, intinya yang memiliki makna bernilai 2</span>                            
+                        </div>
+                    </div>
+                    <div class="form-group" id="divEditIndikator3">
+                        <label class="col-lg-2 control-label">Indikator ke 3 :</label>
+                        <div class="col-lg-4">
+                            <com:TTextBox ID="txtEditIndikator3" CssClass="form-control" Width="150px" /> <span class="help-block">Contoh: baik, intinya yang memiliki makna bernilai 3</span>                            
+                        </div>
+                    </div>
+                    <div class="form-group" id="divEditIndikator4">
+                        <label class="col-lg-2 control-label">Indikator ke 4 :</label>
+                        <div class="col-lg-4">
+                            <com:TTextBox ID="txtEditIndikator4" CssClass="form-control" Width="150px" /> <span class="help-block">Contoh: sangat baik, intinya yang memiliki makna bernilai 4</span>                            
+                        </div>
+                    </div>                    
+                    <div class="form-group" id="divEditIndikator5">
+                        <label class="col-lg-2 control-label">Indikator ke 5 :</label>
+                        <div class="col-lg-5">
+                            <com:TTextBox ID="txtEditIndikator5" CssClass="form-control" Width="150px" /> <span class="help-block">Contoh: sempurna, intinya yang memiliki makna bernilai 5</span>                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-10">
+                            <com:TActiveCustomButton ID="btnUpdate" CssClass="btn btn-primary" OnClick="updateData" ValidationGroup="editkuesioner">
+                                <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
+                                <prop:ClientSide.OnPreDispatch>                                                                   
+                                    $('loading').show(); 
+                                    $('<%=$this->btnUpdate->ClientId%>').disabled='disabled';						
+                                </prop:ClientSide.OnPreDispatch>
+                                <prop:ClientSide.OnLoading>
+                                    $('<%=$this->btnUpdate->ClientId%>').disabled='disabled';						
+                                </prop:ClientSide.OnLoading>
+                                <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                    $('<%=$this->btnUpdate->ClientId%>').disabled='';
+                                    $('loading').hide(); 
+                                </prop:ClientSide.OnComplete>
+                            </com:TActiveCustomButton>
+                        </div>
+                    </div>     
+                </div>
+            </div>
+        </div>
+    </div>
+</com:TPanel>
+<com:TPanel Visible="<%= $this->getAddProcess(false) %>" CssClass="row">	
+    <div class="col-lg-12">
+        <div class="main-box">
+            <header class="main-box-header clearfix">
+                <h2 class="pull-left"><i class="fa fa-plus"></i> Tambah Kuesioner</h2>
+                <div class="icon-box pull-right">                                       
+                    <a class="btn pull-right" href="<%=$this->constructUrl('dmaster.DaftarPertanyaan',true)%>">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </header> 
+            <div class="main-box-body clearfix">
+                <div class="form-horizontal">
+                    <div class="form-group" id="divAddKelompokPertanyaan">
+                        <label class="col-lg-2 control-label">Kelompok Pertanyaan :</label>
+                        <div class="col-lg-5">
+                            <com:TDropDownList ID="cmbAddKelompokPertanyaan" CssClass="form-control" />
+                            <com:TRequiredFieldValidator ID="FieldAddKelompokPertanyaan" InitialValue="none" ControlToValidate="cmbAddKelompokPertanyaan" ValidationGroup="addkuesioner" ErrorMessage="Pilih Kelompok Pertanyaan" Display="Dynamic" CssClass="has-error help-block" FocusOnError="true">	
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddKelompokPertanyaan').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldAddKelompokPertanyaan->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddKelompokPertanyaan').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAddPertanyaan">
+                        <label class="col-lg-2 control-label">Aspek yang Dinilai :</label>
+                        <div class="col-lg-5">
+                            <com:TTextBox ID="txtAddPertanyaan" TextMode="MultiLine" CssClass="form-control" />
+                            <com:TRequiredFieldValidator ID="FieldAddPertanyaan" ControlToValidate="txtAddPertanyaan" ValidationGroup="addkuesioner" ErrorMessage="Isi Aspek yang dinilai" Display="Dynamic" CssClass="has-error help-block" FocusOnError="true">	
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddPertanyaan').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldAddPertanyaan->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddPertanyaan').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAddUrutan">
+                        <label class="col-lg-2 control-label">Urutan Ke :</label>
+                        <div class="col-lg-1">
+                            <com:TTextBox ID="txtAddUrutan" CssClass="form-control" Width="50px" Attributes.OnKeyUp="formatangka(this,true)" Text="0" />
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAddIndikator1">
+                        <label class="col-lg-2 control-label">Indikator ke 1 :</label>
+                        <div class="col-lg-4">
+                            <com:TTextBox ID="txtAddIndikator1" CssClass="form-control" Width="150px" /> <span class="help-block">Contoh: sangat buruk, intinya yang memiliki makna bernilai 1</span>
+                            <com:TRequiredFieldValidator ID="FieldAddIndikator1" ControlToValidate="txtAddIndikator1" ValidationGroup="addkuesioner" ErrorMessage="Isi Label untuk indikator ke 1" Display="Dynamic" CssClass="has-error help-block" FocusOnError="true">	
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddIndikator1').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldAddIndikator1->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddIndikator1').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAddIndikator2">
+                        <label class="col-lg-2 control-label">Indikator ke 2 :</label>
+                        <div class="col-lg-4">
+                            <com:TTextBox ID="txtAddIndikator2" CssClass="form-control" Width="150px" /> <span class="help-block">Contoh: buruk, intinya yang memiliki makna bernilai 2</span>
+                            <com:TRequiredFieldValidator ID="FieldAddIndikator2" ControlToValidate="txtAddIndikator2" ValidationGroup="addkuesioner" ErrorMessage="Isi Label untuk indikator ke 2" Display="Dynamic" CssClass="has-error help-block" FocusOnError="true">	
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddIndikator2').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldAddIndikator2->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddIndikator2').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAddIndikator3">
+                        <label class="col-lg-2 control-label">Indikator ke 3 :</label>
+                        <div class="col-lg-4">
+                            <com:TTextBox ID="txtAddIndikator3" CssClass="form-control" Width="150px" Text="none" /> <span class="help-block">Contoh: baik, intinya yang memiliki makna bernilai 3</span>                            
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAddIndikator4">
+                        <label class="col-lg-2 control-label">Indikator ke 4 :</label>
+                        <div class="col-lg-4">
+                            <com:TTextBox ID="txtAddIndikator4" CssClass="form-control" Width="150px" Text="none" /> <span class="help-block">Contoh: sangat baik, intinya yang memiliki makna bernilai 4</span>                            
+                        </div>
+                    </div>                    
+                    <div class="form-group" id="divAddIndikator5">
+                        <label class="col-lg-2 control-label">Indikator ke 5 :</label>
+                        <div class="col-lg-5">
+                            <com:TTextBox ID="txtAddIndikator5" CssClass="form-control" Width="150px" Text="none" /> <span class="help-block">Contoh: sempurna, intinya yang memiliki makna bernilai 5</span>                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-10">
+                            <com:TActiveCustomButton ID="btnSave" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="addkuesioner">
+                                <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
+                                <prop:ClientSide.OnPreDispatch>                                                                   
+                                    $('loading').show(); 
+                                    $('<%=$this->btnSave->ClientId%>').disabled='disabled';						
+                                </prop:ClientSide.OnPreDispatch>
+                                <prop:ClientSide.OnLoading>
+                                    $('<%=$this->btnSave->ClientId%>').disabled='disabled';						
+                                </prop:ClientSide.OnLoading>
+                                <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                    $('<%=$this->btnSave->ClientId%>').disabled='';
+                                    $('loading').hide(); 
+                                </prop:ClientSide.OnComplete>
+                            </com:TActiveCustomButton>
+                        </div>
+                    </div>     
+                </div>
+            </div>
+        </div>
+    </div>
+</com:TPanel>
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>">
+    <div class="row">        
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2><i class="fa fa-bookmark"></i> Filter Data</h2>                    
+                </header>
+                <div class="main-box-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Kelompok Pertanyaan :</label>
+                            <div class="col-lg-10">
+                                <com:TActiveDropDownList ID="cmbKelompokPertanyaan" CssClass="form-control" OnCallBack="changeKelompokPertanyaan">
+                                    <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>
+                                        $('loading').show();
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->cmbKelompokPertanyaan->ClientId%>').disabled='disabled';				
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>
+                                        $('<%=$this->cmbKelompokPertanyaan->ClientId%>').disabled='';				
+                                        $('loading').hide();
+                                    </prop:ClientSide.OnComplete>                                    
+                                </com:TActiveDropDownList>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>	
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left"><i class="fa fa-question-circle"></i> Daftar Pertanyaan</h2> 
+                    <div class="filter-block pull-right">
+                        <com:TActiveLinkButton ID="btnPrintOut" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out Daftar Pertanyaan">
+                            <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnPrintOut->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnPrintOut->ClientId%>').disabled='';				
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton> 
+                        
+                        <a href="<%=$this->Page->constructUrl('dmaster.SalinDaftarPertanyaan',true)%>" class="btn btn-primary pull-left" title="Salin Daftar Pertanyaan">                                        
+                            <i class="fa fa-copy fa-lg"></i>
+                        </a>                        
+                        <com:TLinkButton ID="add" CssClass="btn btn-primary pull-right" Text="<i class='fa  fa-plus-circle fa-lg'></i>" Attributes.Title="Tambah Pertanyaan" OnClick="addProcess" CausesValidation="false" />                                                
+                    </div>
+                </header>
+                <div class="main-box-body clearfix">  
+                    <div class="table-responsive">
+                        <com:TActiveRepeater ID="RepeaterS" DataKeyField="idkuesioner" AllowPaging="true" AllowCustomPaging="true" OnItemCreated="itemCreated">
+                            <prop:HeaderTemplate>
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th width="15" scope="col">NO</th>                                                    
+                                    <th width="15" scope="col">URUT</th>                                                    
+                                    <th width="250" scope="col">ASPEK YANG DINILAI</th>
+                                    <th width="15" scope="col">INDIKATOR KE 1</th>
+                                    <th width="15" scope="col">INDIKATOR KE 2</th>
+                                    <th width="15" scope="col">INDIKATOR KE 3</th>
+                                    <th width="15" scope="col">INDIKATOR KE 4</th>
+                                    <th width="15" scope="col">INDIKATOR KE 5</th>
+                                    <th scope="col" width="90">AKSI</th>
+                                </tr>	
+                                </thead>		
+                                <tbody>		
+                            </prop:HeaderTemplate>
+                            <prop:ItemTemplate>	  
+                                <com:TLiteral ID="literalNamaKelompok" />                            
+                                <tr>
+                                    <td><%# $this->Data['no']%></td>
+                                    <td><%# $this->Data['orders']%></td>
+                                    <td><%# $this->Data['pertanyaan']%></td>                                
+                                    <td><%# $this->Data['indikator1']%></td>
+                                    <td><%# $this->Data['indikator2']%></td>
+                                    <td><%# $this->Data['indikator3']%></td>
+                                    <td><%# $this->Data['indikator4']%></td>
+                                    <td><%# $this->Data['indikator5']%></td>                                                        
+                                    <td width="90">
+                                        <com:TLinkButton CssClass="table-link" OnClick="Page.editRecord" Attributes.Title="Ubah Pertanyaan">
+                                            <prop:Text>
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </prop:Text>
+                                        </com:TLinkButton>
+                                        <com:TActiveLinkButton ID="btnDelete" ClientSide.PostState="false" CssClass="table-link danger" OnClick="Page.deleteRecord" Attributes.Title="Hapus Pertanyaan" Attributes.OnClick="if(!confirm('Anda ingin menghapus pertanyaan ini.?')) return false;">
+                                            <prop:Text>
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </prop:Text>
+                                            <prop:ClientSide.OnPreDispatch>
+                                                $('loading').show();                                             
+                                                $('<%=$this->btnDelete->ClientId%>').disabled='disabled';						
+                                            </prop:ClientSide.OnPreDispatch>
+                                            <prop:ClientSide.OnLoading>
+                                                $('<%=$this->btnDelete->ClientId%>').disabled='disabled';									                            
+                                            </prop:ClientSide.OnLoading>
+                                            <prop:ClientSide.onComplete>
+                                                $('loading').hide();                                                
+                                            </prop:ClientSide.OnComplete>
+                                        </com:TActiveLinkButton>
+                                    </td>
+                                </tr>	
+                            </prop:ItemTemplate>	                        
+                            <prop:FooterTemplate>
+                            </tbody>				
+                            </table>
+                            </prop:FooterTemplate>
+                            <prop:EmptyTemplate>                                                       
+                                <div class="row">
+                                    <div class="main-box-body">
+                                        <div class="alert alert-info">
+                                            <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                            <strong>
+                                                Info!
+                                            </strong>
+                                             Tidak ada data yang bisa ditampilkan.
+                                        </div>
+                                    </div>
+                                </div>
+                            </prop:EmptyTemplate>
+                        </com:TActiveRepeater>
+                        <%include Application.CustomPaging%>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+</com:TPanel>
+</com:TContent>

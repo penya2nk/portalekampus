@@ -1,0 +1,361 @@
+<%@ Title="Ujian SPMB - Nilai Ujian"%>
+<com:TContent ID="moduleheader">
+    <i class="fa fa-list-ul"></i> Nilai Ujian<br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
+</com:TContent>
+<com:TContent ID="configtools">    
+    <%include Application.layouts.cube.FilterMode7%>
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li><a href="#">SPMB</a></li>
+    <li><a href="#">UJIAN SPMB</a></li>
+    <li class="active">NILAI UJIAN</li>
+</com:TContent>
+<com:TContent ID="csscontent">
+<link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/css/libs/nifty-component.css"/>
+</com:TContent>
+<com:TContent ID="maincontent">
+<com:TPanel Visible="<%= $this->getAddProcess(false) %>">
+	<%include Application.layouts.cube.DataMHS%>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left"><i class="fa fa-list-ul"></i> Hasil Ujian PMB</h2> 
+                    <div class="filter-block pull-right">                                                   
+                        <a class="btn btn-default pull-right" href="<%=$this->constructUrl('spmb.NilaiUjian',true)%>" title="Keluar">                        
+                            <i class='fa  fa-times fa-lg'></i>
+                        </a>
+                    </div>
+                </header>
+                <div class="main-box-body clearfix">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><strong>TANGGAL MULAI: </strong></label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static"><%= $this->TGL->tanggal ('j F Y',$this->DataUjian['tgl_ujian'])%></p>
+                                    </div>                            
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><strong>WAKTU MULAI: </strong></label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static"><%= $this->TGL->tanggal ('H:i:s',$this->DataUjian['tgl_ujian'])%></p>
+                                    </div>                            
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><strong>TANGGAL SELESAI: </strong></label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static"><%= $this->TGL->tanggal ('j F Y',$this->DataUjian['tgl_selesai_ujian'])%></p>
+                                    </div>                            
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><strong>WAKTU SELESAI: </strong></label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static"><%= $this->TGL->tanggal ('H:i:s',$this->DataUjian['tgl_selesai_ujian'])%></p>
+                                    </div>                            
+                                </div>                                                        
+                            </div>                                        
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label"><strong>JUMLAH PERTANYAAN: </strong></label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static"><%= $this->DataUjian['jumlah_soal']%></p>
+                                    </div>                            
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label"><strong>JAWABAN BENAR: </strong></label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static"><%= $this->DataUjian['jawaban_benar']%></p>
+                                    </div>                            
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label"><strong>JAWABAN SALAH: </strong></label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static"><%= $this->DataUjian['jawaban_salah']%></p>
+                                    </div>                            
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label"><strong>SOAL TIDAK TERJAWAB: </strong></label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static"><%= $this->DataUjian['soal_tidak_terjawab']%></p>
+                                    </div>                            
+                                </div>                            
+                            </div>                                        
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-6 col-xs-12">
+                            <a href="#" OnClick="return false;">
+                                <div class="main-box infographic-box colored emerald-bg">
+                                    <i class="fa fa-flag"></i>
+                                    <span class="headline">Nilai Ujian PMB</span>
+                                    <span class="value"><%=$this->DataUjian['nilai']%></span>
+                                </div>
+                            </a>
+                        </div> 
+                        <div class="col-lg-3 col-sm-6 col-xs-12">
+                            <strong>Rumus :</strong> (jawaban_benar/jumlah_soal)*100;
+                        </div>                    
+                        <div class="col-lg-3 col-sm-6 col-xs-12">
+                            <a href="#" OnClick="return false;">
+                                <div class="main-box infographic-box colored purple-bg">
+                                    <i class="fa fa-ellipsis-v"></i>
+                                    <span class="headline">Passing Grade Pil.1:</span>
+                                    <span class="value"><%=$_SESSION['currentPageNilaiUjian']['passinggrade'][$this->getDataMHS('kjur1')]%></span>
+                                </div>
+                            </a>
+                        </div> 
+                        <div class="col-lg-3 col-sm-6 col-xs-12">
+                            <a href="#" OnClick="return false;">
+                                <div class="main-box infographic-box colored purple-bg">
+                                    <i class="fa fa-ellipsis-v"></i>
+                                    <span class="headline">Passing Grade Pil.2:</span>
+                                    <span class="value"><%=$_SESSION['currentPageNilaiUjian']['passinggrade'][$this->getDataMHS('kjur2')]%></span>
+                                </div>
+                            </a>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>   
+    </div>
+    <div class="row">
+        <com:THiddenField ID="hiddenid" />
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left">&nbsp;</h2> 
+                    <div class="filter-block pull-right">                                                   
+
+                    </div>
+                </header>
+                <div class="main-box-body clearfix">
+                    <div class="form-horizontal">
+                        <div class="form-group" id="divAddDiterimaDiProdi">
+                            <label class="col-lg-2 control-label">Di Terima di Program Studi :</label>
+                            <div class="col-lg-4">
+                                <com:TDropDownList ID="cmbAddKjur" CssClass="form-control" />                                
+                                <com:TRequiredFieldValidator ID="FieldAddDiterimaDiProdiValidator" InitialValue="none" ControlToValidate="cmbAddKjur" ErrorMessage="Pilih program studi" Display="Dynamic" ValidationGroup="diterima" CssClass="has-error help-block">
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divAddDiterimaDiProdi').addClassName('has-error');
+                                        jQuery('#<%=$this->FieldAddDiterimaDiProdiValidator->ClientID%>').removeAttr('style');
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divAddDiterimaDiProdi').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <com:TActiveCustomButton ID="btnSave" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="diterima">
+                                    <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->btnSave->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnSave->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                        $('<%=$this->btnSave->ClientId%>').disabled='';
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>
+                            </div>
+                        </div>   
+                    </div>
+                </div>
+            </div>
+        </div>	
+    </div>
+</com:TPanel>	
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>">		
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2><i class="fa fa-search"></i> Pencarian Data</h2>                    
+                </header>
+                <div class="main-box-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Kriteria :</label>
+                            <div class="col-lg-5">
+                                <com:TDropDownList ID="cmbKriteria" CssClass="form-control">                                                           
+                                    <com:TListItem Value="no_formulir" Text="No Formulir" />
+                                    <com:TListItem Value="nama_mhs" Text="Nama Mahasiswa" />
+                                </com:TDropDownList>
+                            </div>
+                        </div>
+                        <div class="form-group" id="divtxtKriteria">
+                            <label class="col-lg-3 control-label">Isi Kriteria :</label>
+                            <div class="col-lg-5">
+                                <com:TActiveTextBox ID="txtKriteria" CssClass="form-control" />                                                                            
+                                <com:TRequiredFieldValidator ID="spanKriteriaValidator2" ValidationGroup="filterForm" Display="Dynamic" ControlToValidate="txtKriteria" ErrorMessage="Input apa yang Anda cari, sesuai dengan kriteria yang Anda tentukan." FocusOnError="true" CssClass="has-error help-block">	
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divtxtKriteria').addClassName('has-error');
+                                        jQuery('#<%=$this->spanKriteriaValidator2->ClientID%>').removeAttr('style');                                
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divtxtKriteria').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator>                                         
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-3 col-lg-9">
+                                <com:TActiveCustomButton ID="btnSearch" CssClass="btn btn-info"  OnClick="Page.searchRecord" ValidationGroup="filterForm" Attributes.Title="Cari">
+                                    <prop:Text>                                        
+                                        <i class="fa fa-search"></i> Cari                                        
+                                    </prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>         
+                                        $('loading').show();
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnSearch->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	
+                                        $('<%=$this->btnSearch->ClientId%>').disabled='';						                               						                                        
+                                        $('loading').hide();
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>  
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2><i class="fa fa-bookmark"></i> Filter Data</h2>                    
+                </header>
+                <div class="main-box-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Hasil Ujian :</label>
+                            <div class="col-lg-5">
+                                <com:TDropDownList ID="cmbKelulusan" CssClass="form-control">                                                           
+                                    <com:TListItem Value="none" Text="Keseluruhan" />
+                                    <com:TListItem Value="lulus" Text="Lulus" />
+                                    <com:TListItem Value="tidaklulus" Text="Tidak Lulus" />
+                                </com:TDropDownList>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">&nbsp;</label>
+                        <div class="col-lg-5">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>	
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left"><i class="fa fa-list-ul"></i> Daftar Nilai Ujian PMB</h2> 
+                    <div class="filter-block pull-right">                       
+                        <com:TActiveLinkButton ID="btnPrintOutKelulusan" CssClass="btn btn-primary pull-left" OnClick="printOut" ClientSide.PostState="false" Attributes.Title="Print Out Lulus Ujian PMB">
+                            <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>                                                                   
+                                $('loading').show(); 
+                                $('<%=$this->btnPrintOutKelulusan->ClientId%>').disabled='disabled';						
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnPrintOutKelulusan->ClientId%>').disabled='disabled';						
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                $('<%=$this->btnPrintOutKelulusan->ClientId%>').disabled='';
+                                $('loading').hide(); 
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton>                        
+                    </div>
+                </header>
+                <div class="main-box-body clearfix">
+                    <div class="alert alert-block alert-success">
+                        <h4><i class="fa fa-info-circle fa-fw fa-lg"></i><strong>Informasi!</strong> </h4>
+                        <p>
+                            Minimal nilai lulus ujian PMB adalah lebih dari atau sama dengan passing grade . Untuk menyesuaikan nilai, silahkan diubah di <a href="<%=$this->constructUrl('spmb.PassingGrade',true)%>">sini</a>                            
+                        </p>
+                    </div>
+                    <div class="table-responsive">
+                        <com:TActiveRepeater ID="RepeaterS" DataKeyField="no_formulir" OnItemCreated="itemCreated" AllowPaging="true" AllowCustomPaging="true">
+                            <prop:HeaderTemplate>                           
+                                <table class="table table-striped table-hover">								
+                                    <thead>
+                                        <th width="50"><span>NO</span></th>
+                                        <th width="100"><span>NO. FORMULIR</span></th>
+                                        <th width="300"><span>NAMA</span></th>
+                                        <th width="150"><span>TANGGAL<br/> UJIAN</span></th>
+                                        <th width="100"><span>JUMLAH <br/>SOAL</span></th>
+                                        <th width="100"><span>JAWABAN <br/>BENAR</span></th>
+                                        <th width="100"><span>JAWABAN <br/>SALAH</span></th>
+                                        <th width="100"><span>NILAI</span></th>
+                                        
+                                        <th width="100"><span>PIL. 1</span></th>
+                                        <th width="100"><span>PIL. 2</span></th>
+                                        <th width="120">AKSI</th>			
+                                    </thead>
+                                    <tbody>
+                            </prop:HeaderTemplate>	
+                            <prop:ItemTemplate>
+                                <tr>
+                                    <td><%#$this->DataItem['no']%></td>
+                                    <td><a href="<%#$this->Page->constructUrl('spmb.DetailFormulir',true)%>"><%#$this->DataItem['no_formulir']%></a></td>
+                                    <td><%#$this->DataItem['nama_mhs']%></td>
+                                    <td><%#$this->Page->TGL->tanggal ('d F Y',$this->DataItem['tgl_ujian'])%></td>		
+                                    <td><%#$this->DataItem['jumlah_soal']%></td>		
+                                    <td><%#$this->DataItem['jawaban_benar']%></td>						
+                                    <td><%#$this->DataItem['jawaban_salah']%></td>		
+                                    <td><%#$this->DataItem['nilai']%></td>		
+                                    <td><%#$this->DataItem['pil1']%></td>		
+                                    <td><%#$this->DataItem['pil2']%></td>		                                    		
+                                    <td>                    
+                                        <com:THyperLink NavigateUrl="<%#$this->Page->constructUrl('spmb.JawabanSoalPMB',true,array('id'=>$this->DataItem['no_formulir']))%>" CssClass="table-link" Attributes.title="Jawaban Soal PMB">                                                                                
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-eye fa-stack-1x fa-inverse"></i>                                        
+                                            </span>                                        
+                                        </com:THyperLink>
+                                        <com:TLinkButton ID="btnEdit" CssClass="table-link" OnClick="Page.setKelulusan" Attributes.Title="Set Kelulusan Mahasiswa">
+                                            <prop:Text>
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </prop:Text>
+                                        </com:TLinkButton>                                                                            
+                                    </td>		
+                                </tr>                            
+                            </prop:ItemTemplate>                        
+                            <prop:FooterTemplate>
+                                <tbody>
+                                </table>
+                            </prop:FooterTemplate>
+                            <prop:EmptyTemplate>                                                       
+                                <div class="alert alert-info">
+                                    <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                    <strong>
+                                        Info!
+                                    </strong>
+                                     Tidak ada data yang bisa ditampilkan.
+                                </div>
+                            </prop:EmptyTemplate>
+                        </com:TActiveRepeater>
+                        <%include Application.CustomPaging%>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</com:TPanel>
+<%include Application.layouts.cube.ModalPrintOut%>
+</com:TContent>

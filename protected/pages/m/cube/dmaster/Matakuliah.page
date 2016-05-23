@@ -1,0 +1,659 @@
+<%@ Title="Data Master - Matakuliah" %>
+<com:TContent ID="moduleheader">
+    <i class="fa fa-bars"></i> Matakuliah <small>Program Studi <com:TActiveLabel ID="lblProdi" /></small>
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li><a href="#">DATA MASTER</a></li>    
+    <li class="active"><span>MATAKULIAH</span></li>
+</com:TContent>
+<com:TContent ID="configtools">    
+    <%include Application.layouts.cube.FilterMode4%>
+</com:TContent>
+<com:TContent ID="csscontent">
+<link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/css/libs/nifty-component.css"/>
+</com:TContent>
+<com:TContent ID="maincontent">  
+<com:TPanel Visible="<%= $this->getAddProcess(false) %>" CssClass="row">                
+    <div class="col-lg-12">
+        <div class="main-box">
+            <header class="main-box-header clearfix">
+                <h2 class="pull-left"><i class="fa fa-plus"></i> Tambah Matakuliah</h2>
+                <div class="icon-box pull-right">                                       
+                    <a class="btn pull-left" href="<%=$this->constructUrl('dmaster.Matakuliah',true)%>">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </header> 
+            <div class="main-box-body clearfix">
+                <div class="form-horizontal">
+                    <div class="form-group" id="divAddKodeMatakuliah">
+                        <label class="col-lg-2 control-label">Kode Matakuliah :</label>
+                        <div class="col-lg-10">
+                            <div class="row">
+                                <div class="col-lg-2">                                
+                                    <com:TTextBox ID="txtAddKodeMatkul" Columns="6" MaxLength="6" CssClass="form-control" />
+                                </div>
+                                <div class="col-lg-10">                                
+                                    <com:TRequiredFieldValidator ID="FieldAddKodeMatkulValidator" ControlToValidate="txtAddKodeMatkul" Display="Dynamic" ErrorMessage="Isi Kode Matakuliah" ValidationGroup="addMatkul" CssClass="has-error help-block" FocusOnError="true">
+                                        <prop:ClientSide.OnValidationError>
+                                            $('divAddKodeMatakuliah').addClassName('has-error');
+                                            jQuery('#<%=$this->FieldAddKodeMatkulValidator->ClientID%>').removeAttr('style');
+                                        </prop:ClientSide.OnValidationError>
+                                        <prop:ClientSide.OnValidationSuccess>
+                                            $('divAddKodeMatakuliah').removeClassName('has-error');
+                                        </prop:ClientSide.OnValidationSuccess>
+                                    </com:TRequiredFieldValidator>
+                                    <com:TActiveCustomValidator ID="addKodeMatkul" ControlToValidate="txtAddKodeMatkul" Display="Dynamic" OnServerValidate="checkKodeMatkul" ValidationGroup="addMatkul" ErrorMessage="Kode Matakuliah Yang Anda Inputkan Sudah Ada ..." CssClass="has-error help-block">
+                                        <prop:ClientSide.OnValidationError>
+                                            $('divAddKodeMatakuliah').addClassName('has-error');
+                                            jQuery('#<%=$this->addKodeMatkul->ClientID%>').removeAttr('style');
+                                        </prop:ClientSide.OnValidationError>
+                                        <prop:ClientSide.OnValidationSuccess>
+                                            $('divAddKodeMatakuliah').removeClassName('has-error');
+                                        </prop:ClientSide.OnValidationSuccess>
+                                    </com:TActiveCustomValidator>                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAddNamaMatakuliah">
+                        <label class="col-lg-2 control-label">Nama Matakuliah :</label>
+                        <div class="col-lg-4">
+                            <com:TTextBox ID="txtAddNamaMatkul" CssClass="form-control" />
+                            <com:TRequiredFieldValidator ID="FieldAddNamaMatkulValidator" ControlToValidate="txtAddNamaMatkul" Display="Dynamic" ErrorMessage="Isi Nama Matakuliah" ValidationGroup="addMatkul" CssClass="has-error help-block">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddNamaMatakuliah').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldAddNamaMatkulValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddNamaMatakuliah').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAddSKS">
+                        <label class="col-lg-2 control-label">SKS :</label>
+                        <div class="col-lg-1">
+                            <com:TDropDownList ID="cmbAddSks" CssClass="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAddKonsentrasi">
+                        <label class="col-lg-2 control-label">Konsentrasi :</label>
+                        <div class="col-lg-4">
+                            <com:TDropDownList ID="cmbAddKonsentrasi" CssClass="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAddMatkulPilihan">
+                        <label class="col-lg-2 control-label">Matakuliah Pilihan :</label>
+                        <div class="col-lg-2">
+                            <com:TDropDownList ID="cmbAddMatkulPilihan" CssClass="form-control" Width="100px">
+                                <com:TListItem Value="0" Text="Bukan" />
+                                <com:TListItem Value="1" Text="Ya" />
+                            </com:TDropDownList>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAddMatkulLintasProdi">
+                        <label class="col-lg-2 control-label">Matakuliah Lintas Prodi :</label>
+                        <div class="col-lg-2">
+                            <com:TDropDownList ID="cmbAddMatkulLintasProdi" CssClass="form-control" Width="100px">
+                                <com:TListItem Value="0" Text="Bukan" />
+                                <com:TListItem Value="1" Text="Ya" />
+                            </com:TDropDownList>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAddSKSTatapMuka">
+                        <label class="col-lg-2 control-label">SKS Tatap Muka :</label>
+                        <div class="col-lg-4">
+                            <com:TDropDownList ID="cmbAddSksTatapMuka" CssClass="form-control" Width="90px" />	
+                            <com:TRequiredFieldValidator ID="FieldAddSKSTatapMukaValidator" ControlToValidate="cmbAddSksTatapMuka" ErrorMessage="Jumlah SKS tidak boleh 0" InitialValue="0" Display="Dynamic" ValidationGroup="addMatkul" CssClass="has-error help-block">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddSKSTatapMuka').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldAddSKSTatapMukaValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddSKSTatapMuka').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAddSKSPraktikum">
+                        <label class="col-lg-2 control-label">SKS Praktikum :</label>
+                        <div class="col-lg-1">
+                            <com:TDropDownList ID="cmbAddSksPraktikum" CssClass="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAddSKSLapangan">
+                        <label class="col-lg-2 control-label">SKS Praktik Lapangan :</label>
+                        <div class="col-lg-1">
+                            <com:TDropDownList ID="cmbAddSksPraktikLapangan" CssClass="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAddSemester">
+                        <label class="col-lg-2 control-label">Semester :</label>
+                        <div class="col-lg-2">
+                            <com:TDropDownList ID="cmbAddSemester" CssClass="form-control" />
+                            <com:TRequiredFieldValidator ID="FieldAddSemesterValidator" InitialValue="none" ControlToValidate="cmbAddSemester" ErrorMessage="Pilih semester" Display="Dynamic" ValidationGroup="addMatkul" CssClass="has-error help-block">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddSemester').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldAddSemesterValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddSemester').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAddMinimalNilai">
+                        <label class="col-lg-2 control-label">Minimal Nilai :</label>
+                        <div class="col-lg-3">
+                            <com:TActiveDropDownList ID="cmbAddNilai" CssClass="form-control" Width="70px">							
+                                <com:TListItem Value="none" Text=" " />
+                                <com:TListItem Value="A" Text="A" />
+                                <com:TListItem Value="B" Text="B" />
+                                <com:TListItem Value="C" Text="C" />
+                                <com:TListItem Value="D" Text="D" />
+                                <com:TListItem Value="E" Text="E" />
+                            </com:TActiveDropDownList></td>
+                            <com:TRequiredFieldValidator ID="FieldAddMinimalNilaiValidator" InitialValue="none" ControlToValidate="cmbAddNilai" ErrorMessage="Pilih minimal nilai matakuliah" Display="Dynamic" ValidationGroup="addMatkul" CssClass="has-error help-block">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddMinimalNilai').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldAddMinimalNilaiValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddMinimalNilai').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAddSyaratSkripsi">
+                        <label class="col-lg-2 control-label">Syarat Skripsi :</label>
+                        <div class="col-lg-6">
+                            <div>
+                                <com:TCheckBox ID="chkAddSyaratTa" />
+                                <label>Centang, jika matakuliah ini menjadi syarat pengajuan skripsi.</label>
+                            </div>                            
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAddAktif">
+                        <label class="col-lg-2 control-label">Aktif :</label>
+                        <div class="col-lg-6">
+                            <div>
+                                <com:TCheckBox ID="chkAddAktif" Checked="true" />
+                                <label>Matakuliah ini akan ada di KHS dan Transkrip Sementara.</label>
+                            </div>                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-10">
+                            <com:TActiveCustomButton ID="btnSave" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="addMatkul">
+                                <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
+                                <prop:ClientSide.OnPreDispatch>                                                                   
+                                    $('loading').show(); 
+                                    $('<%=$this->btnSave->ClientId%>').disabled='disabled';						
+                                </prop:ClientSide.OnPreDispatch>
+                                <prop:ClientSide.OnLoading>
+                                    $('<%=$this->btnSave->ClientId%>').disabled='disabled';						
+                                </prop:ClientSide.OnLoading>
+                                <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                    $('<%=$this->btnSave->ClientId%>').disabled='';
+                                    $('loading').hide(); 
+                                </prop:ClientSide.OnComplete>
+                            </com:TActiveCustomButton>
+                        </div>
+                    </div>     
+                </div>
+            </div>
+        </div>
+    </div>
+</com:TPanel>
+<com:TPanel Visible="<%= $this->getEditProcess(false) %>" CssClass="row">   
+    <com:THiddenField ID="hiddenid" />         
+    <div class="col-lg-12">
+        <div class="main-box">
+            <header class="main-box-header clearfix">
+                <h2 class="pull-left"><i class="fa fa-edit"></i> Ubah Matakuliah</h2>
+                <div class="icon-box pull-right">                                       
+                    <a class="btn pull-left" href="<%=$this->constructUrl('dmaster.Matakuliah',true)%>">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </header> 
+            <div class="main-box-body clearfix">
+                <div class="form-horizontal">
+                    <div class="form-group" id="divEditKodeMatakuliah">
+                        <label class="col-lg-2 control-label">Kode Matakuliah :</label>
+                        <div class="col-lg-10">
+                            <div class="row">
+                                <div class="col-lg-2">                                
+                                    <com:TTextBox ID="txtEditKodeMatkul" Columns="6" MaxLength="6" CssClass="form-control" />
+                                </div>
+                                <div class="col-lg-10">                                
+                                    <com:TRequiredFieldValidator ID="FieldEditKodeMatkulValidator" ControlToValidate="txtEditKodeMatkul" Display="Dynamic" ErrorMessage="Isi Kode Matakuliah" ValidationGroup="editMatkul" CssClass="has-error help-block">
+                                        <prop:ClientSide.OnValidationError>
+                                            $('divEditKodeMatakuliah').addClassName('has-error');
+                                            jQuery('#<%=$this->FieldEditKodeMatkulValidator->ClientID%>').removeAttr('style');
+                                        </prop:ClientSide.OnValidationError>
+                                        <prop:ClientSide.OnValidationSuccess>
+                                            $('divEditKodeMatakuliah').removeClassName('has-error');
+                                        </prop:ClientSide.OnValidationSuccess>
+                                    </com:TRequiredFieldValidator>
+                                    <com:TActiveCustomValidator ID="editKodeMatkul" ControlToValidate="txtEditKodeMatkul" Display="Dynamic" OnServerValidate="checkKodeMatkul" ValidationGroup="editMatkul" ErrorMessage="Kode Matakuliah Yang Anda Inputkan Sudah Ada ..." CssClass="has-error help-block">
+                                        <prop:ClientSide.OnValidationError>
+                                            $('divEditKodeMatakuliah').addClassName('has-error');
+                                            jQuery('#<%=$this->editKodeMatkul->ClientID%>').removeAttr('style');
+                                        </prop:ClientSide.OnValidationError>
+                                        <prop:ClientSide.OnValidationSuccess>
+                                            $('divEditKodeMatakuliah').removeClassName('has-error');
+                                        </prop:ClientSide.OnValidationSuccess>
+                                    </com:TActiveCustomValidator>                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divEditNamaMatakuliah">
+                        <label class="col-lg-2 control-label">Nama Matakuliah :</label>
+                        <div class="col-lg-4">
+                            <com:TTextBox ID="txtEditNamaMatkul" CssClass="form-control" />
+                            <com:TRequiredFieldValidator ID="FieldEditNamaMatkulValidator" ControlToValidate="txtEditNamaMatkul" Display="Dynamic" ErrorMessage="Isi Nama Matakuliah" ValidationGroup="editMatkul" CssClass="has-error help-block">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divEditNamaMatakuliah').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldEditNamaMatkulValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divEditNamaMatakuliah').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divEditSKS">
+                        <label class="col-lg-2 control-label">SKS :</label>
+                        <div class="col-lg-1">
+                            <com:TDropDownList ID="cmbEditSks" CssClass="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group" id="divEditKonsentrasi">
+                        <label class="col-lg-2 control-label">Konsentrasi :</label>
+                        <div class="col-lg-4">
+                            <com:TDropDownList ID="cmbEditKonsentrasi" CssClass="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group" id="divEditMatkulPilihan">
+                        <label class="col-lg-2 control-label">Matakuliah Pilihan :</label>
+                        <div class="col-lg-2">
+                            <com:TDropDownList ID="cmbEditMatkulPilihan" CssClass="form-control" Width="100px">
+                                <com:TListItem Value="0" Text="Bukan" />
+                                <com:TListItem Value="1" Text="Ya" />
+                            </com:TDropDownList>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divEditMatkulLintasProdi">
+                        <label class="col-lg-2 control-label">Matakuliah Lintas Prodi :</label>
+                        <div class="col-lg-2">
+                            <com:TDropDownList ID="cmbEditMatkulLintasProdi" CssClass="form-control" Width="100px">
+                                <com:TListItem Value="0" Text="Bukan" />
+                                <com:TListItem Value="1" Text="Ya" />
+                            </com:TDropDownList>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divEditSKSTatapMuka">
+                        <label class="col-lg-2 control-label">SKS Tatap Muka :</label>
+                        <div class="col-lg-4">
+                            <com:TDropDownList ID="cmbEditSksTatapMuka" CssClass="form-control" Width="90px" />	
+                                <com:TRequiredFieldValidator ID="FieldEditSKSTatapMukaValidator" ControlToValidate="cmbEditSksTatapMuka" ErrorMessage="Jumlah SKS tidak boleh 0" InitialValue="0" Display="Dynamic" ValidationGroup="editMatkul" CssClass="has-error help-block">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divEditSKSTatapMuka').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldEditSKSTatapMukaValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divEditSKSTatapMuka').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divEditSKSPraktikum">
+                        <label class="col-lg-2 control-label">SKS Praktikum :</label>
+                        <div class="col-lg-1">
+                            <com:TDropDownList ID="cmbEditSksPraktikum" CssClass="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group" id="divEditSKSLapangan">
+                        <label class="col-lg-2 control-label">SKS Praktik Lapangan :</label>
+                        <div class="col-lg-1">
+                            <com:TDropDownList ID="cmbEditSksPraktikLapangan" CssClass="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group" id="divEditSemester">
+                        <label class="col-lg-2 control-label">Semester :</label>
+                        <div class="col-lg-2">
+                            <com:TDropDownList ID="cmbEditSemester" CssClass="form-control" />
+                            <com:TRequiredFieldValidator ID="FieldEditSemesterValidator" InitialValue="none" ControlToValidate="cmbEditSemester" ErrorMessage="Pilih semester" Display="Dynamic" ValidationGroup="editMatkul" CssClass="has-error help-block">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divEditSemester').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldEditSemesterValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divEditSemester').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divEditMinimalNilai">
+                        <label class="col-lg-2 control-label">Minimal Nilai :</label>
+                        <div class="col-lg-3">
+                            <com:TDropDownList ID="cmbEditNilai" CssClass="form-control" Width="70px">							
+                                <com:TListItem Value="none" Text=" " />
+                                <com:TListItem Value="A" Text="A" />
+                                <com:TListItem Value="B" Text="B" />
+                                <com:TListItem Value="C" Text="C" />
+                                <com:TListItem Value="D" Text="D" />
+                                <com:TListItem Value="E" Text="E" />
+                            </com:TDropDownList></td>
+                            <com:TRequiredFieldValidator ID="FieldEditMinimalNilaiValidator" InitialValue="none" ControlToValidate="cmbEditNilai" ErrorMessage="Pilih minimal nilai matakuliah" Display="Dynamic" ValidationGroup="editMatkul" CssClass="has-error help-block">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divEditMinimalNilai').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldEditMinimalNilaiValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divEditMinimalNilai').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divEditSyaratSkripsi">
+                        <label class="col-lg-2 control-label">Syarat Skripsi :</label>
+                        <div class="col-lg-6">
+                            <div>
+                                <com:TCheckBox ID="chkEditSyaratTa" />
+                                <label>Centang, jika matakuliah ini menjadi syarat pengajuan skripsi.</label>
+                            </div>                            
+                        </div>
+                    </div>
+                    <div class="form-group" id="divEditAktif">
+                        <label class="col-lg-2 control-label">Aktif :</label>
+                        <div class="col-lg-6">
+                            <div>
+                                <com:TCheckBox ID="chkEditAktif" Checked="true" />
+                                <label>Matakuliah ini akan ada di KHS dan Transkrip Sementara.</label>
+                            </div>                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-10">
+                            <com:TActiveCustomButton ID="btnUpdate" CssClass="btn btn-primary" OnClick="updateData" ValidationGroup="editMatkul">
+                                <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
+                                <prop:ClientSide.OnPreDispatch>                                                                   
+                                    $('loading').show(); 
+                                    $('<%=$this->btnUpdate->ClientId%>').disabled='disabled';						
+                                </prop:ClientSide.OnPreDispatch>
+                                <prop:ClientSide.OnLoading>
+                                    $('<%=$this->btnUpdate->ClientId%>').disabled='disabled';						
+                                </prop:ClientSide.OnLoading>
+                                <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                    $('<%=$this->btnUpdate->ClientId%>').disabled='';
+                                    $('loading').hide(); 
+                                </prop:ClientSide.OnComplete>
+                            </com:TActiveCustomButton>
+                        </div>
+                    </div>     
+                </div>
+            </div>
+        </div>
+    </div>
+</com:TPanel>
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>">            
+    <com:TActiveRepeater ID="RepeaterKonsentrasi" DataKeyField="idkonsentrasi">                                    
+        <prop:HeaderTemplate>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="main-box clearfix">
+                        <header class="main-box-header clearfix">
+                            <h2 class="pull-left">Konsentrasi Program Studi :</h2>
+                            <div class="icon-box pull-right">
+                                <com:TActiveLinkButton ID="btnResetKonsentrasi" CssClass="btn btn-warning pull-left" OnClick="Page.resetKonsentrasi" ClientSide.PostState="false" Attributes.Title="Reset">
+                                    <prop:Text><i class="fa fa-refresh"></i></prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->btnResetKonsentrasi->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnResetKonsentrasi->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                        $('<%=$this->btnResetKonsentrasi->ClientId%>').disabled='';
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveLinkButton>  
+                            </div>
+                        </header>
+                        <div class="main-box-body">
+        </prop:HeaderTemplate>
+        <prop:ItemTemplate>
+                            <com:TActiveLinkButton ID="btnDetailKonsentrasi" OnClick="Page.filterKonsentrasi" ClientSide.PostState="false" Enabled="<%#$_SESSION['currentPageMatakuliah']['idkonsentrasi']=='none'||$_SESSION['currentPageMatakuliah']['idkonsentrasi']!=$this->DataItem['idkonsentrasi']%>" CssClass="btn btn-link">
+                                <prop:Text><%#$this->DataItem['nama_konsentrasi']%> (<%#$this->DataItem['jumlah_matkul']%>)</prop:Text>
+                                <prop:ClientSide.OnPreDispatch>                                                                   
+                                    $('loading').show(); 
+                                    $('<%=$this->btnDetailKonsentrasi->ClientId%>').disabled='disabled';						
+                                </prop:ClientSide.OnPreDispatch>
+                                <prop:ClientSide.OnLoading>
+                                    $('<%=$this->btnDetailKonsentrasi->ClientId%>').disabled='disabled';						
+                                </prop:ClientSide.OnLoading>
+                                <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                    $('<%=$this->btnDetailKonsentrasi->ClientId%>').disabled='';
+                                    $('loading').hide(); 
+                                </prop:ClientSide.OnComplete>
+                            </com:TActiveLinkButton> |                                         
+        </prop:ItemTemplate>
+        <prop:FooterTemplate> 
+                       </div>
+                    </div>
+                </div>
+            </div>
+        </prop:FooterTemplate>
+    </com:TActiveRepeater>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="main-box">
+                <header class="main-box-header clearfix">
+                    <h2><i class="fa fa-search"></i> Pencarian Data</h2>
+                </header>
+                <div class="main-box-body clearfix">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Kriteria :</label>
+                            <div class="col-lg-5">
+                                <com:TDropDownList ID="cmbKriteria" CssClass="form-control">                                                           
+                                    <com:TListItem Text="Kode Matakuliah" Value="kode" />
+                                    <com:TListItem Text="Nama Matakuliah" Value="nama" />
+                                </com:TDropDownList>
+                            </div>
+                        </div>
+                        <div class="form-group" id="divtxtKriteria">
+                            <label class="col-lg-3 control-label">Isi Kriteria :</label>
+                            <div class="col-lg-6">
+                                <com:TActiveTextBox ID="txtKriteria" CssClass="form-control" />                                                                            
+                                <com:TRequiredFieldValidator ID="spanKriteriaValidator2" ValidationGroup="filterForm" Display="Dynamic" ControlToValidate="txtKriteria" ErrorMessage="Input apa yang Anda cari, sesuai dengan kriteria yang Anda tentukan." FocusOnError="true" CssClass="has-error help-block">	
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divtxtKriteria').addClassName('has-error');
+                                        jQuery('#<%=$this->spanKriteriaValidator2->ClientID%>').removeAttr('style');                                
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divtxtKriteria').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator>                                         
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-3 col-lg-9">
+                                <com:TActiveCustomButton ID="btnSearch" CssClass="btn btn-info"  OnClick="Page.searchRecord" ValidationGroup="filterForm" Attributes.Title="Cari">
+                                    <prop:Text>                                        
+                                        <i class="fa fa-search"></i> Cari                                        
+                                    </prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>         
+                                        $('loading').show();
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnSearch->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	
+                                        $('<%=$this->btnSearch->ClientId%>').disabled='';						                               						                                        
+                                        $('loading').hide();
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="main-box">
+                <header class="main-box-header clearfix">
+                    <h2><i class="fa fa-bookmark"></i> Filter Data</h2>
+                </header>
+                <div class="main-box-body clearfix">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Semester :</label>
+                            <div class="col-lg-4">
+                                <com:TDropDownList ID="cmbFilterSemester" CssClass="form-control" />
+                            </div>
+                        </div>    
+                        <div class="form-group">
+                            <div class="col-lg-offset-3 col-lg-10">
+                                <com:TActiveCustomButton ID="btnFilter" CssClass="btn btn-info"  OnClick="Page.filterRecord" Attributes.Title="Filter">
+                                    <prop:Text>                                        
+                                        <i class="fa fa-bookmark"></i> Filter
+                                    </prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>         
+                                        $('loading').show();
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnFilter->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	
+                                        $('<%=$this->btnFilter->ClientId%>').disabled='';						                               						                                        
+                                        $('loading').hide();
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>  
+                            </div>
+                        </div>
+                        <br /><br /><br />
+                    </div>
+                </div>
+            </div>
+        </div>	
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left"><i class="fa fa-bars"></i> Daftar Matakuliah</h2> 
+                    <div class="filter-block pull-right">                                                   
+                        <com:TActiveLinkButton ID="btnPrintOut" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out Daftar Matkul">
+                            <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnPrintOut->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnPrintOut->ClientId%>').disabled='';				
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton> 	
+                        <com:TLinkButton ID="add" CssClass="btn btn-primary pull-right" Text="<i class='fa  fa-plus-circle fa-lg'></i>" Attributes.Title="Tambah Matakuliah" OnClick="addProcess" CausesValidation="false" />                        
+                    </div>
+                </header>
+                <div class="main-box-body clearfix">  
+                    <div class="table-responsive">
+                        <com:TActiveRepeater ID="RepeaterS" AllowPaging="true" AllowCustomPaging="true" DataKeyField="kmatkul">
+                            <prop:HeaderTemplate>			
+                                <table class="table table-striped table-hover">	
+                                    <thead>
+                                    <tr>                                            
+                                        <th scope="col" width="10">NO</th>
+                                        <th scope="col" width="20">KODE</th>
+                                        <th scope="col" width="270">NAMA</th>
+                                        <th scope="col" width="5">SKS</th>
+                                        <th scope="col" width="5">SMT</th>
+                                        <th scope="col" width="150">PRASYARAT</th>
+                                        <th scope="col" width="150">KETERANGAN</th>
+                                        <th scope="col" width="100">AKSI</th>
+                                    </tr>								
+                                    </thead>
+                                    <tbody>
+                            </prop:HeaderTemplate>
+                            <prop:ItemTemplate>
+                                <tr>
+                                    <td><%# $this->DataItem['no']%></td>
+                                    <td><%# $this->DataItem['kode_matkul']%></td>
+                                    <td><%# $this->DataItem['nmatkul']%></td>
+                                    <td><%# $this->DataItem['sks']%></td>
+                                    <td><%# $this->DataItem['semester']%></td>                                
+                                    <td><%# $this->DataItem['prasyarat']%></td>
+                                    <td><%# $this->DataItem['keterangan']%></td>                                
+                                    <td>
+                                        <a href="<%#$this->Page->constructUrl('dmaster.MatkulPrasyarat',true,array('id'=>$this->DataItem['kmatkul']))%>" class="table-link" title="Prasyarat Matakuliah">                                        
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-spoon fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </a>
+                                        <com:TLinkButton CssClass="table-link" OnClick="Page.editRecord" Attributes.Title="Ubah Matakuliah">
+                                            <prop:Text>
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </prop:Text>
+                                        </com:TLinkButton>
+                                        <com:TActiveLinkButton ID="btnDelete" ClientSide.PostState="false" CssClass="table-link danger" OnClick="Page.deleteRecord" Attributes.Title="Hapus Matakuliah" Attributes.OnClick="if(!confirm('Anda ingin menghapus data Matakuliah ini ?')) return false;">
+                                            <prop:Text>
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </prop:Text>
+                                            <prop:ClientSide.OnPreDispatch>
+                                                $('loading').show();                                             
+                                                $('<%=$this->btnDelete->ClientId%>').disabled='disabled';						
+                                            </prop:ClientSide.OnPreDispatch>
+                                            <prop:ClientSide.OnLoading>
+                                                $('<%=$this->btnDelete->ClientId%>').disabled='disabled';									                            
+                                            </prop:ClientSide.OnLoading>
+                                            <prop:ClientSide.onComplete>
+                                                $('loading').hide();                                                
+                                            </prop:ClientSide.OnComplete>
+                                        </com:TActiveLinkButton>
+                                    </td>				                                 
+                                </tr>
+                            </prop:ItemTemplate>				                
+                            <prop:FooterTemplate>               
+                                </tbody>                            
+                                </table>
+                            </prop:FooterTemplate>	
+                            <prop:EmptyTemplate>                                                       
+                                <div class="row">
+                                    <div class="main-box-body">
+                                        <div class="alert alert-info">
+                                            <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                            <strong>
+                                                Info!
+                                            </strong>
+                                             Tidak ada data yang bisa ditampilkan.
+                                        </div>
+                                    </div>
+                                </div>
+                            </prop:EmptyTemplate>
+                        </com:TActiveRepeater>   
+                        <%include Application.CustomPaging%>                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    		
+</com:TPanel>
+<%include Application.layouts.cube.ModalPrintOut%>
+<%include Application.layouts.cube.ModalMessageError%>
+</com:TContent>

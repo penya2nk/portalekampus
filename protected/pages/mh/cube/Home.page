@@ -1,0 +1,77 @@
+<%@ Title="Dashboard" %>
+<com:TContent ID="moduleheader">
+    <i class="fa fa-dashboard"></i> Dashboard
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li class="active"><span>Dashboard</span></li>
+</com:TContent>
+<com:TContent ID="csscontent">
+<style type="text/css">
+a:hover {
+    text-decoration:none;
+}
+</style>
+</com:TContent>
+<com:TContent ID="maincontent">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">                
+                <div class="main-box-body clearfix">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <br />Selamat Datang !!!
+                        </div>
+                        <div class="col-lg-4 pull-right">
+                            <div class="filter-block pull-right">
+                                <com:TActiveCustomButton ID="btnRefresh" CssClass="btn btn-primary" OnClick="refreshPage" ClientSide.PostState="false">
+                                    <prop:Text><i class="fa fa-refresh"></i> Refresh</prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->btnRefresh->ClientId%>').disabled='disabled';						                                    
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnRefresh->ClientId%>').disabled='disabled';						                                    
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                        $('<%=$this->btnRefresh->ClientId%>').disabled='';                                    
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>            
+    <div class="row">
+        <div class="col-lg-3 col-sm-6 col-xs-12">
+            <a href="#">
+                <div class="main-box infographic-box colored emerald-bg">
+                    <i class="fa fa-flag"></i>
+                    <span class="headline">IPK Sementara</span>
+                    <span class="value"><%=$_SESSION['currentPageHome']['jumlahipk']%></span>
+                </div>
+            </a>
+        </div>    
+        <div class="col-lg-3 col-sm-6 col-xs-12">
+            <a href="#">
+                <div class="main-box infographic-box colored green-bg">
+                    <i class="fa fa-flag"></i>
+                    <span class="headline">Jumlah SKS</span>
+                    <span class="value"><%=$_SESSION['currentPageHome']['jumlahsks']%></span>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-xs-12">
+            <a href="#">
+                <div class="main-box infographic-box colored purple-bg">
+                    <i class="fa fa-flag"></i>
+                    <span class="headline">Jumlah Matakuliah</span>
+                    <span class="value"><%=$_SESSION['currentPageHome']['jumlahmatakuliah']%></span>
+                </div>
+            </a>
+        </div>           
+    </div>
+    <%include Application.layouts.cube.DataMHS%>
+</com:TContent>

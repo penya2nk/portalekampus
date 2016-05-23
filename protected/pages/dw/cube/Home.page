@@ -1,0 +1,10 @@
+<%@ Title="Dashboard" %>
+<com:TContent ID="moduleheader">
+    <i class="fa fa-dashboard"></i> Dashboard
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li class="active"><span>DASHBOARD</span></li>
+</com:TContent>
+<com:TContent ID="maincontent">
+
+</com:TContent>

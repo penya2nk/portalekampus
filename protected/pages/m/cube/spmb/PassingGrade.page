@@ -1,0 +1,108 @@
+<%@ Title="Ujian SPMB - Passing Grade"%>
+<com:TContent ID="moduleheader">
+    <i class="fa fa-list-ul"></i> Passing Grade<br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
+</com:TContent>
+<com:TContent ID="configtools">    
+    <%include Application.layouts.cube.FilterMode9%>
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li><a href="#">SPMB</a></li>
+    <li><a href="#">UJIAN SPMB</a></li>
+    <li class="active">PASSING GRADE</li>
+</com:TContent>
+<com:TContent ID="csscontent">
+<link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/css/libs/nifty-component.css"/>
+</com:TContent>
+<com:TContent ID="maincontent">
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>">		    
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left"><i class="fa fa-list-ul"></i> Pasing Grade</h2> 
+                    <div class="filter-block pull-right">                       
+                        <com:TActiveLinkButton ID="btnRefresh" OnClick="reloadPassingGrade" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Reload Passing Grade">
+                            <prop:Text><i class="fa fa-refresh fa-lg"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnRefresh->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnRefresh->ClientId%>').disabled='';				
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton>  			                                        
+                    </div>
+                </header>
+                <div class="main-box-body clearfix">                    
+                    <div class="table-responsive">
+                        <com:TActiveDataGrid
+                            CssClass="table table-striped table-hover"        
+                            ID="gridPassingGrade"
+                            DataKeyField="takjur"
+                            AutoGenerateColumns="false"        
+                            ShowFOoter="false"                
+                            OnItemCreated="onItemCreatedTargetFisik"
+                            OnEditCommand="editItemNilai"
+                            OnUpdateCommand="saveItemNilai"
+                            OnCancelCommand="cancelItemNilai"                            
+                            >                          
+                            <prop:EmptyTemplate>
+                                <div class="alert alert-info">
+                                    <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                    <strong>
+                                        Info!
+                                    </strong>
+                                     Tidak ada data yang bisa ditampilkan.
+                                </div>
+                            </prop:EmptyTemplate>
+                            <com:TActiveLiteralColumn                
+                                HeaderText="NO"            
+                                HeaderStyle.Width="30px"
+                                HeaderStyle.CssClass="text-left"
+                                ItemStyle.CssClass="text-left"
+                                DataField="no"                                    
+                                />  
+                            <com:TActiveLiteralColumn                
+                                HeaderText="NAMA PROGRAM STUDI"            
+                                HeaderStyle.Width="200px"
+                                HeaderStyle.CssClass="text-left"
+                                ItemStyle.CssClass="left"
+                                DataField="nama_ps"                                    
+                                />   
+                            <com:TActiveLiteralColumn                
+                                HeaderText="JENJANG"            
+                                HeaderStyle.Width="80px"
+                                HeaderStyle.CssClass="text-left"
+                                ItemStyle.CssClass="left"
+                                DataField="njenjang"                                    
+                                />   
+                                                                               
+                            <com:TActiveBoundColumn
+                                ID="ColumnNilai"                                                           
+                                HeaderText="NILAI"              
+                                HeaderStyle.Width="80px"
+                                HeaderStyle.CssClass="text-left"
+                                ItemStyle.CssClass="text-left"
+                                DataField="nilai"   
+                                />                            
+                            <com:TActiveEditCommandColumn
+                                ID="EditColumn"
+                                HeaderText="AKSI"            
+                                ItemStyle.CssClass="text-left"
+                                UpdateText="Save"                                                                                                                     
+                                EditText="Ubah"
+                                CancelText="Batal"
+                                HeaderStyle.Width="80px">                            
+                            </com:TActiveEditCommandColumn>
+                        </com:TActiveDataGrid>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</com:TPanel>
+<%include Application.layouts.cube.ModalPrintOut%>
+</com:TContent>

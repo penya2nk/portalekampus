@@ -1,0 +1,27 @@
+<%@ Title="Dashboard" %>
+<com:TContent ID="moduleheader">
+    <i class="fa fa-dashboard"></i> Dashboard
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li class="active"><span>DASHBOARD</span></li>
+</com:TContent>
+<com:TContent ID="maincontent">
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>">        		
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left"><i class="fa fa-book"></i> Panduan</h2> 
+                    <div class="filter-block pull-right">                                                   
+                        							
+                    </div>
+                </header>
+                <div class="main-box-body clearfix">
+                    <p>Sebelum melakukan ujian PMB, Anda harus mengisi formulir pendaftaran dengan lengkap dan benar.</p>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</com:TPanel>
+</com:TContent>

@@ -1,0 +1,192 @@
+<%@ Title="Akademik - Detail DPNA" %>
+<com:TContent ID="moduleheader">
+    <i class="fa fa-file-excel-o"></i> Detail DPNA (DAFTAR PESERTA DAN NILAI AKHIR)
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li><a href="#">AKADEMIK</a></li>
+    <li><a href="#">NILAI</a></li>
+    <li><a href="<%=$this->constructUrl('nilai.DPNA',true)%>">DPNA</a></li>
+    <li class="active"><span>DETAIL DPNA</span></li>
+</com:TContent>
+<com:TContent ID="configtools">
+<div id="config-tool" class="closed">
+    <a id="config-tool-cog">
+        <i class="fa fa-cog"></i>
+    </a>
+    <div id="config-tool-options">
+        <h4>OPTION</h4>        
+        <br/>
+        <h4 style="font-size:12px"><strong>Output Report:</strong></h4>
+        <ul id="skin-colors" class="clearfix">
+            <li style="font-size:10px">
+               <com:TActiveDropDownList ID="tbCmbOutputReport" OnSelectedIndexChanged="Page.changeOutputReport" CssClass="form-control">
+					<prop:ClientSide.OnPreDispatch>
+						$('loading').show();
+					</prop:ClientSide.OnPreDispatch>
+                   <prop:ClientSide.OnLoading>
+                        $('<%=$this->tbCmbOutputReport->ClientId%>').disabled='disabled';
+                    </prop:ClientSide.OnLoading>
+					<prop:ClientSide.onComplete>
+						$('loading').hide();
+                        $('<%=$this->tbCmbOutputReport->ClientId%>').disabled='';
+					</prop:ClientSide.OnComplete>	
+				</com:TActiveDropDownList>
+            </li>            
+        </ul>
+    </div>
+</div>
+</com:TContent>
+<com:TContent ID="csscontent">
+<link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/css/libs/nifty-component.css"/>
+</com:TContent>
+<com:TContent ID="maincontent">
+<com:TPanel Visible="<%= $this->getViewProcess(false) %>" CssClass="row">                    
+    <div class="col-lg-12">
+        <div class="main-box clearfix">               
+            <header class="main-box-header clearfix">
+                <div class="icon-box pull-right">                                       
+                    <a class="btn pull-left" href="<%=$this->constructUrl('nilai.DPNA',true)%>">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </header>
+            <div class="main-box-body">
+                <div class="alert alert-warning">
+                    <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                    <strong>
+                        Info!
+                    </strong>
+                     <com:TLiteral ID="errorMessage" />
+                </div>
+            </div>            
+        </div>
+    </div>
+</com:TPanel>
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>">
+    <%include Application.layouts.cube.InfoMatkulMode2%>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2><i class="fa fa-bookmark"></i> Filter Data</h2>                    
+                </header>
+                <div class="main-box-body">
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label class="control-label">Daftar Kelas :</label>                            
+                            <com:TDropDownList ID="cmbDaftarKelas" CssClass="form-control" Enabled="false" />                                                            
+                        </div>                       
+                        <com:TActiveCustomButton ID="btnFilter" CssClass="btn btn-info"  OnCallBack="Page.filterRecord" Attributes.Title="Filter" Enabled="false">
+                            <prop:Text>                                        
+                                <i class="fa fa-bookmark"></i> Filter
+                            </prop:Text>
+                            <prop:ClientSide.OnPreDispatch>         
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnFilter->ClientId%>').disabled='disabled';						
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>																	
+                                $('<%=$this->btnFilter->ClientId%>').disabled='';						                               						                                        
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveCustomButton>                          
+                    </div>
+                    <br/>
+                    <com:TPanel ID="panelErrorKelasEmpty" CssClass="alert alert-warning" Visible="false">
+                        <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                        <strong>
+                            Info!
+                        </strong>
+                        Daftar kelas tidak ada data. Untuk membuat kelas baru, dilakukan di <a href="#">sini</a>.
+                    </com:TPanel>
+                    <com:TActivePanel ID="InfoKelasPanel" CssClass="row">
+                        <com:TLiteral ID="literalInfoKelas" />
+                    </com:TActivePanel>
+                </div>
+            </div>
+        </div>
+    </div>	
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left"></h2>                     
+                    <div class="filter-block pull-right">                                                   
+                        <com:TActiveLinkButton ID="btnPrintDPNA" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out Kartu Hasil Studi">
+                            <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnPrintDPNA->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnPrintDPNA->ClientId%>').disabled='';				
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton>  				
+                        <a class="btn btn-default pull-right" href="<%=$this->constructUrl('nilai.DPNA',true)%>" title="Keluar Detail Kartu Hasil Studi">                        
+                            <i class='fa  fa-times fa-lg'></i>
+                        </a>
+                    </div>
+                </header>
+                <div class="main-box-body clearfix"> 
+                    <div class="table-responsive">
+                        <com:TActiveRepeater ID="RepeaterS">
+                            <prop:HeaderTemplate>			
+                                <table class="table table-striped table-hover">	
+                                    <thead>
+                                    <tr>                                            
+                                        <th scope="col">NO</th>
+                                        <th scope="col">NAMA</th>
+                                        <th scope="col">JK</th>
+                                        <th scope="col">NIM</th>
+                                        <th scope="col">NIRM</th>
+                                        <th scope="col">NILAI</th>
+                                        <th scope="col">AM</th>
+                                        <th scope="col">HM</th>
+                                        <th scope="col">KET</th>                                        
+                                    </tr>								
+                                    </thead>
+                                    <tbody>
+                            </prop:HeaderTemplate>
+                            <prop:ItemTemplate>
+                                <tr>
+                                    <td><%# $this->DataItem['no']%></td>
+                                    <td><%# $this->DataItem['nama_mhs']%></td>
+                                    <td><%# $this->DataItem['jk']%></td>
+                                    <td><a href="<%=$this->Page->constructUrl('kemahasiswaan.ProfilMahasiswa',true,array('id'=>$this->DataItem['nim']))%>"><%#$this->DataItem['nim']%></a></td>
+                                    <td><%# $this->DataItem['nirm']%></td>
+                                    <td><%# $this->DataItem['n_kual']%></td>
+                                    <td><%# $this->DataItem['am']%></td>							
+                                    <td><%# $this->DataItem['hm']%></td>							
+                                    <td>-</td>					                                   	                                 
+                                </tr>
+                            </prop:ItemTemplate>				                
+                            <prop:FooterTemplate>               
+                                </tbody>                            
+                                </table>
+                            </prop:FooterTemplate>	
+                            <prop:EmptyTemplate>                                                       
+                                <div class="row">
+                                    <div class="main-box-body">
+                                        <div class="alert alert-info">
+                                            <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                            <strong>
+                                                Info!
+                                            </strong>
+                                             Tidak ada data yang bisa ditampilkan.
+                                        </div>
+                                    </div>
+                                </div>
+                            </prop:EmptyTemplate>
+                        </com:TActiveRepeater>   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</com:TPanel>
+<%include Application.layouts.cube.ModalPrintOut%>
+</com:TContent>

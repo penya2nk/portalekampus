@@ -1,0 +1,217 @@
+<%@ Title="Soal Ujian PMB" %>
+<com:TContent ID="moduleheader">
+    <i class="fa fa-list-ul"></i> Soal Ujian PMB <com:TActiveLabel ID="lblModulHeader" />
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li class="active"><span>SOAL UJIAN PMB</span></li>
+</com:TContent>
+<com:TContent ID="maincontent">	    
+<com:TPanel Visible="<%= $this->getViewProcess(false) %>" CssClass="row">                    
+    <div class="col-lg-12">
+        <div class="main-box clearfix">               
+            <header class="main-box-header clearfix">
+            </header>
+            <div class="main-box-body">
+                <div class="alert alert-warning">
+                    <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                    <strong>
+                        Info!
+                    </strong>
+                     <com:TLiteral ID="errorMessage" />
+                </div>
+            </div>            
+        </div>
+    </div>
+</com:TPanel>
+<com:TPanel Visible="<%= $this->getEditProcess(false)%>" CssClass="row">
+    <div class="col-lg-12">
+        <div class="main-box clearfix">
+            <header class="main-box-header clearfix">
+                <h2 class="pull-left"><i class="fa fa-list-ul"></i> Hasil Ujian PMB</h2> 
+                <div class="filter-block pull-right">                                                   
+                    							
+                </div>
+            </header>
+            <div class="main-box-body clearfix">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"><strong>TANGGAL MULAI: </strong></label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static"><%= $this->TGL->tanggal ('j F Y',$this->DataUjian['tgl_ujian'])%></p>
+                                </div>                            
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"><strong>WAKTU MULAI: </strong></label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static"><%= $this->TGL->tanggal ('H:i:s',$this->DataUjian['tgl_ujian'])%></p>
+                                </div>                            
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"><strong>TANGGAL SELESAI: </strong></label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static"><%= $this->TGL->tanggal ('j F Y',$this->DataUjian['tgl_selesai_ujian'])%></p>
+                                </div>                            
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"><strong>WAKTU SELESAI: </strong></label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static"><%= $this->TGL->tanggal ('H:i:s',$this->DataUjian['tgl_selesai_ujian'])%></p>
+                                </div>                            
+                            </div>                                                        
+                        </div>                                        
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"><strong>JUMLAH PERTANYAAN: </strong></label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static"><%= $this->DataUjian['jumlah_soal']%></p>
+                                </div>                            
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"><strong>JAWABAN BENAR: </strong></label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static"><%= $this->DataUjian['jawaban_benar']%></p>
+                                </div>                            
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"><strong>JAWABAN SALAH: </strong></label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static"><%= $this->DataUjian['jawaban_salah']%></p>
+                                </div>                            
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"><strong>SOAL TIDAK TERJAWAB: </strong></label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static"><%= $this->DataUjian['soal_tidak_terjawab']%></p>
+                                </div>                            
+                            </div>                            
+                        </div>                                        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-sm-6 col-xs-12">
+                        <a href="#">
+                            <div class="main-box infographic-box colored emerald-bg">
+                                <i class="fa fa-flag"></i>
+                                <span class="headline">Nilai Ujian PMB</span>
+                                <span class="value"><%=$this->DataUjian['nilai']%></span>
+                            </div>
+                        </a>
+                    </div> 
+                    <strong>Rumus :</strong> (jawaban_benar/jumlah_soal)*100;
+                </div>
+            </div>
+        </div>
+    </div>        
+</com:TPanel>
+<com:TPanel Visible="<%= $this->getAddProcess(false)%>" CssClass="row">
+    <div class="col-lg-12">
+        <div class="main-box clearfix">
+            <header class="main-box-header clearfix">
+                <h2 class="pull-left"><i class="fa fa-list-ul"></i> Tekan tombol disebelah kanan, untuk memulai ujian PMB Anda.</h2> 
+                <div class="filter-block pull-right">                                                   
+                    <com:TActiveLinkButton ID="btnStart" OnClick="startUjian" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Start Ujian">
+                        <prop:Text><i class="fa fa-dot-circle-o fa-lg"></i></prop:Text>
+                        <prop:ClientSide.OnPreDispatch>
+                            $('loading').show();
+                        </prop:ClientSide.OnPreDispatch>
+                        <prop:ClientSide.OnLoading>
+                            $('<%=$this->btnStart->ClientId%>').disabled='disabled';				
+                        </prop:ClientSide.OnLoading>
+                        <prop:ClientSide.OnComplete>
+                            $('<%=$this->btnStart->ClientId%>').disabled='';				
+                            $('loading').hide();
+                        </prop:ClientSide.OnComplete>
+                    </com:TActiveLinkButton> 									
+                </div>
+            </header>
+            <div class="main-box-body clearfix">
+                
+            </div>
+        </div>
+    </div>        
+</com:TPanel>
+<com:TPanel Visible="<%= $this->getDefaultProcess()%>" CssClass="row">	        
+    <div class="col-lg-12">
+        <div class="main-box clearfix">
+            <header class="main-box-header clearfix">
+                <h2 class="pull-left"><i class="fa fa-list-ul"></i> Silahkan pilih jawaban yang benar.</h2> 
+                <div class="filter-block pull-right">                                                   
+                    <com:TActiveLinkButton ID="btnSave" OnClick="saveJawaban" CssClass="btn btn-primary pull-left" Attributes.Title="Simpan Jawaban Ujian">
+                        <prop:Text><i class="fa fa-save fa-lg"></i></prop:Text>
+                        <prop:ClientSide.OnPreDispatch>
+                            $('loading').show();
+                        </prop:ClientSide.OnPreDispatch>
+                        <prop:ClientSide.OnLoading>
+                            $('<%=$this->btnSave->ClientId%>').disabled='disabled';				
+                        </prop:ClientSide.OnLoading>
+                        <prop:ClientSide.OnComplete>
+                            $('<%=$this->btnSave->ClientId%>').disabled='';				
+                            $('loading').hide();
+                        </prop:ClientSide.OnComplete>
+                    </com:TActiveLinkButton> 
+                    <com:TActiveLinkButton ID="btnSelesaiUjian" OnClick="selesaiUjian" CssClass="btn btn-danger pull-left" Attributes.Title="Selesai Ujian">
+                        <prop:Text><i class="fa fa-check-circle-o fa-lg"></i></prop:Text>
+                        <prop:ClientSide.OnPreDispatch>
+                            $('loading').show();
+                        </prop:ClientSide.OnPreDispatch>
+                        <prop:ClientSide.OnLoading>
+                            $('<%=$this->btnSelesaiUjian->ClientId%>').disabled='disabled';				
+                        </prop:ClientSide.OnLoading>
+                        <prop:ClientSide.OnComplete>
+                            $('<%=$this->btnSelesaiUjian->ClientId%>').disabled='';				
+                            $('loading').hide();
+                        </prop:ClientSide.OnComplete>
+                    </com:TActiveLinkButton> 
+                </div>
+            </header>
+            <div class="main-box-body clearfix">
+                <div class="table-responsive">
+                    <com:TActiveRepeater ID="RepeaterS" DataKeyField="idsoal" OnItemDataBound="dataBindRepeaterJawaban">
+                        <prop:HeaderTemplate>                                                
+                            <table width="100%">								                	
+                            <tbody>			
+                        </prop:HeaderTemplate>	
+                        <prop:ItemTemplate>
+                            <tr>
+                                <td width="30"><%#$this->DataItem['no']%>
+                                    <com:THiddenField ID="txtIDSoal" Value="<%#$this->DataItem['idsoal']%>" />
+                                </td>
+                                <td><%#$this->DataItem['nama_soal']%></td>										                   
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
+                                    <com:TActiveRepeater ID="RepeaterJawaban" DataKeyField="idjawaban" OnItemCreated="Page.setDataBound">                
+                                        <prop:HeaderTemplate>                        
+                                                <table>
+                                        </prop:HeaderTemplate>
+                                        <prop:ItemTemplate>
+                                                    <tr>
+                                                        <td align="left"> 
+                                                            <com:TRadioButton ID="rdJawaban" /> <%#$this->DataItem['jawaban']%>
+                                                        </td>					
+                                                    </tr>
+                                        </prop:ItemTemplate>
+                                         <prop:FooterTemplate>
+                                                </table>                            
+                                        </prop:FooterTemplate>
+                                    </com:TActiveRepeater>
+                                </td>
+                           </tr>
+                        </prop:ItemTemplate>           
+                        <prop:FooterTemplate>
+                            </tbody>	
+                            </table>
+                        </prop:FooterTemplate>
+                    </com:TActiveRepeater>        
+                </div>
+            </div>
+        </div>
+    </div>    
+</com:TPanel>        
+<com:TTimeTriggeredCallback ID="timerSoalPMB" Interval="100" OnCallback="saveJawabanTimer" StartTimerOnLoad="false" />
+</com:TContent>

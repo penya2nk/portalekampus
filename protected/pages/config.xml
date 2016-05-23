@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<modules>
+		<module id="otorisasi_user" class="Application.Autorisasi" />
+		<module id="auth" class="TAuthManager" UserManager="otorisasi_user" LoginPage="Login" />
+	</modules>
+	<authorization>        
+		<allow roles="Manajemen" pages="m.*" />
+		<allow roles="Mahasiswa" pages="mh.*" />		
+		<allow roles="Dosen" pages="d.*" />		
+		<allow roles="DosenWali" pages="dw.*" />		
+		<allow roles="MahasiswaBaru" pages="mb.*" />	
+		<allow roles="OrangtuaWali" pages="ot.*" />	
+		<allow roles="Library" pages="l.*" />
+        <allow pages="Login,Logout,ResetPassword" users="*" />
+		<deny users="*" />		
+	</authorization>
+	<parameters>
+		<parameter id="NewUserRoles" value="Manajemen,Mahasiswa,Dosen,DosenWali,MahasiswaBaru,OrangtuaWali,Library" />
+	</parameters>
+</configuration>

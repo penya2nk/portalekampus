@@ -40,6 +40,10 @@ class MainPage extends TPage {
 	*/
 	public $KRS; 
     /**
+	* Object Variable "Logic_Kuesioner"	
+	*/
+	public $Kuesioner;
+    /**
 	* Object Variable "Logic_Nilai"	
 	*/
 	public $Nilai; 
@@ -288,6 +292,9 @@ class MainPage extends TPage {
             case 'krs' :
                 $this->KRS = $this->getLogic('KRS');
             break;                        
+            case 'kuesioner' :
+                $this->Kuesioner = $this->getLogic('Kuesioner');
+            break;
             case 'nilai' :
                 $this->Nilai = $this->getLogic('Nilai');
             break;                        

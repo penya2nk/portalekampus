@@ -80,7 +80,7 @@
                 </header>
                 <div class="main-box-body clearfix">
                     <div class="table-responsive">
-                        <com:TActiveRepeater ID="RepeaterS" DataKeyField="idpenyelenggaraan" AllowPaging="true" PageSize="10" AllowCustomPaging="true">
+                        <com:TActiveRepeater ID="RepeaterS" DataKeyField="idpengampu_penyelenggaraan" AllowPaging="true" PageSize="10" AllowCustomPaging="true">
                             <prop:HeaderTemplate>
                             <table class="table table-striped table-hover">
                                 <thead>
@@ -93,7 +93,7 @@
                                     <th scope="col">NIDN</th>
                                     <th scope="col">NAMA DOSEN</th>                                    
                                     <th scope="col">HASIL</th>
-                                    <th scope="col">AKSI</th>
+                                    <th scope="col" width="100">AKSI</th>
                                 </tr>			
                                 </thead>
                                 <tbody>
@@ -102,19 +102,38 @@
                                 <tr>
                                     <td><%# $this->DataItem['no']%></td>
                                     <td><%# $this->DataItem['idpengampu_penyelenggaraan']%></td>
-                                    <td><%# $this->Page->Nilai->getKMatkul($this->DataItem['kmatkul'])%></td>
+                                    <td><%# $this->Page->Kuesioner->getKMatkul($this->DataItem['kmatkul'])%></td>
                                     <td><%# $this->DataItem['nmatkul']%></td>
                                     <td><%# $this->DataItem['sks']%></td>
                                     <td><%# $this->DataItem['nidn']%></td>
                                     <td><%# $this->DataItem['nama_dosen']%></td>                                                                        
                                     <td><%# $this->DataItem['hasil']%></td>
                                     <td>
-                                        <com:THyperLink ID="anchorDetailKuesioner" NavigateUrl="<%#$this->Page->constructUrl('nilai.DetailKuesioner',true,array('id'=>$this->DataItem['idpenyelenggaraan']))%>" CssClass="table-link" Attributes.title="Detail Kuesioner" Enabled="false">                                                                                
+                                        <com:THyperLink ID="anchorDetailKuesioner" NavigateUrl="<%#$this->Page->constructUrl('perkuliahan.DetailKuesioner',true,array('id'=>$this->DataItem['idpengampu_penyelenggaraan']))%>" CssClass="table-link" Attributes.title="Detail Kuesioner">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-eye fa-stack-1x fa-inverse"></i>                                        
                                             </span>                                        
-                                        </com:THyperLink>                                    
+                                        </com:THyperLink>
+                                        <com:TActiveLinkButton ID="btnHitung" CssClass="table-link" OnClick="Page.hitungKuesioner" Attributes.Title="Hitung Kuesioner" ClientSide.PostState="false" CommandParameter="<%#$this->DataItem['commandparameter']%>">
+                                            <prop:Text>
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-refresh fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </prop:Text>
+                                            <prop:ClientSide.OnPreDispatch>                                                                   
+                                                $('loading').show(); 
+                                                $('<%=$this->btnHitung->ClientId%>').disabled='disabled';						
+                                            </prop:ClientSide.OnPreDispatch>
+                                            <prop:ClientSide.OnLoading>
+                                                $('<%=$this->btnHitung->ClientId%>').disabled='disabled';						
+                                            </prop:ClientSide.OnLoading>
+                                            <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                                $('<%=$this->btnHitung->ClientId%>').disabled='';
+                                                $('loading').hide(); 
+                                            </prop:ClientSide.OnComplete>
+                                        </com:TActiveLinkButton>
                                     </td>
                                 </tr>	
                             </prop:ItemTemplate>	                        

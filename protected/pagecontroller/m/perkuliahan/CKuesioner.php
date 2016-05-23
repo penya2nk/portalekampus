@@ -5,7 +5,7 @@ class CKuesioner extends MainPageM {
 		parent::onLoad($param);				
 		$this->showSubMenuAkademikPerkuliahan=true;
         $this->showKuesioner=true;        
-        $this->createObj('Nilai');
+        $this->createObj('Kuesioner');
 		if (!$this->IsPostBack&&!$this->IsCallBack) {
             if (!isset($_SESSION['currentPageKuesioner'])||$_SESSION['currentPageKuesioner']['page_name']!='m.nilai.Kuesioner') {
 				$_SESSION['currentPageKuesioner']=array('page_name'=>'m.nilai.Kuesioner','page_num'=>0,'search'=>false);
@@ -73,7 +73,7 @@ class CKuesioner extends MainPageM {
     public function searchRecord ($sender,$param) {
 		$_SESSION['currentPageKuesioner']['search']=true;
 		$this->populateData($_SESSION['currentPageKuesioner']['search']);
-	}	
+	}
 	public function populateData($search=false) {				
 		$ta=$_SESSION['ta'];
 		$idsmt=$_SESSION['semester'];
@@ -112,11 +112,19 @@ class CKuesioner extends MainPageM {
         $str="$str ORDER BY nmatkul ASC LIMIT $offset,$limit";				
 		$this->DB->setFieldTable (array('idpengampu_penyelenggaraan','idpenyelenggaraan','kmatkul','nmatkul','sks','semester','iddosen','nidn','nama_dosen','jumlahmhs'));			
 		$r=$this->DB->getRecord($str);	
-        $result=array();
-        $kuesioner=$this->getLogic('Kuesioner');
+        $result=array();        
         while (list($k,$v)=each($r)) {
             $idpengampu_penyelenggaraan=$v['idpengampu_penyelenggaraan'];                                    
-            $v['hasil']=$kuesioner->getResultInKualitatif($idpengampu_penyelenggaraan);
+            $str="SELECT n_kual FROM kuesioner_hasil WHERE idpengampu_penyelenggaraan=$idpengampu_penyelenggaraan";				
+            $this->DB->setFieldTable (array('n_kual'));			
+            $r2=$this->DB->getRecord($str);	
+            if (isset($r2[1])) {
+                $v['hasil']=$r2[1]['n_kual'];
+                $v['commandparameter']='update';
+            }else{
+                $v['hasil']='N.A';
+                $v['commandparameter']='insert';
+            }             
             $result[$k]=$v;
         }      
 		$this->RepeaterS->DataSource=$result;
@@ -124,4 +132,9 @@ class CKuesioner extends MainPageM {
         
         $this->paginationInfo->Text=$this->getInfoPaging($this->RepeaterS);
 	}
+    public function hitungKuesioner ($sender,$param) {
+        $idpengampu_penyelenggaraan = $this->getDataKeyField($sender,$this->RepeaterS); 
+        $this->Kuesioner->hitungKuesioner($idpengampu_penyelenggaraan,$sender->CommandParameter);
+        $this->redirect('perkuliahan.Kuesioner', true);
+    }
 }

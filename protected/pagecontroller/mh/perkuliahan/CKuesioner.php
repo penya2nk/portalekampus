@@ -5,7 +5,8 @@ class CKuesioner extends MainPageMHS {
 		parent::onLoad($param);		
         $this->showSubMenuAkademikPerkuliahan=true;
         $this->showKuesioner=true;        
-        $this->createObj('Akademik');        
+        $this->createObj('Akademik');
+        $this->createObj('Kuesioner');
 		if (!$this->IsPostBack&&!$this->IsCallBack) {
             if (!isset($_SESSION['currentPageKuesioner'])||$_SESSION['currentPageKuesioner']['page_name']!='d.perkuliahan.Kuesioner') {                
 				$_SESSION['currentPageKuesioner']=array('page_name'=>'d.perkuliahan.Kuesioner','DataMatakuliah'=>array(),'ta'=>$_SESSION['ta'],'semester'=>$_SESSION['semester'],'idpengampu_penyelenggaraan'=>'none');												
@@ -126,15 +127,16 @@ class CKuesioner extends MainPageMHS {
                     $idkuesioner=$this->RepeaterS->DataKeys[$item->getItemIndex()];                        
                     $idindikator=$inputan->cmbJawaban->Text;
                     if ($jumlahpertanyaan > $i+1) {
-                        $values = "$values (NULL,$idpengampu_penyelenggaraan,$idkuesioner,$idindikator),";
+                        $values = "$values (NULL,$idpengampu_penyelenggaraan,$idkrsmatkul,$idkuesioner,$idindikator),";
                     }else{
-                        $values = "$values (NULL,$idpengampu_penyelenggaraan,$idkuesioner,$idindikator)";
+                        $values = "$values (NULL,$idpengampu_penyelenggaraan,$idkrsmatkul,$idkuesioner,$idindikator)";
                     }
                     $i=$i+1;
                 }
-                $str = "INSERT INTO kuesioner_jawaban (idkuesioner_jawaban,idpengampu_penyelenggaraan,idkuesioner,idindikator) VALUES $values";
-                $this->DB->insertRecord($str);
-                $this->DB->commitTransaction();
+                $str = "INSERT INTO kuesioner_jawaban (idkuesioner_jawaban,idpengampu_penyelenggaraan,idkrsmatkul,idkuesioner,idindikator) VALUES $values";
+                $this->DB->insertRecord($str);        
+                $this->DB->commitTransaction();                
+                unset($_SESSION['currentPageKuesioner']);
                 $this->redirect('perkuliahan.Kuesioner',true,array('id'=>$idkrsmatkul));
             }else{
                 $this->DB->rollbackTransaction();

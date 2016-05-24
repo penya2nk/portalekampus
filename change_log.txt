@@ -1,0 +1,168 @@
+Perubahan dan Perbaikan Portal E-Kampus
+
+Rabu, 23 Maret 2016
+++++++ Manajemen ++++++
+- Profil Mahasiswa
+- KHS Kelas Ekstensi
+
+
+Selasa, 15 Maret 2016
+++++++ Manajemen ++++++
+- KRS Kelas Ekstensi
+
+Senin, 06 Maret 2016
+++++++ Global ++++++
+- Memperbaiki perhitungan KHS untuk pengisian KRS
+- Memperbaiki bug yang diketahui..
+
+++++++ Manajemen ++++++
+- Memperbaiki isMhsPindahan() untuk Trankrip sementara dan transkrip KRS
+
+++++++ Mahasiswa ++++++
+- Memperbaiki penambahan tambah matakuliah di KRS untuk MHS ampulan
+- Menambah iddata_konversi di usermanager
+
+
+Senin, 08 Februari 2016
+++++++ Global ++++++
+- Memperbaiki bug yang diketahui..
+
+++++++ Mahasiswa ++++++
+- Mahasiswa dapat mengisi KRS
+
+
+Jum'at, 28 Januari 2016
+++++++ Manajemen ++++++
+- Menambahkan Peserta Matakuliah
+
+Jum'at, 22 Januari 2016
+++++++ Global ++++++
+- Menambahkan table-responsive untuk setiap table.
+
+Selasa, 19 Januari 2016
+++++++ Global ++++++
+- Menyesuaikan getTranskrip, getTranskripNilaiSementara, getTranskripFromKRS
+  dengan rule baru.
+
+++++++ Manajemen ++++++
+- Kuesioner Dosen tahap awal [mengelola daftar pertanyaan]
+
+++++++ Mahasiswa ++++++
+- Mulai dari T.A 2015 Mahasiswa tidak bisa melihat nilai sebelum mengisi Kuesioner
+
+Senin, 1 Desember 2015
+++++++ Manajemen ++++++
+- Printout Transkrip Asli, status Mahasiswa telah lulus.
+- Error handling, Halaman tidak ditemukan.
+
+Senin, 30 November 2015
+++++++ Manajemen ++++++
+- Transkrip Asli.
+- Perbaikan-perbaikan kecil di beberapa modul.
+
+Senin, 16 Nopember 2015
+++++++ Manajemen ++++++
+- Print Out ke Excel 2007 DPNA.
+- Memperbaiki nilai yang tampil Tranksrip KRS.
+
+Ahad, 15 Nopember 2015
+++++++ Manajemen ++++++
+- Menambah Transkrip KRS, menampilkan daftar matakuliah berdasarkan KRS.
+
+++++++ Mahasiswa ++++++
+- Menambah Transkrip KRS, menampilkan daftar matakuliah berdasarkan KRS.
+
+Selasa, 13 Nopember 2015
+++++++ Manajemen ++++++
+- Memperbaiki print out Summary KHS
+
+++++++ Mahasiswa ++++++
+- Memperbaiki jumlah SKS, IPK di Home.page
+
+Selasa, 09 Nopember 2015
+++++++ Manajemen ++++++
+- Memperbaiki print out KHS
+
+++++++ Mahasiswa ++++++
+- Memperbaiki print out KHS
+
+
+Minggu, 07 Nopember 2015
+++++++ Manajemen ++++++
+- Memperbaiki print out DPNA
+
+Selasa, 03 Nopember 2015
+++++++ Manajemen ++++++
+- Memperbaiki Transkrip Nilai Empty Template
+- Menambah kolom nilai IPK di KHS
+
+Kamis, 29 Oktober 2015
+++++++ Global ++++++
+- Mengganti Logo Cube dengan teks Portal Ekampus di MainTemplate.tpl
+- Mensetting url saat mengklik teks portal ekampus di MainTemplate.tpl
+
+++++++ Manajemen ++++++
+- Menambah DPNA (Daftar Peserta dan Nilai Akhir)
+
+Sabtu, 17 Oktober 2015
+++++++ Global ++++++
+- Memperbaiki Lebar DropDownList OutputFileType di FilterLayout[x].tpl
+- Menambah Signature pada KHS
+- Merubah setting PageSize Repeater di seluruh file portal.
+
+++++++ Manajemen ++++++
+- Menambah setting KHS pada file Variables.php
+- Menambah setting jumlah pagesize pada file variables.php
+- Menambah Kartu Hasil Studi
+
+Ahad, 11 Oktober 2015
+++++++ Global ++++++
+- Menyeragamkan bentuk tombol close
+
+++++++ Mahasiswa ++++++
+- Mengganti folder Akademik menjadi Nilai
+
+
+Sabtu, 10 Oktober 2015
+
+++++++ Manajemen ++++++
+- Menambah informasi summary pendaftaran dan penerimaan mahasiswa baru di Dashboard Management.
+- Menambah detail transkrip nilai dari seorang mahasiswa.
+
+Kamis, 07 Oktober 2015
+
+++++++ Manajemen ++++++
+- Menambah print out Matakuliah ke format Microsfot Excel 2007.
+
+rabu, 06 Oktober 2015
+
+++++++ Manajemen ++++++
+- Menambah signature pada transkrip nilai
+- Menambah setting transkrip nilai pada file Variables.php
+- Menambah Kolom prasyarat di Matakuliah
+
+selasa, 05 Oktober 2015
+++++++ Global ++++++
+- Decompose Logic_Report menjadi Logic_ReportNilai, Logic_ReportSPMB
+- Memperbaiki filter matkul pilihan dan lintas prodi pada method getTranskripNilaiSementara() di Logic_Nilai.php  
+
+++++++ Manajemen ++++++
+- Menambah Perubahan Kurikulum di penyelenggaraan 
+- Menambah Laporan Transkrip Sementara
+- Perbaikan UserManager.php (nama_konsentrasi)
+
+Sabtu, 03 Oktober 2015
+++++++ Manajemen ++++++
+- Menambah penyelenggaraan matakuliah
+- Memperbaiki SPMB melalui Web
+
+Kamis, 01 Oktober 2015
+++++++ Manajemen ++++++
+- Memperbaiki summary jumlah mahasiswa sesuai dengan status MHS (A,L,C,N)
+++++++ Mahasiswa ++++++
+- Menambah summary jumlah IPK, SKS, dan Matakuliah
+
+Rabu, 30 September 2015
+++++++ Manajemen ++++++
+- Menambah summary jumlah mahasiswa sesuai dengan status MHS (A,L)
+

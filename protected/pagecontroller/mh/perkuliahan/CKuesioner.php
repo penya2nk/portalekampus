@@ -134,8 +134,13 @@ class CKuesioner extends MainPageMHS {
                     $i=$i+1;
                 }
                 $str = "INSERT INTO kuesioner_jawaban (idkuesioner_jawaban,idpengampu_penyelenggaraan,idkrsmatkul,idkuesioner,idindikator) VALUES $values";
-                $this->DB->insertRecord($str);        
-                $this->DB->commitTransaction();                
+                $this->DB->insertRecord($str);  
+                if ($this->DB->checkRecordIsExist('idpengampu_penyelenggaraan','kuesioner_hasil',$idpengampu_penyelenggaraan)) {
+                    $this->Kuesioner->hitungKuesioner($idpengampu_penyelenggaraan,'update');
+                }else{
+                    $this->Kuesioner->hitungKuesioner($idpengampu_penyelenggaraan,'insert');
+                }
+                $this->DB->commitTransaction();                                 
                 unset($_SESSION['currentPageKuesioner']);
                 $this->redirect('perkuliahan.Kuesioner',true,array('id'=>$idkrsmatkul));
             }else{

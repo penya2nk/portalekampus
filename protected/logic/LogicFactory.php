@@ -71,6 +71,10 @@ class LogicFactory extends TModule {
 				prado::using ('Application.logic.Logic_ReportKRS');
 				return new Logic_ReportKRS ($this->db);
 			break;
+            case 'ReportKuesioner' :
+				prado::using ('Application.logic.Logic_ReportKuesioner');
+				return new Logic_ReportKuesioner ($this->db);
+			break;
             case 'ReportNilai' :
 				prado::using ('Application.logic.Logic_ReportNilai');
 				return new Logic_ReportNilai ($this->db);

@@ -524,7 +524,7 @@ class Logic_ReportNilai extends Logic_Report {
                     $sheet->getStyle("A$row_awal:J$row")->getAlignment()->setWrapText(true);
                 }
                 
-                $this->printOut("summarykhs_$nim");
+                $this->printOut("summarykhs");
             break;
         }
         $this->setLink($this->dataReport['linkoutput'],"Summary KHS T.A $nama_tahun Semester $nama_semester");

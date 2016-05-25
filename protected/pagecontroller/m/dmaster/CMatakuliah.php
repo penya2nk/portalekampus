@@ -115,7 +115,7 @@ class CMatakuliah extends MainPageM {
 			$limit=$itemcount-$offset;
 		}
 		if ($limit < 0) {$offset=0;$limit=$this->setup->getSettingValue('default_pagesize');$_SESSION['currentPageMatakuliah']['page_num']=0;}
-        $str = "$str ORDER BY semester,kmatkul ASC LIMIT $offset,$limit";				
+        $str = "$str ORDER BY (semester+0),kmatkul ASC LIMIT $offset,$limit";				
         $this->DB->setFieldTable(array('kmatkul','nmatkul','sks','semester','idkonsentrasi','nama_konsentrasi','ispilihan','islintas_prodi','aktif'));
 		$r = $this->DB->getRecord($str,$offset+1);	
         $result = array();

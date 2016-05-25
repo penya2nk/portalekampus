@@ -78,7 +78,7 @@
                                 $('loading').hide(); 
                             </prop:ClientSide.OnComplete>
                         </com:TActiveLinkButton>
-                        <com:TActiveLinkButton ID="btnPrintOut" OnClick="printKRS" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out KRS">
+                        <com:TActiveLinkButton ID="btnPrintOut" OnClick="printKuesioner" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out KRS">
                             <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
                             <prop:ClientSide.OnPreDispatch>
                                 $('loading').show();
@@ -211,11 +211,12 @@
                                     <th width="15" scope="col">NO</th>                                                    
                                     <th width="15" scope="col">URUT</th>                                                    
                                     <th width="250" scope="col">ASPEK YANG DINILAI</th>
-                                    <th width="15" scope="col">INDIKATOR KE 1</th>
-                                    <th width="15" scope="col">INDIKATOR KE 2</th>
-                                    <th width="15" scope="col">INDIKATOR KE 3</th>
-                                    <th width="15" scope="col">INDIKATOR KE 4</th>
-                                    <th width="15" scope="col">INDIKATOR KE 5</th>
+                                    <th width="15" scope="col">INDIKATOR <br/>KE 1</th>
+                                    <th width="15" scope="col">INDIKATOR <br/>KE 2</th>
+                                    <th width="15" scope="col">INDIKATOR <br/>KE 3</th>
+                                    <th width="15" scope="col">INDIKATOR <br/>KE 4</th>
+                                    <th width="15" scope="col">INDIKATOR <br/>KE 5</th>
+                                    <th width="15" scope="col">JUMLAH</th>
                                 </tr>	
                                 </thead>		
                                 <tbody>		
@@ -231,10 +232,22 @@
                                     <td><%# $this->Data['indikator3']%></td>
                                     <td><%# $this->Data['indikator4']%></td>
                                     <td><%# $this->Data['indikator5']%></td>                                                                                            
+                                    <td><%# $this->Data['jumlah']%></td>
                                 </tr>	
                             </prop:ItemTemplate>	                        
                             <prop:FooterTemplate>
-                            </tbody>				
+                            </tbody>			
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="text-right"><strong>Total</strong></td>                                    
+                                    <td><%# DetailKuesioner::$TotalIndikator1%></td>
+                                    <td><%# DetailKuesioner::$TotalIndikator2%></td>
+                                    <td><%# DetailKuesioner::$TotalIndikator3%></td>
+                                    <td><%# DetailKuesioner::$TotalIndikator4%></td>
+                                    <td><%# DetailKuesioner::$TotalIndikator5%></td>                                                                                           
+                                    <td><%# DetailKuesioner::$TotalIndikator1+DetailKuesioner::$TotalIndikator2+DetailKuesioner::$TotalIndikator3+DetailKuesioner::$TotalIndikator4+DetailKuesioner::$TotalIndikator5%></td>
+                                </tr>	
+                            </tfoot>
                             </table>
                             </prop:FooterTemplate>
                             <prop:EmptyTemplate>                                                       

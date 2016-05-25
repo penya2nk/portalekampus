@@ -7,6 +7,9 @@
     <li><a href="#">PERKULIAHAN</a></li>
     <li class="active"><span>KUESIONER</span></li>
 </com:TContent>
+<com:TContent ID="csscontent">
+<link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/css/libs/nifty-component.css"/>
+</com:TContent>
 <com:TContent ID="configtools">    
     <%include Application.layouts.cube.FilterMode6%>
 </com:TContent>
@@ -75,7 +78,19 @@
                 <header class="main-box-header clearfix">
                     <h2 class="pull-left"><i class="fa fa-question-circle"></i> Daftar Hasil Kuesioner Dosen</h2> 
                     <div class="filter-block pull-right">                                                   
-                       								
+                        <com:TActiveLinkButton ID="btnPrintKuesionerAll" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Mencetak Summary Kuesioner">
+                            <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnPrintKuesionerAll->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnPrintKuesionerAll->ClientId%>').disabled='';				
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton> 									
                     </div>
                 </header>
                 <div class="main-box-body clearfix">
@@ -162,4 +177,5 @@
         </div>
     </div>    
 </com:TPanel>
+<%include Application.layouts.cube.ModalPrintOut%>
 </com:TContent>

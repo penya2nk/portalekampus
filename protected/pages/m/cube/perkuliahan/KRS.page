@@ -160,7 +160,7 @@
                                 $('loading').hide();
                             </prop:ClientSide.OnComplete>
                         </com:TActiveLinkButton>       
-                        <com:TActiveLinkButton ID="btnPrintKRSAll" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Mencetak Per.Angkatan">
+                        <com:TActiveLinkButton ID="btnPrintKRSAll" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Mencetak Per. Angkatan">
                             <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
                             <prop:ClientSide.OnPreDispatch>
                                 $('loading').show();

@@ -1,6 +1,11 @@
 <?php
 prado::using ('Application.MainPageM');
 class CDetailKuesioner extends MainPageM {	
+    public static $TotalIndikator1=0;
+    public static $TotalIndikator2=0;
+    public static $TotalIndikator3=0;
+    public static $TotalIndikator4=0;
+    public static $TotalIndikator5=0;    
     public $DataKuesioner;
 	public function onLoad($param) {
 		parent::onLoad($param);	
@@ -57,23 +62,30 @@ class CDetailKuesioner extends MainPageM {
                 $item->literalNamaKelompok->Text='<tr class="success">
                                                     <td colspan="9">'.$item->DataItem['nama_kelompok'].'</td></tr>';
             }
+            DetailKuesioner::$TotalIndikator1+=$item->DataItem['indikator1'];
+            DetailKuesioner::$TotalIndikator2+=$item->DataItem['indikator2'];
+            DetailKuesioner::$TotalIndikator3+=$item->DataItem['indikator3'];
+            DetailKuesioner::$TotalIndikator4+=$item->DataItem['indikator4'];
+            DetailKuesioner::$TotalIndikator5+=$item->DataItem['indikator5'];
         }
     }
 	public function populateData() {
         $idpengampu_penyelenggaraan = $_SESSION['currentPageDetailKuesioner']['DataKuesioner']['idpengampu_penyelenggaraan'];         
+        $ta=$_SESSION['ta'];
+		$idsmt=$_SESSION['semester'];
         $kelompok_pertanyaan=$this->DMaster->getListKelompokPertanyaan();                
         $kelompok_pertanyaan[0]='UNDEFINED';
         unset($kelompok_pertanyaan['none']);        
         $result=array();
         while (list($idkelompok_pertanyaan,$nama_kelompok)=each($kelompok_pertanyaan)) {
-            $str = "SELECT kj.idkuesioner,k.idkelompok_pertanyaan,k.pertanyaan,k.`orders`,k.date_added FROM kuesioner k,kuesioner_jawaban kj WHERE kj.idkuesioner=k.idkuesioner AND idkelompok_pertanyaan=$idkelompok_pertanyaan AND kj.idpengampu_penyelenggaraan=$idpengampu_penyelenggaraan";
+            $str = "SELECT idkuesioner,idkelompok_pertanyaan,pertanyaan,`orders`,date_added FROM kuesioner k WHERE tahun='$ta' AND idsmt='$idsmt' AND idkelompok_pertanyaan=$idkelompok_pertanyaan ORDER BY (orders+0) ASC";
             $this->DB->setFieldTable(array('idkuesioner','idkelompok_pertanyaan','pertanyaan','orders','date_added'));
             $r=$this->DB->getRecord($str);
             $jumlah_r=count($r);
             if ($jumlah_r > 0) {
                 $r[1]['ada']=true;
                 $r[1]['nama_kelompok']=$nama_kelompok;
-                $idkuesioner=$r[1]['idkuesioner'];        
+                $idkuesioner=$r[1]['idkuesioner'];                
                 $str="SELECT nilai_indikator,SUM(nilai_indikator) AS jumlah FROM kuesioner_jawaban kj,kuesioner_indikator ki WHERE ki.idindikator=kj.idindikator AND kj.idpengampu_penyelenggaraan=$idpengampu_penyelenggaraan AND kj.idkuesioner=$idkuesioner GROUP BY nilai_indikator";
                 $this->DB->setFieldTable(array('nilai_indikator','jumlah'));
                 $hasil_indikator=$this->DB->getRecord($str);
@@ -106,10 +118,12 @@ class CDetailKuesioner extends MainPageM {
                 $r[1]['indikator3']=$indikator3;
                 $r[1]['indikator4']=$indikator4;
                 $r[1]['indikator5']=$indikator5;  
+                $jumlah=$indikator1+$indikator2+$indikator3+$indikator4+$indikator5;
+                $r[1]['jumlah']=$jumlah;  
                 $result[]=$r[1];
                 next($r);                
                 while (list($k,$v)=each($r)) {
-                    $idkuesioner=$v['idkuesioner']; 
+                    $idkuesioner=$v['idkuesioner'];
                     $str="SELECT nilai_indikator,SUM(nilai_indikator) AS jumlah FROM kuesioner_jawaban kj,kuesioner_indikator ki WHERE ki.idindikator=kj.idindikator AND kj.idpengampu_penyelenggaraan=$idpengampu_penyelenggaraan AND kj.idkuesioner=$idkuesioner GROUP BY nilai_indikator";
                     $this->DB->setFieldTable(array('nilai_indikator','jumlah'));
                     $hasil_indikator=$this->DB->getRecord($str);
@@ -141,7 +155,9 @@ class CDetailKuesioner extends MainPageM {
                     $v['indikator2']=$indikator2;
                     $v['indikator3']=$indikator3;
                     $v['indikator4']=$indikator4;
-                    $v['indikator5']=$indikator5;                    
+                    $v['indikator5']=$indikator5; 
+                    $jumlah=$indikator1+$indikator2+$indikator3+$indikator4+$indikator5;
+                    $v['jumlah']=$jumlah; 
                     $result[]=$v;
                 }                
             }            
@@ -149,49 +165,43 @@ class CDetailKuesioner extends MainPageM {
 		$this->RepeaterS->DataSource=$result;
 		$this->RepeaterS->dataBind();
 	}	    
-	public function printKRS ($sender,$param) {
-//        $this->createObj('reportkrs');
-//        $this->linkOutput->Text='';
-//        $this->linkOutput->NavigateUrl='#';
-//        switch ($_SESSION['outputreport']) {
-//            case  'summarypdf' :
-//                $messageprintout="Mohon maaf Print out pada mode summary pdf tidak kami support.";                
-//            break;
-//            case  'summaryexcel' :
-//                $messageprintout="Mohon maaf Print out pada mode summary excel tidak kami support.";                
-//            break;
-//            case  'excel2007' :
-//                $messageprintout="Mohon maaf Print out pada mode excel 2007 belum kami support.";                
-//            break;
-//            case  'pdf' :                
-//                $messageprintout='';                
-//                $tahun=$_SESSION['ta'];
-//                $semester=$_SESSION['semester'];
-//                $nama_tahun = $this->DMaster->getNamaTA($tahun);
-//                $nama_semester = $this->setup->getSemester($semester);
-//
-//                $dataReport=$_SESSION['currentPageDetailKuesioner']['DataMHS'];
-//                $dataReport['krs']=$_SESSION['currentPageDetailKuesioner']['DataKRS']['krs'];        
-//                $dataReport['matakuliah']=$_SESSION['currentPageDetailKuesioner']['DataKRS']['matakuliah'];        
-//                $dataReport['nama_tahun']=$nama_tahun;
-//                $dataReport['nama_semester']=$nama_semester;        
-//                
-//                $kaprodi=$this->KRS->getKetuaPRODI($dataReport['kjur']);                  
-//                $dataReport['nama_kaprodi']=$kaprodi['nama_dosen'];
-//                $dataReport['jabfung_kaprodi']=$kaprodi['nama_jabatan'];
-//                $dataReport['nipy_kaprodi']=$kaprodi['nipy'];
-//                
-//                $dataReport['linkoutput']=$this->linkOutput;                 
-//                $this->report->setDataReport($dataReport); 
-//                $this->report->setMode($_SESSION['outputreport']);
-//                $this->report->printKRS();				
-//
-//                
-//            break;
-//        }
-//        $this->lblMessagePrintout->Text=$messageprintout;
-//        $this->lblPrintout->Text="Kartu Rencana Studi T.A $nama_tahun Semester $nama_semester";
-//        $this->modalPrintOut->show();
+	public function printKuesioner ($sender,$param) {        
+        $this->linkOutput->Text='';
+        $this->linkOutput->NavigateUrl='#';
+        switch ($_SESSION['outputreport']) {
+            case  'summarypdf' :
+                $messageprintout="Mohon maaf Print out pada mode summary pdf tidak kami support.";                
+            break;
+            case  'summaryexcel' :
+                $messageprintout="Mohon maaf Print out pada mode summary excel tidak kami support.";                
+            break;
+            case  'excel2007' :
+                $messageprintout='';
+                $dataReport=$_SESSION['currentPageDetailKuesioner']['DataKuesioner'];                
+                
+                $nama_tahun = $this->DMaster->getNamaTA($dataReport['tahun']);
+                $nama_semester = $this->setup->getSemester($dataReport['idsmt']);
+                
+                $dataReport['nama_tahun']=$nama_tahun;
+                $dataReport['nama_semester']=$nama_semester;        
+                $dataReport['nama_ps']=$_SESSION['daftar_jurusan'][$dataReport['kjur']];
+                $kelompok_pertanyaan=$this->DMaster->getListKelompokPertanyaan();                
+                $kelompok_pertanyaan[0]='UNDEFINED';
+                unset($kelompok_pertanyaan['none']);        
+                $dataReport['kelompok_pertanyaan']=$kelompok_pertanyaan;                    
+                $dataReport['linkoutput']=$this->linkOutput;    
+                $objKuesioner=$this->getLogic('ReportKuesioner');
+                $objKuesioner->setDataReport($dataReport); 
+                $objKuesioner->setMode('excel2007');               
+                $objKuesioner->printKuesionerDosen($this->Kuesioner);
+            break;
+            case  'pdf' :                
+                $messageprintout="Mohon maaf Print out pada mode pdf belum kami support.";                
+            break;
+        }
+        $this->lblMessagePrintout->Text=$messageprintout;
+        $this->lblPrintout->Text='Data Kuesioner Dosen';
+        $this->modalPrintOut->show();
 	}
 }
 

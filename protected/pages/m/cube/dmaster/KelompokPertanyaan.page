@@ -36,6 +36,12 @@
                             </com:TRequiredFieldValidator>
                         </div>
                     </div>                    
+                    <div class="form-group" id="divAddUrutan">
+                        <label class="col-lg-2 control-label">Urutan Ke :</label>
+                        <div class="col-lg-1">
+                            <com:TTextBox ID="txtAddUrutan" CssClass="form-control" Width="50px" Attributes.OnKeyUp="formatangka(this,true)" Text="0" />
+                        </div>
+                    </div>
                     <div class="form-group">
                         <div class="col-lg-offset-2 col-lg-10">
                             <com:TActiveCustomButton ID="btnSave" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="addkelompok">
@@ -88,6 +94,12 @@
                             </com:TRequiredFieldValidator>
                         </div>
                     </div> 
+                    <div class="form-group" id="divEditUrutan">
+                        <label class="col-lg-2 control-label">Urutan Ke :</label>
+                        <div class="col-lg-1">
+                            <com:TTextBox ID="txtEditUrutan" CssClass="form-control" Width="50px" Attributes.OnKeyUp="formatangka(this,true)" />
+                        </div>
+                    </div>
                     <div class="form-group">
                         <div class="col-lg-offset-2 col-lg-10">
                             <com:TActiveCustomButton ID="btnUpdate" CssClass="btn btn-primary" OnClick="updateData" ValidationGroup="editkelompok">
@@ -129,6 +141,7 @@
                                     <thead>
                                     <tr>                                            
                                         <th scope="col" width="10">NO</th>                                    
+                                        <th scope="col" width="70">URUT</th>
                                         <th scope="col" width="250">KATEGORI</th>
                                         <th scope="col">NAMA KELOMPOK</th>                                    
                                         <th scope="col" width="100">AKSI</th>
@@ -139,6 +152,7 @@
                             <prop:ItemTemplate>
                                 <tr>
                                     <td><%# $this->DataItem['no']%></td>
+                                    <td><%# $this->DataItem['orders']%></td>
                                     <td><%# $this->DataItem['idkategori']%></td>
                                     <td><%# $this->DataItem['nama_kelompok']%></td>                                
                                     <td>                                    

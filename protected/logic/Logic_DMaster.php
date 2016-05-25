@@ -351,7 +351,7 @@ class Logic_DMaster extends Logic_Global {
         if ($this->Application->Cache) {            
             $dataitem=$this->Application->Cache->get('listkelompokpertanyaan');            
             if (!isset($dataitem['none'])) {                
-                $dataitem=$this->getList ("kelompok_pertanyaan WHERE idkategori=1",array('idkelompok_pertanyaan','nama_kelompok'),'nama_kelompok',null,1);            
+                $dataitem=$this->getList ("kelompok_pertanyaan WHERE idkategori=1",array('idkelompok_pertanyaan','nama_kelompok'),'(orders+0)',null,1);            
                 $dataitem['none']='Daftar Kelompok Pertanyaan';
                 $this->Application->Cache->set('listkelompokpertanyaan',$dataitem);
             }

@@ -13,13 +13,15 @@ class Logic_Kuesioner extends Logic_Akademik {
     public function hitungKuesioner($idpengampu_penyelenggaraan,$commandparameter) {        
         $str="(SELECT idkuesioner_jawaban FROM kuesioner_jawaban kj WHERE idpengampu_penyelenggaraan=$idpengampu_penyelenggaraan GROUP BY idkrsmatkul) AS temp";
         $jumlah_mhs=$this->db->getCountRowsOfTable($str,'idkuesioner_jawaban');
-        $totalnilai=$this->db->getSumRowsOfTable('nilai_indikator',"kuesioner_jawaban kj,kuesioner_indikator ki WHERE ki.idindikator=kj.idindikator AND kj.idpengampu_penyelenggaraan=$idpengampu_penyelenggaraan");
+        $str="kuesioner_jawaban kj,kuesioner_indikator ki WHERE ki.idindikator=kj.idindikator AND kj.idpengampu_penyelenggaraan=$idpengampu_penyelenggaraan";
+        $totalnilai=$this->db->getSumRowsOfTable('nilai_indikator',$str);
         $str = "SELECT tahun,idsmt FROM v_pengampu_penyelenggaraan WHERE idpengampu_penyelenggaraan=$idpengampu_penyelenggaraan";
         $this->db->setFieldTable(array('tahun','idsmt'));
         $r=$this->db->getRecord($str);
         $ta=$r[1]['tahun'];
         $idsmt=$r[1]['idsmt'];
-        $jumlahsoal=$this->db->getCountRowsOfTable("kuesioner k WHERE tahun='$ta' AND idsmt='$idsmt'",'idkuesioner');
+        $str="kuesioner k WHERE tahun='$ta' AND idsmt='$idsmt'";
+        $jumlahsoal=$this->db->getCountRowsOfTable($str,'idkuesioner');
         $skor_tertinggi=$jumlahsoal*$jumlah_mhs*5;
         $skor_terendah=$jumlahsoal*$jumlah_mhs*1;
         $interval=($skor_tertinggi-$skor_terendah)/5;
@@ -30,24 +32,24 @@ class Logic_Kuesioner extends Logic_Akademik {
         $maks_baik=$maks_sedang+$interval;
         $maks_sangatbaik=$maks_baik+$maks_baik;
         
-        if ($totalnilai >= $maks_sangatburuk && $totalnilai < $maks_buruk) {
+        if ($totalnilai >= $skor_terendah && $totalnilai < $maks_sangatburuk) {
             $n_kuan=1;
             $keterangan='SANGAT BURUK';
-        }elseif ($totalnilai >= $maks_buruk && $totalnilai < $maks_sedang) {
+        }elseif ($totalnilai >= $maks_sangatburuk && $totalnilai < $maks_buruk) {
             $n_kuan=2;
             $keterangan='BURUK';
-        }elseif ($totalnilai >= $maks_sedang && $interval < $maks_baik) {
+        }elseif ($totalnilai >= $maks_buruk && $totalnilai < $maks_sedang) {
             $n_kuan=3;
             $keterangan='SEDANG';
-        }elseif ($totalnilai >= $maks_baik && $interval < $maks_sangatbaik) {
+        }elseif ($totalnilai >= $maks_sedang && $totalnilai < $maks_baik) {
             $n_kuan=4;
             $keterangan='BAIK';
-        }elseif ($totalnilai >= $maks_sangatbaik){
+        }elseif ($totalnilai >= $maks_baik){
             $n_kuan=5;
             $keterangan='SANGAT BAIK';
         }else{
-            $n_kuan=0;
-            $keterangan='N.A';
+            $n_kuan=1;
+            $keterangan='SANGAT BURUK';
         }
         
         if ($commandparameter == 'insert') {
@@ -57,6 +59,7 @@ class Logic_Kuesioner extends Logic_Akademik {
             $str = "UPDATE kuesioner_hasil SET jumlah_mhs=$jumlah_mhs, total_nilai=$totalnilai, jumlah_soal=$jumlahsoal, skor_tertinggi=$skor_tertinggi, skor_terendah=$skor_terendah, intervals=$interval, maks_sangatburuk=$maks_sangatburuk, maks_buruk=$maks_buruk, maks_sedang=$maks_sedang, maks_baik=$maks_baik, maks_sangatbaik=$maks_sangatbaik, n_kuan=$n_kuan, n_kual='$keterangan' WHERE idpengampu_penyelenggaraan=$idpengampu_penyelenggaraan";            
             $this->db->updateRecord($str);
         }
-    }  
+    }
+    
 }
 ?>

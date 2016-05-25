@@ -32,14 +32,7 @@ class CDaftarPertanyaan extends MainPageM {
             
             $this->populateData();
 		}			
-	}
-    public function renderCallback ($sender,$param) {
-		$this->RepeaterS->render($param->NewWriter);	
-	}
-    public function Page_Changed ($sender,$param) {
-		$_SESSION['currentDaftarPertanyaan']['page_num']=$param->NewPageIndex;
-		$this->populateData();
-	}
+	}   
     public function changeTbTA ($sender,$param) {
 		$_SESSION['ta']=$this->tbCmbTA->Text;		
         $this->lblModulHeader->Text=$this->getInfoToolbar();
@@ -86,7 +79,7 @@ class CDaftarPertanyaan extends MainPageM {
         }
         $result=array();
         while (list($idkelompok_pertanyaan,$nama_kelompok)=each($kelompok_pertanyaan)) {
-            $str = "SELECT idkuesioner,idkelompok_pertanyaan,pertanyaan,`orders`,date_added FROM kuesioner k WHERE tahun='$ta' AND idsmt='$idsmt' AND idkelompok_pertanyaan=$idkelompok_pertanyaan";
+            $str = "SELECT idkuesioner,idkelompok_pertanyaan,pertanyaan,`orders`,date_added FROM kuesioner k WHERE tahun='$ta' AND idsmt='$idsmt' AND idkelompok_pertanyaan=$idkelompok_pertanyaan ORDER BY (orders+0) ASC";
             $this->DB->setFieldTable(array('idkuesioner','idkelompok_pertanyaan','pertanyaan','orders','date_added'));
             $r=$this->DB->getRecord($str);
             $jumlah_r=count($r);

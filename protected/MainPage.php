@@ -62,7 +62,11 @@ class MainPage extends TPage {
     /**     
      * show page dashboard
      */
-    public $showDashboard=false;    
+    public $showDashboard=false;  
+    /**     
+     * show sub menu [datamaster]
+     */
+    public $showDMaster=false;
     /**     
      * show page forum diskusi
      */

@@ -1,9 +1,5 @@
 <?php
-class MainPageM extends MainPage {            
-    /**     
-     * show sub menu [datamaster]
-     */
-    public $showDMaster=false;
+class MainPageM extends MainPage {   
     /**     
      * show page matakuliah [datamaster]
      */

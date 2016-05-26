@@ -22,6 +22,8 @@
             <com:TDropDownList ID="cmbGoingTo" CssClass="form-control">
                 <com:TListItem Value="none" Text=" "/>
 				<com:TListItem Value="m" Text="Manajemen"/>
+                <com:TListItem Value="k" Text="Keuangan"/>
+                <com:TListItem Value="b" Text="Bank"/>
 				<com:TListItem Value="d" Text="Dosen"/>
 				<com:TListItem Value="dw" Text="Dosen Wali"/>
 				<com:TListItem Value="mh" Text="Mahasiswa"/>
@@ -58,9 +60,9 @@
             <com:TActiveCustomValidator ControlToValidate="txtUsername" Display="Dynamic" OnServerValidate="checkUsernameFormat" CssClass="has-error help-block" ValidationGroup="userlogin" />
             <com:TActiveCustomValidator ControlToValidate="txtUsername" Display="Dynamic" OnServerValidate="checkUsernameAndPassword" CssClass="has-error help-block" ValidationGroup="userlogin" />            
         </div>
-    </div>    				    
+    </div>    				     
     <div class="mar-btm"><em>- atau -</em></div>
     <a class="btn btn-primary btn-lg btn-block" href="http://oldportal.stisipolrajahaji.ac.id">
         Login ke Portal E-Kampus Lama
-    </a>           
+    </a>               
 </com:TContent>

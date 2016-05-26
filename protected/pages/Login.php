@@ -15,7 +15,13 @@ class Login extends MainPage {
 			case 'm' :
 				$page = 'Manajemen';
 			break;
-			case 'd' :
+			case 'k' :
+				$page = 'Keuangan';
+			break;
+            case 'b' :
+				$page = 'Bank';
+			break;
+            case 'd' :
 				$page = 'Dosen';
 			break;
 			case 'dw' :

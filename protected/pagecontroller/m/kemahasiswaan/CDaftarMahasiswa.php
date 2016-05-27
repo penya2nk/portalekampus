@@ -9,7 +9,7 @@ class CDaftarMahasiswa extends MainPageM {
         $this->createObj('Nilai');
 		if (!$this->IsPostBack&&!$this->IsCallBack) {	
             if (!isset($_SESSION['currentPageDaftarMahasiswa'])||$_SESSION['currentPageDaftarMahasiswa']['page_name']!='m.kemahasiswaan.DaftarMahasiswa') {
-				$_SESSION['currentPageDaftarMahasiswa']=array('page_name'=>'m.kemahasiswaan.DaftarMahasiswa','page_num'=>0,'search'=>false,'idkonsentrasi'=>'none');												
+				$_SESSION['currentPageDaftarMahasiswa']=array('page_name'=>'m.kemahasiswaan.DaftarMahasiswa','page_num'=>0,'search'=>false,'idkonsentrasi'=>'none','k_status'=>'none');												
 			}
             $_SESSION['currentPageDaftarMahasiswa']['search']=false;
             
@@ -29,6 +29,12 @@ class CDaftarMahasiswa extends MainPageM {
 			$this->tbCmbKelas->DataSource=$kelas;
 			$this->tbCmbKelas->Text=$_SESSION['kelas'];			
 			$this->tbCmbKelas->dataBind();		
+            
+            $status=$this->DMaster->getListStatusMHS();
+            $status['none']='All';
+			$this->tbCmbStatus->DataSource=$status;
+			$this->tbCmbStatus->Text=$_SESSION['currentPageDaftarMahasiswa']['k_status'];			
+			$this->tbCmbStatus->dataBind();
             
             $this->tbCmbOutputReport->DataSource=$this->setup->getOutputFileType();
             $this->tbCmbOutputReport->Text= $_SESSION['outputreport'];
@@ -52,6 +58,11 @@ class CDaftarMahasiswa extends MainPageM {
 	}
 	public function changeTbKelas ($sender,$param) {				
 		$_SESSION['kelas']=$this->tbCmbKelas->Text;		
+        $this->populateKonsentrasi();
+		$this->populateData();
+	}
+    public function changeTbStatus ($sender,$param) {				
+		$_SESSION['currentPageDaftarMahasiswa']['k_status']=$this->tbCmbStatus->Text;		
         $this->populateKonsentrasi();
 		$this->populateData();
 	}
@@ -80,10 +91,12 @@ class CDaftarMahasiswa extends MainPageM {
         $str_tahun_masuk=$tahun_masuk == 'none' ?'':"AND tahun=$tahun_masuk";
         $kelas=$_SESSION['kelas'];
         $str_kelas = $kelas == 'none'?'':" AND idkelas='$kelas'";
+        $status=$_SESSION['currentPageDaftarMahasiswa']['k_status'];
+        $str_status = $status == 'none'?'':" AND k_status='$status'";
         while (list($k,$v)=each($datakonsentrasi)) {                        
             if ($v['kjur']==$_SESSION['kjur']){
                 $idkonsentrasi=$v['idkonsentrasi'];
-                $jumlah = $this->DB->getCountRowsOfTable("register_mahasiswa WHERE idkonsentrasi=$idkonsentrasi $str_tahun_masuk $str_kelas",'nim');
+                $jumlah = $this->DB->getCountRowsOfTable("register_mahasiswa WHERE idkonsentrasi=$idkonsentrasi $str_tahun_masuk $str_kelas $str_status",'nim');
                 $v['jumlah_mhs']=$jumlah > 10000 ? 'lebih dari 10.000' : $jumlah;
                 $r[$i]=$v;
                 $i+=1;
@@ -125,8 +138,10 @@ class CDaftarMahasiswa extends MainPageM {
             $str_konsentrasi = $idkonsentrasi == 'none'?'':" AND idkonsentrasi=$idkonsentrasi";
             $kelas=$_SESSION['kelas'];
             $str_kelas = $kelas == 'none'?'':" AND idkelas='$kelas'";
-            $jumlah_baris=$this->DB->getCountRowsOfTable("v_datamhs WHERE kjur=$kjur $str_tahun_masuk $str_konsentrasi $str_kelas",'nim');		
-            $str = "SELECT no_formulir,nim,nirm,nama_mhs,jk,tempat_lahir,tanggal_lahir,alamat_rumah,kjur,idkonsentrasi,iddosen_wali,tahun_masuk,k_status FROM v_datamhs WHERE kjur='$kjur' $str_tahun_masuk $str_konsentrasi $str_kelas";			
+            $status=$_SESSION['currentPageDaftarMahasiswa']['k_status'];
+            $str_status = $status == 'none'?'':" AND k_status='$status'";
+            $jumlah_baris=$this->DB->getCountRowsOfTable("v_datamhs WHERE kjur=$kjur $str_tahun_masuk $str_konsentrasi $str_kelas $str_status",'nim');		
+            $str = "SELECT no_formulir,nim,nirm,nama_mhs,jk,tempat_lahir,tanggal_lahir,alamat_rumah,kjur,idkonsentrasi,iddosen_wali,tahun_masuk,k_status FROM v_datamhs WHERE kjur='$kjur' $str_tahun_masuk $str_konsentrasi $str_kelas $str_status";			
         }		
         $this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageDaftarMahasiswa']['page_num'];
 		$this->RepeaterS->VirtualItemCount=$jumlah_baris;

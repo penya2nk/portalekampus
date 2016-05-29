@@ -34,7 +34,7 @@
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown dropdown-user">
+            <li class="dropdown dropdown-user visible">
                 <a class="dropdown-toggle" data-toggle="dropdown">
                     <img src="resources/userimages/no_photo.png" alt="<%=$this->page->Pengguna->getUsername()%>">
                     <span><%=$this->page->Pengguna->getUsername()%></span>
@@ -67,6 +67,7 @@
                     <span>Dashboard</span>											
                 </a>                                        
             </li> 
+            <com:TLiteral Visible="<%=$this->Page->Pengguna->getTipeUser()=='k'%>">
             <li class="dropdown<%=$this->Page->showDMaster==true?' active':''%> visible">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="icon-puzzle4 position-left"></i> Data Master <span class="caret"></span>
@@ -78,8 +79,14 @@
                             <i class="icon-calculator4"></i> Rekening
                         </a>
                     </li>                    
+                    <li<%=$this->Page->showKombiPerTA==true?' class="active"':''%>>
+                        <a href="<%=$this->Page->constructUrl('dmaster.KombiPerTA',true)%>">
+                            <i class="icon-calculator"></i> Biaya Per Tahun
+                        </a>
+                    </li>
                 </ul>
             </li>
+            </com:TLiteral>
         </ul>                
     </div>
 </div>

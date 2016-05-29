@@ -1,0 +1,11 @@
+<%@ Title="Setting - Profiles" %>
+<com:TContent ID="moduleheader">
+    <i class="icon-user position-left"></i> <span class="text-semibold">Profiles</span>
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li><a href=#">SETTING</a></li>    
+    <li class="active">PROFILES</li>
+</com:TContent>
+<com:TContent ID="maincontent">
+
+</com:TContent>

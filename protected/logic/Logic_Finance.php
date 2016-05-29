@@ -5,6 +5,12 @@ class Logic_Finance extends Logic_Mahasiswa {
 		parent::__construct ($db);				
 	}
     /**
+	* casting ke integer	
+	*/
+	public function toInteger ($stringNumeric) {
+		return str_replace('.','',$stringNumeric);
+	}
+    /**
 	* Untuk mendapatkan uang dalam format rupiah
 	* @param angka	
 	* @return string dalam rupiah

@@ -89,7 +89,7 @@ class Logic_DMaster extends Logic_Global {
         if ($this->Application->Cache) {            
             $dataitem=$this->Application->Cache->get('listkelas');            
             if (!isset($dataitem['none'])) {                
-                $dataitem=$this->getList ('kelas',array('idkelas','nkelas'),'nkelas',null,1);			
+                $dataitem=$this->getList ('kelas',array('idkelas','nkelas'),'idkelas',null,1);			
                 $dataitem['none']='Daftar Kelas';    
                 $this->Application->Cache->set('listkelas',$dataitem);
             }

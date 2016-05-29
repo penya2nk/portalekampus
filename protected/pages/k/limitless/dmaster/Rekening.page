@@ -3,8 +3,8 @@
     <i class="icon-calculator4 position-left"></i> <span class="text-semibold">Rekening</span>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
-    <li><a href=#">DATA MASTER</a></li>
-    <li><a href=#">KOMPONEN BIAYA</a></li>
+    <li><a href="#">DATA MASTER</a></li>
+    <li><a href="#">KOMPONEN BIAYA</a></li>
     <li class="active">REKENING</li>
 </com:TContent>
 <com:TContent ID="maincontent">	
@@ -22,6 +22,7 @@
                         <tr class="bg-teal-700">
                             <th width="15">KODE</th>
                             <th>NAMA REKENING</th>                            							
+                            <th>PERIODE PEMBAYARAN</th>
                         </tr>								
                         </thead>
                         <tbody>
@@ -29,7 +30,8 @@
                 <prop:ItemTemplate>
                     <tr>
                         <td><%#$this->DataItem['idkombi']%></td>	
-                        <td><%#$this->Data['nama_kombi']%></td>					
+                        <td><%#strtoupper($this->DataItem['nama_kombi'])%></td>					
+                        <td><%#strtoupper($this->DataItem['periode_pembayaran'])%></td>					
                     </tr>                        
                 </prop:ItemTemplate>				            
                 <prop:FooterTemplate>               

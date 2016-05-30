@@ -7,5 +7,105 @@
     <li class="active">PROFILES</li>
 </com:TContent>
 <com:TContent ID="maincontent">
+<!-- Toolbar -->
+<div class="navbar navbar-default navbar-component navbar-xs">
+    <ul class="nav navbar-nav visible-xs-block">
+        <li class="full-width text-center"><a data-toggle="collapse" data-target="#navbar-filter"><i class="icon-menu7"></i></a></li>
+    </ul>
+    <div class="navbar-collapse collapse" id="navbar-filter">
+        <ul class="nav navbar-nav">            
+            <li class="active"><a href="#settings" data-toggle="tab"><i class="icon-cog3 position-left"></i> Settings</a></li>
+        </ul>        
+    </div>
+</div>
+<!-- /toolbar -->
+<!-- User profile -->
+<div class="row">
+    <div class="col-lg-9">
+        <div class="tabbable">
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="settings">
+                    <!-- Account settings -->
+                    <div class="panel panel-flat">
+                        <div class="panel-heading">
+                            <h6 class="panel-title">Setting User</h6>
+                            <div class="heading-elements">
+                               
+                            </div>
+                        </div>
+                        <div class="panel-body">                            
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Username</label>                                            
+                                        <input type="text" value="<%=$this->Pengguna->getUsername()%>" readonly="readonly" class="form-control">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Current password</label>
+                                        <input type="password" value="password" readonly="readonly" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
 
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>New password</label>
+                                        <com:TTextBox ID="txtPassword" Attributes.placeholder="Enter new password" CssClass="form-control" TextMode="Password" />                                            
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Repeat password</label>
+                                        <com:TTextBox ID="txtPassword2" Attributes.placeholder="Repeat new password" CssClass="form-control" TextMode="Password" />                                            
+                                        <com:TCompareValidator ID="FieldRetypePasswordValidator" ControlToValidate="txtPassword" ControlToCompare="txtPassword2" Display="Dynamic" ErrorMessage="Isi Password tidak sama" ValidationGroup="profileuser" FocusOnError="true" CssClass="has-error help-block" />				                                                
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">                                    
+                                <com:TActiveCustomButton ID="btnSave" CssClass="btn btn-primary" OnClick="saveData" Attributes.Title="Simpan" ValidationGroup="profileuser">
+                                    <prop:Text>                                        
+                                        Simpan <i class="icon-floppy-disk position-right"></i>                                        
+                                    </prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>         
+                                        $('<%=$this->btnSave->ClientId%>').disabled='disabled';						
+                                        Pace.stop();
+                                        Pace.start();			                               
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnSave->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	
+                                        $('<%=$this->btnSave->ClientId%>').disabled='';						                                                        
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>
+                            </div>                            
+                        </div>
+                    </div>
+                    <!-- /account settings -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+
+        <!-- User thumbnail -->
+        <div class="thumbnail">
+            <div class="thumb thumb-rounded thumb-slide">
+                <img src="resources/userimages/no_photo.png" alt="">
+                <div class="caption">
+                    <span>
+                        <a href="#" class="btn bg-success-400 btn-icon btn-xs" data-popup="lightbox"><i class="icon-plus2"></i></a>
+                        <a href="#" class="btn bg-success-400 btn-icon btn-xs"><i class="icon-link"></i></a>
+                    </span>
+                </div>
+            </div>
+
+            <div class="caption text-center">
+                <h6 class="text-semibold no-margin"><%=$this->Pengguna->getUsername()%> <small class="display-block">Keuangan</small></h6>                
+            </div>
+        </div>
+        <!-- /user thumbnail -->
+    </div>
+</div>
+<!-- /user profile -->
 </com:TContent>

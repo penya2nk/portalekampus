@@ -96,22 +96,6 @@ class MainPageM extends MainPage {
 		parent::onLoad($param);				
         if (!$this->IsPostBack&&!$this->IsCallBack) {	           
         }
-	}       
-    /**
-	* dapatkan angkatan	
-	*/
-	public function getAngkatan () {
-		$dt =$this->DMaster->getListTA();		        
-		$ta=$_SESSION['ta'];		
-		$tahun_akademik=array('none'=>'All');
-		while (list($k,$v)=each ($dt)) {
-			if ($k != 'none') {
-				if ($k <= $ta) {
-					$tahun_akademik[$k]=$v;
-				}
-			}			
-		}        
-		return $tahun_akademik;
-	}
+	}           
 }
 ?>

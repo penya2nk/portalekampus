@@ -24,17 +24,25 @@ class CKombiPerTA Extends MainPageK {
 			$this->tbCmbKelas->dataBind();	
             
             $this->cmbPeriodePembayaran->Text=$_SESSION['currentPageKombiPerTA']['periode_pembayaran'];			
-			$this->populateData ();						
+			$this->populateData ();	
+            $this->setInfoToolbar();
 		
 		}			
 		
 	}
+    public function setInfoToolbar() {                
+        $tahun_masuk=$this->DMaster->getNamaTA($_SESSION['tahun_masuk']);		        		        
+        $nama_kelas=$this->DMaster->getNamaKelasByID($_SESSION['currentPageKombiPerTA']['kelas']);                    
+		$this->lblModulHeader->Text="Tahun Masuk $tahun_masuk Kelas $nama_kelas";        
+	}
     public function changeTbKelas ($sender,$param) {				
 		$_SESSION['currentPageKombiPerTA']['kelas']=$this->tbCmbKelas->Text;		        
+        $this->setInfoToolbar();
 		$this->populateData();
 	}
     public function changeTbTahunMasuk($sender,$param) {    				
 		$_SESSION['tahun_masuk']=$this->tbCmbTahunMasuk->Text;		        
+        $this->setInfoToolbar();
 		$this->populateData();
 	}    
     public function changePeriodePembayaran($sender,$param) {    				
@@ -69,8 +77,12 @@ class CKombiPerTA Extends MainPageK {
 					}		
 				}
 			}
-            $periode_pembayaran=$_SESSION['currentPageKombiPerTA']['periode_pembayaran'];
-            $str_periode_pembayaran=$periode_pembayaran=='none' ?'':" AND k.periode_pembayaran='$periode_pembayaran'";
+            $periode_pembayaran=$_SESSION['currentPageKombiPerTA']['periode_pembayaran'];            
+            if($periode_pembayaran=='semester_sekali') {
+                $str_periode_pembayaran=" AND k.periode_pembayaran!='none'";
+            }else{  
+                $str_periode_pembayaran=$periode_pembayaran=='none' ?'':" AND k.periode_pembayaran='$periode_pembayaran'";
+            }
             $str = "SELECT kpt.idkombi_per_ta,k.idkombi,k.nama_kombi,kpt.biaya,k.periode_pembayaran FROM kombi_per_ta kpt,kombi k WHERE  k.idkombi=kpt.idkombi AND tahun=$ta AND kpt.idkelas='$kelas'$str_periode_pembayaran ORDER BY periode_pembayaran,nama_kombi ASC";
             $this->DB->setFieldTable(array('idkombi_per_ta','idkombi','nama_kombi','biaya','periode_pembayaran'));
             $r=$this->DB->getRecord($str);            

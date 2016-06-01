@@ -1,0 +1,85 @@
+<%@ Title="Report - Piutang Jangka Pendek"%>
+<com:TContent ID="moduleheader">    
+    <i class="icon-file-text position-left"></i> <span class="text-semibold">Piutang Jangka Pendek</span>
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li><a href="#">REPORT</a></li>
+    <li><a href="#">PIUTANG</a></li>
+    <li class="active">PIUTANG JANGKA PENDEK</li>
+</com:TContent>
+<com:TContent ID="sidebarcontent">
+<div class="sidebar sidebar-main sidebar-default sidebar-separate" style="width:315px">
+    <div class="sidebar-content">                    
+        <%include Application.layouts.limitless.FilterMode12%>
+        <%include Application.layouts.limitless.OutputReportMode1%>
+    </div>
+</div>
+</com:TContent>
+<com:TContent ID="maincontent">
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>" CssClass="row">           
+    <div class="col-md-12">
+        <div class="panel panel-flat">
+            <div class="panel-heading">
+                <h5 class="panel-title"><i class="icon-file-text position-left"></i>  <com:TActiveLabel ID="lblModulHeader" /></h5>                                
+            </div>                
+            <div class="table-responsive">
+                <com:TActiveRepeater ID="RepeaterS" DataKeyField="nim" AllowPaging="true" PageSize="10" AllowCustomPaging="true">
+                    <prop:HeaderTemplate>			
+                        <table class="table table-striped">
+                            <thead>
+                                <tr class="bg-teal-700">
+                                    <th rowspan="2" width="50">NO.</th>
+                                    <th rowspan="2">NIM</th>
+                                    <th rowspan="2">NIRM</th>
+                                    <th rowspan="2" width="300">NAMA MAHASISWA</th>
+                                    <th rowspan="2">JK</th>    
+                                    <th rowspan="2">KELAS</th>                                                                        
+                                    <th colspan="3" class="text-center bg-violet-300">GANJIL <%=$_SESSION['ta']%></th>
+                                    <th colspan="3" class="text-center bg-purple-300">GENAP <%=$_SESSION['ta']%></th>
+                                </tr>                                
+                                <tr class="bg-teal-700">
+                                    <th class="bg-violet-300">STATUS</th>
+                                    <th class="bg-violet-300">SUDAH BAYAR</th>
+                                    <th class="bg-violet-300">BELUM BAYAR</th>
+                                    <th class="bg-purple-300">STATUS</th>
+                                    <th class="bg-purple-300">SUDAH BAYAR</th>
+                                    <th class="bg-purple-300">BELUM BAYAR</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    </prop:HeaderTemplate>
+                    <prop:ItemTemplate>			
+                        <tr>
+                            <td><%#$this->DataItem['no']%></td>
+                            <td><%#$this->DataItem['nim']%></td>
+                            <td><%#$this->DataItem['nirm']%></td>
+                            <td><%#$this->DataItem['nama_mhs']%></td>
+                            <td><%#$this->DataItem['jk']%></td>
+                            <td><%#$this->DataItem['n_kelas']%></td>                            
+                            <td class="bg-violet-300"><%#$this->DataItem['n_status_ganjil']%></td>
+                            <td class="bg-violet-300"><%#$this->DataItem['sudah_bayar_ganjil']%></td>
+                            <td class="bg-violet-300"><%#$this->DataItem['belum_bayar_ganjil']%></td>
+                            <td class="bg-purple-300"><%#$this->DataItem['n_status_genap']%></td>
+                            <td class="bg-purple-300"><%#$this->DataItem['sudah_bayar_genap']%></td>                            
+                            <td class="bg-purple-300"><%#$this->DataItem['belum_bayar_genap']%></td>                            
+                        </tr>
+                    </prop:ItemTemplate>
+                    <prop:FooterTemplate>               
+                        </tbody>
+                        </table>
+                    </prop:FooterTemplate>
+                    <prop:EmptyTemplate>                       
+                        <div class="panel-body">
+                            <div class="alert alert-info alert-styled-left alert-bordered">
+                                <span class="text-semibold">Info!</span>
+                                Belum ada data yang bisa ditampilkan.
+                            </div>                
+                        </div>       
+                    </prop:EmptyTemplate>
+                </com:TActiveRepeater>                
+            </div>
+            <%include Application.layouts.limitless.CustomPaging%>
+        </div>        
+    </div>
+</com:TPanel>	
+</com:TContent>

@@ -116,10 +116,13 @@ class MainPage extends TPage {
      */
     public $showTranskripKRS=false;
     /**     
+     * show sub menu [report]
+     */
+    public $showReport=false;
+    /**     
      * show profiles [settings]
      */
-    public $showProfiles=false;
-    
+    public $showProfiles=false;    
     /**
      * untuk menampilkan forum diskusi home [forumdiskusi]
      * @var boolean
@@ -233,7 +236,25 @@ class MainPage extends TPage {
 	*/
 	public function redirect ($page,$automaticpage=false,$param=array()) {
 		$this->Response->Redirect($this->constructUrl($page,$automaticpage,$param));	
-	}	  
+	}	 
+    /**
+     * digunakan untuk mendapatkan angkatan
+     * @param type $tanpanone
+     * @return type
+     */
+	public function getAngkatan ($tanpanone=true) {
+		$dt =$this->DMaster->getListTA();		        
+		$ta=$_SESSION['ta'];		
+		$tahun_akademik=$tanpanone==true?array('none'=>'All'):array();
+		while (list($k,$v)=each ($dt)) {
+			if ($k != 'none') {
+				if ($k <= $ta) {
+					$tahun_akademik[$k]=$v;
+				}
+			}			
+		}        
+		return $tahun_akademik;
+	}
     /**
      * digunakan untuk membuat url
      */

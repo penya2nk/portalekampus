@@ -25,14 +25,7 @@
             <li><a class="sidebar-mobile-main-toggle"><i class="icon-paragraph-justify3"></i></a></li>
         </ul>
     </div>
-    <div class="navbar-collapse collapse" id="navbar-mobile">
-        <ul class="nav navbar-nav">
-            <li>
-                <a class="sidebar-control sidebar-main-toggle hidden-xs" data-popup="tooltip" title="Collapse main" data-placement="bottom" data-container="body">
-                    <i class="icon-paragraph-justify3"></i>
-                </a>
-            </li>
-        </ul>
+    <div class="navbar-collapse collapse" id="navbar-mobile">        
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown dropdown-user visible">
                 <a class="dropdown-toggle" data-toggle="dropdown">
@@ -72,7 +65,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="icon-puzzle4 position-left"></i> Data Master <span class="caret"></span>
                 </a>
-                 <ul class="dropdown-menu width-250">
+                <ul class="dropdown-menu width-250">
                     <li class="dropdown-header">KOMPONEN BIAYA</li>
                     <li<%=$this->Page->showRekening==true?' class="active"':''%>>
                         <a href="<%=$this->Page->constructUrl('dmaster.Rekening',true)%>">
@@ -84,6 +77,19 @@
                             <i class="icon-calculator"></i> Biaya Per Tahun
                         </a>
                     </li>
+                </ul>
+            </li>
+            <li class="dropdown<%=$this->Page->showReport==true?' active':''%> visible">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="icon-files-empty position-left"></i> Laporan <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu width-250">
+                    <li class="dropdown-header">PIUTANG</li>
+                    <li<%=$this->Page->showReportPiutangJangkaPendek==true?' class="active"':''%>>
+                        <a href="<%=$this->Page->constructUrl('report.PiutangJangkaPendek',true)%>">
+                            <i class="icon-file-text"></i> Piutang Jangka Pendek
+                        </a>
+                    </li>                                        
                 </ul>
             </li>
             </com:TLiteral>
@@ -136,4 +142,5 @@
 <com:TContentPlaceHolder ID="jsinlinecontent" />
 </body>
 </html>
+
 

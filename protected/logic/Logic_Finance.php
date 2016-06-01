@@ -35,10 +35,9 @@ class Logic_Finance extends Logic_Mahasiswa {
 		return $rupiah;
 	}
     /**
-	* digunakan untuk mendapatkan biaya pendaftaran berdasarkan nim	
-	* @param id jika menggunakan idkelas
+	* digunakan untuk mendapatkan biaya pendaftaran berdasarkan nim		
 	*/
-	public function getBiayaPendaftaran ($tahun,$idkelas=null) {
+	public function getBiayaPendaftaran ($tahun,$idkelas) {
         $str = "SELECT biaya FROM kombi_per_ta WHERE idkombi=1 AND tahun=$tahun AND idkelas='$idkelas'";						
 		$this->db->setFieldTable(array('biaya'));
 		$result=$this->db->getRecord($str); 		
@@ -75,7 +74,7 @@ class Logic_Finance extends Logic_Mahasiswa {
 		$r=$this->db->getRecord($str);	
         
 		return $r[1]['jumlah'];
-	}
+	}    
     /**
      * digunakan untuk mendapatkan total pembayaran yang telah dilakukan oleh mahasiswa     
      * @return jumlah pembayaran mahasiswa

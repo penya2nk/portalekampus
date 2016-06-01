@@ -85,6 +85,11 @@ class Login extends MainPage {
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
                 break;                
+                case 'k' :
+                    $dmaster=$this->getLogic('DMaster');
+                    //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
+                    $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
+                break; 
                 case 'mb' :
                     $dmaster=$this->getLogic('DMaster');
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.

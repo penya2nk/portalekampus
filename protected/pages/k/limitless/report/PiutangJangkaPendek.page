@@ -15,12 +15,33 @@
     </div>
 </div>
 </com:TContent>
+<com:TContent ID="csscontent">
+<link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/assets/css/libs/nifty-component.css"/>
+</com:TContent>
 <com:TContent ID="maincontent">
 <com:TPanel Visible="<%= $this->getDefaultProcess() %>" CssClass="row">           
     <div class="col-md-12">
         <div class="panel panel-flat">
             <div class="panel-heading">
                 <h5 class="panel-title"><i class="icon-file-text position-left"></i>  <com:TActiveLabel ID="lblModulHeader" /></h5>                                
+                <div class="heading-elements">
+                    <div class="heading-btn">                                                
+                        <com:TActiveLinkButton ID="btnPrintOut" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-info btn-icon" Attributes.Title="Print Out">
+                            <prop:Text><i class="icon-printer"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('<%=$this->btnPrintOut->ClientId%>').disabled='disabled';				
+                                Pace.stop();
+                                Pace.start();                                                                                                             
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnPrintOut->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnPrintOut->ClientId%>').disabled='';				                                
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton>  		
+                    </div>
+                </div>
             </div>                
             <div class="table-responsive">
                 <com:TActiveRepeater ID="RepeaterS" DataKeyField="nim" AllowPaging="true" PageSize="10" AllowCustomPaging="true">
@@ -82,4 +103,5 @@
         </div>        
     </div>
 </com:TPanel>	
+<%include Application.layouts.limitless.ModalPrintOut%>
 </com:TContent>

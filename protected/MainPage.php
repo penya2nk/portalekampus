@@ -341,6 +341,9 @@ class MainPage extends TPage {
             case 'reportnilai' :
                 $this->report = $this->getLogic('ReportNilai');
             break;
+            case 'reportfinance' :
+                $this->report = $this->getLogic('ReportFinance');
+            break;
             case 'forum' :
                 $this->Forum = $this->getLogic('Forum');                
             break; 

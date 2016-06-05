@@ -92,9 +92,7 @@ class CPiutangJangkaPendek extends MainPageK {
              
         $kelas=$_SESSION['currentPagePiutangJangkaPendek']['kelas'];
         $str_kelas = $kelas == 'none'?'':" AND idkelas='$kelas'";
-        $jumlah_baris=$this->DB->getCountRowsOfTable("v_datamhs WHERE kjur=$kjur AND tahun_masuk=$tahun_masuk AND k_status!='L' $str_kelas",'nim');		
-        //$str = "SELECT no_formulir,nim,nirm,nama_mhs,jk,idkelas,tahun_masuk,semester_masuk FROM v_datamhs WHERE kjur='$kjur'AND tahun_masuk=$tahun_masuk AND k_status!='L' AND nim='14101174' $str_kelas";			
-        //$str = "SELECT no_formulir,nim,nirm,nama_mhs,jk,idkelas,tahun_masuk,semester_masuk FROM v_datamhs WHERE kjur='$kjur'AND tahun_masuk=$tahun_masuk AND k_status!='L' AND nim='14101001' $str_kelas";			        
+        $jumlah_baris=$this->DB->getCountRowsOfTable("v_datamhs WHERE kjur=$kjur AND tahun_masuk=$tahun_masuk AND k_status!='L' $str_kelas",'nim');		        
         $str = "SELECT no_formulir,nim,nirm,nama_mhs,jk,idkelas,tahun_masuk,semester_masuk FROM v_datamhs WHERE kjur='$kjur'AND tahun_masuk=$tahun_masuk AND k_status!='L' $str_kelas";			
         $this->RepeaterS->CurrentPageIndex=$_SESSION['currentPagePiutangJangkaPendek']['page_num'];
 		$this->RepeaterS->VirtualItemCount=$jumlah_baris;
@@ -112,14 +110,14 @@ class CPiutangJangkaPendek extends MainPageK {
         $result = array();      
         
         $this->Finance->setDataMHS(array('tahun_masuk'=>$tahun_masuk,'idkelas'=>'A'));
-        $komponen_biaya['A']['baru']=$this->getTotalBiayaMhs('baru');            
-        $komponen_biaya['A']['lama']=$this->getTotalBiayaMhs('lama');            
+        $komponen_biaya['A']['baru']=$this->Finance->getTotalBiayaMhsPeriodePembayaran('baru');            
+        $komponen_biaya['A']['lama']=$this->Finance->getTotalBiayaMhsPeriodePembayaran('lama');            
         $this->Finance->setDataMHS(array('tahun_masuk'=>$tahun_masuk,'idkelas'=>'B'));
-        $komponen_biaya['B']['baru']=$this->getTotalBiayaMhs('baru');            
-        $komponen_biaya['B']['lama']=$this->getTotalBiayaMhs('lama');            
+        $komponen_biaya['B']['baru']=$this->Finance->getTotalBiayaMhsPeriodePembayaran('baru');            
+        $komponen_biaya['B']['lama']=$this->Finance->getTotalBiayaMhsPeriodePembayaran('lama');            
         $this->Finance->setDataMHS(array('tahun_masuk'=>$tahun_masuk,'idkelas'=>'C'));
-        $komponen_biaya['C']['baru']=$this->getTotalBiayaMhs('baru');            
-        $komponen_biaya['C']['lama']=$this->getTotalBiayaMhs('lama');            
+        $komponen_biaya['C']['baru']=$this->Finance->getTotalBiayaMhsPeriodePembayaran('baru');            
+        $komponen_biaya['C']['lama']=$this->Finance->getTotalBiayaMhsPeriodePembayaran('lama');            
                 
         while (list($k,$v)=each($r)) {
             $no_formulir=$v['no_formulir'];                                          
@@ -189,34 +187,45 @@ class CPiutangJangkaPendek extends MainPageK {
             $sudahbayar[2]['belumbayar']=$kewajiban_genap-$pembayaran_genap;
         }
         return $sudahbayar;
+    }    
+    public function printOut ($sender,$param) {	
+        $this->createObj('reportfinance');
+        $this->linkOutput->Text='';
+        $this->linkOutput->NavigateUrl='#';
+        switch ($_SESSION['outputreport']) {
+            case  'summarypdf' :
+                $messageprintout="Mohon maaf Print out pada mode summary pdf tidak kami support.";                
+            break;
+            case  'summaryexcel' :
+                $messageprintout="Mohon maaf Print out pada mode summary excel tidak kami support.";                
+            break;
+            case  'excel2007' :
+                $messageprintout="";
+                $dataReport['kjur']=$_SESSION['kjur'];
+                $dataReport['nama_ps']=$_SESSION['daftar_jurusan'][$_SESSION['kjur']];
+                $tahun=$_SESSION['ta'];                
+                $tahun_masuk=$_SESSION['currentPagePiutangJangkaPendek']['tahun_masuk'];                
+                $nama_tahun = $this->DMaster->getNamaTA($tahun);
+                
+                $dataReport['ta']=$tahun;                
+                $dataReport['nama_tahun']=$nama_tahun;                
+                $dataReport['tahun_masuk']=$tahun_masuk;                
+                $dataReport['nama_tahun_masuk']=$this->DMaster->getNamaTA($tahun_masuk);   
+                
+                $dataReport['kelas']=$_SESSION['currentPagePiutangJangkaPendek']['kelas'];
+                $dataReport['linkoutput']=$this->linkOutput;
+                $this->report->setDataReport($dataReport); 
+                $this->report->setMode($_SESSION['outputreport']);
+                
+                $this->report->printPiutangJangkaPendek($this->Finance,$this->DMaster); 
+            break;
+            case  'pdf' :
+                $messageprintout="Mohon maaf Print out pada mode pdf belum kami support.";                
+            break;
+        }
+        $this->lblMessagePrintout->Text=$messageprintout;
+        $this->lblPrintout->Text='Piutang Jangka Pendek';
+        $this->modalPrintOut->show();
     }
-    /**
-     * digunakan untuk mendapatkan total biaya mahasiswa
-     * @param $status baru atau lama
-     * @return jumlah biaya mahasiswa
-     */
-    public function getTotalBiayaMhs ($status='baru') {        
-		$tahun_masuk=$this->Finance->getDataMHS('tahun_masuk');
-		$kelas=$this->Finance->getDataMHS('idkelas');
-        switch ($status) {
-            case 'lama' :
-                $str = "SELECT SUM(biaya) AS jumlah FROM kombi_per_ta kpt,kombi k WHERE k.idkombi=kpt.idkombi AND tahun=$tahun_masuk AND idkelas='$kelas' AND periode_pembayaran='semesteran'";
-            break;
-            case 'baru' :
-                if ($this->Finance->getDataMhs('perpanjang')==true) {
-                    $str = "SELECT SUM(biaya) AS jumlah FROM kombi_per_ta kpt,kombi k WHERE k.idkombi=kpt.idkombi AND  tahun=$tahun_masuk AND idkelas='$kelas' AND periode_pembayaran!='none'";
-                }else {
-                    $str = "SELECT SUM(biaya) AS jumlah FROM kombi_per_ta kpt,kombi k WHERE k.idkombi=kpt.idkombi AND  tahun=$tahun_masuk AND idkelas='$kelas' AND periode_pembayaran!='none'";								
-                }		
-            break;
-            case 'sp' :
-                $str = "SELECT biaya AS jumlah FROM kombi_per_ta WHERE tahun=$tahun_masuk AND idkelas='$kelas' AND idkombi=14";
-            break;
-        }		
-		$this->DB->setFieldTable(array('jumlah'));
-		$r=$this->DB->getRecord($str);	
-        
-		return $r[1]['jumlah'];
-	}
 }
 ?>

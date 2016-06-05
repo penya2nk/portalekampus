@@ -76,6 +76,34 @@ class Logic_Finance extends Logic_Mahasiswa {
 		return $r[1]['jumlah'];
 	}    
     /**
+     * digunakan untuk mendapatkan total biaya mahasiswa
+     * @param $status baru atau lama
+     * @return jumlah biaya mahasiswa
+     */
+    public function getTotalBiayaMhsPeriodePembayaran ($status='baru') {        
+		$tahun_masuk=$this->DataMHS['tahun_masuk'];
+		$kelas=$this->DataMHS['idkelas'];
+        switch ($status) {
+            case 'lama' :
+                $str = "SELECT SUM(biaya) AS jumlah FROM kombi_per_ta kpt,kombi k WHERE k.idkombi=kpt.idkombi AND tahun=$tahun_masuk AND idkelas='$kelas' AND periode_pembayaran='semesteran'";
+            break;
+            case 'baru' :
+                if ($this->getDataMhs('perpanjang')==true) {
+                    $str = "SELECT SUM(biaya) AS jumlah FROM kombi_per_ta kpt,kombi k WHERE k.idkombi=kpt.idkombi AND  tahun=$tahun_masuk AND idkelas='$kelas' AND periode_pembayaran!='none'";
+                }else {
+                    $str = "SELECT SUM(biaya) AS jumlah FROM kombi_per_ta kpt,kombi k WHERE k.idkombi=kpt.idkombi AND  tahun=$tahun_masuk AND idkelas='$kelas' AND periode_pembayaran!='none'";								
+                }		
+            break;
+            case 'sp' :
+                $str = "SELECT biaya AS jumlah FROM kombi_per_ta WHERE tahun=$tahun_masuk AND idkelas='$kelas' AND idkombi=14";
+            break;
+        }		
+		$this->db->setFieldTable(array('jumlah'));
+		$r=$this->db->getRecord($str);	
+        
+		return $r[1]['jumlah'];
+	}
+    /**
      * digunakan untuk mendapatkan total pembayaran yang telah dilakukan oleh mahasiswa     
      * @return jumlah pembayaran mahasiswa
      */

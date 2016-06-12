@@ -1,0 +1,100 @@
+<%@ Title="Pembayaran - Mahasiswa Baru"%>
+<com:TContent ID="moduleheader">    
+    <i class="icon-file-text position-left"></i> <span class="text-semibold">Pembayaran Mahasiswa Baru</span>
+</com:TContent>
+<com:TContent ID="moduleheaderelement">    
+    <div class="heading-elements">
+        <div class="heading-form">
+            <div class="form-group">
+                <div class="input-group">                    
+                    <com:TTextBox CssClass="form-control" ID="txtNoFormulir" MaxLength="8" Attributes.PlaceHolder="No. Formulir" />                    
+                    <div class="input-group-btn">                        
+                        <com:TActiveCustomButton ID="btnGo" CssClass="btn bg-slate btn-icon" OnClick="Go" Attributes.Title="Go" ValidationGroup="filterForm" >
+                            <prop:Text>                                        
+                                <i class="icon-play"></i>
+                            </prop:Text>
+                            <prop:ClientSide.OnPreDispatch>         
+                                $('<%=$this->btnGo->ClientId%>').disabled='disabled';						
+                                Pace.stop();
+                                Pace.start();			                               
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnGo->ClientId%>').disabled='disabled';						
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>																	
+                                $('<%=$this->btnGo->ClientId%>').disabled='';						                                                        
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveCustomButton>                        
+                    </div>                    
+                </div>                
+            </div>
+            <com:TRequiredFieldValidator ValidationGroup="filterForm" Display="Dynamic" ControlToValidate="txtNoFormulir" ErrorMessage="Isi No. Formulir Mahasiswa Baru" FocusOnError="true" CssClass="has-error help-block" />
+            <com:TActiveCustomValidator ControlToValidate="txtNoFormulir" Display="Dynamic" OnServerValidate="cekNomorFormulir" ValidationGroup="filterForm" ErrorMessage="Nomor Formulir tidak terdaftar di Database, silahkan ganti dengan yang lain" CssClass="has-error help-block" />
+        </div>
+    </div>
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li><a href="#">PEMBAYARAN</a></li>
+    <li class="active">MAHASISWA BARU</li>     
+</com:TContent>
+<com:TContent ID="sidebarcontent">
+<div class="sidebar sidebar-main sidebar-default sidebar-separate" style="width:330px">
+    <div class="sidebar-content">                    
+        <%include Application.layouts.limitless.FilterMode13%>
+        <%include Application.layouts.limitless.OutputReportMode1%>
+    </div>
+</div>
+</com:TContent>
+<com:TContent ID="maincontent">	
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>" CssClass="row">		
+    <div class="col-md-12">
+        <div class="panel panel-flat">
+            <div class="panel-heading">
+                <h5 class="panel-title"><i class="icon-file-text position-left"></i>  DAFTAR TRANSAKSI <com:TActiveLabel ID="lblModulHeader" /></h5>                
+                <div class="heading-elements">
+                    <div class="heading-btn">       
+                        
+                    </div>   
+                </div>
+            </div>                
+            <div class="table-responsive">                
+                <com:TActiveRepeater ID="RepeaterS" DataKeyField="no_formulir" AllowPaging="true" PageSize="10" AllowCustomPaging="true" OnItemDataBound="setDataBound">
+                    <prop:HeaderTemplate>				
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr class="bg-teal-700">
+                                    <th scope="col">NO</th>							
+                                    <th scope="col">NO. TRANSAKSI</th>
+                                    <th scope="col">TANGGAL</th>
+                                    <th scope="col">NO.FORMULIR</th>                                    
+                                    <th scope="col">NAMA MAHASISWA</th>																												
+                                    <th scope="col">JUMLAH BAYAR</th>												
+                                    <th>AKSI</th>
+                                </tr>	
+                            </thead>		
+                            <tbody>							
+                    </prop:HeaderTemplate>
+                    <prop:ItemTemplate>
+                        <tr>
+                            <td><%#$this->DataItem['no']%></td>					
+                            <td><%#$this->DataItem['no_transaksi']%></td>
+                            <td><%#$this->DataItem['tanggal']%></td>
+                            <td><%# $this->Data['no_formulir']%></td>																	                            												
+                            <td><%#$this->DataItem['nama_mhs']%></td>					
+                            <td><%#$this->DataItem['dibayarkan']%></td>														
+                            <td>
+                                
+                            </td>
+                        </tr>
+                    </prop:ItemTemplate>							
+                    <prop:FooterTemplate>
+                        </table>
+                    </prop:FooterTemplate>		
+                </com:TActiveRepeater>	
+                <%include Application.layouts.limitless.CustomPaging%>
+            </div>
+        </div>
+    </div>
+</com:TPanel>
+<%include Application.layouts.limitless.ModalPrintOut%>    
+</com:TContent>

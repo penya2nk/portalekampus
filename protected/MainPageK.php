@@ -9,6 +9,18 @@ class MainPageK extends MainPage {
      */
     public $showKombiPerTA=false;
     /**     
+     * show page pembayaran 
+     */
+    public $showPembayaran=false;
+    /**     
+     * show page pembayaran mahasiswa baru [pembayaran]
+     */
+    public $showPembayaranMahasiswaBaru=false;
+    /**     
+     * show page pembayaran semester Ganjil [pembayaran]
+     */
+    public $showPembayaranSemesterGanjil=false;
+    /**     
      * show page piutang jangka pendek [report]
      */
     public $showReportPiutangJangkaPendek=false;

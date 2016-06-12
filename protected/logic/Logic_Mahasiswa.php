@@ -28,6 +28,27 @@ class Logic_Mahasiswa extends Logic_Global {
         }							
 	}
     /**
+	* apakah mahasiswa telah lulus SPMB
+	* @param $with_nilai bila true return dengan nilai
+	*/
+	public function isLulusSPMB ($with_nilai=false) {		
+        $no_formulir=$this->DataMHS['no_formulir'];
+        $str = "SELECT nilai,ket_lulus,kjur FROM nilai_ujian_masuk WHERE no_formulir='$no_formulir' AND ket_lulus='1'";
+        $this->db->setFieldTable (array('nilai','ket_lulus','kjur'));
+        $result=$this->db->getRecord($str);
+        $nilai=false;
+        if (isset($result[1])) {				
+            if ($with_nilai) {
+                $nilai['lulus']=true;
+                $nilai['nilai']=$result[1]['nilai'];
+                $nilai['kjur']=$result[1]['kjur'];
+            }else {
+                $nilai=true;
+            }            
+        }	
+        return $nilai;
+	}
+    /**
 	* digunakan untuk mengecek apakah no formulir telah memiliki nim
 	*
 	*/

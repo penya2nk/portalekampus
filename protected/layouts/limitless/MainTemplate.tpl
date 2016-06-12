@@ -79,6 +79,24 @@
                     </li>
                 </ul>
             </li>
+            <li class="dropdown<%=$this->Page->showPembayaran==true?' active':''%> visible">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="icon-book2 position-left"></i> Pembayaran <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu width-250">
+                    <li class="dropdown-header">SEMESTER</li>
+                    <li<%=$this->Page->showPembayaranMahasiswaBaru==true?' class="active"':''%>>
+                        <a href="<%=$this->Page->constructUrl('pembayaran.PembayaranMahasiswaBaru',true)%>">
+                            <i class="icon-calculator3"></i> Mahasiswa Baru
+                        </a>
+                    </li> 
+                    <li<%=$this->Page->showPembayaranSemesterGanjil==true?' class="active"':''%>>
+                        <a href="<%=$this->Page->constructUrl('pembayaran.SemesterGanjil',true)%>">
+                            <i class="icon-calculator3"></i> Semester Ganjil
+                        </a>
+                    </li>                                        
+                </ul>
+            </li>
             <li class="dropdown<%=$this->Page->showReport==true?' active':''%> visible">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="icon-files-empty position-left"></i> Laporan <span class="caret"></span>

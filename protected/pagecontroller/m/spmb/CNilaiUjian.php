@@ -187,6 +187,21 @@ class CNilaiUjian extends MainPageM {
         $this->cmbAddKjur->DataSource=$ps;
         $this->cmbAddKjur->dataBind();
 	}	
+    public function checkPassingGradeExist ($sender,$param) {
+		$this->idProcess='add';
+        $kjur=$param->Value;		
+        if ($kjur != '') {
+            try {
+                $passinggrade=$_SESSION['currentPageNilaiUjian']['passinggrade'][$kjur];
+                if (!($passinggrade > 0)) {
+                    throw new Exception ("Untuk Program studi ini, Nilai passing grade belum disetting.");	
+                }               
+            }catch (Exception $e) {
+                $param->IsValid=false;
+                $sender->ErrorMessage=$e->getMessage();
+            }	
+        }	
+    }
     public function saveData ($sender,$param) {
 		if ($this->IsValid) {		            
             $id=$this->hiddenid->Value;

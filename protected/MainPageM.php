@@ -25,6 +25,14 @@ class MainPageM extends MainPage {
      */
     public $showPendaftaranKonsentrasi=false;    
     /**     
+     * show sub menu akademik daftar ulang [akademik daftar ulang]
+     */
+    public $showSubMenuAkademikDulang=false;    
+    /**     
+     * show sub menu akademik daftar ulang [akademik daftar ulang mahasiswa baru]
+     */
+    public $showDulangMHSBaru=false;   
+    /**     
      * show page variable [setting variable]
      */
     public $showVariable=false;

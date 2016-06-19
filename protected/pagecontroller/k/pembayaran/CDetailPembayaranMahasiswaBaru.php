@@ -26,10 +26,7 @@ class CDetailPembayaranMahasiswaBaru Extends MainPageK {
                     throw new Exception ("Calon Mahasiswa dengan Nomor Formulir ($no_formulir) tidak lulus dalam SPMB.");		
                 }
                 $datamhs['kjur']=$spmb['kjur'];
-                $this->Finance->setDataMHS($datamhs);
-                $data=$this->Finance->getTresholdPembayaran($datamhs['tahun_masuk'],$datamhs['semester_masuk'],true);						
-                $datamhs['total_bayar']=$data['total_biaya'];
-                $datamhs['ambang_pembayaran']=$data['ambang_pembayaran'];	
+                $this->Finance->setDataMHS($datamhs);                
                 $datamhs['no_transaksi']=isset($_SESSION['currentPagePembayaranMahasiswaBaru']['DataMHS']['no_transaksi']) ? $_SESSION['currentPagePembayaranMahasiswaBaru']['DataMHS']['no_transaksi'] : 'none';
                 $_SESSION['currentPagePembayaranMahasiswaBaru']['DataMHS']=$datamhs;                
                 CDetailPembayaranMahasiswaBaru::$KewajibanMahasiswa=$this->Finance->getTotalBiayaMhsPeriodePembayaran ();

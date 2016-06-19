@@ -246,6 +246,20 @@
                                                 </li>                                                
                                             </ul>
                                         </li>                                                                                                                       
+                                        <li<%=$this->Page->showSubMenuAkademikDulang==true?' class="active"':''%>>
+                                            <a href="#" class="dropdown-toggle">
+                                                <i class="fa fa-location-arrow"></i>
+                                                <span>Daftar Ulang</span>
+                                                <i class="fa fa-angle-right drop-icon"></i>
+                                            </a>
+                                            <ul class="submenu">                                                
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('dulang.DulangMHSBaru',true)%>" <%=$this->Page->showDulangMHSBaru==true ? ' class="active" ':''%>>
+                                                        Mahasiswa Baru
+                                                    </a>
+                                                </li>                                                                                             
+                                            </ul>
+                                        </li>                                                                                                                       
                                         <li<%=$this->Page->showSubMenuAkademikPerkuliahan==true?' class="active"':''%>>
                                             <a href="#" class="dropdown-toggle">
                                                 <i class="fa fa-truck"></i>

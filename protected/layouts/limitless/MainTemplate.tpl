@@ -12,6 +12,7 @@
 	<link href="<%=$this->Page->Theme->BaseUrl%>/assets/css/core.min.css" rel="stylesheet" type="text/css">
 	<link href="<%=$this->Page->Theme->BaseUrl%>/assets/css/components.min.css" rel="stylesheet" type="text/css">
 	<link href="<%=$this->Page->Theme->BaseUrl%>/assets/css/colors.min.css" rel="stylesheet" type="text/css">
+    <link type="image/x-icon" href="resources/favicon.ico" rel="shortcut icon"/>
     <com:TContentPlaceHolder ID="csscontent" />	    
 </com:THead>
 <body>

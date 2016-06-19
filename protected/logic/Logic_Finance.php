@@ -158,7 +158,7 @@ class Logic_Finance extends Logic_Mahasiswa {
 	* @return boolean atau array
 	*/
 	public function getTresholdPembayaran ($tahun_sekarang,$semester_sekarang,$data=false) {
-		$total_biaya=($this->isMhsBaru())?$this->getTotalBiayaMhs():$this->getTotalBiayaMhs('lama');
+		$total_biaya=($this->isMhsBaru($tahun_sekarang,$semester_sekarang))?$this->getTotalBiayaMhsPeriodePembayaran():$this->getTotalBiayaMhsPeriodePembayaran('lama');
 		$total_biaya_setengah=$total_biaya/2;		
 		$total_bayar_mhs=$this->getTotalBayarMhs ($tahun_sekarang,$semester_sekarang);					
 		$bool=$total_biaya_setengah<=$total_bayar_mhs;	

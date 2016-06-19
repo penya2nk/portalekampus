@@ -175,7 +175,7 @@
 </com:TPanel>	
 <com:TPanel Visible="<%= $this->getDefaultProcess() %>">		
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <div class="main-box clearfix">
                 <header class="main-box-header clearfix">
                     <h2><i class="fa fa-search"></i> Pencarian Data</h2>                    
@@ -183,8 +183,8 @@
                 <div class="main-box-body">
                     <div class="form-horizontal">
                         <div class="form-group">
-                            <label class="col-lg-3 control-label">Kriteria :</label>
-                            <div class="col-lg-5">
+                            <label class="col-lg-2 control-label">Kriteria :</label>
+                            <div class="col-lg-2">
                                 <com:TDropDownList ID="cmbKriteria" CssClass="form-control">                                                           
                                     <com:TListItem Value="no_formulir" Text="No Formulir" />
                                     <com:TListItem Value="nama_mhs" Text="Nama Mahasiswa" />
@@ -192,8 +192,8 @@
                             </div>
                         </div>
                         <div class="form-group" id="divtxtKriteria">
-                            <label class="col-lg-3 control-label">Isi Kriteria :</label>
-                            <div class="col-lg-5">
+                            <label class="col-lg-2 control-label">Isi Kriteria :</label>
+                            <div class="col-lg-4">
                                 <com:TActiveTextBox ID="txtKriteria" CssClass="form-control" />                                                                            
                                 <com:TRequiredFieldValidator ID="spanKriteriaValidator2" ValidationGroup="filterForm" Display="Dynamic" ControlToValidate="txtKriteria" ErrorMessage="Input apa yang Anda cari, sesuai dengan kriteria yang Anda tentukan." FocusOnError="true" CssClass="has-error help-block">	
                                     <prop:ClientSide.OnValidationError>
@@ -207,7 +207,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-lg-offset-3 col-lg-9">
+                            <div class="col-lg-offset-2 col-lg-10">
                                 <com:TActiveCustomButton ID="btnSearch" CssClass="btn btn-info"  OnClick="Page.searchRecord" ValidationGroup="filterForm" Attributes.Title="Cari">
                                     <prop:Text>                                        
                                         <i class="fa fa-search"></i> Cari                                        
@@ -228,34 +228,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="main-box clearfix">
-                <header class="main-box-header clearfix">
-                    <h2><i class="fa fa-bookmark"></i> Filter Data</h2>                    
-                </header>
-                <div class="main-box-body">
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-lg-3 control-label">Hasil Ujian :</label>
-                            <div class="col-lg-5">
-                                <com:TDropDownList ID="cmbKelulusan" CssClass="form-control">                                                           
-                                    <com:TListItem Value="none" Text="Keseluruhan" />
-                                    <com:TListItem Value="lulus" Text="Lulus" />
-                                    <com:TListItem Value="tidaklulus" Text="Tidak Lulus" />
-                                </com:TDropDownList>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label">&nbsp;</label>
-                        <div class="col-lg-5">
-                            &nbsp;
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </div>       
     </div>	
     <div class="row">
         <div class="col-lg-12">

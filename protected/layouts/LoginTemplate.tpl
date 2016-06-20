@@ -8,6 +8,7 @@
 	<link href="<%=$this->Page->Theme->baseUrl%>/css/nifty.min.css" rel="stylesheet">
 	<link href="<%=$this->Page->Theme->baseUrl%>/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="<%=$this->Page->Theme->baseUrl%>/plugins/pace/pace.min.css" rel="stylesheet">
+    <link type="image/x-icon" href="resources/favicon.ico" rel="shortcut icon"/>
     <script src="<%=$this->Page->Theme->baseUrl%>/plugins/pace/pace.min.js"></script>
     <style type="text/css">
 		.my-bg{

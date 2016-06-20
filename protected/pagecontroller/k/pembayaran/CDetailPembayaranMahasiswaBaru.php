@@ -68,27 +68,32 @@ class CDetailPembayaranMahasiswaBaru Extends MainPageK {
 		}
 	}	
 	public function addTransaction ($sender,$param) {
-        $datamhs=$_SESSION['currentPagePembayaranMahasiswaBaru']['DataMHS'];    
+        $datamhs=$_SESSION['currentPagePembayaranMahasiswaBaru']['DataMHS'];        
         if ($datamhs['no_transaksi'] == 'none') {
-            $no_transaksi=$this->DB->getMaxOfRecord('no_transaksi','transaksi')+1;	
             $no_formulir=$datamhs['no_formulir'];
             $ta=$datamhs['tahun_masuk'];                        
-            $idsmt=$datamhs['semester_masuk'];     
-            $ps=$datamhs['kjur'];                
-            $idkelas=$datamhs['idkelas'];
-            $userid=$this->Pengguna->getDataUser('userid');
-
-            $this->DB->query ('BEGIN');
-            $str = "INSERT INTO transaksi (no_transaksi,no_faktur,kjur,tahun,idsmt,idkelas,no_formulir,tanggal,userid,date_added,date_modified) VALUES ($no_transaksi,'$no_transaksi','$ps','$ta','$idsmt','$idkelas','$no_formulir',NOW(),'$userid',NOW(),NOW())";					
-            if ($this->DB->insertRecord($str)) {
-                $str = "INSERT INTO transaksi_detail (idtransaksi_detail,no_transaksi,idkombi,dibayarkan) SELECT NULL,$no_transaksi,k.idkombi,0 FROM kombi_per_ta kpt,kombi k WHERE  k.idkombi=kpt.idkombi AND tahun=$ta AND kpt.idkelas='$idkelas' AND (periode_pembayaran='sekali' OR periode_pembayaran='semesteran') ORDER BY periode_pembayaran,nama_kombi ASC";
-                $this->DB->insertRecord($str);
-                $this->DB->query('COMMIT');
-                $_SESSION['currentPagePembayaranMahasiswaBaru']['DataMHS']['no_transaksi']=$no_transaksi;            
-                $this->redirect('pembayaran.TransaksiPembayaranMahasiswaBaru',true);        
+            $idsmt=$datamhs['semester_masuk'];
+            if ($this->DB->checkRecordIsExist('no_formulir','transaksi',$no_formulir," AND tahun='$ta' AND idsmt='$idsmt' AND commited=0")) {
+                $this->lblContentMessageError->Text='Tidak bisa menambah Transaksi baru karena ada transaksi yang belum di Commit.';
+                $this->modalMessageError->show();
             }else{
-                $this->DB->query('ROLLBACK');
-            }            
+                $no_transaksi=$this->DB->getMaxOfRecord('no_transaksi','transaksi')+1;
+                $ps=$datamhs['kjur'];                
+                $idkelas=$datamhs['idkelas'];
+                $userid=$this->Pengguna->getDataUser('userid');
+
+                $this->DB->query ('BEGIN');
+                $str = "INSERT INTO transaksi (no_transaksi,no_faktur,kjur,tahun,idsmt,idkelas,no_formulir,tanggal,userid,date_added,date_modified) VALUES ($no_transaksi,'$no_transaksi','$ps','$ta','$idsmt','$idkelas','$no_formulir',NOW(),'$userid',NOW(),NOW())";					
+                if ($this->DB->insertRecord($str)) {
+                    $str = "INSERT INTO transaksi_detail (idtransaksi_detail,no_transaksi,idkombi,dibayarkan) SELECT NULL,$no_transaksi,k.idkombi,kpt.biaya FROM kombi_per_ta kpt,kombi k WHERE  k.idkombi=kpt.idkombi AND tahun=$ta AND kpt.idkelas='$idkelas' AND (periode_pembayaran='sekali' OR periode_pembayaran='semesteran') ORDER BY periode_pembayaran,nama_kombi ASC";
+                    $this->DB->insertRecord($str);
+                    $this->DB->query('COMMIT');
+                    $_SESSION['currentPagePembayaranMahasiswaBaru']['DataMHS']['no_transaksi']=$no_transaksi;            
+                    $this->redirect('pembayaran.TransaksiPembayaranMahasiswaBaru',true);        
+                }else{
+                    $this->DB->query('ROLLBACK');
+                }           
+            }
         }else{            
             $this->redirect('pembayaran.TransaksiPembayaranMahasiswaBaru',true); 
         }

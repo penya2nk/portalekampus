@@ -14,7 +14,7 @@
                 </div>
                 <div class="col-md-2">
                     <br/>
-                    <button OnClick="new Modal.Box('<%=$this->modalPrintOut->ClientID%>').hide();return false;" class="btn btn-primary"><i class='icon-exit'></i> Close</a>                              
+                    <button OnClick="new Modal.Box('<%=$this->modalPrintOut->ClientID%>').hide();return false;" class="btn btn-primary"><i class='icon-exit'></i> Close</button>                              
                 </div>
             </div>            
         </div>     

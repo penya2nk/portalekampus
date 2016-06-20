@@ -13,6 +13,9 @@
     </div>
 </div>
 </com:TContent>
+<com:TContent ID="csscontent">
+<link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/assets/css/libs/nifty-component.css"/>
+</com:TContent>
 <com:TContent ID="maincontent">
 <com:TPanel Visible="<%= $this->getViewProcess(false) %>" CssClass="panel panel-flat">        
     <div class="panel-heading">&nbsp;</div>
@@ -142,4 +145,5 @@
         </div>
     </div>        
 </com:TPanel>
+<%include Application.layouts.limitless.ModalMessageError%>
 </com:TContent>

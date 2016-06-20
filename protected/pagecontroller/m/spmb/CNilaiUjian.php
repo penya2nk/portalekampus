@@ -45,6 +45,7 @@ class CNilaiUjian extends MainPageM {
     }
 	public function changeTbTahunMasuk($sender,$param) {					
 		$_SESSION['tahun_masuk']=$this->tbCmbTahunMasuk->Text;
+        $_SESSION['currentPageNilaiUjian']['passinggrade']=$this->DMaster->getDataPassingGrade($_SESSION['tahun_masuk']);
         $this->lblModulHeader->Text=$this->getInfoToolbar();
 		$this->populateData();
 	}

@@ -63,7 +63,7 @@ class UserManager extends TAuthManager {
                     $dataMhs['idkelas']=($kelas['idkelas']=='')?null:$kelas['idkelas'];
                     $dataMhs['nkelas']=($kelas['nkelas']=='')?'Belum ada':$kelas['nkelas'];			                    
                     $dataMhs['nama_konsentrasi']=($dataMhs['idkonsentrasi']==0) ? '-':$dataMhs['nama_konsentrasi'];
-                    $dataMhs['iddata_konversi']=$mhs->isMhsPindahan(true);
+                    $dataMhs['iddata_konversi']=$mhs->isMhsPindahan($username,true);
                     
                     $dmaster=$logic->getInstanceOfClass('DMaster');							
                     $nama_dosen=$dmaster->getNamaDosenWaliByID($dataMhs['iddosen_wali']);				                    

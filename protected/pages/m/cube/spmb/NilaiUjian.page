@@ -147,7 +147,7 @@
                                         $('divAddDiterimaDiProdi').removeClassName('has-error');
                                     </prop:ClientSide.OnValidationSuccess>
                                 </com:TRequiredFieldValidator>
-                                <com:TActiveCustomValidator ID="addKjur" ControlToValidate="cmbAddKjur" Display="Dynamic" OnServerValidate="checkPassingGradeExist" ValidationGroup="diterima" ErrorMessage="Kode Matakuliah Yang Anda Inputkan Sudah Ada ..." CssClass="has-error help-block">
+                                <com:TActiveCustomValidator ID="addKjur" ControlToValidate="cmbAddKjur" Display="Dynamic" OnServerValidate="checkPassingGradeExist" ValidationGroup="diterima" CssClass="has-error help-block">
                                     <prop:ClientSide.OnValidationError>
                                         $('divAddDiterimaDiProdi').addClassName('has-error');
                                         jQuery('#<%=$this->addKjur->ClientID%>').removeAttr('style');

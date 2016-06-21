@@ -132,6 +132,49 @@ class Logic_Akademik extends Logic_Mahasiswa {
         return $this->InfoMatkul; 
 	}
     /**
+     * digunakan untuk mendapatkan nim maksimal saat ini tiap program studi
+     * @param type $kjur
+     * @param type $ta
+     * @return type array
+     * @throws Exception
+     */
+	public function getMaxNimAndNirm ($kjur,$ta) {
+		$str = "SELECT MAX(NIM) AS nim FROM register_mahasiswa WHERE tahun='$ta' AND kjur='$kjur'";
+		$this->db->setFieldTable(array('nim'));
+		$r=$this->db->getRecord($str);
+		if ($r[1]['nim']=='') {			
+			$tahun=substr($ta,2,2);
+			$data['nim']=$tahun.'10'.$kjur.'001';
+			switch($kjur) {
+				case 1 :
+					$kode=201;
+				break;
+				case 2 :
+					$kode=204;
+				break;
+				case 3 :
+					$kode=203;
+				break;
+				default :
+					throw new Exception ('Kode P.S Tidak dikenal Logic_Akademik::getMaxNimAndNirm ()');
+			}
+			$data['nirm']=$tahun.'103035'.$kode.'001';
+		}else {
+			$nim='1'.$r[1]['nim'];
+			$nim+=1;
+			$nim=substr($nim,1,strlen($nim));
+			$data['nim']=$nim;
+			$str = "SELECT MAX(NIRM) AS nirm FROM register_mahasiswa WHERE tahun='$ta' AND kjur='$kjur'";
+			$this->db->setFieldTable(array('nirm'));
+			$r=$this->db->getRecord($str);
+			$nirm='1'.$r[1]['nirm'];			
+			$nirm+=1;
+			$nirm=substr($nirm,1,strlen($nirm));
+			$data['nirm']=$nirm;
+		}
+		return $data;
+	}
+    /**
      * digunakan untuk mendapatkan jumlah mahasiswa dalam penyelenggaraan
      * @param type int $idpenyelenggaraan
      * @param type int $status 

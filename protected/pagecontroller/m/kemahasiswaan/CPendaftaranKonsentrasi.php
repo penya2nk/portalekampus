@@ -8,7 +8,7 @@ class CPendaftaranKonsentrasi extends MainPageM {
                         
 		if (!$this->IsPostBack&&!$this->IsCallBack) {	
             if (!isset($_SESSION['currentPagePendaftaranKonsentrasi'])||$_SESSION['currentPagePendaftaranKonsentrasi']['page_name']!='m.kemahasiswaan.PendaftaranKonsentrasi') {
-				$_SESSION['currentPagePendaftaranKonsentrasi']=array('page_name'=>'m.kemahasiswaan.PendaftaranKonsentrasi','page_num'=>0,'search'=>false,'idkonsentrasi'=>'none');												
+				$_SESSION['currentPagePendaftaranKonsentrasi']=array('page_name'=>'m.kemahasiswaan.PendaftaranKonsentrasi','page_num'=>0,'search'=>false,'idkonsentrasi'=>'none','DataMHS'=>array());												
 			}
             $_SESSION['currentPagePendaftaranKonsentrasi']['search']=false;
             $this->RepeaterS->PageSize=$this->setup->getSettingValue('default_pagesize');
@@ -77,8 +77,7 @@ class CPendaftaranKonsentrasi extends MainPageM {
 	} 
     public function itemCreated ($sender,$param) {
         $item=$param->Item;
-		if ($item->ItemType === 'Item' || $item->ItemType === 'AlternatingItem') {                        
-               
+		if ($item->ItemType === 'Item' || $item->ItemType === 'AlternatingItem') {         
             $item->lblStatusPendaftaran->Text=$this->DMaster->getStatusPendaftaranKonsentrasi($item->DataItem['status_daftar']);
             switch ($item->DataItem['status_daftar']) {
                 case 0 :
@@ -87,6 +86,7 @@ class CPendaftaranKonsentrasi extends MainPageM {
                 case 1 :
                     $cssclass='label label-success';
                     $item->btnRepeaterApproved->Enabled=false;
+                    $item->anchorDetailPendaftaranKonsentrasi->Enabled=false;                    
                     //$item->btnRepeaterApproved->CssClass="disabled";
                 break;
             }
@@ -96,7 +96,7 @@ class CPendaftaranKonsentrasi extends MainPageM {
 	public function populateData ($search=false) {			
         $kjur=$_SESSION['kjur'];        
         if ($search) {
-            $str = "SELECT vdm.nim,vdm.nama_mhs,pk.idkonsentrasi FROM v_datamhs vdm,pendaftaran_konsentrasi pk WHERE pk.nim=vdm.nim";			
+            $str = "SELECT vdm.nim,vdm.nama_mhs,pk.jumlah_sks,pk.kjur,pk.idkonsentrasi,status_daftar FROM v_datamhs vdm,pendaftaran_konsentrasi pk WHERE pk.nim=vdm.nim";			
             $txtsearch=$this->txtKriteria->Text;
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
@@ -133,23 +133,20 @@ class CPendaftaranKonsentrasi extends MainPageM {
         $this->RepeaterS->DataSource=$r;
 		$this->RepeaterS->dataBind();     
         $this->paginationInfo->Text=$this->getInfoPaging($this->RepeaterS);
-    }
-    public function reviewPendaftaran ($sender,$param) {
-		
-	} 
+    }     
     public function approvedFromRepeater($sender,$param) {
-//        $nim=$this->getDataKeyField($sender,$this->RepeaterS);
-//        $idkonsentrasi=$sender->CommandParameter;
-//        $this->DB->query('BEGIN');
-//        $str = "UPDATE pendaftaran_konsentrasi SET status_daftar=1 WHERE nim='$nim'";        
-//        if ($this->DB->updateRecord($str)) {            
-//            $str = "UPDATE register_mahasiswa SET idkonsentrasi=$idkonsentrasi WHERE nim='$nim'";        
-//            $this->DB->updateRecord($str);
-//            $this->DB->query('COMMIT');
-//            $this->redirect('kemahasiswaan.PendaftaranKonsentrasi',true);
-//        }else{
-//            $this->DB->query('ROLLBACK');
-//        }
+        $nim=$this->getDataKeyField($sender,$this->RepeaterS);
+        $idkonsentrasi=$sender->CommandParameter;
+        $this->DB->query('BEGIN');
+        $str = "UPDATE pendaftaran_konsentrasi SET status_daftar=1 WHERE nim='$nim'";        
+        if ($this->DB->updateRecord($str)) {            
+            $str = "UPDATE register_mahasiswa SET idkonsentrasi=$idkonsentrasi WHERE nim='$nim'";        
+            $this->DB->updateRecord($str);
+            $this->DB->query('COMMIT');
+            $this->redirect('kemahasiswaan.PendaftaranKonsentrasi',true);
+        }else{
+            $this->DB->query('ROLLBACK');
+        }
         
     }
 }

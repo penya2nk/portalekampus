@@ -1,17 +1,17 @@
 <?php
 prado::using ('Application.MainPageM');
-class CTranskripSementara extends MainPageM {	
+class CTranskripKurikulum extends MainPageM {	
 	public function onLoad ($param) {
 		parent::onLoad($param);		
         $this->showSubMenuAkademikNilai=true;
-        $this->showTranskripSementara=true;    
+        $this->showTranskripKurikulum=true;    
 		$this->createObj('Nilai');
                 
 		if (!$this->IsPostBack&&!$this->IsCallBack) {			
-            if (!isset($_SESSION['currentPageTranskripSementara'])||$_SESSION['currentPageTranskripSementara']['page_name']!='m.nilai.TranskripSementara') {
-				$_SESSION['currentPageTranskripSementara']=array('page_name'=>'m.nilai.TranskripSementara','page_num'=>0,'search'=>false);
+            if (!isset($_SESSION['currentPageTranskripKurikulum'])||$_SESSION['currentPageTranskripKurikulum']['page_name']!='m.nilai.TranskripKurikulum') {
+				$_SESSION['currentPageTranskripKurikulum']=array('page_name'=>'m.nilai.TranskripKurikulum','page_num'=>0,'search'=>false);
 			}          
-            $_SESSION['currentPageTranskripSementara']['search']=false;
+            $_SESSION['currentPageTranskripKurikulum']['search']=false;
             $this->RepeaterS->PageSize=$this->setup->getSettingValue('default_pagesize');
             
             $this->tbCmbPs->DataSource=$this->DMaster->removeIdFromArray($_SESSION['daftar_jurusan'],'none');
@@ -56,12 +56,12 @@ class CTranskripSementara extends MainPageM {
 		$this->RepeaterS->render($param->NewWriter);	
 	}
 	public function Page_Changed ($sender,$param) {
-		$_SESSION['currentPageTranskripSementara']['page_num']=$param->NewPageIndex;
-		$this->populateData($_SESSION['currentPageTranskripSementara']['search']);
+		$_SESSION['currentPageTranskripKurikulum']['page_num']=$param->NewPageIndex;
+		$this->populateData($_SESSION['currentPageTranskripKurikulum']['search']);
 	}
     public function searchRecord ($sender,$param) {
-		$_SESSION['currentPageTranskripSementara']['search']=true;
-		$this->populateData($_SESSION['currentPageTranskripSementara']['search']);
+		$_SESSION['currentPageTranskripKurikulum']['search']=true;
+		$this->populateData($_SESSION['currentPageTranskripKurikulum']['search']);
 	}
 	public function populateData($search=false) {			
         $kjur=$_SESSION['kjur'];      
@@ -90,7 +90,7 @@ class CTranskripSementara extends MainPageM {
             $jumlah_baris=$this->DB->getCountRowsOfTable("v_datamhs WHERE kjur=$kjur AND tahun_masuk=$tahun_masuk",'nim');		
             $str = "SELECT nim,nama_mhs,jk,tahun_masuk,idkonsentrasi,tahun_masuk FROM v_datamhs WHERE kjur=$kjur AND tahun_masuk=$tahun_masuk";			
         }		
-        $this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageTranskripSementara']['page_num'];
+        $this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageTranskripKurikulum']['page_num'];
 		$this->RepeaterS->VirtualItemCount=$jumlah_baris;
 		$currentPage=$this->RepeaterS->CurrentPageIndex;
 		$offset=$currentPage*$this->RepeaterS->PageSize;		
@@ -99,7 +99,7 @@ class CTranskripSementara extends MainPageM {
 		if (($offset+$limit)>$itemcount) {
 			$limit=$itemcount-$offset;
 		}
-		if ($limit < 0) {$offset=0;$limit=$this->setup->getSettingValue('default_pagesize');$_SESSION['currentPageTranskripSementara']['page_num']=0;}
+		if ($limit < 0) {$offset=0;$limit=$this->setup->getSettingValue('default_pagesize');$_SESSION['currentPageTranskripKurikulum']['page_num']=0;}
         $str = "$str ORDER BY nama_mhs ASC LIMIT $offset,$limit";				
         $this->DB->setFieldTable(array('nim','nama_mhs','jk','idkonsentrasi','tahun_masuk'));
 		$r = $this->DB->getRecord($str,$offset+1);	
@@ -158,12 +158,12 @@ class CTranskripSementara extends MainPageM {
                         $this->report->setDataReport($dataReport); 
                         $this->report->setMode($_SESSION['outputreport']);
 
-                        $messageprintout="Transkrip Sementara $nim : <br/>";
-                        $this->report->printTranskripSementara($this->Nilai,true);				
+                        $messageprintout="Transkrip Kurikulum $nim : <br/>";
+                        $this->report->printTranskripKurikulum($this->Nilai,true);				
                     break;
                 }                
 			break;			
-            case 'btnPrintTranskripSementaraAll' :
+            case 'btnPrintTranskripKurikulumAll' :
                  switch ($_SESSION['outputreport']) {
                     case  'summarypdf' :
                         $messageprintout="Mohon maaf Print out pada mode summary pdf belum kami support.";                
@@ -181,7 +181,7 @@ class CTranskripSementara extends MainPageM {
             break;
 		}		
         $this->lblMessagePrintout->Text=$messageprintout;
-        $this->lblPrintout->Text='Transkrip Sementara';
+        $this->lblPrintout->Text='Transkrip Kurikulum';
         $this->modalPrintOut->show();
 	}
 }

@@ -1,15 +1,15 @@
 <?php
 prado::using ('Application.MainPageM');
-class CDetailTranskripSementara extends MainPageM {		
+class CDetailTranskripKurikulum extends MainPageM {		
 	public function onLoad($param) {
 		parent::onLoad($param);							
 		$this->showSubMenuAkademikNilai=true;
-        $this->showTranskripSementara=true;    
+        $this->showTranskripKurikulum=true;    
         $this->createObj('Nilai');
         
 		if (!$this->IsPostback&&!$this->IsCallback) {
-            if (!isset($_SESSION['currentPageDetailTranskripSementara'])||$_SESSION['currentPageDetailTranskripSementara']['page_name']!='m.nilai.DetailTranskripSementara') {
-				$_SESSION['currentPageDetailTranskripSementara']=array('page_name'=>'m.nilai.DetailTranskripSementara','page_num'=>0,'search'=>false,'DataMHS'=>array());												                                               
+            if (!isset($_SESSION['currentPageDetailTranskripKurikulum'])||$_SESSION['currentPageDetailTranskripKurikulum']['page_name']!='m.nilai.DetailTranskripKurikulum') {
+				$_SESSION['currentPageDetailTranskripKurikulum']=array('page_name'=>'m.nilai.DetailTranskripKurikulum','page_num'=>0,'search'=>false,'DataMHS'=>array());												                                               
 			}  
             $this->tbCmbOutputReport->DataSource=$this->setup->getOutputFileType();
             $this->tbCmbOutputReport->Text= $_SESSION['outputreport'];
@@ -28,7 +28,7 @@ class CDetailTranskripSementara extends MainPageM {
             $r=$this->DB->getRecord($str);				
             
             if (!isset($r[1])) {
-                $_SESSION['currentPageDetailTranskripSementara']['DataMHS']=array();
+                $_SESSION['currentPageDetailTranskripKurikulum']['DataMHS']=array();
                 throw new Exception("Mahasiswa dengan NIM ($nim) tidak terdaftar.");
             }
             $datamhs=$r[1];
@@ -37,7 +37,7 @@ class CDetailTranskripSementara extends MainPageM {
             $datamhs['nama_konsentrasi']=($datamhs['idkonsentrasi']==0) ? '-':$datamhs['nama_konsentrasi'];                    
             $datamhs['status']=$this->DMaster->getNamaStatusMHSByID($datamhs['k_status']);
             $datamhs['iddata_konversi']=$this->Nilai->isMhsPindahan($nim,true);
-            $_SESSION['currentPageDetailTranskripSementara']['DataMHS']=$datamhs;
+            $_SESSION['currentPageDetailTranskripKurikulum']['DataMHS']=$datamhs;
             $this->Nilai->setDataMHS($datamhs);
             $transkrip = $this->Nilai->getTranskrip();            
             
@@ -50,7 +50,7 @@ class CDetailTranskripSementara extends MainPageM {
 	}
 	public function printOut ($sender,$param) {	
         $this->createObj('reportnilai');             		
-        $dataReport=$_SESSION['currentPageDetailTranskripSementara']['DataMHS'];  
+        $dataReport=$_SESSION['currentPageDetailTranskripKurikulum']['DataMHS'];  
         
         $dataReport['nama_jabatan_transkrip']=$this->setup->getSettingValue('nama_jabatan_transkrip');
         $dataReport['nama_penandatangan_transkrip']=$this->setup->getSettingValue('nama_penandatangan_transkrip');
@@ -60,9 +60,9 @@ class CDetailTranskripSementara extends MainPageM {
         $dataReport['linkoutput']=$this->linkOutput; 
         $this->report->setDataReport($dataReport); 
         $this->report->setMode($_SESSION['outputreport']);
-		$this->report->printTranskripSementara($this->Nilai,true);				
+		$this->report->printTranskripKurikulum($this->Nilai,true);				
         
-        $this->lblPrintout->Text='Transkrip Sementara';
+        $this->lblPrintout->Text='Transkrip Kurikulum';
         $this->modalPrintOut->show();
 	}
 }	

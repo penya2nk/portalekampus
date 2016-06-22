@@ -110,7 +110,7 @@ class MainPage extends TPage {
     /**     
      * show page transkrip sementara [akademik nilai]
      */
-    public $showTranskripSementara=false;
+    public $showTranskripKurikulum=false;
     /**     
      * show page transkrip KRS [akademik nilai]
      */

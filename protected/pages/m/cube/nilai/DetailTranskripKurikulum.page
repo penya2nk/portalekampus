@@ -1,11 +1,11 @@
-<%@ Title="Akademik - Detail Transkrip Sementara" %>
+<%@ Title="Akademik - Detail Transkrip Kurikulum" %>
 <com:TContent ID="moduleheader">
-    <i class="fa fa-book"></i> Detail Transkrip Sementara
+    <i class="fa fa-book"></i> Detail Transkrip Kurikulum
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
     <li><a href="#">AKADEMIK</a></li>
     <li><a href="#">NILAI</a></li>
-    <li><a href="<%=$this->constructUrl('nilai.TranskripSementara',true)%>">TRANSKRIP SEMENTARA</a></li>
+    <li><a href="<%=$this->constructUrl('nilai.TranskripKurikulum',true)%>">TRANSKRIP SEMENTARA</a></li>
     <li class="active"><span>DETAIL TRANSKRIP SEMENTARA</span></li>
 </com:TContent>
 <com:TContent ID="configtools">
@@ -45,7 +45,7 @@
         <div class="main-box clearfix">               
             <header class="main-box-header clearfix">
                 <div class="icon-box pull-right">                                       
-                    <a class="btn pull-left" href="<%=$this->constructUrl('nilai.TranskripSementara',true)%>">
+                    <a class="btn pull-left" href="<%=$this->constructUrl('nilai.TranskripKurikulum',true)%>">
                         <i class="fa fa-times"></i>
                     </a>
                 </div>
@@ -68,23 +68,23 @@
         <div class="col-lg-12">
             <div class="main-box clearfix">
                 <header class="main-box-header clearfix">
-                    <h2 class="pull-left"><i class="fa fa-book"></i> Daftar Nilai Transkrip Sementara</h2> 
+                    <h2 class="pull-left"><i class="fa fa-book"></i> Daftar Nilai Transkrip Kurikulum</h2> 
                     
                     <div class="filter-block pull-right">                                                   
-                        <com:TActiveLinkButton ID="btnPrintTranskripSementara" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out Transkrip Sementara">
+                        <com:TActiveLinkButton ID="btnPrintTranskripKurikulum" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out Transkrip Kurikulum">
                             <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
                             <prop:ClientSide.OnPreDispatch>
                                 $('loading').show();
                             </prop:ClientSide.OnPreDispatch>
                             <prop:ClientSide.OnLoading>
-                                $('<%=$this->btnPrintTranskripSementara->ClientId%>').disabled='disabled';				
+                                $('<%=$this->btnPrintTranskripKurikulum->ClientId%>').disabled='disabled';				
                             </prop:ClientSide.OnLoading>
                             <prop:ClientSide.OnComplete>
-                                $('<%=$this->btnPrintTranskripSementara->ClientId%>').disabled='';				
+                                $('<%=$this->btnPrintTranskripKurikulum->ClientId%>').disabled='';				
                                 $('loading').hide();
                             </prop:ClientSide.OnComplete>
                         </com:TActiveLinkButton>  				
-                        <a class="btn btn-default pull-right" href="<%=$this->constructUrl('nilai.TranskripSementara',true)%>" title="Keluar Detail Transkrip Sementara">                        
+                        <a class="btn btn-default pull-right" href="<%=$this->constructUrl('nilai.TranskripKurikulum',true)%>" title="Keluar Detail Transkrip Kurikulum">                        
                             <i class='fa  fa-times fa-lg'></i>
                         </a>
                     </div>
@@ -95,7 +95,7 @@
                         <p>
                             <ul>
                                 <li>Matakuliah Konsentrasi tidak ditampilkan selama Mahasiswa belum mendaftar konsentrasi.</li>
-                                <li>Saat mencetak Transkrip Nilai Sementara, Matakuliah pilihan dan lintas prodi tidak akan ditampilkan bila tidak ada nilai-nya.</li>
+                                <li>Saat mencetak Transkrip Nilai Kurikulum, Matakuliah pilihan dan lintas prodi tidak akan ditampilkan bila tidak ada nilai-nya.</li>
                             </ul>
                         </p>
                     </div>

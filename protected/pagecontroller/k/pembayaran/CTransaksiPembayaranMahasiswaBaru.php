@@ -68,9 +68,10 @@ class CTransaksiPembayaranMahasiswaBaru Extends MainPageK {
                 $v['biaya_alias']=$this->Finance->toRupiah($biaya);
                 $v['nama_kombi']=  strtoupper($v['nama_kombi']);            
                 $v['sudah_dibayar']=$sudah_dibayar;
-                $v['sudah_dibayar_alias']=$this->Finance->toRupiah($sudah_dibayar);                                                
-                $v['jumlah_bayar']=$belum_komit[$idkombi];
-                $v['jumlah_bayar_alias']=$this->Finance->toRupiah($belum_komit[$idkombi]);
+                $v['sudah_dibayar_alias']=$this->Finance->toRupiah($sudah_dibayar);  
+                $jumlah_bayar=$belum_komit[$idkombi];                
+                $v['jumlah_bayar']=$jumlah_bayar;
+                $v['jumlah_bayar_alias']=$this->Finance->toRupiah($jumlah_bayar);
                 $result[$k]=$v;
             }            
         }		

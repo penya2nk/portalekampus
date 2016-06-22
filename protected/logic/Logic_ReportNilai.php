@@ -530,10 +530,10 @@ class Logic_ReportNilai extends Logic_Report {
         $this->setLink($this->dataReport['linkoutput'],"Summary KHS T.A $nama_tahun Semester $nama_semester");
     }
     /**
-     * digunakan untuk memprint Transkrip Sementara
+     * digunakan untuk memprint Transkrip Kurikulum
      * @param type $objNilai object
      */
-    public function printTranskripSementara ($objNilai,$withsignature=false) {
+    public function printTranskripKurikulum ($objNilai,$withsignature=false) {
         $biodata=$this->dataReport;          
         $nim=$biodata['nim'];
         $objNilai->setDataMHS($biodata);
@@ -545,8 +545,8 @@ class Logic_ReportNilai extends Logic_Report {
             break;
             case 'pdf' :
                 $rpt=$this->rpt;
-                $rpt->setTitle('Transkkrip Nilai Sementara');
-				$rpt->setSubject('Transkkrip Nilai Sementara');
+                $rpt->setTitle('Transkkrip Nilai Kurikulum');
+				$rpt->setSubject('Transkkrip Nilai Kurikulum');
                 $rpt->AddPage();
 				$this->setHeaderPT();
                 
@@ -554,7 +554,7 @@ class Logic_ReportNilai extends Logic_Report {
 				$row+=6;
                 $rpt->SetFont ('helvetica','B',12);	
 				$rpt->setXY(3,$row);			
-				$rpt->Cell(0,$row,'TRANSKRIP NILAI SEMENTARA',0,0,'C');
+				$rpt->Cell(0,$row,'TRANSKRIP NILAI KURIKULUM',0,0,'C');
                 $row+=6;
                 $rpt->SetFont ('helvetica','B',8);	
 				$rpt->setXY(3,$row);			
@@ -633,7 +633,7 @@ class Logic_ReportNilai extends Logic_Report {
 				$rpt->setXY(119,$row);
 				$rpt->Cell(11,4,'MK',1,0,'C');
 				
-				$n=$objNilai->getTranskripNilaiSementara($this->dataReport['cek_isikuesioner']);
+				$n=$objNilai->getTranskripNilaiKurikulum($this->dataReport['cek_isikuesioner']);
 				$totalSks=0;
 				$totalM=0;
 				$row+=4;
@@ -796,13 +796,13 @@ class Logic_ReportNilai extends Logic_Report {
                 $this->printOut("transkripsementara_$nim");
             break;
         }
-        $this->setLink($this->dataReport['linkoutput'],"Transkrip Sementara");
+        $this->setLink($this->dataReport['linkoutput'],"Transkrip Kurikulum");
     }
     /**
-     * digunakan untuk memprint Transkrip Sementara All
+     * digunakan untuk memprint Transkrip Kurikulum All
      * @param type $objNilai object
      */
-    public function printTranskripSementaraAll ($objNilai,$withsignature=false,$outputcompress,$level=0) {
+    public function printTranskripKurikulumAll ($objNilai,$withsignature=false,$outputcompress,$level=0) {
         $biodata=$this->dataReport;          
         $nim=$biodata['nim'];
         $objNilai->setDataMHS($biodata);
@@ -814,8 +814,8 @@ class Logic_ReportNilai extends Logic_Report {
             break;
             case 'pdf' :
                 $rpt=$this->rpt;
-                $rpt->setTitle('Transkkrip Nilai Sementara');
-				$rpt->setSubject('Transkkrip Nilai Sementara');
+                $rpt->setTitle('Transkkrip Nilai Kurikulum');
+				$rpt->setSubject('Transkkrip Nilai Kurikulum');
                 $rpt->AddPage();
 				$this->setHeaderPT();
                 
@@ -823,7 +823,7 @@ class Logic_ReportNilai extends Logic_Report {
 				$row+=6;
                 $rpt->SetFont ('helvetica','B',12);	
 				$rpt->setXY(3,$row);			
-				$rpt->Cell(0,$row,'TRANSKRIP NILAI SEMENTARA',0,0,'C');
+				$rpt->Cell(0,$row,'TRANSKRIP NILAI KURIKULUM',0,0,'C');
                 $row+=6;
                 $rpt->SetFont ('helvetica','B',8);	
 				$rpt->setXY(3,$row);			
@@ -902,7 +902,7 @@ class Logic_ReportNilai extends Logic_Report {
 				$rpt->setXY(119,$row);
 				$rpt->Cell(11,4,'MK',1,0,'C');
 				
-				$n=$objNilai->getTranskripNilaiSementara();
+				$n=$objNilai->getTranskripNilaiKurikulum();
 				$totalSks=0;
 				$totalM=0;
 				$row+=4;
@@ -1065,7 +1065,7 @@ class Logic_ReportNilai extends Logic_Report {
                 $this->printOut("transkripsementara_$nim");
             break;
         }
-        $this->setLink($this->dataReport['linkoutput'],"Transkrip Sementara");
+        $this->setLink($this->dataReport['linkoutput'],"Transkrip Kurikulum");
     }
     /**
      * digunakan untuk memprint Transkrip KRS
@@ -1092,7 +1092,7 @@ class Logic_ReportNilai extends Logic_Report {
 				$row+=6;
                 $rpt->SetFont ('helvetica','B',12);	
 				$rpt->setXY(3,$row);			
-				$rpt->Cell(0,$row,'TRANSKRIP NILAI SEMENTARA',0,0,'C');
+				$rpt->Cell(0,$row,'TRANSKRIP NILAI KURIKULUM',0,0,'C');
                 $row+=6;
                 $rpt->SetFont ('helvetica','B',8);	
 				$rpt->setXY(3,$row);			

@@ -60,7 +60,7 @@ class Logic_Finance extends Logic_Mahasiswa {
                 $str = "SELECT SUM(biaya) AS jumlah FROM kombi_per_ta WHERE tahun=$tahun_masuk AND idkelas='$kelas' AND idkombi != 1 AND idkombi != 12 AND idkombi != 13 AND idkombi != 14 AND (idkombi=2 OR idkombi=3 OR idkombi=7 OR idkombi=9)";
             break;
             case 'baru' :
-                if ($this->DataMhs['perpanjang']==true) {
+                if ($this->getDataMhs('perpanjang')==true) {
                     $str = "SELECT SUM(biaya) AS jumlah FROM kombi_per_ta WHERE tahun=$tahun_masuk AND idkelas='$kelas' AND idkombi != 1 AND idkombi != 12 AND idkombi != 13 AND idkombi != 14 AND (idkombi=2 OR idkombi=3 OR idkombi=7 OR idkombi=9)";
                 }else {
                     $str = "SELECT SUM(biaya) AS jumlah FROM kombi_per_ta WHERE tahun=$tahun_masuk AND idkelas='$kelas' AND idkombi != 1 AND idkombi != 12 AND idkombi != 13 AND idkombi != 14";								

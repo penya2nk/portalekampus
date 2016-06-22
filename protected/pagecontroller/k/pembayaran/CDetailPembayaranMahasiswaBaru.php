@@ -85,8 +85,26 @@ class CDetailPembayaranMahasiswaBaru Extends MainPageK {
                 $this->DB->query ('BEGIN');
                 $str = "INSERT INTO transaksi (no_transaksi,no_faktur,kjur,tahun,idsmt,idkelas,no_formulir,tanggal,userid,date_added,date_modified) VALUES ($no_transaksi,'$no_transaksi','$ps','$ta','$idsmt','$idkelas','$no_formulir',NOW(),'$userid',NOW(),NOW())";					
                 if ($this->DB->insertRecord($str)) {
-                    $str = "INSERT INTO transaksi_detail (idtransaksi_detail,no_transaksi,idkombi,dibayarkan) SELECT NULL,$no_transaksi,k.idkombi,kpt.biaya FROM kombi_per_ta kpt,kombi k WHERE  k.idkombi=kpt.idkombi AND tahun=$ta AND kpt.idkelas='$idkelas' AND (periode_pembayaran='sekali' OR periode_pembayaran='semesteran') ORDER BY periode_pembayaran,nama_kombi ASC";
-                    $this->DB->insertRecord($str);
+                    $str = "SELECT idkombi,SUM(dibayarkan) AS sudah_dibayar FROM v_transaksi WHERE no_formulir=$no_formulir AND tahun=$ta AND idsmt=$idsmt AND commited=1 GROUP BY idkombi ORDER BY idkombi+1 ASC";
+                    $this->DB->setFieldTable(array('idkombi','sudah_dibayar'));
+                    $d=$this->DB->getRecord($str);
+
+                    $sudah_dibayarkan=array();
+                    while (list($o,$p)=each($d)) {            
+                        $sudah_dibayarkan[$p['idkombi']]=$p['sudah_dibayar'];
+                    }
+                    $str = "SELECT k.idkombi,kpt.biaya FROM kombi_per_ta kpt,kombi k WHERE  k.idkombi=kpt.idkombi AND tahun=$ta AND kpt.idkelas='$idkelas' AND (periode_pembayaran='sekali' OR periode_pembayaran='semesteran') ORDER BY periode_pembayaran,nama_kombi ASC";
+                    $this->DB->setFieldTable(array('idkombi','biaya'));
+                    $r=$this->DB->getRecord($str);
+
+                    while (list($k,$v)=each($r)) {
+                        $biaya=$v['biaya'];
+                        $idkombi=$v['idkombi'];
+                        $sisa_bayar=$biaya-$sudah_dibayarkan[$idkombi];
+                        $str = "INSERT INTO transaksi_detail (idtransaksi_detail,no_transaksi,idkombi,dibayarkan) VALUES(NULL,$no_transaksi,$idkombi,$sisa_bayar)";
+                        $this->DB->insertRecord($str);
+                    }
+                    
                     $this->DB->query('COMMIT');
                     $_SESSION['currentPagePembayaranMahasiswaBaru']['DataMHS']['no_transaksi']=$no_transaksi;            
                     $this->redirect('pembayaran.TransaksiPembayaranMahasiswaBaru',true);        

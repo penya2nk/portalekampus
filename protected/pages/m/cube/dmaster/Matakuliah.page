@@ -179,7 +179,7 @@
                         <div class="col-lg-6">
                             <div>
                                 <com:TCheckBox ID="chkAddAktif" Checked="true" />
-                                <label>Matakuliah ini akan ada di KHS dan Transkrip Sementara.</label>
+                                <label>Matakuliah ini akan ada di KHS dan Transkrip Kurikulum.</label>
                             </div>                            
                         </div>
                     </div>
@@ -373,7 +373,7 @@
                         <div class="col-lg-6">
                             <div>
                                 <com:TCheckBox ID="chkEditAktif" Checked="true" />
-                                <label>Matakuliah ini akan ada di KHS dan Transkrip Sementara.</label>
+                                <label>Matakuliah ini akan ada di KHS dan Transkrip Kurikulum.</label>
                             </div>                            
                         </div>
                     </div>

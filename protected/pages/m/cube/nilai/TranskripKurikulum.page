@@ -1,6 +1,6 @@
-<%@ Title="Nilai - Transkrip Sementara" %>
+<%@ Title="Nilai - Transkrip Kurikulum" %>
 <com:TContent ID="moduleheader">
-    <i class="fa fa-book"></i> Transkrip Sementara<br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
+    <i class="fa fa-book"></i> Transkrip Kurikulum<br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
     <li><a href="#">AKADEMIK</a></li>
@@ -76,18 +76,18 @@
         <div class="col-lg-12">
             <div class="main-box clearfix">
                 <header class="main-box-header clearfix">
-                    <h2 class="pull-left"><i class="fa fa-book"></i> Daftar Nilai Transkrip Sementara Mahasiswa</h2> 
+                    <h2 class="pull-left"><i class="fa fa-book"></i> Daftar Nilai Transkrip Kurikulum Mahasiswa</h2> 
                     <div class="filter-block pull-right">                                                   
-                        <com:TActiveLinkButton ID="btnPrintTranskripSementaraAll" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out Transkrip Sementara">
+                        <com:TActiveLinkButton ID="btnPrintTranskripKurikulumAll" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out Transkrip Kurikulum">
                             <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
                             <prop:ClientSide.OnPreDispatch>
                                 $('loading').show();
                             </prop:ClientSide.OnPreDispatch>
                             <prop:ClientSide.OnLoading>
-                                $('<%=$this->btnPrintTranskripSementaraAll->ClientId%>').disabled='disabled';				
+                                $('<%=$this->btnPrintTranskripKurikulumAll->ClientId%>').disabled='disabled';				
                             </prop:ClientSide.OnLoading>
                             <prop:ClientSide.OnComplete>
-                                $('<%=$this->btnPrintTranskripSementaraAll->ClientId%>').disabled='';				
+                                $('<%=$this->btnPrintTranskripKurikulumAll->ClientId%>').disabled='';				
                                 $('loading').hide();
                             </prop:ClientSide.OnComplete>
                         </com:TActiveLinkButton> 									
@@ -99,7 +99,7 @@
                         <p>
                             <ul>
                                 <li>Matakuliah Konsentrasi tidak ditampilkan selama Mahasiswa belum mendaftar konsentrasi.</li>
-                                <li>Saat mencetak Transkrip Nilai Sementara, Matakuliah pilihan dan lintas prodi tidak akan ditampilkan bila tidak ada nilai-nya.</li>
+                                <li>Saat mencetak Transkrip Nilai Kurikulum, Matakuliah pilihan dan lintas prodi tidak akan ditampilkan bila tidak ada nilai-nya.</li>
                             </ul>
                         </p>
                     </div>    
@@ -135,14 +135,14 @@
                                     <td><%# $this->Data['sks']%></td>                                
                                     <td><%# $this->Data['ips']%></td>                                
                                     <td>
-                                        <a href="<%#$this->Page->constructUrl('nilai.DetailTranskripSementara',true,array('id'=>$this->DataItem['nim']))%>" class="table-link" title="Detail Transkrip">                                        
+                                        <a href="<%#$this->Page->constructUrl('nilai.DetailTranskripKurikulum',true,array('id'=>$this->DataItem['nim']))%>" class="table-link" title="Detail Transkrip">                                        
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-eye fa-stack-1x fa-inverse"></i>
                                             </span>
                                             </span>
                                         </a>
-                                        <com:TActiveLinkButton ID="btnPrintOutR" CssClass="table-link" OnClick="Page.printOut" Attributes.Title="Print Transkrip Sementara" ClientSide.PostState="false">
+                                        <com:TActiveLinkButton ID="btnPrintOutR" CssClass="table-link" OnClick="Page.printOut" Attributes.Title="Print Transkrip Kurikulum" ClientSide.PostState="false">
                                             <prop:Text>
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>

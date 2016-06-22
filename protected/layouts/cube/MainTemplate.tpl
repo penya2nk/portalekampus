@@ -317,8 +317,8 @@
                                                     </a>
                                                 </li>                                                
                                                 <li>
-                                                    <a href="<%=$this->Page->constructUrl('nilai.TranskripSementara',true)%>" <%=$this->Page->showTranskripSementara==true ? ' class="active" ':''%>>
-                                                        Transkrip Sementara
+                                                    <a href="<%=$this->Page->constructUrl('nilai.TranskripKurikulum',true)%>" <%=$this->Page->showTranskripKurikulum==true ? ' class="active" ':''%>>
+                                                        Transkrip Kurikulum
                                                     </a>
                                                 </li>
                                                 <li>
@@ -437,8 +437,8 @@
                                                     </a> 
                                                 </li>                                                
                                                 <li>
-                                                    <a<%=$this->Page->showTranskripSementara==true ? ' class="active" ':''%>  href="<%=$this->Page->constructUrl('nilai.TranskripSementara',true)%>">                                                        
-                                                        <span>Transkrip Sementara</span>											
+                                                    <a<%=$this->Page->showTranskripKurikulum==true ? ' class="active" ':''%>  href="<%=$this->Page->constructUrl('nilai.TranskripKurikulum',true)%>">                                                        
+                                                        <span>Transkrip Kurikulum</span>											
                                                     </a> 
                                                 </li> 
                                                 <li>

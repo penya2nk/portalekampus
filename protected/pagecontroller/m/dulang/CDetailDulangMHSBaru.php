@@ -26,7 +26,8 @@ class CDetailDulangMHSBaru Extends MainPageM {
                 $this->errorMessage->Text=$ex->getMessage();
             }
 		}	
-	}public function checkNIM ($sender,$param) {					
+	}
+    public function checkNIM ($sender,$param) {					
 		$nim=$param->Value;		
         if ($nim != '') {
             try {   

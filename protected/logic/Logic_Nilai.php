@@ -109,7 +109,7 @@ class Logic_Nilai extends Logic_Akademik {
 					if (isset($r_konversi[1])) {
 						$hm=$r_konversi[1]['n_kual'];			
 						$am=$this->AngkaMutu[$hm];
-						$m=$am*$r_konversi[1]['sks'];	
+						$m=$am*$v['sks'];	
 					}			
 				}	
 				$v['n_kual']=($hm=='')?'-':$hm;
@@ -144,7 +144,7 @@ class Logic_Nilai extends Logic_Akademik {
     * @param cek_isikuesioner bool
     * @version 1.0
 	*/
-	public function getTranskripNilaiSementara ($cek_isikuesioner=false) {
+	public function getTranskripNilaiKurikulum ($cek_isikuesioner=false) {
         $nim=$this->DataMHS['nim'];
         $idkonsentrasi=$this->DataMHS['idkonsentrasi'];        
 		
@@ -154,7 +154,7 @@ class Logic_Nilai extends Logic_Akademik {
         $this->db->setFieldTable(array('kmatkul','nmatkul','sks','semester','idkonsentrasi','nama_konsentrasi','ispilihan','islintas_prodi'));
         $r=$this->db->getRecord($str);			            
         $str = "SELECT n_kual,telah_isi_kuesioner,tahun FROM v_nilai WHERE nim='$nim' AND kmatkul=";
-        $str_konversi = "SELECT n_kual FROM v_konversi2 WHERE iddata_konversi='$iddata_konversi' AND kmatkul=";
+        $str_konversi = "SELECT n_kual,tahun FROM v_konversi2 WHERE iddata_konversi='$iddata_konversi' AND kmatkul=";
         $this->db->setFieldTable (array('n_kual','telah_isi_kuesioner','tahun'));
         $result=array();
         while (list($k,$v)=each($r)) {	
@@ -192,7 +192,7 @@ class Logic_Nilai extends Logic_Akademik {
                 if (isset($r_konversi[1])) {
                     $hm=$r_konversi[1]['n_kual'];			
                     $am=$this->AngkaMutu[$hm];
-                    $m=$am*$r_konversi[1]['sks'];	
+                    $m=$am*$v['sks'];                    
                 }			
             }	
             $v['n_kual']=($hm=='')?'-':$hm;

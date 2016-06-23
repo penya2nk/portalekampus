@@ -20,12 +20,19 @@ class CDetailPembayaranMahasiswaBaru Extends MainPageK {
                 if (!isset($r[1])) {                                
                     throw new Exception ("Calon Mahasiswa dengan Nomor Formulir ($no_formulir) tidak terdaftar di Database, silahkan ganti dengan yang lain.");		
                 }
-                $datamhs=$r[1];     
+                $datamhs=$r[1];                
                 $this->Finance->setDataMHS($datamhs);
                 if (!$spmb=$this->Finance->isLulusSPMB(true)) {
                     throw new Exception ("Calon Mahasiswa dengan Nomor Formulir ($no_formulir) tidak lulus dalam SPMB.");		
                 }
+                $datamhs['nama_ps1']=$_SESSION['daftar_jurusan'][$datamhs['kjur1']];
+                $datamhs['nama_ps2']=$datamhs['kjur2'] == '' ?'N.A' : $_SESSION['daftar_jurusan'][$datamhs['kjur2']];
+                if ($spmb['kjur']==$datamhs['kjur1'])
+                    $datamhs['diterima_ps1']='<span class="label label-flat border-info text-info-600">DITERIMA</span>';
+                else
+                    $datamhs['diterima_ps2']='<span class="label label-flat border-info text-info-600">DITERIMA</span>';
                 $datamhs['kjur']=$spmb['kjur'];
+                $datamhs['nkelas']=$this->DMaster->getNamaKelasByID($datamhs['idkelas']);
                 $this->Finance->setDataMHS($datamhs);                
                 $datamhs['no_transaksi']=isset($_SESSION['currentPagePembayaranMahasiswaBaru']['DataMHS']['no_transaksi']) ? $_SESSION['currentPagePembayaranMahasiswaBaru']['DataMHS']['no_transaksi'] : 'none';
                 $_SESSION['currentPagePembayaranMahasiswaBaru']['DataMHS']=$datamhs;                
@@ -37,6 +44,9 @@ class CDetailPembayaranMahasiswaBaru Extends MainPageK {
             }      
 		}	
 	}
+    public function getDataMHS($idx) {		        
+        return $this->Finance->getDataMHS($idx);
+    }
     public function populateTransaksi() {
         $datamhs=$_SESSION['currentPagePembayaranMahasiswaBaru']['DataMHS'];
         $no_formulir=$datamhs['no_formulir'];

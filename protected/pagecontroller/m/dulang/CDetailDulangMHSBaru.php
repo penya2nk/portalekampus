@@ -1,6 +1,6 @@
 <?php
 prado::using ('Application.MainPageM');
-class CDetailDulangMHSBaru Extends MainPageM {		
+class CTambahKRSMHSBaru Extends MainPageM {		
 	public function onLoad($param) {
 		parent::onLoad($param);				
         $this->showSubMenuAkademikDulang=true;
@@ -11,11 +11,12 @@ class CDetailDulangMHSBaru Extends MainPageM {
                 if (isset($_SESSION['currentPageDulangMHSBaru']['DataMHS']['no_formulir'])) {
                     $datamhs=$_SESSION['currentPageDulangMHSBaru']['DataMHS'];
                     
+                    $this->Demik->setDataMHS($datamhs);
                     $this->cmbAddDosenWali->DataSource=$this->DMaster->getListDosenWali();
                     $this->cmbAddDosenWali->dataBind();			
             
                     $kjur=$datamhs['kjur'];                    
-                    $nim_nirm=$this->Demik->getMaxNimAndNirm ($kjur,$datamhs['tahun_masuk']);
+                    $nim_nirm=$this->getMaxNimAndNirm ($kjur,$datamhs['tahun_masuk']);
                     $this->txtAddNIM->Text=$nim_nirm['nim'];
                     $this->txtAddNIRM->Text=$nim_nirm['nirm'];
                 }else{
@@ -27,6 +28,9 @@ class CDetailDulangMHSBaru Extends MainPageM {
             }
 		}	
 	}
+    public function getDataMHS($idx) {		        
+        return $this->Demik->getDataMHS($idx);
+    }
     public function checkNIM ($sender,$param) {					
 		$nim=$param->Value;		
         if ($nim != '') {
@@ -96,7 +100,7 @@ class CDetailDulangMHSBaru Extends MainPageM {
 			}
 		}
 	}
-    public function closeDetailDulang ($sender,$param) {
+    public function closeTambahKRS ($sender,$param) {
         unset($_SESSION['currentPageDulangMHSBaru']);
         $this->redirect('dulang.DulangMHSBaru',true);
     }

@@ -78,30 +78,33 @@ class Login extends MainPage {
 	}
     public function doLogin ($sender,$param) {
         if ($this->IsValid) {                        
-            $pengguna=$this->getLogic('Users');            
+            $pengguna=$this->getLogic('Users');      
+            $setup=$this->getLogic('Setup');
+            $dmaster=$this->getLogic('DMaster');
             switch ($pengguna->getTipeUser()) {
-                case 'm' :
-                    $dmaster=$this->getLogic('DMaster');
+                case 'm' :                    
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
+                    $_SESSION['kjur']=1;           
+                    $_SESSION['ta']=$setup->getSettingValue('default_ta');                 
                 break;                
+                case 'mh' :
+                    $_SESSION['ta']=$setup->getSettingValue('default_ta') < $pengguna->getDataUser('tahun_masuk') ? $pengguna->getDataUser('tahun_masuk') :$setup->getSettingValue('default_ta');
+                break;
                 case 'k' :
-                    $dmaster=$this->getLogic('DMaster');
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
+                    $_SESSION['ta']=$setup->getSettingValue('default_ta');                    
+                    
                 break; 
                 case 'mb' :
-                    $dmaster=$this->getLogic('DMaster');
+                    $_SESSION['ta']=$pengguna->getDataUser('tahun_masuk');
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
-                    $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
+                    $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);                    
                 break; 
-            }            
-            $_SESSION['kjur']=1;
-            $setup=$this->getLogic('Setup');            
-            $_SESSION['ta']=$setup->getSettingValue('default_ta');
-            $_SESSION['semester']=$setup->getSettingValue('default_semester');            
-            
+            }      
             $_SESSION['tahun_masuk']=$_SESSION['ta'];
+            $_SESSION['semester']=$setup->getSettingValue('default_semester');            
             $_SESSION['kelas']='none';
             $_SESSION['foto']='no_photo.png';
             $_SESSION['theme']=$pengguna->getDataUser('theme');

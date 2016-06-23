@@ -63,10 +63,20 @@
             <div class="main-box clearfix">
                 <header class="main-box-header clearfix">
                     <h2 class="pull-left"></h2> 
-                    <div class="filter-block pull-right">                                                   
-                        <a href="<%=$this->Page->constructUrl('perkuliahan.TambahKRS',true)%>" class="btn btn-primary pull-left" title="Isi KRS">                                        
-                            <i class="fa fa-plus-circle fa-lg"></i>
-                        </a>
+                    <div class="filter-block pull-right">                  
+                        <com:TActiveLinkButton ID="btnTambah" OnClick="tambahKRS" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Tambah KRS">
+                            <prop:Text><i class="fa fa-plus-circle fa-lg"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnTambah->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnTambah->ClientId%>').disabled='';				
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton> 
                         <com:TActiveLinkButton ID="btnPrintOut" OnClick="printKRS" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out KRS">
                             <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
                             <prop:ClientSide.OnPreDispatch>
@@ -79,10 +89,20 @@
                                 $('<%=$this->btnPrintOut->ClientId%>').disabled='';				
                                 $('loading').hide();
                             </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton>
+                        <com:TActiveLinkButton ID="btnCloseDetail" OnClick="closeDetailKRS" ClientSide.PostState="false" CssClass="btn btn-default pull-left" Attributes.Title="Keluar Detail Kartu Rencana Studi">
+                            <prop:Text><i class="fa fa-times fa-lg"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnCloseDetail->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnCloseDetail->ClientId%>').disabled='';				
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>
                         </com:TActiveLinkButton> 
-                        <a class="btn btn-default pull-right" href="<%=$this->constructUrl('perkuliahan.KRS',true)%>" title="Keluar Detail Kartu Rencana Studi">                        
-                            <i class='fa  fa-times fa-lg'></i>
-                        </a>
                     </div>
                 </header>
             </div>

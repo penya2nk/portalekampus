@@ -123,8 +123,15 @@ class CDulangMHSBaru Extends MainPageM {
                     $this->Finance->setDataMHS($datamhs);
                     if (!$spmb=$this->Finance->isLulusSPMB(true)) {
                         throw new Exception ("Calon Mahasiswa dengan Nomor Formulir ($no_formulir) tidak lulus dalam SPMB.");		
-                    }                
+                    }       
+                    $datamhs['nama_ps1']=$_SESSION['daftar_jurusan'][$datamhs['kjur1']];
+                    $datamhs['nama_ps2']=$datamhs['kjur2'] == '' ?'N.A' : $_SESSION['daftar_jurusan'][$datamhs['kjur2']];
+                    if ($spmb['kjur']==$datamhs['kjur1'])
+                        $datamhs['diterima_ps1']='<span class="label label-info">DITERIMA</span>';
+                    else
+                        $datamhs['diterima_ps2']='<span class="label label-info">DITERIMA</span>';
                     $datamhs['kjur']=$spmb['kjur'];
+                    $datamhs['nkelas']=$this->DMaster->getNamaKelasByID($datamhs['idkelas']);
                     $this->Finance->setDataMHS($datamhs);                               
                     if ($this->Finance->isMhsRegistered()){
                         throw new Exception ("Calon Mahasiswa a.n ".$datamhs['nama_mhs']." dengan no formulir $no_formulir sudah terdaftar di P.S ".$_SESSION['daftar_jurusan'][$datamhs['kjur']]);

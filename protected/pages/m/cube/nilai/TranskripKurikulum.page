@@ -5,7 +5,7 @@
 <com:TContent ID="modulebreadcrumb">    
     <li><a href="#">AKADEMIK</a></li>
     <li><a href="#">NILAI</a></li>
-    <li class="active"><span>TRANSKRIP SEMENTARA</span></li>
+    <li class="active"><span>TRANSKRIP KURIKULUM</span></li>
 </com:TContent>
 <com:TContent ID="configtools">    
     <%include Application.layouts.cube.FilterMode7%>

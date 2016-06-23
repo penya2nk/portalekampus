@@ -28,35 +28,13 @@
         </div>
     </div>
 </com:TPanel>
-<com:TPanel Visible="<%= $this->getDefaultProcess() %>">               
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>">   
+    <%include Application.layouts.cube.DataMHS%>
     <div class="row" id="user-profile">
         <div class="col-lg-3 col-md-4 col-sm-4">
-            <div class="main-box clearfix">
-                <header class="main-box-header clearfix">
-                    <h2><%=$this->DataMHS['nama_mhs']%></h2>
-                </header>
-
-                <div class="main-box-body clearfix">
-                    <div class="profile-status">
-                        <i class="fa fa-circle"></i> <%=$this->DataMHS['status']%>
-                    </div>                        
-                    <img src="resources/userimages/no_photo.png" alt="" class="profile-img img-responsive center-block" />
-                    <div class="profile-label">
-                        <span class="label label-danger"><%=$this->DataMHS['nkelas']%></span>
-                    </div>
-                    <div class="profile-stars">
-                        <i class="fa fa-star-o"></i>
-                        <i class="fa fa-star-o"></i>
-                        <i class="fa fa-star-o"></i>
-                        <i class="fa fa-star-o"></i>
-                        <i class="fa fa-star-o"></i>
-                        <span>Prestasi</span>
-                    </div>
-
-                    <div class="profile-since">
-                        Masuk Tahun: <%=$this->DataMHS['tahun_masuk']%>
-                    </div>
-
+            <div class="main-box clearfix">                
+                <div class="main-box-body clearfix">                                   
+                    
                     <div class="profile-details">
                         <ul class="fa-ul">
                             <li><i class="fa-li fa fa-truck"></i>IPK: <span><%=$this->DataMHS['ipk']%></span></li>

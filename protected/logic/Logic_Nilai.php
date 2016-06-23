@@ -331,7 +331,7 @@ class Logic_Nilai extends Logic_Akademik {
 	public function getKHSBeforeCurrentSemester ($ta,$idsmt) {
 		$nim=$this->DataMHS['nim'];
         $current_tasmt=$ta.$idsmt;
-		$str = ($this->dataMhs['tahun_masuk']==$ta&&$this->dataMhs['semester_masuk']==$idsmt)?"SELECT MAX(tasmt) AS tasmt FROM krs WHERE nim='$nim' AND tasmt <= $current_tasmt AND idsmt!=3":"SELECT MAX(tasmt) AS tasmt FROM krs WHERE nim='$nim' AND tasmt < $current_tasmt AND idsmt!=3";
+		$str = ($this->getDataMHS('tahun_masuk')==$ta&&$this->getDataMHS('semester_masuk')==$idsmt)?"SELECT MAX(tasmt) AS tasmt FROM krs WHERE nim='$nim' AND tasmt <= $current_tasmt AND idsmt!=3":"SELECT MAX(tasmt) AS tasmt FROM krs WHERE nim='$nim' AND tasmt < $current_tasmt AND idsmt!=3";
 		$this->db->setFieldTable(array('tasmt'));        
 		$r=$this->db->getRecord($str);		
 		if (!empty($r[1]['tasmt'])) {
@@ -549,19 +549,13 @@ class Logic_Nilai extends Logic_Akademik {
      * @param type $idsmt
      * @return type
      */
-	public function getMaxSKS ($ta,$idsmt) {
-		$kjur=$this->DataMHS['kjur'];
+	public function getMaxSKS ($ta,$idsmt) {		
 		$ta_masuk=$this->DataMHS['tahun_masuk'];
 		$semester_masuk=$this->DataMHS['semester_masuk'];		        
-		if ($ta < 2010){
-			$jumlahsks=24;
-		}elseif ($kjur=='2' && $ta==$ta_masuk && $idsmt==$semester_masuk) {
-			$jumlahsks=24;
-		}elseif ($ta==$ta_masuk && $idsmt==$semester_masuk) {
+		if ($ta==$ta_masuk && $idsmt==$semester_masuk) {
 			$jumlahsks=21;
-		}else {		
-			$tasmt=$ta.$idsmt;			
-			$this->getKHSBeforeCurrentSemester($tasmt);			
+		}else {				
+			$this->getKHSBeforeCurrentSemester($ta,$idsmt);			
 			$jumlahsks=$this->getSKSNextSemester($this->getIPS());				
 		}
         return $jumlahsks;

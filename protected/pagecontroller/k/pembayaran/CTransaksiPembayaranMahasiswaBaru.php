@@ -16,6 +16,7 @@ class CTransaksiPembayaranMahasiswaBaru Extends MainPageK {
                     $url=$this->constructUrl('pembayaran.PembayaranMahasiswaBaru',true);
                     throw new Exception ("Mohon kembali ke halam <a href='$url'>ini</a>");		
                 }  
+                $this->Finance->setDataMHS($datamhs);
                 $no_transaksi=$datamhs['no_transaksi'];
                 $str = "SELECT no_faktur,tanggal FROM transaksi WHERE no_transaksi=$no_transaksi";
                 $this->DB->setFieldTable(array('no_faktur','tanggal'));
@@ -30,6 +31,9 @@ class CTransaksiPembayaranMahasiswaBaru Extends MainPageK {
             }      
 		}	
 	}
+    public function getDataMHS($idx) {		        
+        return $this->Finance->getDataMHS($idx);
+    }
     public function populateData () {
         $datamhs=$_SESSION['currentPagePembayaranMahasiswaBaru']['DataMHS'];        
         $no_transaksi=$datamhs['no_transaksi'];

@@ -79,6 +79,9 @@ class CProfilMahasiswa extends MainPageM {
             $this->errorMessage->Text=$ex->getMessage();
         }          
     }
+    public function getDataMHS($idx) {		        
+        return $this->Nilai->getDataMHS($idx);
+    }
     public function populateDulang() {
         $this->KRS->setDataMHS($_SESSION['currentPageProfilMahasiswa']['DataMHS']);
         $nim=$_SESSION['currentPageProfilMahasiswa']['DataMHS']['nim'];
@@ -90,8 +93,12 @@ class CProfilMahasiswa extends MainPageM {
             $v['tanggal']=$v['tanggal'] == '0000-00-00 00:00:00' ? '-' :$this->TGL->tanggal('l, d F Y',$v['tanggal']);
             $isikrs='tidak isi';
             if ($v['k_status']=='A') {
-                $this->KRS->getDataKRS($v['tahun'],$v['idsmt']);                
-                $isikrs=$this->KRS->DataKRS['sah']==true ? 'sudah isi [sah]':'sudah isi [belum disahkan]';
+                $this->KRS->getDataKRS($v['tahun'],$v['idsmt']);  
+                $datakrs=$this->KRS->DataKRS;
+                $isikrs='belum isi';
+                if (isset($datakrs['idkrs'])) {
+                    $isikrs=$this->KRS->DataKRS['sah']==true ? 'sudah isi [sah]':'sudah isi [belum disahkan]';
+                }                
             }
             $v['tahun']=$this->DMaster->getNamaTA($v['tahun']);		
             $v['semester'] = $this->setup->getSemester($v['idsmt']);

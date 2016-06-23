@@ -29,23 +29,24 @@
         </div>
     </div>
 </com:TPanel>
-<com:TPanel Visible="<%= $this->getDefaultProcess() %>">            
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>"> 
+    <%include Application.layouts.cube.DataMHSBaru%>
     <div class="row">
         <div class="col-lg-12">
             <div class="main-box clearfix">
                 <header class="main-box-header clearfix">
                     <h2 class="pull-left"><i class="fa fa-location-arrow"></i> NIM Baru</h2>                    
                     <div class="filter-block pull-right">                                                   
-                        <com:TActiveLinkButton ID="btnPrintKHS" OnClick="closeDetailDulang" ClientSide.PostState="false" CssClass="btn btn-default pull-left" Attributes.Title="Keluar">
+                        <com:TActiveLinkButton ID="btnClose" OnClick="closeDetailDulang" ClientSide.PostState="false" CssClass="btn btn-default pull-left" Attributes.Title="Keluar">
                             <prop:Text><i class="fa fa-times fa-lg"></i></prop:Text>
                             <prop:ClientSide.OnPreDispatch>
                                 $('loading').show();
                             </prop:ClientSide.OnPreDispatch>
                             <prop:ClientSide.OnLoading>
-                                $('<%=$this->btnPrintKHS->ClientId%>').disabled='disabled';				
+                                $('<%=$this->btnClose->ClientId%>').disabled='disabled';				
                             </prop:ClientSide.OnLoading>
                             <prop:ClientSide.OnComplete>
-                                $('<%=$this->btnPrintKHS->ClientId%>').disabled='';				
+                                $('<%=$this->btnClose->ClientId%>').disabled='';				
                                 $('loading').hide();
                             </prop:ClientSide.OnComplete>
                         </com:TActiveLinkButton>

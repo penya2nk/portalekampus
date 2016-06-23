@@ -29,30 +29,35 @@ class CTambahKRS extends MainPageM {
         $this->createObj('Finance');
 		if (!$this->IsPostBack&&!$this->IsCallback) {	            
             $this->lblModulHeader->Text=$this->getInfoToolbar();            
-            try {			                
-                $this->KRS->DataKRS=$_SESSION['currentPageKRS']['DataKRS'];							
-                //print_R($this->KRS->DataKRS['krs']);
-                $idsmt=$this->KRS->DataKRS['krs']['idsmt'];
-                $tahun=$this->KRS->DataKRS['krs']['tahun'];
-                $datamhs=$_SESSION['currentPageKRS']['DataMHS'];                                            
-                $nim=$datamhs['nim'];                
-                $this->KRS->setDataMHS($datamhs);   
-                
-                $kjur=$datamhs['kjur'];
-                $idkur=$this->KRS->getIDKurikulum($kjur);
-                $str = "SELECT vp.idpenyelenggaraan,vp.kmatkul,vp.nmatkul,vp.sks,vp.semester,vp.iddosen,vp.nidn,vp.nama_dosen FROM v_penyelenggaraan vp WHERE vp.idpenyelenggaraan NOT IN (SELECT km.idpenyelenggaraan FROM krsmatkul km,krs k WHERE km.idkrs=k.idkrs AND k.nim='$nim') AND vp.idsmt='$idsmt' AND vp.tahun='$tahun' AND vp.kjur='$kjur' AND vp.idkur=$idkur ORDER BY vp.semester ASC,vp.nmatkul ASC";
-                $this->DB->setFieldTable (array('idpenyelenggaraan','kmatkul','nmatkul','sks','semester','iddosen','nidn','nama_dosen'));			
-                $daftar_matkul_diselenggarakan=$this->DB->getRecord($str);
+            try {	
+                $datakrs=$_SESSION['currentPageKRS']['DataKRS'];
+                if (isset($datakrs['krs']['idkrs'])){
+                    $this->KRS->DataKRS=$datakrs;
+                    
+                    $idsmt=$datakrs['krs']['idsmt'];
+                    $tahun=$datakrs['krs']['tahun'];
+                    $datamhs=$_SESSION['currentPageKRS']['DataMHS'];                                            
+                    $nim=$datamhs['nim'];                
+                    $this->KRS->setDataMHS($datamhs);   
 
-                $idkrs=$this->KRS->DataKRS['krs']['idkrs'];
-                $str = "SELECT idpenyelenggaraan,idkrsmatkul,kmatkul,nmatkul,sks,semester,batal,nidn,nama_dosen FROM v_krsmhs WHERE idkrs=$idkrs ORDER BY semester ASC,kmatkul ASC";
-                $this->DB->setFieldTable(array('idpenyelenggaraan','idkrsmatkul','kmatkul','nmatkul','sks','semester','batal','nidn','nama_dosen'));
-                $matkul=$this->DB->getRecord($str);                
-                $this->RepeaterS->DataSource=$matkul;
-                $this->RepeaterS->dataBind();
-                
-                $this->RepeaterPenyelenggaraan->DataSource=$daftar_matkul_diselenggarakan;
-                $this->RepeaterPenyelenggaraan->dataBind();
+                    $kjur=$datamhs['kjur'];
+                    $idkur=$this->KRS->getIDKurikulum($kjur);
+                    $str = "SELECT vp.idpenyelenggaraan,vp.kmatkul,vp.nmatkul,vp.sks,vp.semester,vp.iddosen,vp.nidn,vp.nama_dosen FROM v_penyelenggaraan vp WHERE vp.idpenyelenggaraan NOT IN (SELECT km.idpenyelenggaraan FROM krsmatkul km,krs k WHERE km.idkrs=k.idkrs AND k.nim='$nim') AND vp.idsmt='$idsmt' AND vp.tahun='$tahun' AND vp.kjur='$kjur' AND vp.idkur=$idkur ORDER BY vp.semester ASC,vp.nmatkul ASC";
+                    $this->DB->setFieldTable (array('idpenyelenggaraan','kmatkul','nmatkul','sks','semester','iddosen','nidn','nama_dosen'));			
+                    $daftar_matkul_diselenggarakan=$this->DB->getRecord($str);
+
+                    $idkrs=$this->KRS->DataKRS['krs']['idkrs'];
+                    $str = "SELECT idpenyelenggaraan,idkrsmatkul,kmatkul,nmatkul,sks,semester,batal,nidn,nama_dosen FROM v_krsmhs WHERE idkrs=$idkrs ORDER BY semester ASC,kmatkul ASC";
+                    $this->DB->setFieldTable(array('idpenyelenggaraan','idkrsmatkul','kmatkul','nmatkul','sks','semester','batal','nidn','nama_dosen'));
+                    $matkul=$this->DB->getRecord($str);                
+                    $this->RepeaterS->DataSource=$matkul;
+                    $this->RepeaterS->dataBind();
+
+                    $this->RepeaterPenyelenggaraan->DataSource=$daftar_matkul_diselenggarakan;
+                    $this->RepeaterPenyelenggaraan->dataBind();
+                }else{
+                    throw new Exception('ID KRS belum ada di session.');
+                }                
             }catch (Exception $e) {
                 $this->idProcess='view';	
                 $this->errorMessage->Text=$e->getMessage();	
@@ -120,7 +125,10 @@ class CTambahKRS extends MainPageM {
 			TambahKRS::$jumlahMatkul+=1;	
 		}
 	}	
-	
+	public function closeTambahKRS ($sender,$param) {
+        unset($_SESSION['currentPageKRS']);
+        $this->redirect ('perkuliahan.KRS',true);
+    }
 }
 
 ?>

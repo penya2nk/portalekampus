@@ -7,7 +7,7 @@
     <li class="active">MAHASISWA BARU</li>     
 </com:TContent>
 <com:TContent ID="sidebarcontent">
-<div class="sidebar sidebar-main sidebar-default sidebar-separate" style="width:330px">
+<div class="sidebar sidebar-main sidebar-default sidebar-separate">
     <div class="sidebar-content">                            
         <%include Application.layouts.limitless.OutputReportMode1%>
     </div>
@@ -23,7 +23,8 @@
         </div>
     </div>    
 </com:TPanel>
-<com:TPanel Visible="<%= $this->getDefaultProcess() %>" CssClass="content">    
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>" CssClass="content"> 
+    <%include Application.layouts.limitless.DataMHSBaru%>
     <com:THiddenField ID="hiddennofaktur" />
     <div class="panel panel-flat">
         <div class="panel-heading">

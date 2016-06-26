@@ -79,7 +79,14 @@ class CDetailKRS extends MainPageM {
         $idsmt=$datakrs['krs']['idsmt'];
         $tahun=$datakrs['krs']['tahun'];        
         $this->Nilai->setDataMHS($_SESSION['currentPageKRS']['DataMHS']);
-        $datakrs['krs']['maxSKS']=$idsmt==3?$this->Finance->getSKSFromSP($tahun,$idsmt):$this->Nilai->getMaxSKS($tahun,$idsmt);                
+        if ($idsmt==3) {
+            $this->createObj('Finance');
+             $this->Finance->setDataMHS($_SESSION['currentPageKRS']['DataMHS']);
+            $maxSKS=$this->Finance->getSKSFromSP($tahun,$idsmt);
+        }else{
+           $maxSKS=$this->Nilai->getMaxSKS($tahun,$idsmt);
+        }
+        $datakrs['krs']['maxSKS']=$maxSKS;               
         $datakrs['krs']['ipstasmtbefore']=$this->Nilai->getIPS();
         $_SESSION['currentPageKRS']['DataKRS']=$datakrs;
         $this->redirect ('perkuliahan.TambahKRS',true);

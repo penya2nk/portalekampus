@@ -257,7 +257,17 @@
                                                     <a href="<%=$this->Page->constructUrl('dulang.DulangMHSBaru',true)%>" <%=$this->Page->showDulangMHSBaru==true ? ' class="active" ':''%>>
                                                         Mahasiswa Baru
                                                     </a>
-                                                </li>                                                                                             
+                                                </li>    
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('dulang.DulangMHSLama',true)%>" <%=$this->Page->showDulangMHSLama==true ? ' class="active" ':''%>>
+                                                        Mahasiswa Lama
+                                                    </a>
+                                                </li> 
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('dulang.DulangMHSEkstension',true)%>" <%=$this->Page->showDulangMHSEkstension==true ? ' class="active" ':''%>>
+                                                        Mahasiswa Ekstension
+                                                    </a>
+                                                </li> 
                                             </ul>
                                         </li>                                                                                                                       
                                         <li<%=$this->Page->showSubMenuAkademikPerkuliahan==true?' class="active"':''%>>

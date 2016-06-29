@@ -10,7 +10,7 @@ class CDetailPembayaranMahasiswaBaru Extends MainPageK {
         $this->createObj('Finance');
 		if (!$this->IsPostBack&&!$this->IsCallBack) {
             if (!isset($_SESSION['currentPagePembayaranMahasiswaBaru'])||$_SESSION['currentPagePembayaranMahasiswaBaru']['page_name']!='k.pembayaran.PembayaranMahasiswaBaru') {
-				$_SESSION['currentPagePembayaranMahasiswaBaru']=array('page_name'=>'k.pembayaran.PembayaranMahasiswaBaru','page_num'=>0,'search'=>false,'kelas'=>'none','tahun_masuk'=>$_SESSION['tahun_masuk'],'semester_masuk'=>$_SESSION['semester'],'DataMHS'=>array());												
+				$_SESSION['currentPagePembayaranMahasiswaBaru']=array('page_name'=>'k.pembayaran.PembayaranMahasiswaBaru','page_num'=>0,'search'=>false,'kelas'=>'none','semester_masuk'=>1,'DataMHS'=>array());												
 			}        
             try {
                 $no_formulir=addslashes($this->request['id']);
@@ -83,7 +83,10 @@ class CDetailPembayaranMahasiswaBaru Extends MainPageK {
             $no_formulir=$datamhs['no_formulir'];
             $ta=$datamhs['tahun_masuk'];                        
             $idsmt=$datamhs['semester_masuk'];
-            if ($this->DB->checkRecordIsExist('no_formulir','transaksi',$no_formulir," AND tahun='$ta' AND idsmt='$idsmt' AND commited=0")) {
+            if ($this->Finance->getLunasPembayaran($ta,$idsmt)) {
+                $this->lblContentMessageError->Text='Tidak bisa menambah Transaksi baru karena sudah lunas.';
+                $this->modalMessageError->show();
+            }elseif ($this->DB->checkRecordIsExist('no_formulir','transaksi',$no_formulir," AND tahun='$ta' AND idsmt='$idsmt' AND commited=0")) {
                 $this->lblContentMessageError->Text='Tidak bisa menambah Transaksi baru karena ada transaksi yang belum di Commit.';
                 $this->modalMessageError->show();
             }else{

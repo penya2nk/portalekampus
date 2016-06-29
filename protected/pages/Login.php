@@ -94,6 +94,7 @@ class Login extends MainPage {
                 case 'k' :
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
+                    $_SESSION['kjur']=1;
                     $_SESSION['ta']=$setup->getSettingValue('default_ta');                    
                     
                 break; 

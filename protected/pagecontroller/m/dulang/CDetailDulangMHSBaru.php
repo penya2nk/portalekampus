@@ -1,6 +1,6 @@
 <?php
 prado::using ('Application.MainPageM');
-class CTambahKRSMHSBaru Extends MainPageM {		
+class CDetailDulangMHSBaru Extends MainPageM {		
 	public function onLoad($param) {
 		parent::onLoad($param);				
         $this->showSubMenuAkademikDulang=true;
@@ -100,7 +100,7 @@ class CTambahKRSMHSBaru Extends MainPageM {
 			}
 		}
 	}
-    public function closeTambahKRS ($sender,$param) {
+    public function closeDetailDulang ($sender,$param) {
         unset($_SESSION['currentPageDulangMHSBaru']);
         $this->redirect('dulang.DulangMHSBaru',true);
     }

@@ -92,7 +92,7 @@
                         </a>
                     </li> 
                     <li<%=$this->Page->showPembayaranSemesterGanjil==true?' class="active"':''%>>
-                        <a href="<%=$this->Page->constructUrl('pembayaran.SemesterGanjil',true)%>">
+                        <a href="<%=$this->Page->constructUrl('pembayaran.PembayaranSemesterGanjil',true)%>">
                             <i class="icon-calculator3"></i> Semester Ganjil
                         </a>
                     </li>                                        
@@ -122,7 +122,7 @@
         <div class="page-title">
             <h4><com:TContentPlaceHolder ID="moduleheader" /></h4>
             <ul class="breadcrumb breadcrumb-caret position-right">
-                <li><a href="<%=$this->Page->constructUrl('Home',true)%>">Home</a></li>            
+                <li><a href="<%=$this->Page->constructUrl('Home',true)%>">HOME</a></li>            
                 <com:TContentPlaceHolder ID="modulebreadcrumb" />
             </ul>
             <com:TContentPlaceHolder ID="modulebreadcrumbelement" />

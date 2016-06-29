@@ -2,7 +2,7 @@
     <div class="col-lg-12">
         <div class="panel panel-flat border-top-info border-bottom-info">
             <div class="panel-heading">
-                <h5 class="panel-title"><i class="icon-profile"></i> Biodata Mahasiswa</h5>
+                <h5 class="panel-title"><i class="icon-profile"></i> Biodata Calon Mahasiswa</h5>
             </div>
             <div class="panel-body">
                 <div class="row">

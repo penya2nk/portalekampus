@@ -95,7 +95,12 @@
                         <a href="<%=$this->Page->constructUrl('pembayaran.PembayaranSemesterGanjil',true)%>">
                             <i class="icon-calculator3"></i> Semester Ganjil
                         </a>
-                    </li>                                        
+                    </li> 
+                    <li<%=$this->Page->showPembayaranSemesterGenap==true?' class="active"':''%>>
+                        <a href="<%=$this->Page->constructUrl('pembayaran.PembayaranSemesterGenap',true)%>">
+                            <i class="icon-calculator3"></i> Semester Genap
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="dropdown<%=$this->Page->showReport==true?' active':''%> visible">

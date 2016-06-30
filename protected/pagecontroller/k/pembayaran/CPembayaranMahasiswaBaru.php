@@ -67,7 +67,7 @@ class CPembayaranMahasiswaBaru Extends MainPageK {
         if ($search) {
             
         }else{
-            $str = "SELECT t.no_transaksi,t.tanggal,t.no_formulir,fp.nama_mhs FROM transaksi t JOIN formulir_pendaftaran fp ON (t.no_formulir=fp.no_formulir) WHERE fp.no_formulir=t.no_formulir AND fp.ta='$tahun_masuk' AND fp.idsmt='$semester_masuk' AND t.kjur=$kjur";
+            $str = "SELECT t.no_transaksi,t.tanggal,t.no_formulir,fp.nama_mhs,commited FROM transaksi t JOIN formulir_pendaftaran fp ON (t.no_formulir=fp.no_formulir) WHERE fp.no_formulir=t.no_formulir AND fp.ta='$tahun_masuk' AND fp.idsmt='$semester_masuk' AND t.kjur=$kjur";
             $jumlah_baris=$this->DB->getCountRowsOfTable("transaksi t,formulir_pendaftaran fp WHERE fp.no_formulir=t.no_formulir AND fp.ta='$tahun_masuk' AND fp.idsmt='$semester_masuk' AND t.kjur=$kjur",'no_transaksi');
         }
         $this->RepeaterS->CurrentPageIndex=$_SESSION['currentPagePembayaranMahasiswaBaru']['page_num'];
@@ -80,7 +80,7 @@ class CPembayaranMahasiswaBaru Extends MainPageK {
 			$limit=$itemcount-$offset;
 		}
 		if ($limit < 0) {$offset=0;$limit=10;$_SESSION['currentPagePembayaranMahasiswaBaru']['page_num']=0;}
-        $this->DB->setFieldTable(array('no_transaksi','tanggal','no_formulir','nama_mhs'));
+        $this->DB->setFieldTable(array('no_transaksi','tanggal','no_formulir','nama_mhs','commited'));
         $str = "$str ORDER BY fp.nama_mhs ASC,t.date_added DESC LIMIT $offset,$limit";	
         $r = $this->DB->getRecord($str,$offset+1);	        
         $result=array();		
@@ -91,7 +91,7 @@ class CPembayaranMahasiswaBaru Extends MainPageK {
 			$r2=$this->DB->getRecord($str2);				
 			$dibayarkan=$r2[1]['dibayarkan'];						
 			$v['dibayarkan']=$this->Finance->toRupiah($dibayarkan);													
-			$v['tanggal']=$this->TGL->tanggal('l, j F Y',$v['tanggal']);
+			$v['tanggal']=$this->TGL->tanggal('d/m/Y',$v['tanggal']);
 			$result[$k]=$v;
 		}
         $this->RepeaterS->DataSource=$result;

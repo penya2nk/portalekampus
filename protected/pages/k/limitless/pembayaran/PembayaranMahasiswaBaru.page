@@ -69,7 +69,8 @@
                                     <th scope="col">NO.FORMULIR</th>                                    
                                     <th scope="col">NAMA MAHASISWA</th>																												
                                     <th scope="col">JUMLAH BAYAR</th>												
-                                    <th>AKSI</th>
+                                    <th scope="col">STATUS</th>
+                                    <th width="80">AKSI</th>
                                 </tr>	
                             </thead>		
                             <tbody>							
@@ -83,13 +84,30 @@
                             <td><%#$this->DataItem['nama_mhs']%></td>					
                             <td><%#$this->DataItem['dibayarkan']%></td>														
                             <td>
-                                
+                                <span class="<%#$this->DataItem['commited']==true?'label label-flat border-success text-success-600 position-right':'label label-danger position-right'%>"><%#$this->DataItem['commited']==true?'Done':'in progress'%></span>                               
+                            </td>
+                            <td>
+                                <ul class="icons-list">
+                                    <li class="text-primary-600">
+                                        <a href="<%#$this->Page->constructUrl('pembayaran.DetailPembayaranMahasiswaBaru',true,array('id'=>$this->DataItem['no_formulir']))%>" title="Detail Transaksi">
+                                            <i class="icon-eye"></i>
+                                        </a>
+                                    </li>                                    
+                                </ul>
                             </td>
                         </tr>
                     </prop:ItemTemplate>							
                     <prop:FooterTemplate>
                         </table>
-                    </prop:FooterTemplate>		
+                    </prop:FooterTemplate>	
+                    <prop:EmptyTemplate>                       
+                        <div class="panel-body">
+                            <div class="alert alert-info alert-styled-left alert-bordered">
+                                <span class="text-semibold">Info!</span>
+                                Belum ada data yang bisa ditampilkan.
+                            </div>                
+                        </div>       
+                    </prop:EmptyTemplate>
                 </com:TActiveRepeater>	
                 <%include Application.layouts.limitless.CustomPaging%>
             </div>

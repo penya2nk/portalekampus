@@ -690,7 +690,20 @@
                             <prop:FooterTemplate>
                                 </tbody>	
                                 </table>
-                            </prop:FooterTemplate>							
+                            </prop:FooterTemplate>		
+                            <prop:EmptyTemplate>                                                       
+                                <div class="row">
+                                    <div class="main-box-body">
+                                        <div class="alert alert-info">
+                                            <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                            <strong>
+                                                Info!
+                                            </strong>
+                                             Tidak ada data yang bisa ditampilkan.
+                                        </div>
+                                    </div>
+                                </div>
+                            </prop:EmptyTemplate>
                         </com:TActiveRepeater>	    
                         <%include Application.CustomPaging%>
                     </div>

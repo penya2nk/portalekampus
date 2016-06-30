@@ -1,6 +1,6 @@
-<%@ Title="Pembayaran - Pembayaran Semester Ganjil"%>
+<%@ Title="Pembayaran - Pembayaran Semester Genap"%>
 <com:TContent ID="moduleheader">    
-    <i class="icon-file-text position-left"></i> <span class="text-semibold">Pembayaran Semester Ganjil</span>
+    <i class="icon-file-text position-left"></i> <span class="text-semibold">Pembayaran Semester Genap</span>
 </com:TContent>
 <com:TContent ID="moduleheaderelement">    
     <div class="heading-elements">
@@ -89,7 +89,7 @@
                             <td>
                                 <ul class="icons-list">
                                     <li class="text-primary-600">
-                                        <a href="<%#$this->Page->constructUrl('pembayaran.DetailPembayaranSemesterGanjil',true,array('id'=>$this->DataItem['nim']))%>" title="Detail Transaksi">
+                                        <a href="<%#$this->Page->constructUrl('pembayaran.DetailPembayaranSemesterGenap',true,array('id'=>$this->DataItem['nim']))%>" title="Detail Transaksi">
                                             <i class="icon-eye"></i>
                                         </a>
                                     </li>                                    
@@ -99,7 +99,15 @@
                     </prop:ItemTemplate>							
                     <prop:FooterTemplate>
                         </table>
-                    </prop:FooterTemplate>		
+                    </prop:FooterTemplate>
+                    <prop:EmptyTemplate>                       
+                        <div class="panel-body">
+                            <div class="alert alert-info alert-styled-left alert-bordered">
+                                <span class="text-semibold">Info!</span>
+                                Belum ada data yang bisa ditampilkan.
+                            </div>                
+                        </div>       
+                    </prop:EmptyTemplate>
                 </com:TActiveRepeater>	
                 <%include Application.layouts.limitless.CustomPaging%>
             </div>

@@ -174,6 +174,22 @@ class Logic_Finance extends Logic_Mahasiswa {
         }
 	}
     /**
+     * digunakan untuk mendapaktan kelas pada transaksi
+     * @param type $tahun_sekarang
+     * @param type $semester_sekarang
+     * @return boolean
+     */
+	public function getKelasFromTransaksi($tahun_sekarang,$semester_sekarang) {
+		$no_formulir=$this->DataMHS['no_formulir'];
+		$str = "SELECT idkelas FROM transaksi WHERE tahun=$tahun_sekarang AND idsmt=$semester_sekarang AND no_formulir=$no_formulir LIMIT 0,1";
+		$this->db->setFieldTable(array('idkelas'));
+		$r=$this->db->getRecord($str);		
+		if (isset($r[1]) )
+			return $r[1]['idkelas'];
+		else
+			return false;
+	}
+    /**
 	* untuk mendapatkan jumlah sks SP	
 	* @return boolean atau array
 	*/

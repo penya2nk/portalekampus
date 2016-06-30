@@ -146,8 +146,7 @@ class CDulangMHSLama Extends MainPageM {
                     if (!isset($r[1])) {
                         throw new Exception ("Mahasiswa Dengan NIM ($nim) tidak terdaftar di Portal.");
                     }
-                    $datamhs=$r[1];                    
-                    $datamhs['nkelas']=$this->DMaster->getNamaKelasByID($datamhs['idkelas']);                    
+                    $datamhs=$r[1];      
                     $this->Finance->setDataMHS($datamhs);                              
                     $datadulang=$this->Finance->getDataDulang($_SESSION['semester'],$_SESSION['ta']);
                     
@@ -158,7 +157,14 @@ class CDulangMHSLama Extends MainPageM {
                     if (!$data['bool']) {
                         throw new Exception ("Mahasiswa a.n ".$this->Finance->getDataMHS('nama_mhs')."($nim) tidak bisa daftar ulang karena baru membayar(".$this->Finance->toRupiah($data['total_bayar'])."), harus minimal setengahnya sebesar (".$this->Finance->toRupiah($data['ambang_pembayaran']).") dari total (".$this->Finance->toRupiah($data['total_biaya']).")");
                     }
-//                    $_SESSION['currentPageDulangMHSLama']['DataMHS']=$datamhs;
+                    $datamhs['idsmt']=$_SESSION['semester'];
+                    $datamhs['ta']=$_SESSION['ta'];
+                    $datamhs['nkelas']=$this->DMaster->getNamaKelasByID($datamhs['idkelas']);
+                    $datamhs['nama_dosen']=$this->DMaster->getNamaDosenWaliByID ($datamhs['iddosen_wali']);
+                    $datamhs['nkelas']=$this->DMaster->getNamaKelasByID($datamhs['idkelas']);
+                    $datamhs['nama_konsentrasi']=($datamhs['idkonsentrasi']==0) ? '-':$datamhs['nama_konsentrasi'];                    
+                    $datamhs['status']=$this->DMaster->getNamaStatusMHSByID($datamhs['k_status']);
+                    $_SESSION['currentPageDulangMHSLama']['DataMHS']=$datamhs;
                 }
             }catch (Exception $e) {
                 $param->IsValid=false;
@@ -169,7 +175,7 @@ class CDulangMHSLama Extends MainPageM {
     public function Go($param,$sender) {	
         if ($this->Page->isValid) {            
             $nim=addslashes($this->txtNIM->Text);
-//            $this->redirect('dulang.DetailDulangMHSLama',true,array('id'=>$nim));
+            $this->redirect('dulang.DetailDulangMHSLama',true,array('id'=>$nim));
         }
 	}
     public function viewRecord($sender,$param) {	
@@ -192,7 +198,12 @@ class CDulangMHSLama Extends MainPageM {
 		$idsmt=$this->hiddensemestermasuk->Value;
 		$ta=$this->hiddentahunmasuk->Value;
 		$this->DB->query ('BEGIN');
-		if ($this->DB->deleteRecord("dulang WHERE nim='$nim' AND tahun='$ta' AND idsmt='$idsmt'")) {			
+        $this->Demik->setDataMHS(array('nim'=>$nim));
+        $datadulang=$this->Demik->getDataDulang($idsmt,$ta);
+        $k_status=$datadulang['status_sebelumnya'];
+        $str = "UPDATE register_mahasiswa SET k_status='$k_status' WHERE nim='$nim'";
+		if ($this->DB->updateRecord($str)) {
+            $this->DB->deleteRecord("dulang WHERE nim='$nim' AND tahun='$ta' AND idsmt='$idsmt'");
 			$this->DB->deleteRecord("krs WHERE nim='$nim' AND tahun='$ta' AND idsmt='$idsmt'");		
 			$this->DB->query ('COMMIT');
             $this->redirect('dulang.DulangMHSLama',true);

@@ -121,6 +121,7 @@ class CKonversiMatakuliah extends MainPageM {
         $this->cmbAddJenjang->dataBind();
 
         $idkur=$this->Nilai->getIDKurikulum($_SESSION['kjur']);
+        $this->hiddenidkur->Value=$idkur;
         $str = "SELECT kmatkul,nmatkul,sks,semester FROM matakuliah WHERE idkur=$idkur ORDER BY (semester+0),kmatkul ASC";
 		$this->DB->setFieldTable (array('kmatkul','nmatkul','sks','semester'));
 		$listMatkul = $this->DB->getRecord($str);				
@@ -143,7 +144,7 @@ class CKonversiMatakuliah extends MainPageM {
             $kjenjang=$this->cmbAddJenjang->Text;            
 			$kjur=$_SESSION['kjur'];
             $tahun_masuk=$_SESSION['tahun_masuk'];
-			$idkur=$this->Nilai->getIDKurikulum($kjur);
+			$idkur=$this->hiddenidkur->Value;
             $i=1;
             try {
                 $str="INSERT INTO data_konversi2 (iddata_konversi,nama,alamat,no_telp,nim_asal,kode_pt_asal,nama_pt_asal,kjenjang,kode_ps_asal,nama_ps_asal,tahun,kjur,idkur,date_added,date_modified) VALUES ";
@@ -200,7 +201,7 @@ class CKonversiMatakuliah extends MainPageM {
 		$this->txtEditNamaPsAsal->Text = $dataView['nama_ps_asal'];
 		
 		$this->cmbEditTahunAkademik->DataSource=$this->DMaster->removeIdFromArray($this->DMaster->getListTA(),'none');			
-		$this->cmbEditTahunAkademik->Text=$dataView['tahun'];;			
+		$this->cmbEditTahunAkademik->Text=$dataView['tahun'];			
 		$this->cmbEditTahunAkademik->dataBind();
 		
 		$this->cmbEditNamaPsTujuan->DataSource=$this->DMaster->removeIdFromArray($_SESSION['daftar_jurusan'],'none');
@@ -209,9 +210,10 @@ class CKonversiMatakuliah extends MainPageM {
 		$this->cmbEditNamaPsTujuan->dataBind();
         
 		$this->lblEditKurikulum->Text=$this->Nilai->getKurikulumName($dataView['kjur']);
-		$this->txtEditIdkur->Value=$this->Nilai->getIDKurikulum($dataView['kjur']);
+        $idkur=$this->Nilai->getIDKurikulum($dataView['kjur']);
+		$this->hiddenidkur->Value=$idkur;
         
-		$nilai=$this->Nilai->getNilaiKonversi($iddata_konversi,$dataView['idkur']);		
+		$nilai=$this->Nilai->getNilaiKonversi($iddata_konversi,$idkur);		
 		$_SESSION['currentPageKonversiMatakuliah']['daftarmatkul']=$nilai;
 		$this->RepeaterEditS->dataSource=$nilai;
 		$this->RepeaterEditS->dataBind();
@@ -221,7 +223,7 @@ class CKonversiMatakuliah extends MainPageM {
             $this->idProcess='edit';
             $i=1;         
             try {
-                $idkur=$this->txtEditIdkur->Value;
+                $idkur=$this->hiddenidkur->Value;
                 $iddata_konversi=$this->hiddenid->Value;
                 $nim_asal=strtoupper($this->txtEditNimAsal->Text);					
                 $nama=addslashes(strtoupper($this->txtEditNama->Text));

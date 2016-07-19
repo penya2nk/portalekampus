@@ -466,7 +466,16 @@
                                                 <i class="fa fa-users"></i>
                                                 <span>Daftar Konsentrasi</span>											
                                             </a>                                        
-                                        </li>     
+                                        </li> 
+                                        <li class="nav-header nav-header-first hidden-sm hidden-xs">
+                                            RIWAYAT
+                                        </li>  
+                                        <li<%=$this->Page->showDulangMHSLama==true?' class="active"':''%>>
+                                            <a href="<%=$this->Page->constructUrl('riwayat.DulangMHSLama',true)%>">
+                                                <i class="fa fa-location-arrow"></i>
+                                                <span>Daftar Ulang</span>											
+                                            </a>                                        
+                                        </li>                                        
                                     </com:TLiteral>	
                                     <com:TLiteral Visible="<%=$this->Page->Pengguna->getTipeUser()=='mb'%>">
                                         <li<%=$this->Page->showDashboard==true?' class="active"':''%>>

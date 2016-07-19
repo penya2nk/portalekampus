@@ -4,7 +4,7 @@
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
     <li><a href="#">DAFTAR ULANG</a></li>    
-    <li class="active"><span>MAHASISWA BARU</span></li>
+    <li class="active"><span>MAHASISWA LAMA</span></li>
 </com:TContent>
 <com:TContent ID="configtools">    
     <%include Application.layouts.cube.FilterMode8%>

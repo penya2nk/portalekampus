@@ -80,6 +80,14 @@ class MainPage extends TPage {
      */
     public $showProfilMahasiswa=false;
     /**     
+     * show sub menu akademik daftar ulang [akademik daftar ulang]
+     */
+    public $showSubMenuAkademikDulang=false;
+    /**     
+     * show sub menu akademik daftar ulang [akademik daftar ulang mahasiswa lama]
+     */
+    public $showDulangMHSLama=false;
+    /**     
      * show sub menu akademik perkuliahan
      */
     public $showSubMenuAkademikPerkuliahan=false;

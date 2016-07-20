@@ -252,7 +252,12 @@
                                                 <span>Daftar Ulang</span>
                                                 <i class="fa fa-angle-right drop-icon"></i>
                                             </a>
-                                            <ul class="submenu">                                                
+                                            <ul class="submenu">
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('dulang.CalonMHS',true)%>" <%=$this->Page->showCalonMHS==true ? ' class="active" ':''%>>
+                                                        Calon Mahasiswa
+                                                    </a>
+                                                </li>
                                                 <li>
                                                     <a href="<%=$this->Page->constructUrl('dulang.DulangMHSBaru',true)%>" <%=$this->Page->showDulangMHSBaru==true ? ' class="active" ':''%>>
                                                         Mahasiswa Baru

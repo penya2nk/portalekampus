@@ -35,7 +35,7 @@
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
     <li><a href="#">PEMBAYARAN</a></li>
-    <li class="active">SEMESTER GANJIL</li>     
+    <li class="active">SEMESTER GENAP</li>     
 </com:TContent>
 <com:TContent ID="sidebarcontent">
 <div class="sidebar sidebar-main sidebar-default sidebar-separate" style="width:330px">

@@ -26,7 +26,14 @@
             <li><a class="sidebar-mobile-main-toggle"><i class="icon-paragraph-justify3"></i></a></li>
         </ul>
     </div>
-    <div class="navbar-collapse collapse" id="navbar-mobile">        
+    <div class="navbar-collapse collapse" id="navbar-mobile">   
+        <p class="navbar-text">
+            <com:THyperLink ID="linkTopTASemester">
+                <span class="label bg-success-400">
+                    Saat ini Anda berada di T.A <%=$this->Page->setup->getSettingValue('default_ta');%>/<%=$this->Page->setup->getSemester($this->Page->setup->getSettingValue('default_semester'));%>
+                </span>
+            </com:THyperLink>
+        </p>
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown dropdown-user visible">
                 <a class="dropdown-toggle" data-toggle="dropdown">
@@ -88,17 +95,17 @@
                     <li class="dropdown-header">SEMESTER</li>
                     <li<%=$this->Page->showPembayaranMahasiswaBaru==true?' class="active"':''%>>
                         <a href="<%=$this->Page->constructUrl('pembayaran.PembayaranMahasiswaBaru',true)%>">
-                            <i class="icon-calculator3"></i> Mahasiswa Baru
+                            <i class="icon-calculator3"></i> Mahasiswa Baru <%=$_SESSION['ta']%>
                         </a>
                     </li> 
                     <li<%=$this->Page->showPembayaranSemesterGanjil==true?' class="active"':''%>>
                         <a href="<%=$this->Page->constructUrl('pembayaran.PembayaranSemesterGanjil',true)%>">
-                            <i class="icon-calculator3"></i> Semester Ganjil
+                            <i class="icon-calculator3"></i> Semester Ganjil <%=$this->Page->setup->getSettingValue('default_ta')%>
                         </a>
                     </li> 
                     <li<%=$this->Page->showPembayaranSemesterGenap==true?' class="active"':''%>>
                         <a href="<%=$this->Page->constructUrl('pembayaran.PembayaranSemesterGenap',true)%>">
-                            <i class="icon-calculator3"></i> Semester Genap
+                            <i class="icon-calculator3"></i> Semester Genap <%=$this->Page->setup->getSettingValue('default_ta')%>
                         </a>
                     </li>
                 </ul>

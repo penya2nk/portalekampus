@@ -23,12 +23,12 @@
         </service>             
 	</services>        
     <parameters>
-        <parameter id="db_host" value=""/>
-        <parameter id="db_username" value=""/>
+        <parameter id="db_host" value="localhost"/>
+        <parameter id="db_username" value="root"/>
         <parameter id="db_userpassword" value=""/>
-        <parameter id="db_name" value=""/>
+        <parameter id="db_name" value="portalekampus"/>
         <parameter id="db_type" value="mysql"/>		
-        <parameter id="address_lokal" value=""/>
+        <parameter id="address_lokal" value="http://localhost/portalekampus"/>
         <parameter id="address_lan" value=""/>        
         <parameter id="address_internet" value=""/>                        
     </parameters>      

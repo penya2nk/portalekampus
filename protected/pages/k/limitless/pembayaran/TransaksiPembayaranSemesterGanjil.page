@@ -24,7 +24,7 @@
     </div>    
 </com:TPanel>
 <com:TPanel Visible="<%= $this->getDefaultProcess() %>" CssClass="content"> 
-    <%include Application.layouts.limitless.DataMHSBaru%>
+    <%include Application.layouts.limitless.DataMHS%>
     <com:THiddenField ID="hiddennofaktur" />
     <div class="panel panel-flat">
         <div class="panel-heading">
@@ -115,6 +115,22 @@
                             </prop:ClientSide.OnLoading>
                             <prop:ClientSide.OnComplete>                                                                    
                                 $('<%=$this->btnCommit->ClientId%>').disabled='';                                                                                                                 
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveCustomButton>
+                        <com:TActiveCustomButton ID="btnCancel" OnClick="cancelTrx" CssClass="btn btn-danger btn-labeled btn-xs">
+                            <prop:Text>                                        
+                                <b><i class="icon-cross2"></i></b> Batal
+                            </prop:Text>
+                            <prop:ClientSide.OnPreDispatch>         
+                                Pace.stop();
+                                Pace.start();
+                                $('<%=$this->btnCancel->ClientId%>').disabled='disabled';         
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnCancel->ClientId%>').disabled='disabled';                     
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>                                                                    
+                                $('<%=$this->btnCancel->ClientId%>').disabled='';                                                                                                                 
                             </prop:ClientSide.OnComplete>
                         </com:TActiveCustomButton>
                     </div>

@@ -15,10 +15,10 @@ class CDetailPembayaranSemesterGenap Extends MainPageK {
             try {
                 $nim=addslashes($this->request['id']);                           				
                 $str = "SELECT vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.jk,vdm.tempat_lahir,vdm.tanggal_lahir,vdm.kjur,vdm.nama_ps,vdm.idkonsentrasi,k.nama_konsentrasi,vdm.tahun_masuk,vdm.semester_masuk,vdm.iddosen_wali,vdm.idkelas,vdm.k_status,sm.n_status AS status FROM v_datamhs vdm LEFT JOIN konsentrasi k ON (vdm.idkonsentrasi=k.idkonsentrasi) LEFT JOIN status_mhs sm ON (vdm.k_status=sm.k_status) WHERE vdm.nim='$nim'";
-                $this->DB->setFieldTable(array('no_formulir','nim','nirm','nama_mhs','jk','tempat_lahir','tanggal_lahir','kjur','nama_ps','idkonsentrasi','nama_konsentrasi','tahun_masuk','semester_masuk','iddosen_wali','idkelas','k_status','status','idsmt','tahun','tasmt','sah'));
+                $this->DB->setFieldTable(array('no_formulir','nim','nirm','nama_mhs','jk','tempat_lahir','tanggal_lahir','kjur','nama_ps','idkonsentrasi','nama_konsentrasi','tahun_masuk','semester_masuk','iddosen_wali','idkelas','k_status','status'));
                 $r=$this->DB->getRecord($str);	           
                 $datamhs=$r[1];
-                $datamhs['ta']=$_SESSION['ta'];                
+                $datamhs['ta']=$_SESSION['currentPagePembayaranSemesterGenap']['ta'];                
                 if (!isset($r[1])) {
                     $_SESSION['currentPagePembayaranSemesterGenap']['DataMHS']=array();
                     throw new Exception ("<br/><br/>NIM ($nim) tidak terdaftar di Portal, silahkan ganti dengan yang lain.");
@@ -84,7 +84,7 @@ class CDetailPembayaranSemesterGenap Extends MainPageK {
 		}
 	}	
 	public function addTransaction ($sender,$param) {
-        $datamhs=$_SESSION['currentPagePembayaranSemesterGenap']['DataMHS'];    
+        $datamhs=$_SESSION['currentPagePembayaranSemesterGenap']['DataMHS'];  
         $this->Finance->setDataMHS($datamhs);
         if ($datamhs['no_transaksi'] == 'none') {
             $no_formulir=$datamhs['no_formulir'];
@@ -126,8 +126,9 @@ class CDetailPembayaranSemesterGenap Extends MainPageK {
                         $str = "INSERT INTO transaksi_detail (idtransaksi_detail,no_transaksi,idkombi,dibayarkan) VALUES(NULL,$no_transaksi,$idkombi,$sisa_bayar)";
                         $this->DB->insertRecord($str);
                     }                   
-                    $this->DB->query('COMMIT');
-                    $_SESSION['currentPagePembayaranSemesterGenap']['DataMHS']['no_transaksi']=$no_transaksi;            
+                    $this->DB->query('COMMIT');                    
+                    $datamhs['no_transaksi']=$no_transaksi;
+                    $_SESSION['currentPagePembayaranSemesterGenap']['DataMHS']=$datamhs;            
                     $this->redirect('pembayaran.TransaksiPembayaranSemesterGenap',true);        
                 }else{
                     $this->DB->query('ROLLBACK');

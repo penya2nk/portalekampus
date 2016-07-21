@@ -8,7 +8,7 @@ class CPembayaranSemesterGenap Extends MainPageK {
         $this->createObj('Finance');
 		if (!$this->IsPostBack&&!$this->IsCallBack) {
             if (!isset($_SESSION['currentPagePembayaranSemesterGenap'])||$_SESSION['currentPagePembayaranSemesterGenap']['page_name']!='k.pembayaran.PembayaranSemesterGenap') {
-				$_SESSION['currentPagePembayaranSemesterGenap']=array('page_name'=>'k.pembayaran.PembayaranSemesterGenap','page_num'=>0,'search'=>false,'semester'=>2,'kelas'=>'none','DataMHS'=>array());												
+				$_SESSION['currentPagePembayaranSemesterGenap']=array('page_name'=>'k.pembayaran.PembayaranSemesterGenap','page_num'=>0,'search'=>false,'ta'=>$this->setup->getSettingValue('default_ta'),'semester'=>2,'kelas'=>'none','DataMHS'=>array());												
 			}
             $_SESSION['currentPagePembayaranSemesterGenap']['search']=false; 
             
@@ -17,8 +17,9 @@ class CPembayaranSemesterGenap Extends MainPageK {
 			$this->tbCmbPs->Text=$_SESSION['kjur'];			
 			$this->tbCmbPs->dataBind();	
             
-            $this->tbCmbTA->DataSource=$this->DMaster->removeIdFromArray($this->DMaster->getListTA($this->Pengguna->getDataUser('tahun_masuk')),'none');
-            $this->tbCmbTA->Text=$_SESSION['ta'];
+            $ta=$_SESSION['currentPagePembayaranSemesterGenap']['ta'];
+            $this->tbCmbTA->DataSource=array($ta=>$this->DMaster->getNamaTA($ta));
+            $this->tbCmbTA->Text=$ta;
             $this->tbCmbTA->dataBind();
             
             $kelas=$this->DMaster->getListKelas();
@@ -34,7 +35,7 @@ class CPembayaranSemesterGenap Extends MainPageK {
     public function setInfoToolbar() {                
         $kjur=$_SESSION['kjur'];        
 		$ps=$_SESSION['daftar_jurusan'][$kjur];
-        $ta=$this->DMaster->getNamaTA($_SESSION['ta']);        		
+        $ta=$this->DMaster->getNamaTA($_SESSION['currentPagePembayaranSemesterGenap']['ta']);        		
 		$this->lblModulHeader->Text="Program Studi $ps T.A $ta";        
 	}
     public function changeTbPs ($sender,$param) {		
@@ -43,7 +44,7 @@ class CPembayaranSemesterGenap Extends MainPageK {
 		$this->populateData();
 	}	
     public function changeTbTA ($sender,$param) {				
-		$_SESSION['ta']=$this->tbCmbTA->Text;
+		$_SESSION['currentPagePembayaranSemesterGenap']['ta']=$this->tbCmbTA->Text;
         $this->setInfoToolbar();
 		$this->populateData();
 	}   
@@ -60,7 +61,7 @@ class CPembayaranSemesterGenap Extends MainPageK {
 		$this->populateData($_SESSION['currentPagePembayaranSemesterGenap']['search']);
 	}		
 	public function populateData($search=false) {		
-		$ta=$_SESSION['ta'];
+		$ta=$_SESSION['currentPagePembayaranSemesterGenap']['ta'];
 		$semester=$_SESSION['currentPagePembayaranSemesterGenap']['semester'];
 		$kjur=$_SESSION['kjur'];	
         
@@ -118,7 +119,7 @@ class CPembayaranSemesterGenap Extends MainPageK {
                 if (!isset($r[1])) {                                   
                     throw new Exception ("<br/><br/>NIM ($nim) tidak terdaftar di Portal, silahkan ganti dengan yang lain.");		
                 }
-                $ta=$_SESSION['ta'];
+                $ta=$_SESSION['currentPagePembayaranSemesterGenap']['ta'];
                 if ($datamhs['tahun_masuk'] < $ta && $datamhs['semester_masuk'] > 1) {
                     throw new Exception ("<br/><br/>NIM ($nim) lier.");
                 }

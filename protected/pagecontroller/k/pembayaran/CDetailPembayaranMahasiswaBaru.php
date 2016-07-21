@@ -83,6 +83,7 @@ class CDetailPembayaranMahasiswaBaru Extends MainPageK {
             $no_formulir=$datamhs['no_formulir'];
             $ta=$datamhs['tahun_masuk'];                        
             $idsmt=$datamhs['semester_masuk'];
+            $this->Finance->setDataMHS($datamhs);
             if ($this->Finance->getLunasPembayaran($ta,$idsmt)) {
                 $this->lblContentMessageError->Text='Tidak bisa menambah Transaksi baru karena sudah lunas.';
                 $this->modalMessageError->show();

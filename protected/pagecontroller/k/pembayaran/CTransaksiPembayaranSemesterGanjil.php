@@ -204,6 +204,14 @@ class CTransaksiPembayaranSemesterGanjil Extends MainPageK {
         unset($_SESSION['currentPagePembayaranSemesterGanjil']['DataMHS']);
         $this->redirect('pembayaran.DetailPembayaranSemesterGanjil',true,array('id'=>$nim));
     }
+    public function cancelTrx ($sender,$param) {	
+        $datamhs=$_SESSION['currentPagePembayaranSemesterGanjil']['DataMHS']; 
+        $nim=$datamhs['nim'];
+		$no_transaksi=$datamhs['no_transaksi'];		
+		$this->DB->deleteRecord("transaksi WHERE no_transaksi='$no_transaksi'");
+        unset($_SESSION['currentPagePembayaranSemesterGanjil']['DataMHS']);
+		$this->redirect('pembayaran.DetailPembayaranSemesterGanjil',true,array('id'=>$nim));
+	}
 }
 class TotalPrice extends MainController
 {   

@@ -17,7 +17,7 @@ class KRSEkstension Extends MainPageM {
 	public function onLoad($param) {		
 		parent::onLoad($param);										
 		$this->showSubMenuAkademikPerkuliahan=true;
-        $this->showKRS = true;   
+        $this->showKRSEkstension = true;   
         $this->createObj('KRS');
         $this->createObj('Nilai');
         $this->createObj('Finance');
@@ -230,26 +230,16 @@ class KRSEkstension Extends MainPageM {
                         throw new Exception ("Mahasiswa Dengan NIM ($nim) tidak terdaftar di Portal.");
                     }
                     $datamhs=$r[1];
+                    $this->KRS->setDataMHS($datamhs);            
                     
                     $datamhs['nama_konsentrasi']=($datamhs['idkonsentrasi']==0) ? '-':$datamhs['nama_konsentrasi'];
 
                     $nama_dosen=$this->DMaster->getNamaDosenWaliByID($datamhs['iddosen_wali']);				                    
                     $datamhs['nama_dosen']=$nama_dosen;
                     
-                    $_SESSION['currentPageKRSEkstension']['DataMHS']=$datamhs;
-                    
                     $idsmt=$_SESSION['semester'];
                     $tahun=$_SESSION['ta'];
-                                        
-                    $this->Finance->setDataMHS($datamhs);
-                    if ($tahun >= 2010) {                    
-                        if ($idsmt==3) {                        
-                            if (!$this->Finance->getSKSFromSP ($tahun,$idsmt))throw new Exception ("Anda tidak bisa mengisi KRS karena belum melakukan pembayaran untuk Semester Pendek");																			
-                        }else {
-                            $data=$this->Finance->getTresholdPembayaran($tahun,$idsmt,true);				                        
-                            if (!$data['bool'])throw new Exception ("Anda tidak bisa mengisi KRS karena baru membayar(".$this->Finance->toRupiah($data['total_bayar'])."), harus minimal setengahnya sebesar (".$this->Finance->toRupiah($data['ambang_pembayaran']).") dari total (".$this->Finance->toRupiah($data['total_biaya']).")");
-                        }
-                    } 
+                    
                     $datadulang=$this->KRS->getDataDulang($idsmt,$tahun);
                     $nama_tahun = $this->DMaster->getNamaTA($tahun);
                     $nama_semester = $this->setup->getSemester($idsmt);
@@ -258,6 +248,9 @@ class KRSEkstension Extends MainPageM {
                     if ($status== 'K'||$status== 'L'||$status== 'D') throw new Exception ("Status Anda tidak aktif, sehingga tidak bisa mengisi KRS.");						
                     if ($datadulang['k_status'] != 'A')throw new Exception ("Anda pada tahun akademik dan semester sekarang tidak aktif.");									                                        
                     
+                    $kelas=$this->KRS->getKelasMhs();	
+                    $datamhs['nkelas']=($kelas['nkelas']=='')?'Belum ada':$kelas['nkelas'];	
+                    $_SESSION['currentPageKRSEkstension']['DataMHS']=$datamhs;
                     $_SESSION['currentPageKRSEkstension']['DataKRS']=array();                    
                 }                
             }
@@ -276,15 +269,17 @@ class KRSEkstension Extends MainPageM {
                 $idsmt=$krs['idsmt'];
                 $tahun=$krs['tahun'];                
                 
-                $krs['maxSKS']=$idsmt==3?$this->Finance->getSKSFromSP($tahun,$idsmt):$this->Nilai->getMaxSKS($tahun,$idsmt);                
+                $krs['maxSKS']=24;                
+                $this->Nilai->setDataMHS($_SESSION['currentPageKRSEkstension']['DataMHS']);
+                $this->Nilai->getKHSBeforeCurrentSemester($this->KRS->DataKRS['krs']['tahun'],$this->KRS->DataKRS['krs']['idsmt']);
                 $krs['ipstasmtbefore']=$this->Nilai->getIPS();                                                   
                                 
                 $_SESSION['currentPageKRSEkstension']['DataKRS']['krs']=$krs;
                 
-                $this->redirect ('perkuliahan.TambahKRS',true);
+                $this->redirect ('perkuliahan.TambahKRSEkstension',true);
             }elseif(isset($krs['idkrs']) && $krs['sah']==1){
                 $idkrs=$krs['idkrs'];
-                $this->redirect ('perkuliahan.DetailKRS',true,array('id'=>$idkrs));
+                $this->redirect ('perkuliahan.DetailKRSEkstension',true,array('id'=>$idkrs));
             }else{
                 $idsmt=$_SESSION['semester'];
                 $tahun=$_SESSION['ta'];
@@ -293,7 +288,7 @@ class KRSEkstension Extends MainPageM {
                 $no_krs=mt_rand();                    
                 $tasmt=$tahun.$idsmt;
                 
-                $str = "INSERT INTO krs (idkrs,tgl_krs,no_krs,nim,idsmt,tahun,tasmt) VALUES (NULL,'$tanggal',$no_krs,'$nim','$idsmt','$tahun','$tasmt')";
+                $str = "INSERT INTO krs (idkrs,tgl_krs,no_krs,nim,idsmt,tahun,tasmt,sah,tgl_disahkan) VALUES (NULL,'$tanggal',$no_krs,'$nim','$idsmt','$tahun','$tasmt',1.NOW())";
                 $this->DB->insertRecord($str);					
                 $this->KRS->DataKRS['krs'] = array('idkrs'=>$this->DB->getLastInsertID(),
                                                     'tgl_krs'=>$tanggal,
@@ -303,12 +298,14 @@ class KRSEkstension Extends MainPageM {
                                                     'tahun'=>$tahun,
                                                     'tasmt'=>$tasmt);		   
                 
-                $this->KRS->DataKRS['krs']['maxSKS']=$idsmt==3?$this->Finance->getSKSFromSP($tahun,$idsmt):$this->Nilai->getMaxSKS($tahun,$idsmt);                
+                $this->KRS->DataKRS['krs']['maxSKS']=24;
+                $this->Nilai->setDataMHS($_SESSION['currentPageKRSEkstension']['DataMHS']);
+                $this->Nilai->getKHSBeforeCurrentSemester($this->KRS->DataKRS['krs']['tahun'],$this->KRS->DataKRS['krs']['idsmt']);
                 $this->KRS->DataKRS['krs']['ipstasmtbefore']=$this->Nilai->getIPS();                                                   
                 
                 $_SESSION['currentPageKRSEkstension']['DataKRS']=$this->KRS->DataKRS;
                 
-                $this->redirect ('perkuliahan.TambahKRS',true);
+                $this->redirect ('perkuliahan.TambahKRSEkstension',true);
             }
         }
     }

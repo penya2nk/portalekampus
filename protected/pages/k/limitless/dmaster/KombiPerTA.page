@@ -10,7 +10,7 @@
 <com:TContent ID="sidebarcontent">
 <div class="sidebar sidebar-main sidebar-default sidebar-separate">
     <div class="sidebar-content">                    
-        <%include Application.layouts.limitless.FilterMode10%>
+        <%include Application.layouts.limitless.FilterMode16%>
     </div>
 </div>
 </com:TContent>

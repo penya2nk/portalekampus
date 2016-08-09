@@ -11,12 +11,17 @@ class CKombiPerTA Extends MainPageK {
         $this->showKombiPerTA=true;
 		if (!$this->IsPostBack&&!$this->IsCallBack) {
             if (!isset($_SESSION['currentPageKombiPerTA'])||$_SESSION['currentPageKombiPerTA']['page_name']!='k.dmaster.KombiPerTA') {
-				$_SESSION['currentPageKombiPerTA']=array('page_name'=>'k.dmaster.KombiPerTA','kelas'=>'A','periode_pembayaran'=>'none');												
+				$_SESSION['currentPageKombiPerTA']=array('page_name'=>'k.dmaster.KombiPerTA','kelas'=>'A','semester_masuk'=>1,'periode_pembayaran'=>'none');												
 			}
             $tahun_masuk=$this->DMaster->removeIdFromArray($this->DMaster->getListTA(),'none');			
 			$this->tbCmbTahunMasuk->DataSource=$tahun_masuk	;					
 			$this->tbCmbTahunMasuk->Text=$_SESSION['tahun_masuk'];						
 			$this->tbCmbTahunMasuk->dataBind();
+            
+            $semester=array('1'=>'GANJIL','2'=>'GENAP');  				
+			$this->tbCmbSemesterMasuk->DataSource=$semester;
+			$this->tbCmbSemesterMasuk->Text=$_SESSION['currentPageKombiPerTA']['semester_masuk'];
+			$this->tbCmbSemesterMasuk->dataBind(); 
             
             $kelas=$this->DMaster->removeIdFromArray($this->DMaster->getListKelas(),'none');            
 			$this->tbCmbKelas->DataSource=$kelas;
@@ -45,34 +50,40 @@ class CKombiPerTA Extends MainPageK {
         $this->setInfoToolbar();
 		$this->populateData();
 	}    
+    public function changeTbSemesterMasuk ($sender,$param) {		
+		$_SESSION['currentPageKombiPerTA']['semester_masuk']=$this->tbCmbSemesterMasuk->Text;        
+        $this->setInfoToolbar();
+		$this->populateData();
+	}
     public function changePeriodePembayaran($sender,$param) {    				
 		$_SESSION['currentPageKombiPerTA']['periode_pembayaran']=$this->cmbPeriodePembayaran->Text;		        
 		$this->populateData();
 	}
 	protected function populateData () {		
-		$ta=$_SESSION['tahun_masuk'];		
+		$ta=$_SESSION['tahun_masuk'];	
+        $idsmt=$_SESSION['currentPageKombiPerTA']['semester_masuk'];	
 		$kelas=$_SESSION['currentPageKombiPerTA']['kelas'];	        
 		if ($ta == 'none' || $ta == '' || $kelas=='none' || $ta=='' || $this->DB->checkRecordIsExist('tahun','ta',$ta)==false) {									
 			$result=array();			
 		}else {							
-			$total_kombi1=$this->DB->getCountRowsOfTable("kombi_per_ta WHERE tahun='$ta' AND idkelas='$kelas'");
+			$total_kombi1=$this->DB->getCountRowsOfTable("kombi_per_ta WHERE idsmt=$idsmt AND tahun='$ta' AND idkelas='$kelas'");
 			$total_kombi2=$this->DB->getCountRowsOfTable('kombi');
 			if ($total_kombi1 != $total_kombi2) {			
-				$result=$this->Finance->getList("kombi_per_ta WHERE tahun='$ta' AND idkelas='$kelas'",array('idkombi'));
+				$result=$this->Finance->getList("kombi_per_ta WHERE idsmt=$idsmt AND tahun='$ta' AND idkelas='$kelas'",array('idkombi'));
 				if (isset($result[1])) {
-					$str="SELECT idkombi FROM kombi WHERE idkombi NOT IN (SELECT idkombi FROM kombi_per_ta WHERE tahun='$ta' AND idkelas='$kelas')";
+					$str="SELECT idkombi FROM kombi WHERE idkombi NOT IN (SELECT idkombi FROM kombi_per_ta WHERE idsmt=$idsmt AND tahun='$ta' AND idkelas='$kelas')";
 					$this->DB->setFieldTable(array('idkombi'));
 					$result=$this->DB->getRecord($str);
 					while (list($k,$v)=each($result)) {
 						$str = "INSERT INTO kombi_per_ta (idkombi_per_ta,idkelas,idkombi,tahun,biaya) VALUES ";
-						$str = $str . "(NULL,'$kelas',".$v['idkombi'].",$ta,0)";
+						$str = $str . "(NULL,'$kelas',".$v['idkombi'].",$ta,$idsmt,0)";
 						$this->DB->insertRecord ($str);
 					}	
 				}else {
 					$result=$this->getLogic('DMaster')->getList("kombi",array('idkombi'));
 					while (list($k,$v)=each($result)) {
-						$str = "INSERT INTO kombi_per_ta (idkombi_per_ta,idkelas,idkombi,tahun,biaya) VALUES ";
-						$str = $str . "(NULL,'$kelas',".$v['idkombi'].",$ta,0)";
+						$str = "INSERT INTO kombi_per_ta (idkombi_per_ta,idkelas,idkombi,tahun,idsmt,biaya) VALUES ";
+						$str = $str . "(NULL,'$kelas',".$v['idkombi'].",$ta,$idsmt,0)";
 						$this->DB->insertRecord ($str);
 					}		
 				}
@@ -83,7 +94,7 @@ class CKombiPerTA Extends MainPageK {
             }else{  
                 $str_periode_pembayaran=$periode_pembayaran=='none' ?'':" AND k.periode_pembayaran='$periode_pembayaran'";
             }
-            $str = "SELECT kpt.idkombi_per_ta,k.idkombi,k.nama_kombi,kpt.biaya,k.periode_pembayaran FROM kombi_per_ta kpt,kombi k WHERE  k.idkombi=kpt.idkombi AND tahun=$ta AND kpt.idkelas='$kelas'$str_periode_pembayaran ORDER BY periode_pembayaran,nama_kombi ASC";
+            $str = "SELECT kpt.idkombi_per_ta,k.idkombi,k.nama_kombi,kpt.biaya,k.periode_pembayaran FROM kombi_per_ta kpt,kombi k WHERE  k.idkombi=kpt.idkombi AND idsmt=$idsmt AND tahun=$ta AND kpt.idkelas='$kelas'$str_periode_pembayaran ORDER BY periode_pembayaran,nama_kombi ASC";
             $this->DB->setFieldTable(array('idkombi_per_ta','idkombi','nama_kombi','biaya','periode_pembayaran'));
             $r=$this->DB->getRecord($str);            
 			while (list($k,$v)=each($r)) {

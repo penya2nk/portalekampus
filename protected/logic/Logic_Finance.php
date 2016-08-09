@@ -127,8 +127,8 @@ class Logic_Finance extends Logic_Mahasiswa {
 	* @return boolean atau array
 	*/
 	public function getLunasPembayaran ($tahun_sekarang,$semester_sekarang,$data=false) {        
-        if ($this->isMhsBaru($tahun_sekarang,$semester_sekarang)) {
-            $total_biaya=$this->getTotalBiayaMhs();
+        if ($this->isMhsBaru($tahun_sekarang,$semester_sekarang)) {            
+            $total_biaya=$this->getTotalBiayaMhsPeriodePembayaran();
             $total_bayar_mhs=$this->getTotalBayarMhs ($tahun_sekarang,$semester_sekarang);				
         }elseif($semester_sekarang==3){
             $nim=$this->DataMHS['nim'];	            
@@ -139,7 +139,7 @@ class Logic_Finance extends Logic_Mahasiswa {
             $r=$this->db->getRecord($str);                         
             $total_biaya=$this->getTotalBiayaMhs('sp') * $r[1]['sks'];		
         }else{            
-            $total_biaya=$this->getTotalBiayaMhs('lama');		
+            $total_biaya=$this->getTotalBiayaMhsPeriodePembayaran('lama');		
             $total_bayar_mhs=$this->getTotalBayarMhs ($tahun_sekarang,$semester_sekarang);				            
         }
         $bool=$total_biaya<=$total_bayar_mhs;

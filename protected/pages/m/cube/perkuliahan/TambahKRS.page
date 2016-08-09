@@ -39,7 +39,7 @@
                         <header class="main-box-header clearfix">
                             <h2 class="pull-left"><i class="fa fa-columns"></i> DATA KRS</h2>                             
                             <div class="icon-box pull-right">                        
-                                <a class="btn btn-default pull-right" href="<%=$this->Page->constructUrl('perkuliahan.DetailKRS',true,array('id'=>$_SESSION['currentPageKRS']['DataKRS']['krs']['idkrs']))%>" title="Keluar Detail Transkrip Asli">                        
+                                <a class="btn btn-default pull-right" href="<%=$this->Page->constructUrl('perkuliahan.DetailKRS',true,array('id'=>$_SESSION['currentPageKRS']['DataKRS']['krs']['idkrs']))%>" title="Keluar Detail KRS">                        
                                     <i class='fa  fa-times fa-lg'></i>
                                 </a>
                             </div>
@@ -163,7 +163,7 @@
                         <header class="main-box-header clearfix">
                             <h2 class="pull-left"><i class="fa fa-columns"></i> DATA KRS</h2>                             
                             <div class="icon-box pull-right">                                                                       
-                                <a class="btn btn-default pull-right" href="<%=$this->Page->constructUrl('perkuliahan.DetailKRS',true,array('id'=>$_SESSION['currentPageKRS']['DataKRS']['krs']['idkrs']))%>" title="Keluar Detail Transkrip Asli">                        
+                                <a class="btn btn-default pull-right" href="<%=$this->Page->constructUrl('perkuliahan.DetailKRS',true,array('id'=>$_SESSION['currentPageKRS']['DataKRS']['krs']['idkrs']))%>" title="Keluar Detail KRS">                        
                                     <i class='fa  fa-times fa-lg'></i>
                                 </a>
                             </div>

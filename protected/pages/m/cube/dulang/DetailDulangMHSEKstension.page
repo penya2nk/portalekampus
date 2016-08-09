@@ -1,10 +1,10 @@
-<%@ Title="Daftar Ulang - Mahasiswa Lama"%>
+<%@ Title="Daftar Ulang - Mahasiswa Ekstension"%>
 <com:TContent ID="moduleheader">
-    <i class="fa fa-location-arrow"></i> Daftar Ulang Mahasiswa Lama <br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
+    <i class="fa fa-location-arrow"></i> Daftar Ulang Mahasiswa Ekstension <br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
     <li><a href="#">DAFTAR ULANG</a></li>    
-    <li class="active"><span>MAHASISWA LAMA</span></li>
+    <li class="active"><span>MAHASISWA EKSTENSION</span></li>
 </com:TContent>
 <com:TContent ID="maincontent">
 <com:TPanel Visible="<%= $this->getViewProcess(false) %>" CssClass="row">                    
@@ -12,7 +12,7 @@
         <div class="main-box clearfix">               
             <header class="main-box-header clearfix">
                 <div class="icon-box pull-right">                                       
-                    <a class="btn pull-left" href="<%=$this->constructUrl('dulang.DulangMHSLama',true)%>">
+                    <a class="btn pull-left" href="<%=$this->constructUrl('dulang.DulangMHSEkstension',true)%>">
                         <i class="fa fa-times"></i>
                     </a>
                 </div>
@@ -35,7 +35,7 @@
         <div class="col-lg-12">
             <div class="main-box clearfix">
                 <header class="main-box-header clearfix">
-                    <h2 class="pull-left"><i class="fa fa-location-arrow"></i> NIM Lama</h2>                    
+                    <h2 class="pull-left"><i class="fa fa-location-arrow"></i> NIM Ekstension</h2>                    
                     <div class="filter-block pull-right">                                                   
                         <com:TActiveLinkButton ID="btnClose" OnClick="closeDetailDulang" ClientSide.PostState="false" CssClass="btn btn-default pull-left" Attributes.Title="Keluar">
                             <prop:Text><i class="fa fa-times fa-lg"></i></prop:Text>
@@ -58,7 +58,7 @@
                             <label class="col-lg-2 control-label">Dosen Wali :</label>
                             <div class="col-lg-5">
                                 <com:TDropDownList ID="cmbAddDosenWali" CssClass="form-control" />
-                                <com:TRequiredFieldValidator ID="FieldAddDosenWaliValidator" ControlToValidate="cmbAddDosenWali" ErrorMessage="Pilih Dosen Wali untuk mahasiswa baru ini." InitialValue="none" Display="Dynamic" ValidationGroup="addDulangMhsLama" CssClass="has-error help-block">
+                                <com:TRequiredFieldValidator ID="FieldAddDosenWaliValidator" ControlToValidate="cmbAddDosenWali" ErrorMessage="Pilih Dosen Wali untuk mahasiswa baru ini." InitialValue="none" Display="Dynamic" ValidationGroup="addDulangMhsEkstension" CssClass="has-error help-block">
                                     <prop:ClientSide.OnValidationError>
                                         $('divAddDosenWali').addClassName('has-error');
                                         jQuery('#<%=$this->FieldAddDosenWaliValidator->ClientID%>').removeAttr('style');
@@ -71,7 +71,7 @@
                         </div>                                               
                         <div class="form-group">
                             <div class="col-lg-offset-2 col-lg-10">
-                                <com:TActiveCustomButton ID="btnSave" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="addDulangMhsLama">
+                                <com:TActiveCustomButton ID="btnSave" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="addDulangMhsEkstension">
                                     <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
                                     <prop:ClientSide.OnPreDispatch>                                                                   
                                         $('loading').show(); 

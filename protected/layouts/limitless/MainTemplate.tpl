@@ -10,7 +10,7 @@
     <link href="<%=$this->Page->Theme->BaseUrl%>/assets/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
 	<link href="<%=$this->Page->Theme->BaseUrl%>/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<link href="<%=$this->Page->Theme->BaseUrl%>/assets/css/core.min.css" rel="stylesheet" type="text/css">
-	<link href="<%=$this->Page->Theme->BaseUrl%>/assets/css/components.min.css" rel="stylesheet" type="text/css">
+	<link href="<%=$this->Page->Theme->BaseUrl%>/assets/css/components.css" rel="stylesheet" type="text/css">
 	<link href="<%=$this->Page->Theme->BaseUrl%>/assets/css/colors.min.css" rel="stylesheet" type="text/css">
     <link type="image/x-icon" href="resources/favicon.ico" rel="shortcut icon"/>
     <com:TContentPlaceHolder ID="csscontent" />	    
@@ -106,6 +106,17 @@
                     <li<%=$this->Page->showPembayaranSemesterGenap==true?' class="active"':''%>>
                         <a href="<%=$this->Page->constructUrl('pembayaran.PembayaranSemesterGenap',true)%>">
                             <i class="icon-calculator3"></i> Semester Genap <%=$this->Page->setup->getSettingValue('default_ta')%>
+                        </a>
+                    </li>
+                    <li class="dropdown-header">PIUTANG</li>
+                    <li<%=$this->Page->showPembayaranPiutangSemesterGanjil==true?' class="active"':''%>>
+                        <a href="<%=$this->Page->constructUrl('pembayaran.PembayaranPiutangSemesterGanjil',true)%>">
+                            <i class="icon-calculator3"></i> Piutang Semester Ganjil
+                        </a>
+                    </li> 
+                    <li<%=$this->Page->showPembayaranPiutangSemesterGenap==true?' class="active"':''%>>
+                        <a href="<%=$this->Page->constructUrl('pembayaran.PembayaranPiutangSemesterGenap',true)%>">
+                            <i class="icon-calculator3"></i> Piutang Semester Genap
                         </a>
                     </li>
                 </ul>

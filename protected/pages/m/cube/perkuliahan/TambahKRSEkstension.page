@@ -5,7 +5,7 @@
 <com:TContent ID="modulebreadcrumb">    
     <li><a href="#">AKADEMIK</a></li>
     <li><a href="#">PERKULIAHAN</a></li>
-    <li><a href="<%=$this->constructUrl('perkuliahan.KRSEkstension',true)%>">KRS</a></li>
+    <li><a href="<%=$this->constructUrl('perkuliahan.DetailKRSEkstension',true)%>">KRS EKSTENSION</a></li>
     <li class="active"><a href="#">TAMBAH KRS</a></li>
 </com:TContent>
 <com:TContent ID="csscontent">
@@ -39,7 +39,7 @@
                         <header class="main-box-header clearfix">
                             <h2 class="pull-left"><i class="fa fa-columns"></i> DATA KRS</h2>                             
                             <div class="icon-box pull-right">                                                                       
-                                <a class="btn btn-default pull-right" href="<%=$this->Page->constructUrl('perkuliahan.KRS',true)%>" title="Keluar Detail Transkrip Asli">                        
+                                <a class="btn btn-default pull-right" href="<%=$this->Page->constructUrl('perkuliahan.DetailKRSEkstension',true)%>" title="Keluar Tambah KRS">                        
                                     <i class='fa  fa-times fa-lg'></i>
                                 </a>
                             </div>
@@ -163,7 +163,7 @@
                         <header class="main-box-header clearfix">
                             <h2 class="pull-left"><i class="fa fa-columns"></i> DATA KRS</h2>                             
                             <div class="icon-box pull-right">                                                                       
-                                <a class="btn btn-default pull-right" href="<%=$this->Page->constructUrl('perkuliahan.KRS',true)%>" title="Keluar Detail Transkrip Asli">                        
+                                <a class="btn btn-default pull-right" href="<%=$this->Page->constructUrl('perkuliahan.DetailKRSEkstension',true,array('id'=>$_SESSION['currentPageKRSEkstension']['DataKRS']['krs']['idkrs']))%>" title="Keluar Tambah KRS">                        
                                     <i class='fa  fa-times fa-lg'></i>
                                 </a>
                             </div>

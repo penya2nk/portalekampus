@@ -53,38 +53,6 @@
                     $('<%=$this->tbCmbTA->ClientId%>').disabled='';
                 </prop:ClientSide.OnComplete>	
             </com:TActiveDropDownList>
-        </div>         
-        <div class="form-group">
-            <label><strong>Semester :</strong></label>
-            <com:TActiveDropDownList ID="tbCmbSemester" OnCallback="Page.changeTbSemester" CssClass="form-control" Width="100px;">
-                <prop:ClientSide.OnPreDispatch>
-                    $('<%=$this->tbCmbSemester->ClientId%>').disabled='disabled';
-                    Pace.stop();
-                    Pace.start();
-                </prop:ClientSide.OnPreDispatch>
-               <prop:ClientSide.OnLoading>
-                    $('<%=$this->tbCmbSemester->ClientId%>').disabled='disabled';
-                </prop:ClientSide.OnLoading>
-                <prop:ClientSide.onComplete>                    
-                    $('<%=$this->tbCmbSemester->ClientId%>').disabled='';
-                </prop:ClientSide.OnComplete>	
-            </com:TActiveDropDownList>
-        </div> 
-        <div class="form-group">
-            <label><strong>Kelas :</strong></label>
-            <com:TActiveDropDownList ID="tbCmbKelas" OnCallback="Page.changeTbKelas" CssClass="form-control" Width="120px;">
-                <prop:ClientSide.OnPreDispatch>
-                    $('<%=$this->tbCmbKelas->ClientId%>').disabled='disabled';
-                    Pace.stop();
-                    Pace.start();                    
-                </prop:ClientSide.OnPreDispatch>
-               <prop:ClientSide.OnLoading>
-                    $('<%=$this->tbCmbKelas->ClientId%>').disabled='disabled';
-                </prop:ClientSide.OnLoading>
-                <prop:ClientSide.onComplete>                    
-                    $('<%=$this->tbCmbKelas->ClientId%>').disabled='';
-                </prop:ClientSide.OnComplete>	
-            </com:TActiveDropDownList>
         </div>
     </div>
 </div>

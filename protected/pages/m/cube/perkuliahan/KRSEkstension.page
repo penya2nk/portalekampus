@@ -204,7 +204,7 @@
                                     <td><com:TLiteral ID="literalSKS" /></td>
                                     <td><com:TLiteral ID="literalStatus" /></td>
                                     <td>
-                                        <com:THyperLink ID="anchorDetailKRS" NavigateUrl="<%#$this->Page->constructUrl('perkuliahan.DetailKRS',true,array('id'=>$this->DataItem['idkrs']))%>" CssClass="table-link" Attributes.title="Detail KRS">                                                                                
+                                        <com:THyperLink ID="anchorDetailKRS" NavigateUrl="<%#$this->Page->constructUrl('perkuliahan.DetailKRSEkstension',true,array('id'=>$this->DataItem['idkrs']))%>" CssClass="table-link" Attributes.title="Detail KRS">                                                                                
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-eye fa-stack-1x fa-inverse"></i>                                        

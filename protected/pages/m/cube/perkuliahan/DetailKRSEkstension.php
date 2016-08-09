@@ -1,6 +1,6 @@
 <?php
 prado::using ('Application.MainPageM');
-class CDetailKRS extends MainPageM {
+class DetailKRSEkstension extends MainPageM {
 	/**
 	* total SKS
 	*/
@@ -13,7 +13,7 @@ class CDetailKRS extends MainPageM {
 	public function onLoad($param) {
 		parent::onLoad($param);	
         $this->showSubMenuAkademikPerkuliahan=true;
-        $this->showKRS = true;           
+        $this->showKRSEkstension = true;           
         $this->createObj('KRS');
 		if (!$this->IsPostBack&&!$this->IsCallback) {	            
             $this->tbCmbOutputReport->DataSource=$this->setup->getOutputFileType();
@@ -37,8 +37,8 @@ class CDetailKRS extends MainPageM {
     public function itemCreated ($sender,$param) {
         $item=$param->Item;
         if ($item->ItemType === 'Item' || $item->ItemType === 'AlternatingItem') {                
-            CDetailKRS::$totalSKS+=$item->DataItem['sks'];
-            CDetailKRS::$jumlahMatkul+=1;
+            DetailKRSEkstension::$totalSKS+=$item->DataItem['sks'];
+            DetailKRSEkstension::$jumlahMatkul+=1;
         }
     }
 	protected function populateData () {
@@ -49,22 +49,23 @@ class CDetailKRS extends MainPageM {
             $r=$this->DB->getRecord($str);	           
             $datamhs=$r[1];
             if (!isset($r[1])) {
-                $_SESSION['currentPageKRS']['DataKRS']=array();
+                $_SESSION['currentPageKRSEkstension']['DataKRS']=array();
                 throw new Exception("KRS dengan ID ($idkrs) tidak terdaftar.");
             }  
             $datamhs['iddata_konversi']=$this->KRS->isMhsPindahan($datamhs['nim'],true);            
             $this->KRS->setDataMHS($datamhs);
-            $kelas=$this->KRS->getKelasMhs();																	            
+            
+            $kelas=$this->KRS->getKelasMhs();	
             $datamhs['nkelas']=($kelas['nkelas']=='')?'Belum ada':$kelas['nkelas'];			                    
             $datamhs['nama_konsentrasi']=($datamhs['idkonsentrasi']==0) ? '-':$datamhs['nama_konsentrasi'];
             
             $nama_dosen=$this->DMaster->getNamaDosenWaliByID($datamhs['iddosen_wali']);				                    
             $datamhs['nama_dosen']=$nama_dosen;
             
-            $_SESSION['currentPageKRS']['DataMHS']=$datamhs;
+            $_SESSION['currentPageKRSEkstension']['DataMHS']=$datamhs;
             $this->KRS->setDataMHS($datamhs);
             $this->KRS->getKRS($_SESSION['ta'],$_SESSION['semester']);                                                                        
-            $_SESSION['currentPageKRS']['DataKRS']=$this->KRS->DataKRS;
+            $_SESSION['currentPageKRSEkstension']['DataKRS']=$this->KRS->DataKRS;
             $this->RepeaterS->DataSource=$this->KRS->DataKRS['matakuliah'];
             $this->RepeaterS->dataBind();
         }catch (Exception $e) {
@@ -75,25 +76,24 @@ class CDetailKRS extends MainPageM {
 	}		
     public function tambahKRS ($sender,$param) {
         $this->createObj('Nilai');
-        $datakrs=$_SESSION['currentPageKRS']['DataKRS'];
-        $idsmt=$datakrs['krs']['idsmt'];
-        $tahun=$datakrs['krs']['tahun'];        
-        $this->Nilai->setDataMHS($_SESSION['currentPageKRS']['DataMHS']);
-        if ($idsmt==3) {
-            $this->createObj('Finance');
-            $this->Finance->setDataMHS($_SESSION['currentPageKRS']['DataMHS']);
-            $maxSKS=$this->Finance->getSKSFromSP($tahun,$idsmt);
-        }else{
-           $maxSKS=$this->Nilai->getMaxSKS($tahun,$idsmt);
-        }
+        $datakrs=$_SESSION['currentPageKRSEkstension']['DataKRS']; 
+        $maxSKS=24;        
         $datakrs['krs']['maxSKS']=$maxSKS;               
+        $this->Nilai->setDataMHS($_SESSION['currentPageKRSEkstension']['DataMHS']);
+        $this->Nilai->getKHSBeforeCurrentSemester($datakrs['krs']['tahun'],$datakrs['krs']['idsmt']);
         $datakrs['krs']['ipstasmtbefore']=$this->Nilai->getIPS();
-        $_SESSION['currentPageKRS']['DataKRS']=$datakrs;
-        $this->redirect ('perkuliahan.TambahKRS',true);
+        $_SESSION['currentPageKRSEkstension']['DataKRS']=$datakrs;
+        $this->redirect ('perkuliahan.TambahKRSEkstension',true);
     }
-    public function closeDetailKRS ($sender,$param) { 
-        unset($_SESSION['currentPageKRS']);
-        $this->redirect ('perkuliahan.KRS',true);
+    public function deleteRecord ($sender,$param) {        
+		$id=$this->getDataKeyField($sender,$this->RepeaterS);  
+        $idkrs=$_SESSION['currentPageKRSEkstension']['DataKRS']['krs']['idkrs'];
+        $this->DB->deleteRecord("krsmatkul WHERE idkrsmatkul=$id");
+        $this->redirect ('perkuliahan.DetailKRSEkstension',true,array('id'=>$idkrs));        
+    }
+    public function closeDetailKRSEkstension ($sender,$param) { 
+        unset($_SESSION['currentPageKRSEkstension']);
+        $this->redirect ('perkuliahan.KRSEkstension',true);
     }
 	public function printKRS ($sender,$param) {
         $this->createObj('reportkrs');
@@ -116,9 +116,9 @@ class CDetailKRS extends MainPageM {
                 $nama_tahun = $this->DMaster->getNamaTA($tahun);
                 $nama_semester = $this->setup->getSemester($semester);
 
-                $dataReport=$_SESSION['currentPageKRS']['DataMHS'];
-                $dataReport['krs']=$_SESSION['currentPageKRS']['DataKRS']['krs'];        
-                $dataReport['matakuliah']=$_SESSION['currentPageKRS']['DataKRS']['matakuliah'];        
+                $dataReport=$_SESSION['currentPageKRSEkstension']['DataMHS'];
+                $dataReport['krs']=$_SESSION['currentPageKRSEkstension']['DataKRS']['krs'];        
+                $dataReport['matakuliah']=$_SESSION['currentPageKRSEkstension']['DataKRS']['matakuliah'];        
                 $dataReport['nama_tahun']=$nama_tahun;
                 $dataReport['nama_semester']=$nama_semester;        
                 

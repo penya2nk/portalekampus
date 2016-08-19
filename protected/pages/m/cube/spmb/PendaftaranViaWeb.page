@@ -80,11 +80,22 @@
                         <div class="form-group">
                             <label class="col-lg-3 control-label">Daftar Ulang :</label>
                             <div class="col-lg-5">
-                                <com:TDropDownList ID="cmbDaftarUlang" CssClass="form-control">                                                           
+                                <com:TActiveDropDownList ID="cmbDaftarUlang" CssClass="form-control" OnSelectedIndexChanged="changeStatusDulang">                                                           
                                     <com:TListItem Value="none" Text="Keseluruhan" />
                                     <com:TListItem Value="belum" Text="Belum Daftar Ulang" />
                                     <com:TListItem Value="sudah" Text="Sudah Daftar Ulang" />
-                                </com:TDropDownList>
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->cmbDaftarUlang->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->cmbDaftarUlang->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                        $('<%=$this->cmbDaftarUlang->ClientId%>').disabled='';
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveDropDownList>
                             </div>
                         </div>
                     </div>

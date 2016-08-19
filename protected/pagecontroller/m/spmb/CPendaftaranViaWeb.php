@@ -57,7 +57,7 @@ class CPendaftaranViaWeb extends MainPageM {
         $_SESSION['kjur']=$this->tbCmbPs->Text;
         $this->lblModulHeader->Text=$this->getInfoToolbar();
         $this->populateData();
-	}
+	}    
 	public function getInfoToolbar() {        
         $kjur=$_SESSION['kjur'];        
 		$ps=$_SESSION['daftar_jurusan'][$kjur];
@@ -69,7 +69,11 @@ class CPendaftaranViaWeb extends MainPageM {
 	public function searchRecord ($sender,$param) {
 		$_SESSION['currentPagePendaftaranWeb']['search']=true;
 		$this->populateData($_SESSION['currentPagePendaftaranWeb']['search']);
-	}	
+	}
+    public function changeStatusDulang ($sender,$param) {
+        $_SESSION['currentPagePendaftaranWeb']['status_dulang']=$this->cmbDaftarUlang->Text;
+        $this->populateData($_SESSION['currentPagePendaftaranWeb']['search']);
+    }
 	public function renderCallback ($sender,$param) {
 		$this->RepeaterS->render($param->NewWriter);	
 	}
@@ -97,8 +101,13 @@ class CPendaftaranViaWeb extends MainPageM {
                 break;
             }
         }else{            
-            $jumlah_baris=$this->DB->getCountRowsOfTable("formulir_pendaftaran fp,bipend bp WHERE fp.no_formulir=bp.no_formulir AND ta='$tahun_masuk' AND idsmt='$semester' AND (kjur1='$kjur' OR kjur2='$kjur') AND daftar_via='WEB'",'fp.no_formulir');
-            $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.jk,fp.alamat_rumah,fp.telp_hp,nomor_ijazah,IF(char_length(COALESCE(rm.nim,''))>0,'dulang','-') AS nim FROM formulir_pendaftaran fp JOIN bipend bp ON (fp.no_formulir=bp.no_formulir) LEFT JOIN register_mahasiswa rm ON (rm.no_formulir=fp.no_formulir) WHERE fp.ta='$tahun_masuk' AND fp.idsmt='$semester' AND fp.daftar_via='WEB' AND (fp.kjur1='$kjur' OR fp.kjur2='$kjur')";
+            if ($_SESSION['currentPagePendaftaranWeb']['status_dulang'] == 'belum') {
+                $str_status= " AND rm.nim IS NULL";
+            }elseif ($_SESSION['currentPagePendaftaranWeb']['status_dulang'] == 'sudah') {
+                $str_status= " AND rm.nim IS NOT NULL";
+            }
+            $jumlah_baris=$this->DB->getCountRowsOfTable("formulir_pendaftaran fp JOIN bipend bp ON (fp.no_formulir=bp.no_formulir) LEFT JOIN register_mahasiswa rm ON (rm.no_formulir=fp.no_formulir) WHERE fp.ta='$tahun_masuk' AND fp.idsmt='$semester' AND fp.daftar_via='WEB' AND (fp.kjur1='$kjur' OR fp.kjur2='$kjur')$str_status",'fp.no_formulir');
+            $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.jk,fp.alamat_rumah,fp.telp_hp,nomor_ijazah,IF(char_length(COALESCE(rm.nim,''))>0,'dulang','-') AS ket,rm.nim FROM formulir_pendaftaran fp JOIN bipend bp ON (fp.no_formulir=bp.no_formulir) LEFT JOIN register_mahasiswa rm ON (rm.no_formulir=fp.no_formulir) WHERE fp.ta='$tahun_masuk' AND fp.idsmt='$semester' AND fp.daftar_via='WEB' AND (fp.kjur1='$kjur' OR fp.kjur2='$kjur')$str_status";
         }	
 		$this->RepeaterS->CurrentPageIndex=$_SESSION['currentPagePendaftaranWeb']['page_num'];
 		$this->RepeaterS->VirtualItemCount=$jumlah_baris;
@@ -111,7 +120,7 @@ class CPendaftaranViaWeb extends MainPageM {
 		$str = $str . " ORDER BY fp.nama_mhs ASC LIMIT $offset,$limit";				
         $_SESSION['currentPagePendaftaranWeb']['offset']=$offset;
         $_SESSION['currentPagePendaftaranWeb']['limit']=$limit;
-        $this->DB->setFieldTable(array('no_formulir','nama_mhs','jk','alamat_rumah','telp_hp','nomor_ijazah','nim'));				
+        $this->DB->setFieldTable(array('no_formulir','nama_mhs','jk','alamat_rumah','telp_hp','nomor_ijazah','ket','nim'));				
 		$r = $this->DB->getRecord($str,$offset+1);
         
 		$this->RepeaterS->DataSource=$r;
@@ -124,9 +133,10 @@ class CPendaftaranViaWeb extends MainPageM {
 		if ($item->ItemType === 'Item' || $item->ItemType === 'AlternatingItem') {			
 			$nama_mhs=$item->DataItem['nama_mhs'];
 			$item->btnDelete->Attributes->Title="Hapus $nama_mhs";               
-            if ($item->DataItem['nim'] == 'dulang') {
+            if ($item->DataItem['ket'] == 'dulang') {
+                $nim=$item->DataItem['nim'];
                 $item->lblKeterangan->CssClass='label label-success';
-                $item->lblKeterangan->Text='Sudah';
+                $item->lblKeterangan->Text="Sudah [$nim]";
 				$item->btnDelete->Enabled=false;
 				$item->btnDelete->Attributes->OnClick="alert('Tidak bisa dihapus karena sudah daftar ulang');return false;";			
 			}else{

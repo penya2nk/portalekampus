@@ -161,7 +161,7 @@ class CKHS extends MainPageM {
 			if ($this->Nilai->isKrsSah($_SESSION['ta'],$_SESSION['semester'])) { 
                 $datadulang=$this->Nilai->getDataDulang($_SESSION['semester'],$_SESSION['ta']);                
                 $idkelas=$datadulang['idkelas'];
-                $datamhs=array('no_formulir'=>$item->DataItem['no_formulir'],'nim'=>$nim,'kjur'=>$item->DataItem['kjur'],'tahun_masuk'=>$item->DataItem['tahun_masuk'],'semester_masuk'=>$item->DataItem['semester_masuk'],'idkelas'=>$idkelas);
+                $datamhs=array('no_formulir'=>$item->DataItem['no_formulir'],'nim'=>$nim,'kjur'=>$item->DataItem['kjur'],'tahun_masuk'=>$item->DataItem['tahun_masuk'],'semester_masuk'=>$item->DataItem['semester_masuk'],'idsmt'=>$_SESSION['semester'],'idkelas'=>$idkelas);
                 $this->Finance->setDataMHS($datamhs);                                				
 				$this->Nilai->getKHS($_SESSION['ta'],$_SESSION['semester']);
 				$ip=$this->Nilai->getIPS ();

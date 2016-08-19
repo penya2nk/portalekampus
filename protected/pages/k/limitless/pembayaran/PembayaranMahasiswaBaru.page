@@ -1,6 +1,6 @@
 <%@ Title="Pembayaran - Mahasiswa Baru"%>
 <com:TContent ID="moduleheader">    
-    <i class="icon-file-text position-left"></i> <span class="text-semibold">Pembayaran Mahasiswa Baru</span>
+    <i class="icon-file-text position-left"></i> <span class="text-semibold">Pembayaran Mahasiswa Baru  Tahun Masuk <%=$this->Page->setup->getSettingValue('default_ta');%></span>
 </com:TContent>
 <com:TContent ID="moduleheaderelement">    
     <div class="heading-elements">

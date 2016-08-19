@@ -141,7 +141,8 @@ class CPenyelenggaraan extends MainPageM {
 		$this->DB->query('BEGIN');
 		if ($this->DB->updateRecord($str)) {			
 			$str = "UPDATE pengampu_penyelenggaraan SET iddosen='$iddosen' WHERE idpenyelenggaraan='$idpenyelenggaraan'";
-			$this->DB->query('COMMIT');
+			$_SESSION['currentPagePembagianKelas']['iddosen']='none';
+            $this->DB->query('COMMIT');
 		}else {
 			$this->DB->query('ROLLBACK');
 		}	

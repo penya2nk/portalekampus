@@ -92,6 +92,10 @@ class MainPage extends TPage {
      */
     public $showSubMenuAkademikPerkuliahan=false;
     /**     
+     * show page Jadwal Perkuliahan [perkuliahan]
+     */
+    public $showJadwalPerkuliahan=false;
+    /**     
      * show page KRS [perkuliahan]
      */
     public $showKRS=false;

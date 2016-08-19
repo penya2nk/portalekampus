@@ -100,6 +100,23 @@ class Logic_DMaster extends Logic_Global {
         return $dataitem;     		
 	}
     /**
+     * digunakan untuk mendapatkan daftar ruang kelas
+     */
+	public function getRuangKelas () {
+        if ($this->Application->Cache) {            
+            $dataitem=$this->Application->Cache->get('listruangkelas');            
+            if (!isset($dataitem['none'])) {                
+                $dataitem=$this->getList ('ruangkelas',array('idruangkelas','namaruang','kapasitas'),'namaruang',null,2);			
+                $dataitem['none']='Daftar Ruang Kelas';    
+                $this->Application->Cache->set('listruangkelas',$dataitem);
+            }
+        }else {                        
+            $dataitem=$this->getList ('ruangkelas',array('idruangkelas','namaruang','kapasitas'),'namaruang',null,2);			
+            $dataitem['none']='Daftar Ruang Kelas';
+        }
+        return $dataitem;     		
+	}
+    /**
      * digunakan untuk mendapatkan nama kelas
      * @param type $idkelas
      * @return type

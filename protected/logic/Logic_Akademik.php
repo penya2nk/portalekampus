@@ -21,6 +21,11 @@ class Logic_Akademik extends Logic_Mahasiswa {
      * @var type array
      */
     public $InfoMatkul = array();
+    /**
+     * informasi kelas
+     * @var type array
+     */
+    public $InfoKelas = array();
 	public function __construct ($db) {
 		parent::__construct ($db);				
 	}
@@ -130,7 +135,23 @@ class Logic_Akademik extends Logic_Mahasiswa {
 		}	
         
         return $this->InfoMatkul; 
-	}    
+	}   
+    /**
+     * digunakan untuk mendapatkan informasi kelas berdasarkan idkelas_mhs
+     * @param type $id
+     * @return array
+     */
+	public function getInfoKelas($id) {
+        $str = "SELECT km.idkelas_mhs,km.idkelas,km.nama_kelas,km.hari,km.jam_masuk,km.jam_keluar,vpp.iddosen,vpp.nama_dosen,vpp.nidn,vpp.kmatkul,vpp.nmatkul,vpp.sks,vpp.semester,rk.namaruang,rk.kapasitas FROM kelas_mhs km JOIN v_pengampu_penyelenggaraan vpp ON (km.idpengampu_penyelenggaraan=vpp.idpengampu_penyelenggaraan) LEFT JOIN ruangkelas rk ON (rk.idruangkelas=km.idruangkelas) WHERE idkelas_mhs=$id";
+        $this->db->setFieldTable(array('idkelas_mhs','iddosen','iddosen','nama_dosen','nidn','kmatkul','nmatkul','sks','semester','idkelas','nama_kelas','hari','jam_masuk','jam_keluar','namaruang','kapasitas'));
+        $r = $this->db->getRecord($str);
+        if (isset($r[1])) {
+            $r[1]['kmatkul']=$this->getKmatkul($r[1]['kmatkul']);            
+            $r[1]['jumlah_peserta']=$this->db->getCountRowsOfTable("kelas_mhs_detail WHERE idkelas_mhs=$id",'idkelas_mhs');
+            $this->InfoKelas=$r[1];
+        }
+        return $this->InfoKelas;
+    }
     /**
      * digunakan untuk mendapatkan jumlah mahasiswa dalam penyelenggaraan
      * @param type int $idpenyelenggaraan
@@ -198,6 +219,16 @@ class Logic_Akademik extends Logic_Mahasiswa {
             }			
 		}
         return $result;
+    }
+    /**
+     * digunakan untuk mendapatkan daftar dosen pada penyelenggaraan
+     * @param type $idsmt
+     * @param type $tahun
+     * @return daftar jadwal
+     */
+    public function getJadwalKuliahMHS ($idsmt,$tahun) {
+        $nim=$this->DataMHS['nim'];
+        $str = "SELECT * FROM krs k JOIN krsmatkul km ON (km.idkrsmatkul=k.idkrsmatkul) LEFT JOIN kelas_mhs_detail kmd ON (kmd.idkrsmatkul=km.idkrsmatkul) JOIN kelas_mhs km (km.idkelas_mhs=kmd.idkelas_mhs) JOIN v_pengampu_penyelenggaraan vpp ON (km.idpengampu_penyelenggaraan=vpp.idpengampu_penyelenggaraan) WHERE k.nim='$nim' AND k.tahun='$tahun' AND k.idsmt='$idsmt' ";
     }    
 }
 ?>

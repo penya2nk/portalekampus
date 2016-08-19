@@ -120,6 +120,7 @@ class CDulangMHSBaru Extends MainPageM {
                         throw new Exception ("Calon Mahasiswa dengan Nomor Formulir ($no_formulir) tidak terdaftar di Database, silahkan ganti dengan yang lain.");		
                     }
                     $datamhs=$r[1];     
+                    $datamhs['idsmt']=$datamhs['semester_masuk'];
                     $this->Finance->setDataMHS($datamhs);
                     if (!$spmb=$this->Finance->isLulusSPMB(true)) {
                         throw new Exception ("Calon Mahasiswa dengan Nomor Formulir ($no_formulir) tidak lulus dalam SPMB.");		

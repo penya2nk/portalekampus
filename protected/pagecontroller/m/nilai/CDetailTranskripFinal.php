@@ -1,16 +1,16 @@
 <?php
 prado::using ('Application.MainPageM');
-class CDetailTranskripAsli extends MainPageM {		
+class CDetailTranskripFinal extends MainPageM {		
 	public function onLoad($param) {
 		parent::onLoad($param);				
         $this->Pengguna->moduleForbiden('akademik','transkrip_sementara');
 		$this->showSubMenuAkademikNilai=true;
-        $this->showTranskripAsli=true;    
+        $this->showTranskripFinal=true;    
         $this->createObj('Nilai');
         
 		if (!$this->IsPostback&&!$this->IsCallback) {
-            if (!isset($_SESSION['currentPageDetailTranskripAsli'])||$_SESSION['currentPageDetailTranskripAsli']['page_name']!='m.nilai.DetailTranskripAsli') {
-				$_SESSION['currentPageDetailTranskripAsli']=array('page_name'=>'m.nilai.DetailTranskripAsli','page_num'=>0,'search'=>false,'DataMHS'=>array(),'DataTranskrip');
+            if (!isset($_SESSION['currentPageDetailTranskripFinal'])||$_SESSION['currentPageDetailTranskripFinal']['page_name']!='m.nilai.DetailTranskripFinal') {
+				$_SESSION['currentPageDetailTranskripFinal']=array('page_name'=>'m.nilai.DetailTranskripFinal','page_num'=>0,'search'=>false,'DataMHS'=>array(),'DataTranskrip');
 			}  
             $this->tbCmbOutputReport->DataSource=$this->setup->getOutputFileType();
             $this->tbCmbOutputReport->Text= $_SESSION['outputreport'];
@@ -29,8 +29,8 @@ class CDetailTranskripAsli extends MainPageM {
             $r=$this->DB->getRecord($str);				
             
             if (!isset($r[1])) {
-                $_SESSION['currentPageDetailTranskripAsli']['DataMHS']=array();
-                $_SESSION['currentPageDetailTranskripAsli']['DataTranskrip']=array();
+                $_SESSION['currentPageDetailTranskripFinal']['DataMHS']=array();
+                $_SESSION['currentPageDetailTranskripFinal']['DataTranskrip']=array();
                 throw new Exception("Mahasiswa dengan NIM ($nim) tidak terdaftar.");
             }
             $datamhs=$r[1];
@@ -40,19 +40,19 @@ class CDetailTranskripAsli extends MainPageM {
             $datamhs['status']=$this->DMaster->getNamaStatusMHSByID($datamhs['k_status']);
             $datamhs['iddata_konversi']=$this->Nilai->isMhsPindahan($nim,true);
             $this->Nilai->setDataMHS($datamhs);
-            $_SESSION['currentPageDetailTranskripAsli']['DataMHS']=$datamhs;
+            $_SESSION['currentPageDetailTranskripFinal']['DataMHS']=$datamhs;
             
             $str = "SELECT nomor_transkrip,predikat_kelulusan,tanggal_lulus,judul_skripsi,iddosen_pembimbing,iddosen_pembimbing2,iddosen_ketua,iddosen_pemket,tahun,idsmt FROM transkrip_asli WHERE nim='$nim'";
             $this->DB->setFieldTable(array('nomor_transkrip','predikat_kelulusan','tanggal_lulus','judul_skripsi','iddosen_pembimbing','iddosen_pembimbing2','iddosen_ketua','iddosen_pemket','tahun','idsmt'));
             $datatranskrip=$this->DB->getRecord($str);
             if (!isset($datatranskrip[1]) ) {
-                $_SESSION['currentPageDetailTranskripAsli']['DataMHS']=array();
-                $_SESSION['currentPageDetailTranskripAsli']['DataTranskrip']=array();
-                throw new Exception("Mahasiswa dengan NIM ($nim) tidak terdaftar di Transkrip Asli.");
+                $_SESSION['currentPageDetailTranskripFinal']['DataMHS']=array();
+                $_SESSION['currentPageDetailTranskripFinal']['DataTranskrip']=array();
+                throw new Exception("Mahasiswa dengan NIM ($nim) tidak terdaftar di Transkrip Final.");
             }
             $datatranskrip[1]['nama_pembimbing1']=$this->DMaster->getNamaDosenPembimbing($datatranskrip[1]['iddosen_pembimbing']);
             $datatranskrip[1]['nama_pembimbing2']=$this->DMaster->getNamaDosenPembimbing($datatranskrip[1]['iddosen_pembimbing2']);            
-            $_SESSION['currentPageDetailTranskripAsli']['DataTranskrip']=$datatranskrip[1];
+            $_SESSION['currentPageDetailTranskripFinal']['DataTranskrip']=$datatranskrip[1];
             
             $this->hiddennomortranskrip->Value=$datatranskrip[1]['nomor_transkrip'];			
 			$this->txtEditNomorTranskrip->Text=$datatranskrip[1]['nomor_transkrip'];			
@@ -81,8 +81,8 @@ class CDetailTranskripAsli extends MainPageM {
         }        
 	}
     public function changeStatus ($sender,$param) {	
-        $datamhs=$_SESSION['currentPageDetailTranskripAsli']['DataMHS'];
-        $datatranskrip=$_SESSION['currentPageDetailTranskripAsli']['DataTranskrip'];
+        $datamhs=$_SESSION['currentPageDetailTranskripFinal']['DataMHS'];
+        $datatranskrip=$_SESSION['currentPageDetailTranskripFinal']['DataTranskrip'];
         $nim=$datamhs['nim'];
         $this->Nilai->setDataMHS(array('nim'=>$nim));
         $idsmt=$datatranskrip['idsmt'];
@@ -101,7 +101,7 @@ class CDetailTranskripAsli extends MainPageM {
         } 
         $this->Nilai->updateRegisterMHS('status','L');        
         $this->DB->query('COMMIT');
-        $this->redirect('nilai.DetailTranskripAsli',true,array('id'=>$datamhs['nim']));
+        $this->redirect('nilai.DetailTranskripFinal',true,array('id'=>$datamhs['nim']));
     }
     public function checkNoTranskrip ($sender,$param) {
 		try {
@@ -118,7 +118,7 @@ class CDetailTranskripAsli extends MainPageM {
 	}
 	public function updateData ($sender,$param) {
 		if ($this->IsValid) {						
-            $datamhs=$_SESSION['currentPageDetailTranskripAsli']['DataMHS'];
+            $datamhs=$_SESSION['currentPageDetailTranskripFinal']['DataMHS'];
             $nim=$datamhs['nim'];
 			$no_transkrip=$this->hiddennomortranskrip->Value;			
 			$predikat=$this->cmbEditPredikatKelulusan->Text;
@@ -144,27 +144,27 @@ class CDetailTranskripAsli extends MainPageM {
                         $str="UPDATE transkrip_asli_detail SET n_kual='$n_kual' WHERE nim='$nim' AND kmatkul='$kmatkul'";						
                         $this->DB->updateRecord($str);
                         if ($n_kual_sebelumnya == '')
-                            $this->Log->insertLogIntoTranskripAsli($nim,$kmatkul,$nmatkul,'input',$n_kual);
+                            $this->Log->insertLogIntoTranskripFinal($nim,$kmatkul,$nmatkul,'input',$n_kual);
                         else
-                            $this->Log->insertLogIntoTranskripAsli($nim,$kmatkul,$nmatkul,'update',$n_kual_sebelumnya,$n_kual);
+                            $this->Log->insertLogIntoTranskripFinal($nim,$kmatkul,$nmatkul,'update',$n_kual_sebelumnya,$n_kual);
                     }
                 }
                 $this->DB->query('COMMIT');
             }else {
                 $this->DB->query('ROLLBACK');
             }				
-			$this->redirect('nilai.DetailTranskripAsli',true,array('id'=>$nim));
+			$this->redirect('nilai.DetailTranskripFinal',true,array('id'=>$nim));
 		}
 	}
     public function deleteRecord($sender,$param) {	
         $kmatkul = $this->getDataKeyField($sender,$this->RepeaterS);
-        $datamhs=$_SESSION['currentPageDetailTranskripAsli']['DataMHS'];
+        $datamhs=$_SESSION['currentPageDetailTranskripFinal']['DataMHS'];
         $nim=$datamhs['nim'];
 		$this->DB->deleteRecord("transkrip_asli_detail WHERE nim='$nim' AND kmatkul='$kmatkul'");
-        $this->redirect('nilai.DetailTranskripAsli',true,array('id'=>$nim));
+        $this->redirect('nilai.DetailTranskripFinal',true,array('id'=>$nim));
     }
     public function resetTranskrip ($sender,$param) {
-        $datamhs=$_SESSION['currentPageDetailTranskripAsli']['DataMHS'];
+        $datamhs=$_SESSION['currentPageDetailTranskripFinal']['DataMHS'];
         $nim=$datamhs['nim'];        
         $this->DB->query('BEGIN');
         if ($this->DB->deleteRecord("transkrip_asli_detail WHERE nim='$nim'")) {
@@ -174,14 +174,14 @@ class CDetailTranskripAsli extends MainPageM {
         }else{
             $this->DB->query('ROLLBACK');
         }
-        $this->redirect('nilai.DetailTranskripAsli',true,array('id'=>$nim));
+        $this->redirect('nilai.DetailTranskripFinal',true,array('id'=>$nim));
     }
 	public function printOut ($sender,$param) {	
         $this->createObj('reportnilai');          
         $this->linkOutput->Text='';
         $this->linkOutput->NavigateUrl='#';   
         
-        $dataReport=$_SESSION['currentPageDetailTranskripAsli']['DataMHS']; 
+        $dataReport=$_SESSION['currentPageDetailTranskripFinal']['DataMHS']; 
         $nim=$dataReport['nim'];
         if ($dataReport['k_status'] == 'L') {
             switch ($_SESSION['outputreport']) {
@@ -195,7 +195,7 @@ class CDetailTranskripAsli extends MainPageM {
                     $messageprintout="Mohon maaf Print out pada mode excel 2007 belum kami support.";                
                 break;
                 case 'pdf' :                    
-                    $messageprintout='Transkrip Asli : ';                     
+                    $messageprintout='Transkrip Final : ';                     
 
                     $dataReport['nama_jabatan_transkrip']=$this->setup->getSettingValue('nama_jabatan_transkrip');
                     $dataReport['nama_penandatangan_transkrip']=$this->setup->getSettingValue('nama_penandatangan_transkrip');
@@ -208,15 +208,15 @@ class CDetailTranskripAsli extends MainPageM {
                     $dataReport['jabfung_penandatangan_khs']=$this->setup->getSettingValue('jabfung_penandatangan_khs');
                     $dataReport['nidn_penandatangan_khs']=$this->setup->getSettingValue('nidn_penandatangan_khs');
                     $dataReport['tanggalterbit']=date ('Y-m-d',$this->txtViewTanggalTerbit->TimeStamp);
-                    $dataReport['dataTranskrip']=$_SESSION['currentPageDetailTranskripAsli']['DataTranskrip'];  
+                    $dataReport['dataTranskrip']=$_SESSION['currentPageDetailTranskripFinal']['DataTranskrip'];  
                     $dataReport['linkoutput']=$this->linkOutput; 
                     $this->report->setDataReport($dataReport); 
                     $this->report->setMode($_SESSION['outputreport']);
-                    $this->report->printTranskripAsli($this->Nilai,true);				
+                    $this->report->printTranskripFinal($this->Nilai,true);				
                 break;
             }
             $this->lblMessagePrintout->Text=$messageprintout;
-            $this->lblPrintout->Text='Transkrip Asli';
+            $this->lblPrintout->Text='Transkrip Final';
             $this->modalPrintOut->show();
         }else{
             $this->lblContentMessageError->Text="Mahasiswa dengan NIM ($nim) statusnya belum lulus !!!.";

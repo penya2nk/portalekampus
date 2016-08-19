@@ -59,7 +59,7 @@
             </div>
         </div>
     </div>                    
-    <com:TActiveRepeater ID="RepeaterS" EnableViewState="false" OnItemCreated="itemCreated">
+    <com:TActiveRepeater ID="RepeaterS" DataKeyField="idkrsmatkul" OnItemDataBound="itemBound">
         <prop:HeaderTemplate>
             <div class="row">
                 <div class="col-lg-12">
@@ -108,11 +108,12 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">NO</th>
-                                            <th scope="col">KODE</th>
-                                            <th scope="col">NAMA</th>
-                                            <th scope="col">SKS</th>
-                                            <th scope="col">SMT</th>
-                                            <th scope="col">DOSEN</th>					
+                                            <th width="15" scope="col">KODE</th>
+                                            <th width="250" scope="col">NAMA</th>
+                                            <th width="15" scope="col">SKS</th>
+                                            <th width="15" scope="col">SMT</th>
+                                            <th scope="col">DOSEN PENGAMPU UTAMA</th>
+                                            <th scope="col" width="270">PILIH KELAS</th>
                                             <th scope="col">&nbsp;</th>					
                                         </tr>						
                                     </thead>
@@ -125,7 +126,21 @@
                                             <td><%# $this->DataItem['nmatkul']%></td>
                                             <td><%# $this->DataItem['sks']%></td>
                                             <td><%# $this->DataItem['semester']%></td>							
-                                            <td><%# $this->DataItem['nama_dosen']%> [<%# $this->DataItem['nidn']%>]</td>					
+                                            <td><%# $this->DataItem['nama_dosen']%> [<%# $this->DataItem['nidn']%>]</td>	
+                                            <td>
+                                                <com:TActiveDropDownList ID="cmbKelas" Text="<%# $this->Data['iddosen']%>" OnCallBack="page.prosesKelas" CssClass="form-control">
+                                                    <prop:ClientSide.OnPreDispatch>
+                                                        $('loading').show();                                             
+                                                        $('<%=$this->cmbKelas->ClientId%>').disabled='disabled';						
+                                                    </prop:ClientSide.OnPreDispatch>
+                                                    <prop:ClientSide.OnLoading>
+                                                        $('<%=$this->cmbKelas->ClientId%>').disabled='disabled';									                            
+                                                    </prop:ClientSide.OnLoading>
+                                                    <prop:ClientSide.onComplete>
+                                                        $('loading').hide();                                                
+                                                    </prop:ClientSide.OnComplete>
+                                                </com:TActiveDropDownList>
+                                            </td>	
                                             <td><i class="<%#($this->Page->KRS->DataKRS['krs']['sah']&&!$this->DataItem['batal'])?'fa fa-check':'fa fa-times'%>"></i></td>
                                         </tr>
         </prop:ItemTemplate>  

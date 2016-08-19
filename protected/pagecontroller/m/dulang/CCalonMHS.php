@@ -105,6 +105,7 @@ class CCalonMHS Extends MainPageM {
         $result=array();
         while (list($k,$v)=each($r)) {            
             $v['nkelas']=$this->DMaster->getNamaKelasByID($v['idkelas']);
+            $v['idsmt']=$semester_masuk;
             $this->Finance->setDataMHS($v);
             $data=$this->Finance->getTresholdPembayaran($tahun_masuk,$semester_masuk,true);
             $v['total_bayar']='('.$this->Finance->toRupiah($data['total_biaya']).')'.$this->Finance->toRupiah($data['total_bayar']);
@@ -164,6 +165,7 @@ class CCalonMHS Extends MainPageM {
             $r=$this->DB->getRecord($str);
             
             $datamhs=$r[1];
+            $datamhs['idsmt']=$_SESSION['currentPageCalonMHS']['semester_masuk'];
             $this->Finance->setDataMHS($datamhs);
             $spmb=$this->Finance->isLulusSPMB(true);
             $datamhs['nama_ps1']=$_SESSION['daftar_jurusan'][$datamhs['kjur1']];

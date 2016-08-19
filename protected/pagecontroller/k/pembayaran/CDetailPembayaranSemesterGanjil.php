@@ -18,6 +18,7 @@ class CDetailPembayaranSemesterGanjil Extends MainPageK {
                 $this->DB->setFieldTable(array('no_formulir','nim','nirm','nama_mhs','jk','tempat_lahir','tanggal_lahir','kjur','nama_ps','idkonsentrasi','nama_konsentrasi','tahun_masuk','semester_masuk','iddosen_wali','idkelas','k_status','status'));
                 $r=$this->DB->getRecord($str);	           
                 $datamhs=$r[1];
+                $datamhs['idsmt']=$_SESSION['currentPagePembayaranSemesterGanjil']['semester'];
                 $datamhs['ta']=$_SESSION['currentPagePembayaranSemesterGanjil']['ta'];             
                 if (!isset($r[1])) {
                     $_SESSION['currentPagePembayaranSemesterGanjil']['DataMHS']=array();
@@ -114,7 +115,7 @@ class CDetailPembayaranSemesterGanjil Extends MainPageK {
                     while (list($o,$p)=each($d)) {            
                         $sudah_dibayarkan[$p['idkombi']]=$p['sudah_dibayar'];
                     }
-                    $str = "SELECT k.idkombi,kpt.biaya FROM kombi_per_ta kpt,kombi k WHERE  k.idkombi=kpt.idkombi AND tahun=$tahun_masuk AND kpt.idkelas='$idkelas' AND periode_pembayaran='semesteran' ORDER BY periode_pembayaran,nama_kombi ASC";
+                    $str = "SELECT k.idkombi,kpt.biaya FROM kombi_per_ta kpt,kombi k WHERE  k.idkombi=kpt.idkombi AND tahun=$tahun_masuk AND kpt.idkelas='$idkelas' AND idsmt=$idsmt AND periode_pembayaran='semesteran' ORDER BY periode_pembayaran,nama_kombi ASC";
                     $this->DB->setFieldTable(array('idkombi','biaya'));
                     $r=$this->DB->getRecord($str);
 

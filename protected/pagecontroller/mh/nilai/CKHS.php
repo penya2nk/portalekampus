@@ -62,6 +62,7 @@ class CKHS extends MainPageMHS {
                 $datadulang=$this->Nilai->getDataDulang($_SESSION['semester'],$_SESSION['ta']);
                 $idkelas=$datadulang['idkelas'];
                 $datamhs['idkelas']=$idkelas;
+                $datamhs['idsmt']=$_SESSION['semester'];
                 $this->Finance->setDataMHS($datamhs);
 				$data=$this->Finance->getLunasPembayaran($_SESSION['ta'],$_SESSION['semester'],true);	
                 

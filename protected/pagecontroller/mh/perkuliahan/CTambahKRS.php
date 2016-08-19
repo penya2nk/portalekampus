@@ -33,7 +33,8 @@ class CTambahKRS extends MainPageMHS {
                 $this->KRS->DataKRS=$_SESSION['currentPageKRS']['DataKRS'];							
                 $idsmt=$_SESSION['semester'];
                 $tahun=$_SESSION['ta'];
-                $datamhs=$this->Pengguna->getDataUser();                            
+                $datamhs=$this->Pengguna->getDataUser();    
+                $datamhs['idsmt']=$idsmt;
                 $nim=$datamhs['nim'];
                 
                 $this->KRS->setDataMHS($datamhs);

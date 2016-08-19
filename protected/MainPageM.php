@@ -71,7 +71,11 @@ class MainPageM extends MainPage {
     /**     
      * show page penyelenggaraan [perkuliahan]
      */
-    public $showPenyelenggaraan=false;    
+    public $showPenyelenggaraan=false;
+    /**     
+     * show page pembagian kelas [perkuliahan]
+     */
+    public $showPembagianKelas=false;      
     /**     
      * show page KRS Kelas Ekstension [perkuliahan]
      */
@@ -83,7 +87,7 @@ class MainPageM extends MainPage {
     /**     
      * show page transkrip asli [akademik nilai]
      */
-    public $showTranskripAsli=false;
+    public $showTranskripFinal=false;
     /**     
      * show sub menu setting akademik[setting]
      */

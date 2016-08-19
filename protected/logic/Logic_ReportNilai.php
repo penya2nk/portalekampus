@@ -1389,10 +1389,10 @@ class Logic_ReportNilai extends Logic_Report {
         $this->setLink($this->dataReport['linkoutput'],"Transkrip KRS");
     }
     /**
-     * digunakan untuk memprint Transkrip Asli
+     * digunakan untuk memprint Transkrip Final
      * @param type $objNilai object
      */
-    public function printTranskripAsli ($objNilai) {
+    public function printTranskripFinal ($objNilai) {
         $biodata=$this->dataReport;
         $nim=$biodata['nim'];
         $objNilai->setDataMHS (array('nim'=>$nim));
@@ -1632,7 +1632,7 @@ class Logic_ReportNilai extends Logic_Report {
                 $this->printOut("transkripasli_$nim");
             break;
         }
-        $this->setLink($this->dataReport['linkoutput'],"Transkrip Asli");
+        $this->setLink($this->dataReport['linkoutput'],"Transkrip Final");
     }
         
     /**

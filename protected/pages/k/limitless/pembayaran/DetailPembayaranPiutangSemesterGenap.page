@@ -1,10 +1,10 @@
-<%@ Title="Pembayaran - Semester Genap"%>
+<%@ Title="Pembayaran - Pembayaran Piutang Semester Genap"%>
 <com:TContent ID="moduleheader">    
-    <i class="icon-file-text position-left"></i> <span class="text-semibold">Pembayaran Semester Genap T.A <%=$this->Page->setup->getSettingValue('default_ta');%></span>
+    <i class="icon-file-text position-left"></i> <span class="text-semibold">Pembayaran Piutang Semester Genap</span>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
-    <li><a href="#">PEMBAYARAN</a></li>    
-    <li class="active">SEMESTER GENAP</li>     
+    <li><a href="#">PEMBAYARAN</a></li>
+    <li class="active">PIUTANG SEMESTER GENAP</li>     
 </com:TContent>
 <com:TContent ID="sidebarcontent">
 <div class="sidebar sidebar-main sidebar-default sidebar-separate">
@@ -32,7 +32,7 @@
         <div class="col-md-12">
             <div class="panel panel-flat">
                 <div class="panel-heading">
-                    <h5 class="panel-title"><i class="icon-calculator position-left"></i>  DAFTAR TRANSAKSI T.A <%=$this->DMaster->getNamaTA($_SESSION['currentPagePembayaranSemesterGenap']['DataMHS']['ta'])%> SEMESTER <%=$this->setup->getSemester($_SESSION['currentPagePembayaranSemesterGenap']['semester'])%></h5>                
+                    <h5 class="panel-title"><i class="icon-calculator position-left"></i>  DAFTAR TRANSAKSI T.A <%=$this->DMaster->getNamaTA($_SESSION['currentPagePembayaranPiutangSemesterGenap']['ta'])%> SEMESTER <%=$this->setup->getSemester($_SESSION['currentPagePembayaranPiutangSemesterGenap']['semester'])%></h5>                
                     <div class="heading-elements">
                         <div class="heading-btn">       
                             <com:TActiveLinkButton ID="btnAddTransaction" OnClick="addTransaction" ClientSide.PostState="false" CssClass="btn btn-info btn-icon" Attributes.Title="Tambah Transaksi">
@@ -118,17 +118,17 @@
                             <tfoot>						
                                 <tr Align="right">
                                     <td colspan="5"><b>Total</b></td>							
-                                    <td><%#$this->Page->Finance->toRupiah(CDetailPembayaranSemesterGenap::$TotalSudahBayar)%></td>
+                                    <td><%#$this->Page->Finance->toRupiah(CDetailPembayaranPiutangSemesterGenap::$TotalSudahBayar)%></td>
                                     <td>&nbsp;</td>
                                 </tr>
                                 <tr Align="right">
                                     <td colspan="5"><b>Kewajiban Mahasiswa</b></td>							
-                                    <td><%#$this->Page->Finance->toRupiah(CDetailPembayaranSemesterGenap::$KewajibanMahasiswa)%></td>
+                                    <td><%#$this->Page->Finance->toRupiah(CDetailPembayaranPiutangSemesterGenap::$KewajibanMahasiswa)%></td>
                                     <td>&nbsp;</td>
                                 </tr>
                                 <tr Align="right">
                                     <td class="rounded-foot-left" colspan="5"><b>Sisa</b></td>							
-                                    <td><%#$this->Page->Finance->toRupiah(CDetailPembayaranSemesterGenap::$KewajibanMahasiswa-CDetailPembayaranSemesterGenap::$TotalSudahBayar)%></td>
+                                    <td><%#$this->Page->Finance->toRupiah(CDetailPembayaranPiutangSemesterGenap::$KewajibanMahasiswa-CDetailPembayaranPiutangSemesterGenap::$TotalSudahBayar)%></td>
                                     <td class="rounded-foot-right">&nbsp;</td>
                                 </tr>
                                 </tfoot>

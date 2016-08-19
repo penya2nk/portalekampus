@@ -147,6 +147,7 @@ class CDulangMHSLama Extends MainPageM {
                         throw new Exception ("Mahasiswa Dengan NIM ($nim) tidak terdaftar di Portal.");
                     }
                     $datamhs=$r[1];      
+                    $datamhs['idsmt']=$_SESSION['semester'];
                     $this->Finance->setDataMHS($datamhs);                              
                     $datadulang=$this->Finance->getDataDulang($_SESSION['semester'],$_SESSION['ta']);
                     

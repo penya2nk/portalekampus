@@ -21,6 +21,7 @@ class CDetailPembayaranMahasiswaBaru Extends MainPageK {
                     throw new Exception ("Calon Mahasiswa dengan Nomor Formulir ($no_formulir) tidak terdaftar di Database, silahkan ganti dengan yang lain.");		
                 }
                 $datamhs=$r[1];                
+                $datamhs['idsmt']=$datamhs['semester_masuk'];
                 $this->Finance->setDataMHS($datamhs);
                 if (!$spmb=$this->Finance->isLulusSPMB(true)) {
                     throw new Exception ("Calon Mahasiswa dengan Nomor Formulir ($no_formulir) tidak lulus dalam SPMB.");		
@@ -107,7 +108,7 @@ class CDetailPembayaranMahasiswaBaru Extends MainPageK {
                     while (list($o,$p)=each($d)) {            
                         $sudah_dibayarkan[$p['idkombi']]=$p['sudah_dibayar'];
                     }
-                    $str = "SELECT k.idkombi,kpt.biaya FROM kombi_per_ta kpt,kombi k WHERE  k.idkombi=kpt.idkombi AND tahun=$ta AND kpt.idkelas='$idkelas' AND (periode_pembayaran='sekali' OR periode_pembayaran='semesteran') ORDER BY periode_pembayaran,nama_kombi ASC";
+                    $str = "SELECT k.idkombi,kpt.biaya FROM kombi_per_ta kpt,kombi k WHERE  k.idkombi=kpt.idkombi AND tahun=$ta AND idsmt=$idsmt AND kpt.idkelas='$idkelas' AND (periode_pembayaran='sekali' OR periode_pembayaran='semesteran') ORDER BY periode_pembayaran,nama_kombi ASC";
                     $this->DB->setFieldTable(array('idkombi','biaya'));
                     $r=$this->DB->getRecord($str);
 

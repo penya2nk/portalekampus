@@ -75,7 +75,7 @@ class CKombiPerTA Extends MainPageK {
 					$this->DB->setFieldTable(array('idkombi'));
 					$result=$this->DB->getRecord($str);
 					while (list($k,$v)=each($result)) {
-						$str = "INSERT INTO kombi_per_ta (idkombi_per_ta,idkelas,idkombi,tahun,biaya) VALUES ";
+						$str = "INSERT INTO kombi_per_ta (idkombi_per_ta,idkelas,idkombi,tahun,idsmt,biaya) VALUES ";
 						$str = $str . "(NULL,'$kelas',".$v['idkombi'].",$ta,$idsmt,0)";
 						$this->DB->insertRecord ($str);
 					}	
@@ -96,13 +96,14 @@ class CKombiPerTA Extends MainPageK {
             }
             $str = "SELECT kpt.idkombi_per_ta,k.idkombi,k.nama_kombi,kpt.biaya,k.periode_pembayaran FROM kombi_per_ta kpt,kombi k WHERE  k.idkombi=kpt.idkombi AND idsmt=$idsmt AND tahun=$ta AND kpt.idkelas='$kelas'$str_periode_pembayaran ORDER BY periode_pembayaran,nama_kombi ASC";
             $this->DB->setFieldTable(array('idkombi_per_ta','idkombi','nama_kombi','biaya','periode_pembayaran'));
-            $r=$this->DB->getRecord($str);            
+            $r=$this->DB->getRecord($str); 
+            $result=array();
 			while (list($k,$v)=each($r)) {
                 $v['biaya_alias']=$this->Finance->toRupiah($v['biaya']);
                 $v['nama_kombi']=  strtoupper($v['nama_kombi']);
                 $v['periode_pembayaran']=  strtoupper($v['periode_pembayaran']);
 				$result[$k]=$v;
-			}									
+			}		
 		}		
 		$this->GridS->DataSource=$result;
 		$this->GridS->dataBind();

@@ -142,13 +142,21 @@ class Logic_Akademik extends Logic_Mahasiswa {
      * @return array
      */
 	public function getInfoKelas($id) {
-        $str = "SELECT km.idkelas_mhs,km.idkelas,km.nama_kelas,km.hari,km.jam_masuk,km.jam_keluar,vpp.iddosen,vpp.nama_dosen,vpp.nidn,vpp.kmatkul,vpp.nmatkul,vpp.sks,vpp.semester,rk.namaruang,rk.kapasitas FROM kelas_mhs km JOIN v_pengampu_penyelenggaraan vpp ON (km.idpengampu_penyelenggaraan=vpp.idpengampu_penyelenggaraan) LEFT JOIN ruangkelas rk ON (rk.idruangkelas=km.idruangkelas) WHERE idkelas_mhs=$id";
-        $this->db->setFieldTable(array('idkelas_mhs','iddosen','iddosen','nama_dosen','nidn','kmatkul','nmatkul','sks','semester','idkelas','nama_kelas','hari','jam_masuk','jam_keluar','namaruang','kapasitas'));
+        $str = "SELECT km.idkelas_mhs,km.idkelas,km.nama_kelas,km.hari,km.jam_masuk,km.jam_keluar,vpp.iddosen,vpp.nama_dosen,vpp.nidn,vpp.kmatkul,vpp.nmatkul,vpp.sks,vpp.semester,vpp.idpenyelenggaraan,rk.namaruang,rk.kapasitas,vpp.idsmt,vpp.tahun,vpp.kjur FROM kelas_mhs km JOIN v_pengampu_penyelenggaraan vpp ON (km.idpengampu_penyelenggaraan=vpp.idpengampu_penyelenggaraan) LEFT JOIN ruangkelas rk ON (rk.idruangkelas=km.idruangkelas) WHERE idkelas_mhs=$id";
+        $this->db->setFieldTable(array('idkelas_mhs','iddosen','iddosen','nama_dosen','nidn','kmatkul','nmatkul','sks','semester','idpenyelenggaraan','idkelas','nama_kelas','hari','jam_masuk','jam_keluar','namaruang','kapasitas','idsmt','tahun','kjur'));
         $r = $this->db->getRecord($str);
         if (isset($r[1])) {
             $r[1]['kmatkul']=$this->getKmatkul($r[1]['kmatkul']);            
             $r[1]['jumlah_peserta']=$this->db->getCountRowsOfTable("kelas_mhs_detail WHERE idkelas_mhs=$id",'idkelas_mhs');
             $this->InfoKelas=$r[1];
+            
+            $idpenyelenggaraan=$r[1]['idpenyelenggaraan'];
+            $str = "SELECT nama_dosen AS nama_dosen_matakuliah,nidn AS nidn_dosen_matakuliah FROM kelas_mhs km JOIN v_penyelenggaraan WHERE idpenyelenggaraan=$idpenyelenggaraan";
+            $this->db->setFieldTable(array('nama_dosen_matakuliah','nidn_dosen_matakuliah'));
+            $r = $this->db->getRecord($str);
+            
+            $this->InfoKelas['nama_dosen_matakuliah']=$r[1]['nama_dosen_matakuliah'];
+            $this->InfoKelas['nidn_dosen_matakuliah']=$r[1]['nidn_dosen_matakuliah'];
         }
         return $this->InfoKelas;
     }

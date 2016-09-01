@@ -70,6 +70,7 @@ class UserManager extends TAuthManager {
                     $dataMhs['nama_dosen']=$nama_dosen;			                
                 }
 				$this->dataUser['data_user']=$dataMhs;
+                $this->dataUser['data_user']['userid']=$username;
 				$this->dataUser['data_user']['username']=$username;
 				$this->dataUser['data_user']['page']='mh';						
 			break;
@@ -78,6 +79,7 @@ class UserManager extends TAuthManager {
 				$this->db->setFieldTable(array('iddosen','nidn','nipy','nama_dosen','theme'));
 				$r=$this->db->getRecord($str);				
 				$this->dataUser['data_user']=$r[1];
+                $this->dataUser['data_user']['userid']=$username;
 				$this->dataUser['data_user']['username']=$username;
 				$this->dataUser['data_user']['page']='d';				
 			break;
@@ -86,6 +88,7 @@ class UserManager extends TAuthManager {
 				$this->db->setFieldTable(array('iddosen','iddosen_wali','nidn','nipy','nama_dosen','theme'));
 				$r=$this->db->getRecord($str);				
 				$this->dataUser['data_user']=$r[1];
+                $this->dataUser['data_user']['userid']=$username;
 				$this->dataUser['data_user']['username']=$username;
 				$this->dataUser['data_user']['page']='dw';				
 			break;

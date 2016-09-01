@@ -71,9 +71,14 @@ class CSoalPMB extends MainPageMB {
         $no_formulir=$this->Pengguna->getDataUser('username');
         $str = "SELECT ju.idsoal,nama_soal,ju.idjawaban FROM jawaban_ujian ju,soal s WHERE ju.idsoal=s.idsoal AND ju.no_formulir=$no_formulir";
         $this->DB->setFieldTable(array('idsoal','nama_soal','idjawaban')); 
-        $r=$this->DB->getRecord($str);	        
-        $this->RepeaterS->DataSource=$r;
-        $this->RepeaterS->dataBind();
+        $r=$this->DB->getRecord($str);	     
+        if (isset($r[1])) {
+            $this->RepeaterS->DataSource=$r;
+            $this->RepeaterS->dataBind();
+        }else{
+            $this->DB->deleteRecord("kartu_ujian WHERE no_formulir=$no_formulir");
+            $this->redirect('SoalPMB',true);
+        }        
 	}  
     public function dataBindRepeaterJawaban ($sender,$param) {
         $item=$param->Item;

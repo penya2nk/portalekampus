@@ -29,6 +29,9 @@ class MainTemplate extends TTemplateControl {
             case 'm' :
                 $str = "UPDATE simak_user SET theme='$theme' WHERE userid=$userid";                            
             break;
+            case 'mh' :
+                $str = "UPDATE profiles_mahasiswa SET theme='$theme' WHERE nim=$userid"; 
+            break;
         }        
         $this->Page->DB->updateRecord($str);
         $this->Parent->Page->redirect ('Home',true);

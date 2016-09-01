@@ -60,7 +60,7 @@ class CTransaksiPembayaranMahasiswaBaru Extends MainPageK {
             $belum_komit[$n['idkombi']]=$n['dibayarkan'];
         }
         
-        $str = "SELECT k.idkombi,k.nama_kombi,kpt.biaya FROM kombi_per_ta kpt,kombi k WHERE  k.idkombi=kpt.idkombi AND tahun=$ta AND kpt.idkelas='$kelas' AND (periode_pembayaran='sekali' OR periode_pembayaran='semesteran') ORDER BY periode_pembayaran,nama_kombi ASC";
+        $str = "SELECT k.idkombi,k.nama_kombi,kpt.biaya FROM kombi_per_ta kpt,kombi k WHERE  k.idkombi=kpt.idkombi AND tahun=$ta AND kpt.idkelas='$kelas' AND idsmt=$idsmt AND (periode_pembayaran='sekali' OR periode_pembayaran='semesteran') ORDER BY periode_pembayaran,nama_kombi ASC";
         $this->DB->setFieldTable(array('idkombi','nama_kombi','biaya'));
         $r=$this->DB->getRecord($str);
         

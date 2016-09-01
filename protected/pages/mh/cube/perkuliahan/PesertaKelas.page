@@ -5,7 +5,7 @@
 <com:TContent ID="modulebreadcrumb">    
     <li><a href="#">AKADEMIK</a></li>
     <li><a href="#">PERKULIAHAN</a></li>
-    <li><a href="<%=$this->constructURl ('perkuliahan.PembagianKelas',true)%>">PEMBAGIAN KELAS</a></li>
+    <li><a href="<%=$this->constructURl ('perkuliahan.JadwalPerkuliahan',true)%>">JADWAL PERKULIAHAN</a></li>
     <li class="active">PESERTA KELAS</li>
 </com:TContent>
 <com:TContent ID="configtools">    
@@ -35,9 +35,6 @@
         </ul>
     </div>
 </div>
-</com:TContent>
-<com:TContent ID="csscontent">
-<link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/css/libs/nifty-component.css"/>
 </com:TContent>
 <com:TContent ID="maincontent">
 <com:TPanel Visible="<%= $this->getViewProcess(false) %>" CssClass="row"> 
@@ -121,20 +118,7 @@
             <div class="main-box clearfix">
                 <header class="main-box-header clearfix">
                      <h2 class="pull-left"><i class="fa fa-user"></i> Daftar Peserta Kelas</h2> 
-                     <div class="filter-block pull-right">  
-                        <com:TActiveLinkButton ID="btnPrintOut" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out Daftar Hadir Mahasiswa">
-                            <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
-                            <prop:ClientSide.OnPreDispatch>
-                                $('loading').show();
-                            </prop:ClientSide.OnPreDispatch>
-                            <prop:ClientSide.OnLoading>
-                                $('<%=$this->btnPrintOut->ClientId%>').disabled='disabled';				
-                            </prop:ClientSide.OnLoading>
-                            <prop:ClientSide.OnComplete>
-                                $('<%=$this->btnPrintOut->ClientId%>').disabled='';				
-                                $('loading').hide();
-                            </prop:ClientSide.OnComplete>
-                        </com:TActiveLinkButton>  
+                     <div class="filter-block pull-right">                        
                         <a href="<%=$this->Page->constructUrl('perkuliahan.DetailPembagianKelas',true)%>" class="btn btn-default pull-right" title="Keluar">                                        
                             <i class='fa  fa-times fa-lg'></i>
                         </a>                         
@@ -193,5 +177,4 @@
         </div>
     </div>
 </com:TPanel>
-<%include Application.layouts.cube.ModalPrintOut%>
 </com:TContent>

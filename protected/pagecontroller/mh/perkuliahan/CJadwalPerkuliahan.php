@@ -73,6 +73,19 @@ class CJadwalPerkuliahan extends MainPageMHS {
         $this->RepeaterS->DataSource=$result;
 		$this->RepeaterS->dataBind();     
         
+        $nim=$datamhs['nim'];
+        $str = "SELECT vkm.idkelas,vkm.nama_kelas,vkm.hari,vkm.jam_masuk,vkm.jam_keluar,vpp.kmatkul,vpp.nmatkul,vpp.nama_dosen,vpp.nidn,rk.namaruang,rk.kapasitas FROM krsmatkul km, krs k,kelas_mhs_detail kmd,kelas_mhs vkm,v_pengampu_penyelenggaraan vpp, ruangkelas rk  WHERE km.idkrs=k.idkrs AND kmd.idkrsmatkul=km.idkrsmatkul AND vkm.idkelas_mhs=kmd.idkelas_mhs AND vkm.idpengampu_penyelenggaraan=vpp.idpengampu_penyelenggaraan AND rk.idruangkelas=vkm.idruangkelas AND k.nim=$nim AND k.idsmt=$idsmt AND k.tahun=$ta";
+        $this->DB->setFieldTable(array('idkelas','kmatkul','nmatkul','nama_dosen','idkelas','nidn','nama_kelas','hari','jam_masuk','jam_keluar','namaruang','kapasitas'));
+		$r = $this->DB->getRecord($str);	
+        $result=array();
+        while (list($k,$v)=each($r)) {  
+            $kmatkul=$v['kmatkul'];          
+            $v['kode_matkul']=$this->Demik->getKMatkul($kmatkul); 
+            $v['namakelas']=$this->DMaster->getNamaKelasByID($v['idkelas']).'-'.chr($v['nama_kelas']+64) . ' ['.$v['nidn'].']';            
+            $result[$k]=$v;
+        }
+        $this->RepeaterJadwalSaya->DataSource=$result;
+		$this->RepeaterJadwalSaya->dataBind(); 
 	}
 	public function viewRecord ($sender,$param) {
         $idkelas_mhs=$this->getDataKeyField($sender, $this->RepeaterS);

@@ -35,12 +35,12 @@ class Logic_Finance extends Logic_Mahasiswa {
 		return $rupiah;
 	}
     /**
-	* digunakan untuk mendapatkan biaya pendaftaran berdasarkan nim		
+	* digunakan untuk mendapatkan biaya pendaftaran berdasarkan tahun dan idsmt		
 	*/
-	public function getBiayaPendaftaran ($tahun,$idkelas) {
-        $str = "SELECT biaya FROM kombi_per_ta WHERE idkombi=1 AND tahun=$tahun AND idkelas='$idkelas'";						
+	public function getBiayaPendaftaran ($tahun,$idsmt,$idkelas) {
+        $str = "SELECT biaya FROM kombi_per_ta WHERE idkombi=1 AND tahun=$tahun AND idsmt=$idsmt AND idkelas='$idkelas'";						
 		$this->db->setFieldTable(array('biaya'));
-		$result=$this->db->getRecord($str); 		
+		$result=$this->db->getRecord($str);
 		if (isset($result[1])) {
 			return $result[1]['biaya'];	
 		}else {

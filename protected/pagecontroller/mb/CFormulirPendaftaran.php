@@ -9,11 +9,12 @@ class CFormulirPendaftaran extends MainPageMB {
             $this->lblModulHeader->Text='T.A '.$this->DMaster->getNamaTA($this->Pengguna->getDataUser('tahun_masuk'));
             try {                
                 if (!isset($_SESSION['currentPageFormulirPendaftaran'])||$_SESSION['currentPageFormulirPendaftaran']['page_name']!='mb.FormulirPendaftaran') {
-                    $_SESSION['currentPageFormulirPendaftaran']=array('page_name'=>'mb.FormulirPendaftaran','page_num'=>0,'reguler'=>$reguler,'karyawan'=>$karyawan,'ekstensi'=>$ekstensi);												
-                }                      
-                $reguler=$this->Finance->getBiayaPendaftaran($_SESSION['tahun_masuk'],'A');							
-                $karyawan=$this->Finance->getBiayaPendaftaran($_SESSION['tahun_masuk'],'B');							
-                $ekstensi=$this->Finance->getBiayaPendaftaran($_SESSION['tahun_masuk'],'C');
+                    $_SESSION['currentPageFormulirPendaftaran']=array('page_name'=>'mb.FormulirPendaftaran','page_num'=>0,'reguler'=>0,'karyawan'=>0,'ekstensi'=>0);												
+                }     
+                $semester_default=$this->setup->getSettingValue('default_semester');
+                $reguler=$this->Finance->getBiayaPendaftaran($_SESSION['tahun_masuk'],$semester_default,'A');							
+                $karyawan=$this->Finance->getBiayaPendaftaran($_SESSION['tahun_masuk'],$semester_default,'B');							
+                $ekstensi=$this->Finance->getBiayaPendaftaran($_SESSION['tahun_masuk'],$semester_default,'C');
                 $_SESSION['currentPageFormulirPendaftaran']['reguler']=$reguler;
                 $_SESSION['currentPageFormulirPendaftaran']['karyawan']=$karyawan;
                 $_SESSION['currentPageFormulirPendaftaran']['ekstensi']=$ekstensi;

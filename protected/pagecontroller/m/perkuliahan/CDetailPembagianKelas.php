@@ -9,7 +9,7 @@ public function onLoad($param) {
         $this->createObj('Akademik');
 		if (!$this->IsPostBack&&!$this->IsCallBack) {
             if (!isset($_SESSION['currentPagePembagianKelas'])||$_SESSION['currentPagePembagianKelas']['page_name']!='m.perkuliahan.PembagianKelas') {                
-				$_SESSION['currentPagePembagianKelas']=array('page_name'=>'m.perkuliahan.PembagianKelas','page_num'=>0,'search'=>false,'iddosen'=>'none');												
+				$_SESSION['currentPagePembagianKelas']=array('page_name'=>'m.perkuliahan.PembagianKelas','page_num'=>0,'search'=>false,'iddosen'=>'none','nama_hari'=>'none');												
 			}
             $_SESSION['currentPagePembagianKelas']['search']=false;
             
@@ -17,7 +17,7 @@ public function onLoad($param) {
             $idsmt=$_SESSION['semester'];
             $kjur=$_SESSION['kjur'];
             
-            $str = "SELECT iddosen,nidn,nama_dosen FROM v_pengampu_penyelenggaraan WHERE kjur=$kjur AND tahun=$ta AND idsmt=$idsmt";
+            $str = "SELECT DISTINCT(iddosen),nidn,nama_dosen FROM v_pengampu_penyelenggaraan WHERE kjur=$kjur AND tahun=$ta AND idsmt=$idsmt";
             $this->DB->setFieldTable(array('iddosen','nidn','nama_dosen'));
             $r = $this->DB->getRecord($str);	
             $daftar_dosen=array('none'=>'Daftar Dosen');
@@ -63,7 +63,7 @@ public function onLoad($param) {
                 $this->cmbAddKelas->dataBind();	
                 
                 //load hari 				
-				$this->cmbAddHari->DataSource=$this->TGL->getNamaHari();
+				$this->cmbAddHari->DataSource=$this->DMaster->removeIdFromArray($this->TGL->getNamaHari(),'none');
 				$this->cmbAddHari->dataBind();
                 
                 //load kelas 				
@@ -173,6 +173,42 @@ public function onLoad($param) {
             $this->redirect('perkuliahan.DetailPembagianKelas', true);
         }
     }
+    public function printOut ($sender,$param) {		
+        $this->createObj('reportakademik');
+        $this->linkOutput->Text='';
+        $this->linkOutput->NavigateUrl='#';
+        $idkelas_mhs = $this->getDataKeyField($sender,$this->RepeaterS);
+        $dataReport=$this->Demik->getInfoKelas($idkelas_mhs);
+		switch ($_SESSION['outputreport']) {
+            case  'summarypdf' :
+                $messageprintout="Mohon maaf Print out pada mode summary pdf tidak kami support.";                
+            break;
+            case  'summaryexcel' :
+                $messageprintout="Mohon maaf Print out pada mode summary excel tidak kami support.";                
+            break;
+            case  'excel2007' :               
+                $dataReport['namakelas']=$this->DMaster->getNamaKelasByID($dataReport['idkelas']).'-'.chr($dataReport['nama_kelas']+64);
+                $dataReport['hari']=$this->Page->TGL->getNamaHari($dataReport['hari']);
+                
+                $dataReport['nama_prodi']=$_SESSION['daftar_jurusan'][$dataReport['kjur']];
+                $dataReport['nama_tahun'] = $this->DMaster->getNamaTA($dataReport['tahun']);
+                $dataReport['nama_semester'] = $this->setup->getSemester($dataReport['idsmt']);               
+                
+                $dataReport['linkoutput']=$this->linkOutput; 
+                $this->report->setDataReport($dataReport); 
+                $this->report->setMode($_SESSION['outputreport']);  
+                
+                $messageprintout="Daftar Hadir Mahasiswa : <br/>";
+                $this->report->printDaftarHadirMahasiswa();
+            break;
+            case  'pdf' :
+                $messageprintout="Mohon maaf Print out pada mode excel pdf belum kami support.";
+            break;
+        }                
+        $this->lblMessagePrintout->Text=$messageprintout;
+        $this->lblPrintout->Text='Daftar Hadir Mahasiswa';
+        $this->modalPrintOut->show();
+	}
 }
 
 ?>

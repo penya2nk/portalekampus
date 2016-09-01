@@ -12,14 +12,17 @@ class CProfiles extends MainPageK {
 	}
     public function saveData ($sender,$param) {
         if ($this->IsValid) {
-           $id=$this->Pengguna->getDataUser('userid');                   
+            $id=$this->Pengguna->getDataUser('userid');                   
             if ($this->txtPassword->Text != '') {                
                 $data=$this->Pengguna->createHashPassword($this->txtPassword->Text);
                 $salt=$data['salt'];
                 $password=$data['password'];
                 $str = "UPDATE user SET userpassword='$password',salt='$salt' WHERE userid=$id";
             }
-            $this->DB->updateRecord($str);                       
+            $this->DB->updateRecord($str);            
+            $theme = $this->cmbTheme->Text;
+            $str = "UPDATE profiles_mahasiswa SET theme='$theme' WHERE userid=$id";
+            $this->DB->updateRecord($str);  
             $this->redirect('settings.Profiles',true);
         }
     }

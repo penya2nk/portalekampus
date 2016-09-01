@@ -16,6 +16,109 @@
 <com:TContent ID="maincontent">
 <com:TPanel Visible="<%= $this->getDefaultProcess() %>">	
     <div class="row">
+        <div class="col-lg-6">
+            <div class="main-box">
+                <header class="main-box-header clearfix">
+                    <h2><i class="fa fa-search"></i> Pencarian Data</h2>
+                </header>
+                <div class="main-box-body clearfix">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Kriteria :</label>
+                            <div class="col-lg-5">
+                                <com:TDropDownList ID="cmbKriteria" CssClass="form-control">                                                           
+                                    <com:TListItem Text="NIDN" Value="nidn" />
+                                    <com:TListItem Text="Nama Matakuliah" Value="nama_matakuliah" />
+                                    <com:TListItem Text="Nama Dosen" Value="nama_dosen" />                                    
+                                </com:TDropDownList>
+                            </div>
+                        </div>
+                        <div class="form-group" id="divtxtKriteria">
+                            <label class="col-lg-3 control-label">Isi Kriteria :</label>
+                            <div class="col-lg-6">
+                                <com:TActiveTextBox ID="txtKriteria" CssClass="form-control" />                                                                            
+                                <com:TRequiredFieldValidator ID="spanKriteriaValidator2" ValidationGroup="filterForm" Display="Dynamic" ControlToValidate="txtKriteria" ErrorMessage="Input apa yang Anda cari, sesuai dengan kriteria yang Anda tentukan." FocusOnError="true" CssClass="has-error help-block">	
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divtxtKriteria').addClassName('has-error');
+                                        jQuery('#<%=$this->spanKriteriaValidator2->ClientID%>').removeAttr('style');                                
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divtxtKriteria').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator>                                         
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-3 col-lg-9">
+                                <com:TActiveCustomButton ID="btnSearch" CssClass="btn btn-info"  OnClick="Page.searchRecord" ValidationGroup="filterForm" Attributes.Title="Cari">
+                                    <prop:Text>                                        
+                                        <i class="fa fa-search"></i> Cari                                        
+                                    </prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>         
+                                        $('loading').show();
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnSearch->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	
+                                        $('<%=$this->btnSearch->ClientId%>').disabled='';						                               						                                        
+                                        $('loading').hide();
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>  
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="main-box">
+                <header class="main-box-header clearfix">
+                    <h2><i class="fa fa-bookmark"></i> Filter Data</h2>
+                </header>
+                <div class="main-box-body clearfix">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Hari :</label>
+                            <div class="col-lg-4">
+                                <com:TActiveDropDownList ID="cmbNamaHari" OnCallback="changeNamaHari" CssClass="form-control">                                    
+                                    <prop:ClientSide.OnPreDispatch>
+                                        $('loading').show();
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->cmbNamaHari->ClientId%>').disabled='disabled';							
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>										
+                                        $('<%=$this->cmbNamaHari->ClientId%>').disabled='';							
+                                        $('loading').hide();
+                                    </prop:ClientSide.OnComplete>
+                                  </com:TActiveDropDownList>
+                            </div>
+                        </div>    
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Dosen :</label>
+                            <div class="col-lg-9">
+                                <com:TActiveDropDownList ID="cmbDosen" OnCallback="changeDosen" CssClass="form-control">
+                                    <prop:ClientSide.OnPreDispatch>
+                                        $('loading').show();
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->cmbDosen->ClientId%>').disabled='disabled';							
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>										
+                                        $('<%=$this->cmbDosen->ClientId%>').disabled='';							
+                                        $('loading').hide();
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveDropDownList>
+                            </div>
+                        </div>                            
+                        <br /><br /><br />
+                    </div>
+                </div>
+            </div>
+        </div>	
+    </div>
+    <div class="row">
         <div class="col-lg-12">
             <div class="main-box clearfix">
                 <header class="main-box-header clearfix">
@@ -42,7 +145,7 @@
                                     <th scope="col">JAM</th> 
                                     <th scope="col">RUANG</th>
                                     <th width="90" scope="col">JUMLAH PESERTA</th>
-                                    <th scope="col" width="90">AKSI</th>
+                                    <th scope="col" width="110">AKSI</th>
                                 </tr>	
                                 </thead>		
                                 <tbody>		
@@ -80,7 +183,26 @@
                                             <prop:ClientSide.onComplete>
                                                 $('loading').hide();                                                
                                             </prop:ClientSide.OnComplete>
-                                        </com:TActiveLinkButton>                                              
+                                        </com:TActiveLinkButton>           
+                                        <com:TActiveLinkButton ID="btnPrintOutR" CssClass="table-link" OnClick="Page.printOut" Attributes.Title="Print Daftar Hadir" ClientSide.PostState="false">
+                                            <prop:Text>
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-print fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </prop:Text>
+                                            <prop:ClientSide.OnPreDispatch>                                                                   
+                                                $('loading').show(); 
+                                                $('<%=$this->btnPrintOutR->ClientId%>').disabled='disabled';						
+                                            </prop:ClientSide.OnPreDispatch>
+                                            <prop:ClientSide.OnLoading>
+                                                $('<%=$this->btnPrintOutR->ClientId%>').disabled='disabled';						
+                                            </prop:ClientSide.OnLoading>
+                                            <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                                $('<%=$this->btnPrintOutR->ClientId%>').disabled='';
+                                                $('loading').hide(); 
+                                            </prop:ClientSide.OnComplete>
+                                        </com:TActiveLinkButton>
                                     </td>
                                 </tr>	
                             </prop:ItemTemplate>	                        

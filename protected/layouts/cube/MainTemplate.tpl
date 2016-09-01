@@ -490,6 +490,15 @@
                                                 <i class="fa fa-location-arrow"></i>
                                                 <span>Daftar Ulang</span>											
                                             </a>                                        
+                                        </li>  
+                                        <li class="nav-header nav-header-first hidden-sm hidden-xs">
+                                            SETTING
+                                        </li>                                                                             
+                                        <li<%=$this->Page->showProfiles==true?' class="active"':''%>>
+                                            <a href="<%=$this->Page->constructUrl('settings.Profiles',true)%>">
+                                                <i class="fa fa-user"></i>
+                                                <span>Profiles</span>											
+                                            </a>                                        
                                         </li>                                        
                                     </com:TLiteral>	
                                     <com:TLiteral Visible="<%=$this->Page->Pengguna->getTipeUser()=='mb'%>">

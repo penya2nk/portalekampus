@@ -13,7 +13,7 @@ class Logic_Penanggalan extends Logic_Global {
     /*
      * nama hari dalam bahasa indonesia
      */
-    private $namaHari = array('Minggu', 'Senin', 'Selasa','Rabu', 'Kamis', 'Jumat', 'Sabtu');
+    private $namaHari = array('none'=>' ','Minggu', 'Senin', 'Selasa','Rabu', 'Kamis', 'Jumat', 'Sabtu');
     /*
      * nama bulan dalam bahasa ingris
      */

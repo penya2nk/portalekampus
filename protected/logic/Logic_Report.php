@@ -126,7 +126,7 @@ class Logic_Report extends Logic_Global {
 				$rpt->setXY(20,11.5);
 				$rpt->Cell (0,11.5,'JL. RAJA HAJI FISABILILLAH NO. 48 TANJUNGPINANG - KEPULAUAN RIAU');
 				$rpt->setXY(20,14.5);
-				$rpt->Cell (0,14.5,'TELP. (0771) 7000652 Website : http://www.stisipolrajahaji.ac.id');
+				$rpt->Cell (0,14.5,'TELP. (0771) 7000652 Website : http://www.stisipolrajahaji.ac.id Email : info@stisipolrajahaji.ac.id');
 				$this->currentRow=14.5;
             break;
 			case 'excel2003' :
@@ -163,7 +163,7 @@ class Logic_Report extends Logic_Global {
                 $row+=1;
 				$sheet->getRowDimension($row)->setRowHeight(18);
 				$sheet->mergeCells ($columnHeader.$row.':'.$endColumn.$row);
-				$sheet->setCellValue($columnHeader.$row,'TELP. (0771) 7000652 Website : http://www.stisipolrajahaji.ac.id');
+				$sheet->setCellValue($columnHeader.$row,'TELP. (0771) 7000652 Website : http://www.stisipolrajahaji.ac.id Email : info@stisipolrajahaji.ac.id');
 				
 				$row+=1;
 				$sheet->getRowDimension($row)->setRowHeight(18);

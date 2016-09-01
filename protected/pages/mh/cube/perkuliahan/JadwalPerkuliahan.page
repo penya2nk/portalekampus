@@ -26,7 +26,7 @@
                 </header>
                 <div class="main-box-body clearfix">  
                     <div class="table-responsive">
-                        <com:TActiveRepeater ID="RepeaterJadwalSaya"  DataKeyField="idkelas_mhs" AllowPaging="true" AllowCustomPaging="true">
+                        <com:TActiveRepeater ID="RepeaterJadwalSaya"  DataKeyField="idkelas_mhs">
                             <prop:HeaderTemplate>
                             <table class="table table-striped table-hover">
                                 <thead>
@@ -38,8 +38,7 @@
                                     <th scope="col">NAMA KELAS</th>
                                     <th scope="col">HARI</th>
                                     <th scope="col">JAM</th> 
-                                    <th scope="col">RUANG</th>
-                                    <th width="90" scope="col">JUMLAH PESERTA</th>                                    
+                                    <th scope="col">RUANG</th>                                    >                                    
                                 </tr>	
                                 </thead>		
                                 <tbody>		
@@ -53,12 +52,7 @@
                                     <td><%#$this->DataItem['namakelas']%></td>
                                     <td><%#$this->Page->TGL->getNamaHari($this->DataItem['hari'])%></td>
                                     <td><%#$this->DataItem['jam_masuk'].'-'.$this->DataItem['jam_keluar']%></td>
-                                    <td><%#$this->DataItem['namaruang'].' ['.$this->DataItem['kapasitas'].']'%></td>
-                                    <td>
-                                        <a href="<%#$this->Page->constructUrl('perkuliahan.PesertaKelas',true,array('id'=>$this->DataItem['idkelas_mhs']))%>" class="table-link" title="Daftar Peserta Kelas">                                        
-                                            <%#$this->DataItem['jumlah_peserta_kelas']%>
-                                        </a>
-                                    </td>                                    
+                                    <td><%#$this->DataItem['namaruang'].' ['.$this->DataItem['kapasitas'].']'%></td>                                    
                                 </tr>	
                             </prop:ItemTemplate>	                        
                             <prop:FooterTemplate>

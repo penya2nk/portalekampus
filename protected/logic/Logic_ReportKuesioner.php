@@ -373,12 +373,16 @@ class Logic_ReportKuesioner extends Logic_Report {
                 $row+=1;
                 $sheet->setCellValue("C$row","SANGAT BURUK : $skor_terendah - $maks_sangatburuk");
                 $row+=1;
+                $maks_sangatburuk+=1;
                 $sheet->setCellValue("C$row","BURUK : $maks_sangatburuk - $maks_buruk");
                 $row+=1;
+                $maks_buruk+=1;
                 $sheet->setCellValue("C$row","SEDANG: $maks_buruk - $maks_sedang");
                 $row+=1;
+                $maks_sedang+=1;
                 $sheet->setCellValue("C$row","BAIK: $maks_sedang - $maks_baik");
                 $row+=1;
+                $maks_baik+=1;
                 $sheet->setCellValue("C$row","SANGAT BAIK: $maks_baik - $maks_sangatbaik");
                 
                 $this->printOut("datakuesionerdosen_$idpengampu_penyelenggaraan");

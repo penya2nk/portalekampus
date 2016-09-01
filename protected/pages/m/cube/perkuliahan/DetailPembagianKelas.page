@@ -255,7 +255,7 @@
                                     <th scope="col">JAM</th> 
                                     <th scope="col">RUANG</th>
                                     <th width="90" scope="col">JUMLAH PESERTA</th>
-                                    <th scope="col" width="120">AKSI</th>
+                                    <th scope="col" width="150">AKSI</th>
                                 </tr>	
                                 </thead>		
                                 <tbody>		
@@ -277,6 +277,25 @@
                                         </a>
                                     </td>
                                     <td width="90">
+                                        <com:TActiveLinkButton ID="btnPrintOutR" CssClass="table-link" OnClick="Page.printOut" Attributes.Title="Print Daftar Hadir" ClientSide.PostState="false">
+                                            <prop:Text>
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-print fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </prop:Text>
+                                            <prop:ClientSide.OnPreDispatch>                                                                   
+                                                $('loading').show(); 
+                                                $('<%=$this->btnPrintOutR->ClientId%>').disabled='disabled';						
+                                            </prop:ClientSide.OnPreDispatch>
+                                            <prop:ClientSide.OnLoading>
+                                                $('<%=$this->btnPrintOutR->ClientId%>').disabled='disabled';						
+                                            </prop:ClientSide.OnLoading>
+                                            <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                                $('<%=$this->btnPrintOutR->ClientId%>').disabled='';
+                                                $('loading').hide(); 
+                                            </prop:ClientSide.OnComplete>
+                                        </com:TActiveLinkButton>
                                         <com:TLinkButton CssClass="table-link" OnClick="Page.editRecord" Attributes.Title="Ubah Data Kelas">
                                             <prop:Text>
                                                 <span class="fa-stack">

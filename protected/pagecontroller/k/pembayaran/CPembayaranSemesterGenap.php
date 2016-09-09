@@ -119,9 +119,10 @@ class CPembayaranSemesterGenap Extends MainPageK {
                 if (!isset($r[1])) {                                   
                     throw new Exception ("<br/><br/>NIM ($nim) tidak terdaftar di Portal, silahkan ganti dengan yang lain.");		
                 }
-                $ta=$_SESSION['currentPagePembayaranSemesterGenap']['ta'];
-                if ($datamhs['tahun_masuk'] < $ta && $datamhs['semester_masuk'] > 1) {
-                    throw new Exception ("<br/><br/>NIM ($nim) lier.");
+                $ta=$_SESSION['currentPagePembayaranSemesterGenap']['ta'];                
+                if ($datamhs['tahun_masuk'] == $datamhs['ta'] && $datamhs['semester_masuk']==2) {						
+                    $_SESSION['currentPagePembayaranSemesterGenap']['DataMHS']=array();
+                    throw new Exception ("<br/><br/>NIM ($nim) adalah seorang Mahasiswa baru, mohon diproses di Pembayaran->Mahasiswa Baru.");
                 }
             }catch (Exception $e) {
                 $param->IsValid=false;

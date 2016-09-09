@@ -288,7 +288,7 @@ class KRSEkstension Extends MainPageM {
                 $no_krs=mt_rand();                    
                 $tasmt=$tahun.$idsmt;
                 
-                $str = "INSERT INTO krs (idkrs,tgl_krs,no_krs,nim,idsmt,tahun,tasmt,sah,tgl_disahkan) VALUES (NULL,'$tanggal',$no_krs,'$nim','$idsmt','$tahun','$tasmt',1.NOW())";
+                $str = "INSERT INTO krs (idkrs,tgl_krs,no_krs,nim,idsmt,tahun,tasmt,sah,tgl_disahkan) VALUES (NULL,'$tanggal',$no_krs,'$nim','$idsmt','$tahun','$tasmt',1,NOW())";
                 $this->DB->insertRecord($str);					
                 $this->KRS->DataKRS['krs'] = array('idkrs'=>$this->DB->getLastInsertID(),
                                                     'tgl_krs'=>$tanggal,

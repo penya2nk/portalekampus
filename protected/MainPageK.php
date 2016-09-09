@@ -37,6 +37,10 @@ class MainPageK extends MainPage {
      */
     public $showPembayaranPiutangSemesterGenap=false;
     /**     
+     * show page rekap pembayaran ganjil [report]
+     */
+    public $showReportRekapPembayaranGanjil=false;
+    /**     
      * show page piutang jangka pendek [report]
      */
     public $showReportPiutangJangkaPendek=false;

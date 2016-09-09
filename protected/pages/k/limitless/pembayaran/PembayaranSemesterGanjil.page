@@ -100,6 +100,14 @@
                     <prop:FooterTemplate>
                         </table>
                     </prop:FooterTemplate>		
+                    <prop:EmptyTemplate>                       
+                        <div class="panel-body">
+                            <div class="alert alert-info alert-styled-left alert-bordered">
+                                <span class="text-semibold">Info!</span>
+                                Belum ada data yang bisa ditampilkan.
+                            </div>                
+                        </div>       
+                    </prop:EmptyTemplate>
                 </com:TActiveRepeater>	
                 <%include Application.layouts.limitless.CustomPaging%>
             </div>

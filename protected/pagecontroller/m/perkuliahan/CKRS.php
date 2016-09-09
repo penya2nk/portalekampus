@@ -238,7 +238,7 @@ class CKRS Extends MainPageM {
                     
                     $idsmt=$_SESSION['semester'];
                     $tahun=$_SESSION['ta'];
-                                        
+                    $datamhs['idsmt']=$idsmt;
                     $this->Finance->setDataMHS($datamhs);
                     if ($tahun >= 2010) {                    
                         if ($idsmt==3) {                        

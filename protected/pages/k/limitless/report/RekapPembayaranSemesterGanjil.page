@@ -1,0 +1,134 @@
+<%@ Title="Pembayaran - Rekap. Pembayaran Semester Ganjil"%>
+<com:TContent ID="moduleheader">    
+    <i class="icon-file-text position-left"></i> <span class="text-semibold">Rekapitulasi Pembayaran Semester Ganjil T.A <%=$this->Page->setup->getSettingValue('default_ta');%></span>
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li><a href="#">REPORT</a></li>
+    <li><a href="#">REKAPITULASI</a></li>
+    <li class="active">PEMBAYARAN SEMESTER GANJIL</li>
+</com:TContent>
+<com:TContent ID="sidebarcontent">
+<div class="sidebar sidebar-main sidebar-default sidebar-separate" style="width:330px">
+    <div class="sidebar-content">                    
+        <%include Application.layouts.limitless.FilterMode12%>
+        <%include Application.layouts.limitless.OutputReportMode1%>
+    </div>
+</div>
+</com:TContent>
+<com:TContent ID="csscontent">
+<link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/assets/css/libs/nifty-component.css"/>
+</com:TContent>
+<com:TContent ID="maincontent">	
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>" CssClass="row">		
+    <div class="col-md-12">
+        <div class="panel panel-flat">
+            <div class="panel-heading">
+                <h5 class="panel-title"><i class="icon-file-text position-left"></i>  DAFTAR TRANSAKSI MHS <com:TActiveLabel ID="lblModulHeader" /></h5>                
+                <div class="heading-elements">
+                    <div class="heading-btn">    
+                        <com:TActiveLinkButton ID="btnGenerateData" OnClick="generateData" ClientSide.PostState="false" CssClass="btn btn-info btn-icon" Attributes.Title="Generate Data">
+                            <prop:Text><i class="icon-database-refresh"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('<%=$this->btnGenerateData->ClientId%>').disabled='disabled';				
+                                Pace.stop();
+                                Pace.start();                                                                                                             
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnGenerateData->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnGenerateData->ClientId%>').disabled='';				                                
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton>
+                        <com:TActiveLinkButton ID="btnPrintOut" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-info btn-icon" Attributes.Title="Print Out">
+                            <prop:Text><i class="icon-printer"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('<%=$this->btnPrintOut->ClientId%>').disabled='disabled';				
+                                Pace.stop();
+                                Pace.start();                                                                                                             
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnPrintOut->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnPrintOut->ClientId%>').disabled='';				                                
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton>                           
+                    </div>   
+                </div>
+            </div>                
+            <div class="table-responsive">                
+                <com:TActiveRepeater ID="RepeaterS" DataKeyField="idrekap" AllowPaging="true" PageSize="10" AllowCustomPaging="true">
+                    <prop:HeaderTemplate>				
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr class="bg-teal-700">
+                                    <th scope="col">NO</th>	         
+                                    <th scope="col">NIM</th>
+                                    <th scope="col">NIRM</th>                                       
+                                    <th scope="col">NAMA MAHASISWA</th>	
+                                    <th scope="col">JK</th>
+                                    <th scope="col">KELAS</th>
+                                    <th scope="col">KEWAJIBAN</th>
+                                    <th scope="col">PEMBAYARAN</th>
+                                    <th scope="col">SISA</th>
+                                    <th scope="col">AKSI</th>
+                                </tr>	
+                            </thead>		
+                            <tbody>							
+                    </prop:HeaderTemplate>
+                    <prop:ItemTemplate>
+                        <tr>
+                            <td><%#$this->DataItem['no']%></td>					
+                            <td><%#$this->DataItem['nim']%></td>
+                            <td><%#$this->DataItem['nirm']%></td>															                            												
+                            <td><%#$this->DataItem['nama_mhs']%></td>	
+                            <td><%#$this->DataItem['jk']%></td>
+                            <td><%#$this->DataItem['n_kelas']%></td>
+                            <td><%#$this->DataItem['kewajiban']%></td>
+                            <td><%#$this->DataItem['dibayarkan']%></td>
+                            <td><%#$this->DataItem['sisa']%></td>
+                            <td>
+                                <ul class="icons-list">
+                                    <li class="text-primary-600">
+                                        <com:TActiveLinkButton ID="btnRefresh" OnClick="Page.refreshRecord" Attributes.Title="Refresh data pembayaran" ClientSide.PostState="false">
+                                            <prop:Text>                                        
+                                                <i class="icon-database-refresh"></i>
+                                            </prop:Text>
+                                            <prop:ClientSide.OnPreDispatch>         
+                                                $('<%=$this->btnRefresh->ClientId%>').disabled='disabled';						
+                                                Pace.stop();
+                                                Pace.start();			                               
+                                            </prop:ClientSide.OnPreDispatch>
+                                            <prop:ClientSide.OnLoading>
+                                                $('<%=$this->btnRefresh->ClientId%>').disabled='disabled';
+                                                Pace.start();
+                                            </prop:ClientSide.OnLoading>
+                                            <prop:ClientSide.OnComplete>																	
+                                                $('<%=$this->btnRefresh->ClientId%>').disabled='disabled';	                                               
+                                            </prop:ClientSide.OnComplete>
+                                        </com:TActiveLinkButton>
+                                    </li>                                    
+                                </ul>
+                            </td>
+                        </tr>
+                    </prop:ItemTemplate>							
+                    <prop:FooterTemplate>
+                        </table>
+                    </prop:FooterTemplate>
+                    <prop:EmptyTemplate>                       
+                        <div class="panel-body">
+                            <div class="alert alert-info alert-styled-left alert-bordered">
+                                <span class="text-semibold">Info!</span>
+                                Belum ada data yang bisa ditampilkan.
+                            </div>                
+                        </div>       
+                    </prop:EmptyTemplate>
+                </com:TActiveRepeater>	
+                <%include Application.layouts.limitless.CustomPaging%>
+            </div>
+        </div>
+    </div>
+</com:TPanel>
+<%include Application.layouts.limitless.ModalPrintOut%>    
+</com:TContent>

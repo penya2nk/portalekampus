@@ -126,6 +126,12 @@
                     <i class="icon-files-empty position-left"></i> Laporan <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu width-250">
+                    <li class="dropdown-header">REKAPITULASI</li>
+                    <li<%=$this->Page->showReportRekapPembayaranGanjil==true?' class="active"':''%>>
+                        <a href="<%=$this->Page->constructUrl('report.RekapPembayaranSemesterGanjil',true)%>">
+                            <i class="icon-file-text"></i> Rekap. Pembayaran SMT Ganjil
+                        </a>
+                    </li> 
                     <li class="dropdown-header">PIUTANG</li>
                     <li<%=$this->Page->showReportPiutangJangkaPendek==true?' class="active"':''%>>
                         <a href="<%=$this->Page->constructUrl('report.PiutangJangkaPendek',true)%>">

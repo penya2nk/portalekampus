@@ -39,7 +39,7 @@
                         <header class="main-box-header clearfix">
                             <h2 class="pull-left"><i class="fa fa-columns"></i> DATA KRS</h2>                             
                             <div class="icon-box pull-right">                                                                       
-                                <a class="btn btn-default pull-right" href="<%=$this->Page->constructUrl('perkuliahan.DetailKRSEkstension',true)%>" title="Keluar Tambah KRS">                        
+                                <a class="btn btn-default pull-right" href="<%=$this->Page->constructUrl('perkuliahan.DetailKRSEkstension',true,array('id'=>$this->Page->KRS->DataKRS['krs']['idkrs']))%>" title="Keluar Tambah KRS">                        
                                     <i class='fa  fa-times fa-lg'></i>
                                 </a>
                             </div>

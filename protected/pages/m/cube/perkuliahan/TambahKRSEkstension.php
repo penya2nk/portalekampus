@@ -30,7 +30,7 @@ class TambahKRSEkstension extends MainPageM {
 		if (!$this->IsPostBack&&!$this->IsCallback) {	            
             $this->lblModulHeader->Text=$this->getInfoToolbar();            
             try {			                
-                $this->KRS->DataKRS=$_SESSION['currentPageKRSEkstension']['DataKRS'];							                
+                $this->KRS->DataKRS=$_SESSION['currentPageKRSEkstension']['DataKRS'];
                 $idsmt=$this->KRS->DataKRS['krs']['idsmt'];
                 $tahun=$this->KRS->DataKRS['krs']['tahun'];
                 $datamhs=$_SESSION['currentPageKRSEkstension']['DataMHS'];                                            

@@ -109,16 +109,28 @@ class CPiutangJangkaPendek extends MainPageK {
 		$r = $this->DB->getRecord($str,$offset+1);	
         $result = array();      
         
-        $this->Finance->setDataMHS(array('tahun_masuk'=>$tahun_masuk,'idkelas'=>'A'));
-        $komponen_biaya['A']['baru']=$this->Finance->getTotalBiayaMhsPeriodePembayaran('baru');            
-        $komponen_biaya['A']['lama']=$this->Finance->getTotalBiayaMhsPeriodePembayaran('lama');            
-        $this->Finance->setDataMHS(array('tahun_masuk'=>$tahun_masuk,'idkelas'=>'B'));
-        $komponen_biaya['B']['baru']=$this->Finance->getTotalBiayaMhsPeriodePembayaran('baru');            
-        $komponen_biaya['B']['lama']=$this->Finance->getTotalBiayaMhsPeriodePembayaran('lama');            
-        $this->Finance->setDataMHS(array('tahun_masuk'=>$tahun_masuk,'idkelas'=>'C'));
-        $komponen_biaya['C']['baru']=$this->Finance->getTotalBiayaMhsPeriodePembayaran('baru');            
-        $komponen_biaya['C']['lama']=$this->Finance->getTotalBiayaMhsPeriodePembayaran('lama');            
-                
+        $komponen_biaya=array();
+        $this->Finance->setDataMHS(array('tahun_masuk'=>$tahun_masuk,'idsmt'=>1,'idkelas'=>'A'));
+        $komponen_biaya['A']['baru'][1]=$this->Finance->getTotalBiayaMhsPeriodePembayaran('baru');
+        $komponen_biaya['A']['lama'][1]=$this->Finance->getTotalBiayaMhsPeriodePembayaran('lama');
+        $this->Finance->setDataMHS(array('tahun_masuk'=>$tahun_masuk,'idsmt'=>2,'idkelas'=>'A'));
+        $komponen_biaya['A']['baru'][2]=$this->Finance->getTotalBiayaMhsPeriodePembayaran('baru');       
+        $komponen_biaya['A']['lama'][2]=$this->Finance->getTotalBiayaMhsPeriodePembayaran('lama');  
+        
+        $this->Finance->setDataMHS(array('tahun_masuk'=>$tahun_masuk,'idsmt'=>1,'idkelas'=>'B'));
+        $komponen_biaya['B']['baru'][1]=$this->Finance->getTotalBiayaMhsPeriodePembayaran('baru');            
+        $komponen_biaya['B']['lama'][1]=$this->Finance->getTotalBiayaMhsPeriodePembayaran('lama');            
+        $this->Finance->setDataMHS(array('tahun_masuk'=>$tahun_masuk,'idsmt'=>2,'idkelas'=>'B'));
+        $komponen_biaya['B']['baru'][2]=$this->Finance->getTotalBiayaMhsPeriodePembayaran('baru');            
+        $komponen_biaya['B']['lama'][2]=$this->Finance->getTotalBiayaMhsPeriodePembayaran('lama');
+        
+        $this->Finance->setDataMHS(array('tahun_masuk'=>$tahun_masuk,'idsmt'=>1,'idkelas'=>'C'));
+        $komponen_biaya['C']['baru'][1]=$this->Finance->getTotalBiayaMhsPeriodePembayaran('baru');            
+        $komponen_biaya['C']['lama'][1]=$this->Finance->getTotalBiayaMhsPeriodePembayaran('lama'); 
+        $this->Finance->setDataMHS(array('tahun_masuk'=>$tahun_masuk,'idsmt'=>2,'idkelas'=>'C'));
+        $komponen_biaya['C']['baru'][2]=$this->Finance->getTotalBiayaMhsPeriodePembayaran('baru');            
+        $komponen_biaya['C']['lama'][2]=$this->Finance->getTotalBiayaMhsPeriodePembayaran('lama');
+        
         while (list($k,$v)=each($r)) {
             $no_formulir=$v['no_formulir'];                                          
             $nim=$v['nim'];                                          
@@ -150,38 +162,29 @@ class CPiutangJangkaPendek extends MainPageK {
     
     public function getTotalBayarMHS ($no_formulir,$ta,$tahun_masuk,$semester_masuk,$komponen_biaya,$idkelas) {                        
         $sudahbayar=array(1=>array('sudahbayar'=>0,'belumbayar'=>0),2=>array('sudahbayar'=>0,'belumbayar'=>0));
-        if ($ta==$tahun_masuk && $semester_masuk == 1) {            
-            $str = "SELECT dibayarkan FROM bipend WHERE no_formulir=$no_formulir";						
-            $this->DB->setFieldTable(array('dibayarkan'));
-            $bipend=$this->DB->getRecord($str); 	
-            $biaya_pendaftaran=$bipend[1]['dibayarkan'];  
-
-            $kewajiban_ganjil=$komponen_biaya[$idkelas]['baru'];
-            $pembayaran_ganjil=$this->DB->getSumRowsOfTable('dibayarkan',"v_transaksi WHERE no_formulir='$no_formulir' AND tahun=$ta AND idsmt=1")+$biaya_pendaftaran;
-            $sudahbayar[1]['sudahbayar']=$pembayaran_ganjil;
-            $sudahbayar[1]['belumbayar']=$kewajiban_ganjil-$pembayaran_ganjil;
-            
-            $kewajiban_genap=$komponen_biaya[$idkelas]['lama'];
-            $pembayaran_genap=$this->DB->getSumRowsOfTable('dibayarkan',"v_transaksi WHERE no_formulir='$no_formulir' AND tahun=$ta AND idsmt=2");
-            $sudahbayar[2]['sudahbayar']=$pembayaran_genap;
-            $sudahbayar[2]['belumbayar']=$kewajiban_genap-$pembayaran_genap;
-        }elseif ($ta==$tahun_masuk && $semester_masuk == 2) {
-            $str = "SELECT dibayarkan FROM bipend WHERE no_formulir=$no_formulir";						
-            $this->DB->setFieldTable(array('dibayarkan'));
-            $bipend=$this->DB->getRecord($str); 	
-            $biaya_pendaftaran=$bipend[1]['dibayarkan'];  
-        
-            $kewajiban=$komponen_biaya[$idkelas]['baru'];
-            $pembayaran=$this->DB->getSumRowsOfTable('dibayarkan',"v_transaksi WHERE no_formulir='$no_formulir' AND tahun=$ta AND idsmt=2")+$biaya_pendaftaran;
-            $sudahbayar[2]['sudahbayar']=$pembayaran;
-            $sudahbayar[2]['belumbayar']=$kewajiban-$pembayaran;
-        }else{
-            $kewajiban_ganjil=$komponen_biaya[$idkelas]['lama'];
+        if ($ta==$tahun_masuk && $semester_masuk == 1) {
+            $kewajiban_ganjil=$komponen_biaya[$idkelas]['baru'][1];
             $pembayaran_ganjil=$this->DB->getSumRowsOfTable('dibayarkan',"v_transaksi WHERE no_formulir='$no_formulir' AND tahun=$ta AND idsmt=1");
             $sudahbayar[1]['sudahbayar']=$pembayaran_ganjil;
             $sudahbayar[1]['belumbayar']=$kewajiban_ganjil-$pembayaran_ganjil;
             
-            $kewajiban_genap=$komponen_biaya[$idkelas]['lama'];
+            $kewajiban_genap=$komponen_biaya[$idkelas]['lama'][2];
+            $pembayaran_genap=$this->DB->getSumRowsOfTable('dibayarkan',"v_transaksi WHERE no_formulir='$no_formulir' AND tahun=$ta AND idsmt=2");
+            $sudahbayar[2]['sudahbayar']=$pembayaran_genap;
+            $sudahbayar[2]['belumbayar']=$kewajiban_genap-$pembayaran_genap;
+        }elseif ($ta==$tahun_masuk && $semester_masuk == 2) {
+            
+            $kewajiban=$komponen_biaya[$idkelas]['baru'][2];
+            $pembayaran=$this->DB->getSumRowsOfTable('dibayarkan',"v_transaksi WHERE no_formulir='$no_formulir' AND tahun=$ta AND idsmt=2");
+            $sudahbayar[2]['sudahbayar']=$pembayaran;
+            $sudahbayar[2]['belumbayar']=$kewajiban-$pembayaran;
+        }else{
+            $kewajiban_ganjil=$komponen_biaya[$idkelas]['lama'][1];
+            $pembayaran_ganjil=$this->DB->getSumRowsOfTable('dibayarkan',"v_transaksi WHERE no_formulir='$no_formulir' AND tahun=$ta AND idsmt=1");
+            $sudahbayar[1]['sudahbayar']=$pembayaran_ganjil;
+            $sudahbayar[1]['belumbayar']=$kewajiban_ganjil-$pembayaran_ganjil;
+            
+            $kewajiban_genap=$komponen_biaya[$idkelas]['lama'][2];
             $pembayaran_genap=$this->DB->getSumRowsOfTable('dibayarkan',"v_transaksi WHERE no_formulir='$no_formulir' AND tahun=$ta AND idsmt=2");
             $sudahbayar[2]['sudahbayar']=$pembayaran_genap;
             $sudahbayar[2]['belumbayar']=$kewajiban_genap-$pembayaran_genap;

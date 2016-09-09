@@ -99,12 +99,13 @@ class CDetailPembayaranPiutangSemesterGanjil Extends MainPageK {
                 $this->modalMessageError->show();
             }else{
                 $no_transaksi=$this->DB->getMaxOfRecord('no_transaksi','transaksi')+1;
+                $no_faktur=$ta.$no_transaksi;
                 $ps=$datamhs['kjur'];                
                 $idkelas=$datamhs['idkelas'];
                 $userid=$this->Pengguna->getDataUser('userid');
 
                 $this->DB->query ('BEGIN');
-                $str = "INSERT INTO transaksi (no_transaksi,no_faktur,kjur,tahun,idsmt,idkelas,no_formulir,nim,tanggal,userid,date_added,date_modified) VALUES ($no_transaksi,'$no_transaksi','$ps','$ta','$idsmt','$idkelas','$no_formulir','$nim',NOW(),'$userid',NOW(),NOW())";					
+                $str = "INSERT INTO transaksi (no_transaksi,no_faktur,kjur,tahun,idsmt,idkelas,no_formulir,nim,tanggal,userid,date_added,date_modified) VALUES ($no_transaksi,'$no_faktur','$ps','$ta','$idsmt','$idkelas','$no_formulir','$nim',NOW(),'$userid',NOW(),NOW())";					
                 if ($this->DB->insertRecord($str)) {
                     $str = "SELECT idkombi,SUM(dibayarkan) AS sudah_dibayar FROM v_transaksi WHERE nim=$nim AND tahun=$ta AND idsmt=$idsmt AND commited=1 GROUP BY idkombi ORDER BY idkombi+1 ASC";
                     $this->DB->setFieldTable(array('idkombi','sudah_dibayar'));

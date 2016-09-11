@@ -80,7 +80,14 @@ class Logic_Users extends Logic_Global {
 	*/
 	public function getUsername () {		
 		return $this->DataUser['username'];
-	}    
+	}   
+    /**
+	* digunakan untuk mendapatkan daftar group 	
+	*/	
+	public function getListGroup () {
+		$result = $this->getList('user_group',array('group_id','group_name'),null,null,1);
+		return $result;
+	}
     /**
 	* dapatkan hak akses untuk module	
 	*/

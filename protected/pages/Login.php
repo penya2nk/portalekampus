@@ -12,15 +12,15 @@ class Login extends MainPage {
 	}
     private function getGoingToPage () {		
 		switch ($this->cmbGoingTo->Text) {
+            case 'sa' :
+				$page = 'SuperAdmin';
+			break;
 			case 'm' :
 				$page = 'Manajemen';
 			break;
 			case 'k' :
 				$page = 'Keuangan';
-			break;
-            case 'b' :
-				$page = 'Bank';
-			break;
+			break;           
             case 'd' :
 				$page = 'Dosen';
 			break;
@@ -82,6 +82,12 @@ class Login extends MainPage {
             $setup=$this->getLogic('Setup');
             $dmaster=$this->getLogic('DMaster');
             switch ($pengguna->getTipeUser()) {
+                case 'sa' :
+                    //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
+                    $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
+                    $_SESSION['kjur']=1;
+                    $_SESSION['ta']=$setup->getSettingValue('default_ta');             
+                break; 
                 case 'm' :                    
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
@@ -95,8 +101,7 @@ class Login extends MainPage {
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
                     $_SESSION['kjur']=1;
-                    $_SESSION['ta']=$setup->getSettingValue('default_ta');                    
-                    
+                    $_SESSION['ta']=$setup->getSettingValue('default_ta');             
                 break; 
                 case 'mb' :
                     $_SESSION['ta']=$pengguna->getDataUser('tahun_masuk');

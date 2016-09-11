@@ -35,6 +35,15 @@ class UserManager extends TAuthManager {
 	public function getDataUser () {				
 		$username=$this->username;
 		switch ($this->page) {
+            case 'SuperAdmin' :
+            case 'Keuangan' :				
+				$str = "SELECT u.userid,u.idbank,u.username,u.nama,u.email,u.page,u.isdeleted,foto,theme FROM user u WHERE username='$username'";
+                $this->db->setFieldTable (array('userid','idbank','username','userpassword','salt','nama','email','page','isdeleted','foto','theme'));							
+                $r= $this->db->getRecord($str);				
+				$this->dataUser['data_user']=$r[1];	
+                $userid=$this->dataUser['userid'];
+                $this->db->updateRecord("UPDATE user SET logintime=NOW() WHERE userid=$userid");
+			break;
 			case 'Manajemen' :				
 				$str = "SELECT su.userid,sg.groupname,su.active,su.kjur,su.theme FROM simak_user su,simak_group sg WHERE su.groupid=sg.groupid AND su.username='$username'";
 				$this->db->setFieldTable (array('userid','groupname','active','kjur','theme'));							
@@ -43,13 +52,7 @@ class UserManager extends TAuthManager {
 				$this->dataUser['data_user']['username']=$username;				
 				$this->dataUser['data_user']['page']='m';
 				$this->dataUser['hak_akses']=$this->loadAclUser($result[1]['userid']);
-			break;
-            case 'Keuangan' :				
-				$str = "SELECT u.userid,u.idbank,u.username,u.nama,u.email,u.page,u.isdeleted,foto,theme FROM user u WHERE username='$username'";
-                $this->db->setFieldTable (array('userid','idbank','username','userpassword','salt','nama','email','page','isdeleted','foto','theme'));							
-                $r= $this->db->getRecord($str);				
-				$this->dataUser['data_user']=$r[1];									
-			break;
+			break;            
 			case 'Mahasiswa' :	                
                 $str = "SELECT vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.tempat_lahir,vdm.tanggal_lahir,vdm.jk,vdm.alamat_rumah,vdm.email,vdm.kjur,vdm.idkonsentrasi,k.nama_konsentrasi,vdm.iddosen_wali,vdm.tahun_masuk,vdm.semester_masuk,vdm.nama_ps,vdm.k_status AS k_status,sm.n_status AS status,perpanjang,theme FROM v_datamhs vdm LEFT JOIN status_mhs sm ON (vdm.k_status=sm.k_status) LEFT JOIN konsentrasi k ON (vdm.idkonsentrasi=k.idkonsentrasi) WHERE nim='$username'";
                 $this->db->setFieldTable(array('no_formulir','nim','nirm','nama_mhs','tempat_lahir','tanggal_lahir','jk','alamat_rumah','email','kjur','idkonsentrasi','nama_konsentrasi','iddosen_wali','tahun_masuk','semester_masuk','nama_ps','k_status','status','perpanjang','theme'));
@@ -136,17 +139,18 @@ class UserManager extends TAuthManager {
 	public function getUser () {
         $username=$this->username;
 		switch ($this->page) {
-			case 'Manajemen' :
-				$str = "SELECT userid,username,userpassword,active FROM simak_user WHERE username='$username'";
-				$this->db->setFieldTable (array('userid','username','userpassword','active'));							
-				$result = $this->db->getRecord($str);				
-				if (!$result[1]['active'])$result=array();					
-			break;		
+            case 'SuperAdmin' :
             case 'Keuangan' :
 				$str = "SELECT u.username,u.userpassword,u.salt,u.page FROM user u WHERE username='$username' AND active=1";
                 $this->db->setFieldTable (array('username','userpassword','salt','page'));							
                 $result = $this->db->getRecord($str);	                
 			break;	
+			case 'Manajemen' :
+				$str = "SELECT userid,username,userpassword,active FROM simak_user WHERE username='$username'";
+				$this->db->setFieldTable (array('userid','username','userpassword','active'));							
+				$result = $this->db->getRecord($str);				
+				if (!$result[1]['active'])$result=array();					
+			break;
 			case 'Dosen' :
 				$str = "SELECT d.iddosen,d.userpassword FROM dosen d WHERE d.username='$username'";
 				$this->db->setFieldTable (array('iddosen','userpassword'));							

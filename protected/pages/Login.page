@@ -21,9 +21,9 @@
         <div class="col-xs-8 text-left">
             <com:TDropDownList ID="cmbGoingTo" CssClass="form-control">
                 <com:TListItem Value="none" Text=" "/>
+                <com:TListItem Value="sa" Text="Super Admin"/>
 				<com:TListItem Value="m" Text="Manajemen"/>
-                <com:TListItem Value="k" Text="Keuangan"/>
-                <com:TListItem Value="b" Text="Bank"/>
+                <com:TListItem Value="k" Text="Keuangan"/>                
 				<com:TListItem Value="d" Text="Dosen"/>
 				<com:TListItem Value="dw" Text="Dosen Wali"/>
 				<com:TListItem Value="mh" Text="Mahasiswa"/>

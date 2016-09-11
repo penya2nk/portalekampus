@@ -5,6 +5,7 @@
 		<module id="auth" class="TAuthManager" UserManager="otorisasi_user" LoginPage="Login" />
 	</modules>
 	<authorization>        
+        <allow roles="SuperAdmin" pages="sa.*" />
 		<allow roles="Manajemen" pages="m.*" />
         <allow roles="Keuangan" pages="k.*" />
         <allow roles="Bank" pages="b.*" />
@@ -18,6 +19,6 @@
 		<deny users="*" />		
 	</authorization>
 	<parameters>
-		<parameter id="NewUserRoles" value="Manajemen,Keuangan,Bank,Mahasiswa,Dosen,DosenWali,MahasiswaBaru,OrangtuaWali,Library" />
+		<parameter id="NewUserRoles" value="SuperAdmin,Manajemen,Keuangan,Bank,Mahasiswa,Dosen,DosenWali,MahasiswaBaru,OrangtuaWali,Library" />
 	</parameters>
 </configuration>

@@ -131,6 +131,69 @@
 									<li class="nav-header nav-header-first hidden-sm hidden-xs">
 										NAVIGASI
 									</li>
+                                    <com:TLiteral Visible="<%=$this->Page->Pengguna->getTipeUser()=='sa'%>">
+                                        <li<%=$this->Page->showDashboard==true?' class="active"':''%>>
+                                            <a href="<%=$this->Page->constructUrl('Home',true)%>">
+                                                <i class="fa fa-dashboard"></i>
+                                                <span>Dashboard</span>											
+                                            </a>                                        
+                                        </li> 
+                                        <li class="nav-header nav-header-first hidden-sm hidden-xs">
+                                            SETTING
+                                        </li>
+                                        <li<%=$this->Page->showVariable==true?' class="active"':''%>>
+                                            <a href="<%=$this->Page->constructUrl('settings.Variables',true)%>">
+                                                <i class="fa fa-legal"></i>
+                                                <span>Variables</span>											
+                                            </a>                                        
+                                        </li> 
+                                        <li<%=$this->Page->showSubMenuSettingAkademik==true?' class="active"':''%>>
+                                            <a href="#" class="dropdown-toggle">
+                                                <i class="fa fa-medkit"></i>
+                                                <span>Akademik</span>
+                                                <i class="fa fa-angle-right drop-icon"></i>
+                                            </a>
+                                            <ul class="submenu">
+
+                                            </ul>
+                                        </li>
+                                        <li<%=$this->Page->showSubMenuSettingSistem==true?' class="active"':''%>>
+                                            <a href="#" class="dropdown-toggle">
+                                                <i class="fa fa-cog"></i>
+                                                <span>Sistem</span>
+                                                <i class="fa fa-angle-right drop-icon"></i>
+                                            </a>
+                                            <ul class="submenu">
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('settings.UserManajemen',true)%>" <%=$this->Page->showUserManajemen==true ? ' class="active" ':''%>>
+                                                        User Manajemen
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('settings.UserManajemen',true)%>" <%=$this->Page->showUserDosen==true ? ' class="active" ':''%>>
+                                                        User Dosen
+                                                    </a>
+                                                </li>
+                                                <li>                                                
+                                                    <a href="<%=$this->Page->constructUrl('settings.Cache',true)%>"<%=$this->Page->showCache==true?' class="active"':''%>>                                                    
+                                                        Cache											
+                                                    </a>                                        
+                                                </li>
+                                            </ul>
+                                        </li> 
+                                        <li<%=$this->Page->showProfiles==true?' class="active"':''%>>
+                                            <a href="<%=$this->Page->constructUrl('settings.Profiles',true)%>">
+                                                <i class="fa fa-user"></i>
+                                                <span>Profiles</span>											
+                                            </a>                                        
+                                        </li> 
+                                        <li>
+                                            <a href="<%=$this->Page->setup->getAddress()%>/change_log.txt">
+                                                <i class="fa fa-file-o"></i>
+                                                <span>Change Log</span>											
+                                            </a>                                        
+                                        </li> 
+                                    </com:TLiteral>
                                     <com:TLiteral Visible="<%=$this->Page->Pengguna->getTipeUser()=='m'%>">
                                         <li<%=$this->Page->showDashboard==true?' class="active"':''%>>
                                             <a href="<%=$this->Page->constructUrl('Home',true)%>">
@@ -356,46 +419,6 @@
                                         <li class="nav-header nav-header-first hidden-sm hidden-xs">
                                             SETTING
                                         </li>
-                                        <li<%=$this->Page->showVariable==true?' class="active"':''%>>
-                                            <a href="<%=$this->Page->constructUrl('settings.Variables',true)%>">
-                                                <i class="fa fa-legal"></i>
-                                                <span>Variables</span>											
-                                            </a>                                        
-                                        </li> 
-                                        <li<%=$this->Page->showSubMenuSettingAkademik==true?' class="active"':''%>>
-                                            <a href="#" class="dropdown-toggle">
-                                                <i class="fa fa-medkit"></i>
-                                                <span>Akademik</span>
-                                                <i class="fa fa-angle-right drop-icon"></i>
-                                            </a>
-                                            <ul class="submenu">
-
-                                            </ul>
-                                        </li>
-                                        <li<%=$this->Page->showSubMenuSettingSistem==true?' class="active"':''%>>
-                                            <a href="#" class="dropdown-toggle">
-                                                <i class="fa fa-cog"></i>
-                                                <span>Sistem</span>
-                                                <i class="fa fa-angle-right drop-icon"></i>
-                                            </a>
-                                            <ul class="submenu">
-                                                <li>
-                                                    <a href="<%=$this->Page->constructUrl('settings.UserManajemen',true)%>" <%=$this->Page->showUserManajemen==true ? ' class="active" ':''%>>
-                                                        User Manajemen
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="<%=$this->Page->constructUrl('settings.UserManajemen',true)%>" <%=$this->Page->showUserDosen==true ? ' class="active" ':''%>>
-                                                        User Dosen
-                                                    </a>
-                                                </li>
-                                                <li>                                                
-                                                    <a href="<%=$this->Page->constructUrl('settings.Cache',true)%>"<%=$this->Page->showCache==true?' class="active"':''%>>                                                    
-                                                        Cache											
-                                                    </a>                                        
-                                                </li>
-                                            </ul>
-                                        </li> 
                                         <li<%=$this->Page->showProfiles==true?' class="active"':''%>>
                                             <a href="<%=$this->Page->constructUrl('settings.Profiles',true)%>">
                                                 <i class="fa fa-user"></i>

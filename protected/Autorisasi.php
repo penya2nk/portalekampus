@@ -40,8 +40,15 @@ class Autorisasi extends TModule implements IUserManager {
 	public function validateUser ($username,$password) {		
 		$um = new UserManager();
 		$um->setUser($username);
-		$result = $um->getUser();	          
-        $pass=$result['page'] == 'k' ? hash('sha256', $result['salt'] . hash('sha256', $password)):md5($password);		                                
+		$result = $um->getUser();	 
+        switch ($result['page']) {
+            case 'k' :
+            case 'sa' :
+                $pass=hash('sha256', $result['salt'] . hash('sha256', $password));
+            break;
+            default :
+                $pass=md5($password);
+        }                        
 		if ($result['userpassword']==$pass) {
 			return true;
         }else{

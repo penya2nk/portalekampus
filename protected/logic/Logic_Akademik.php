@@ -163,14 +163,12 @@ class Logic_Akademik extends Logic_Mahasiswa {
     /**
      * digunakan untuk mendapatkan jumlah mahasiswa dalam penyelenggaraan
      * @param type int $idpenyelenggaraan
-     * @param type int $status 
+     * @param type int $options 
      * @return type int
      */
-	public function getJumlahMhsInPenyelenggaraan ($idpenyelenggaraan,$status=null) {        
-		$str = "SELECT COUNT(vkm.idpenyelenggaraan) AS jmlh_peserta FROM v_krsmhs vkm WHERE vkm.idpenyelenggaraan='$idpenyelenggaraan'$status";
-        $this->db->setFieldTable(array ('jmlh_peserta'));
-        $r=$this->db->getRecord($str);
-        return $r[1]['jmlh_peserta'];	
+	public function getJumlahMhsInPenyelenggaraan ($idpenyelenggaraan,$options=null) {        
+		$jumlah_peserta = $jumlah_peserta=$this->db->getCountRowsOfTable(" krsmatkul km,krs k,register_mahasiswa rm WHERE k.idkrs=km.idkrs AND rm.nim=k.nim AND km.idpenyelenggaraan=$idpenyelenggaraan $options",'km.idkrsmatkul');	
+        return $jumlah_peserta;	
 	}	
     /**
      * digunakan untuk mendapatkan jumlah mahasiswa dalam pengampu penyelenggaraan

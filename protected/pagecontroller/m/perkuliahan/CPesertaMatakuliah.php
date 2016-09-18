@@ -4,7 +4,7 @@ class CPesertaMatakuliah extends MainPageM {
 	public function onLoad($param) {		
 		parent::onLoad($param);				
          $this->showSubMenuAkademikPerkuliahan=true;
-        $this->showPesertaMatakuliah=true;
+        $this->showPenyelenggaraan=true;
         
         $this->createObj('Akademik');
 		if (!$this->IsPostBack&&!$this->IsCallBack) {

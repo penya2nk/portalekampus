@@ -65,4 +65,5 @@
     <a class="btn btn-primary btn-lg btn-block" href="http://oldportal.stisipolrajahaji.ac.id">
         Login ke Portal E-Kampus Lama
     </a>               
+    <com:TJavascriptLogger ID="loggerlogin" />
 </com:TContent>

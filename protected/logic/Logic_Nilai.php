@@ -274,9 +274,10 @@ class Logic_Nilai extends Logic_Akademik {
      * digunakan untuk mendapatkan nilai KHS
      * @param type $ta
      * @param type $idsmt
+     * @param type $cek_isikuesioner
      * @return array daftar nilai KHS
      */
-	public function getKHS ($ta,$idsmt) {
+	public function getKHS ($ta,$idsmt,$cek_isikuesioner=false) {
         $nim=$this->DataMHS['nim'];
 		$str = "SELECT idkrsmatkul,idsmt,tahun,kmatkul,nmatkul,sks,n_kual,nidn,nama_dosen,telah_isi_kuesioner FROM v_nilai_khs WHERE nim='$nim' AND idsmt=$idsmt AND tahun=$ta AND aktif=1";
 		$this->db->setFieldTable(array('idkrsmatkul','idsmt','tahun','kmatkul','nmatkul','sks','n_kual','nidn','nama_dosen','telah_isi_kuesioner'));
@@ -326,9 +327,10 @@ class Logic_Nilai extends Logic_Akademik {
      * Digunakan untuk mendapatkan khs sebelum semester sekarang	
      * @param type $ta
      * @param type $idsmt
+     * @param type $cek_isikuesioner
      * @return array daftar nilai KHS
 	*/
-	public function getKHSBeforeCurrentSemester ($ta,$idsmt) {
+	public function getKHSBeforeCurrentSemester ($ta,$idsmt,$cek_isikuesioner=false) {
 		$nim=$this->DataMHS['nim'];
         $current_tasmt=$ta.$idsmt;
 		$str = ($this->getDataMHS('tahun_masuk')==$ta&&$this->getDataMHS('semester_masuk')==$idsmt)?"SELECT MAX(tasmt) AS tasmt FROM krs WHERE nim='$nim' AND tasmt <= $current_tasmt AND idsmt!=3":"SELECT MAX(tasmt) AS tasmt FROM krs WHERE nim='$nim' AND tasmt < $current_tasmt AND idsmt!=3";

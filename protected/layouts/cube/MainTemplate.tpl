@@ -92,13 +92,39 @@
 							</a>
 							<ul class="dropdown-menu dropdown-menu-right">
 								<li><a href="<%=$this->Page->constructUrl('settings.Profiles',true)%>"><i class="fa fa-user"></i>Profiles</a></li>
-                                <li><a href="<%=$this->Page->constructUrl('Logout')%>"><i class="fa fa-power-off"></i>Logout</a></li>
+                                <li>
+                                    <com:TActiveLinkButton ID="btnLogout2" OnClick="logoutUser" ClientSide.PostState="false">
+                                        <i class="fa fa-power-off"></i> Logout
+                                        <prop:ClientSide.OnPreDispatch>                                                                   
+                                            $('loading').show(); 
+                                            $('<%=$this->btnLogout2->ClientId%>').disabled='disabled';						
+                                        </prop:ClientSide.OnPreDispatch>
+                                        <prop:ClientSide.OnLoading>
+                                            $('<%=$this->btnLogout2->ClientId%>').disabled='disabled';						
+                                        </prop:ClientSide.OnLoading>
+                                        <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                            $('<%=$this->btnLogout2->ClientId%>').disabled='';
+                                            $('loading').hide(); 
+                                        </prop:ClientSide.OnComplete>
+                                    </com:TActiveLinkButton>
+                                </li>                                        
 							</ul>
 						</li>                        
 						<li class="hidden-xxs">
-							<a class="btn" href="<%=$this->Page->constructUrl('Logout')%>">
-								<i class="fa fa-power-off"></i>
-							</a>
+							<com:TActiveLinkButton ID="btnLogout" OnClick="logoutUser" ClientSide.PostState="false" CssClass="btn">
+                                <i class="fa fa-power-off"></i>
+                                <prop:ClientSide.OnPreDispatch>                                                                   
+                                    $('loading').show(); 
+                                    $('<%=$this->btnLogout->ClientId%>').disabled='disabled';						
+                                </prop:ClientSide.OnPreDispatch>
+                                <prop:ClientSide.OnLoading>
+                                    $('<%=$this->btnLogout->ClientId%>').disabled='disabled';						
+                                </prop:ClientSide.OnLoading>
+                                <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                    $('<%=$this->btnLogout->ClientId%>').disabled='';
+                                    $('loading').hide(); 
+                                </prop:ClientSide.OnComplete>
+                            </com:TActiveLinkButton>
 						</li>
 					</ul>
 				</div>
@@ -120,7 +146,22 @@
 										</a>
 										<ul class="dropdown-menu">
 											<li><a href="<%=$this->Page->constructUrl('settings.Profiles',true)%>"><i class="fa fa-user"></i>Profiles</a></li>
-                                            <li><a href="<%=$this->Page->constructUrl('Logout')%>"><i class="fa fa-power-off"></i>Logout</a></li>
+                                            <li>
+                                                <com:TActiveLinkButton ID="btnLogout3" OnClick="logoutUser" ClientSide.PostState="false">
+                                                    <i class="fa fa-power-off"></i> Logout
+                                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                                        $('loading').show(); 
+                                                        $('<%=$this->btnLogout3->ClientId%>').disabled='disabled';						
+                                                    </prop:ClientSide.OnPreDispatch>
+                                                    <prop:ClientSide.OnLoading>
+                                                        $('<%=$this->btnLogout3->ClientId%>').disabled='disabled';						
+                                                    </prop:ClientSide.OnLoading>
+                                                    <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                                        $('<%=$this->btnLogout3->ClientId%>').disabled='';
+                                                        $('loading').hide(); 
+                                                    </prop:ClientSide.OnComplete>
+                                                </com:TActiveLinkButton>
+                                            </li>
 										</ul>
 									</span>
                                     <com:TActiveLabel ID="lblStatusUser" CssClass="status" />									
@@ -415,7 +456,24 @@
                                                     </a>
                                                 </li>                                                   
                                             </ul>
-                                        </li>   
+                                        </li> 
+                                        <li class="nav-header nav-header-first hidden-sm hidden-xs">
+                                            KEUANGAN
+                                        </li>
+                                        <li<%=$this->Page->showSubMenuRekapKeuangan==true?' class="active"':''%>>
+                                            <a href="#" class="dropdown-toggle">
+                                                <i class="fa fa-file-text-o"></i>
+                                                <span>Rekapitulasi</span>
+                                                <i class="fa fa-angle-right drop-icon"></i>
+                                            </a>
+                                            <ul class="submenu">
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('keuangan.RekapPembayaranSemesterGanjil',true)%>" <%=$this->Page->showReportRekapPembayaranGanjil==true ? ' class="active" ':''%>>
+                                                        Pembayararan SMT Ganjil
+                                                    </a>
+                                                </li> 
+                                            </ul>
+                                        </li>
                                         <li class="nav-header nav-header-first hidden-sm hidden-xs">
                                             SETTING
                                         </li>
@@ -558,7 +616,136 @@
                                                 <i class="fa fa-dashboard"></i>
                                                 <span>Dashboard</span>											
                                             </a>                                        
-                                        </li>                                         
+                                        </li>    
+                                        <li class="nav-header nav-header-first hidden-sm hidden-xs">
+                                            AKADEMIK
+                                        </li>
+                                        <li<%=$this->Page->showSubMenuAkademikKemahasiswaan==true?' class="active"':''%>>
+                                            <a href="#" class="dropdown-toggle">
+                                                <i class="fa fa-users"></i>
+                                                <span>Kemahasiswaan</span>
+                                                <i class="fa fa-angle-right drop-icon"></i>
+                                            </a>
+                                            <ul class="submenu">
+                                                <li>
+                                                    <a href="#" <%=$this->Page->showProfilMahasiswa==true ? ' class="active" ':''%>>
+                                                        Profil Mahasiswa
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('kemahasiswaan.DaftarMahasiswa',true)%>" <%=$this->Page->showDaftarMahasiswa==true ? ' class="active" ':''%>>
+                                                        Daftar Mahasiswa
+                                                    </a>
+                                                </li>                                                                                            
+                                            </ul>
+                                        </li>                                                                                                                       
+                                        <li<%=$this->Page->showSubMenuAkademikDulang==true?' class="active"':''%>>
+                                            <a href="#" class="dropdown-toggle">
+                                                <i class="fa fa-location-arrow"></i>
+                                                <span>Daftar Ulang</span>
+                                                <i class="fa fa-angle-right drop-icon"></i>
+                                            </a>
+                                            <ul class="submenu">                                                
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('dulang.DulangMHSBaru',true)%>" <%=$this->Page->showDulangMHSBaru==true ? ' class="active" ':''%>>
+                                                        Mahasiswa Baru
+                                                    </a>
+                                                </li>    
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('dulang.DulangMHSLama',true)%>" <%=$this->Page->showDulangMHSLama==true ? ' class="active" ':''%>>
+                                                        Mahasiswa Lama
+                                                    </a>
+                                                </li> 
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('dulang.DulangMHSEkstension',true)%>" <%=$this->Page->showDulangMHSEkstension==true ? ' class="active" ':''%>>
+                                                        Mahasiswa Ekstension
+                                                    </a>
+                                                </li> 
+                                            </ul>
+                                        </li>                                                                                                                       
+                                        <li<%=$this->Page->showSubMenuAkademikPerkuliahan==true?' class="active"':''%>>
+                                            <a href="#" class="dropdown-toggle">
+                                                <i class="fa fa-truck"></i>
+                                                <span>Perkuliahan</span>
+                                                <i class="fa fa-angle-right drop-icon"></i>
+                                            </a>
+                                            <ul class="submenu">
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('perkuliahan.Penyelenggaraan',true)%>" <%=$this->Page->showPenyelenggaraan==true ? ' class="active" ':''%>>
+                                                        Penyelenggaraan
+                                                    </a>
+                                                </li> 
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('perkuliahan.PembagianKelas',true)%>" <%=$this->Page->showPembagianKelas==true ? ' class="active" ':''%>>
+                                                        Pembagian Kelas
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('perkuliahan.KRS',true)%>" <%=$this->Page->showKRS==true ? ' class="active" ':''%>>
+                                                        KRS
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('perkuliahan.KRSEkstension',true)%>" <%=$this->Page->showKRSEkstension==true ? ' class="active" ':''%>>
+                                                        KRS Ekstension
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('perkuliahan.PKRS',true)%>" <%=$this->Page->showPKRS==true ? ' class="active" ':''%>>
+                                                        Perubahan KRS
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>   
+                                        <li<%=$this->Page->showSubMenuAkademikNilai==true?' class="active"':''%>>
+                                            <a href="#" class="dropdown-toggle">
+                                                <i class="fa fa-file-excel-o"></i>
+                                                <span>Nilai</span>
+                                                <i class="fa fa-angle-right drop-icon"></i>
+                                            </a>
+                                            <ul class="submenu">                                                                                                
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('nilai.KHS',true)%>" <%=$this->Page->showKHS==true ? ' class="active" ':''%>>
+                                                        KHS
+                                                    </a>
+                                                </li>                                                
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('nilai.KHSEkstension',true)%>" <%=$this->Page->showKHSEkstension==true ? ' class="active" ':''%>>
+                                                        KHS Ekstension
+                                                    </a>
+                                                </li>                                                
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('nilai.TranskripKurikulum',true)%>" <%=$this->Page->showTranskripKurikulum==true ? ' class="active" ':''%>>
+                                                        Transkrip Kurikulum
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('nilai.TranskripKRS',true)%>" <%=$this->Page->showTranskripKRS==true ? ' class="active" ':''%>>
+                                                        Transkrip KRS
+                                                    </a>
+                                                </li>                                                   
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('nilai.TranskripFinal',true)%>" <%=$this->Page->showTranskripFinal==true ? ' class="active" ':''%>>
+                                                        Transkrip Final
+                                                    </a>
+                                                </li>                                                   
+                                            </ul>
+                                        </li>
+                                        <li class="nav-header nav-header-first hidden-sm hidden-xs">
+                                            SETTING
+                                        </li>
+                                        <li<%=$this->Page->showProfiles==true?' class="active"':''%>>
+                                            <a href="<%=$this->Page->constructUrl('settings.Profiles',true)%>">
+                                                <i class="fa fa-user"></i>
+                                                <span>Profiles</span>											
+                                            </a>                                        
+                                        </li> 
+                                        <li>
+                                            <a href="<%=$this->Page->setup->getAddress()%>/change_log.txt">
+                                                <i class="fa fa-file-o"></i>
+                                                <span>Change Log</span>											
+                                            </a>                                        
+                                        </li>
                                     </com:TLiteral>	
 								</ul>
 							</div>

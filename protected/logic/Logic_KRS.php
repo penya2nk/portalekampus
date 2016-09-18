@@ -133,7 +133,18 @@ class Logic_KRS extends Logic_Akademik {
         }           
         
         return $result;
-	}    
+	}  
+    /**
+     * method untuk mensahkan krs mahasiswa
+     * @param type $idkrs
+     */
+	public function sahkanKRS ($idkrs) {
+		$tgl=date('Y-m-d');
+		$str = "UPDATE krs SET sah=1,tgl_disahkan='$tgl' WHERE idkrs='$idkrs'";
+		$this->db->updateRecord ($str);		
+		$str = "UPDATE krsmatkul SET batal=0 WHERE idkrs='$idkrs'";
+		$this->db->updateRecord($str);	
+	}
 }
 ?>
 		

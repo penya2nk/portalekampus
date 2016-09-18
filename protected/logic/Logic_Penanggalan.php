@@ -38,7 +38,7 @@ class Logic_Penanggalan extends Logic_Global {
                 $tgl = new DateTime($date, new DateTimeZone('Asia/Jakarta'));
             }
         }		
-        $result = str_replace($this->dayName, $this->namaHari, $tgl->format ($format));
+        $result = str_replace($this->dayName, array('Minggu', 'Senin', 'Selasa','Rabu', 'Kamis', 'Jumat', 'Sabtu'), $tgl->format ($format));
         return str_replace($this->monthName, $this->namaBulan, $result);
 	}   
     /**

@@ -39,9 +39,9 @@ class UserManager extends TAuthManager {
             case 'Keuangan' :				
 				$str = "SELECT u.userid,u.idbank,u.username,u.nama,u.email,u.page,u.isdeleted,foto,theme FROM user u WHERE username='$username'";
                 $this->db->setFieldTable (array('userid','idbank','username','userpassword','salt','nama','email','page','isdeleted','foto','theme'));							
-                $r= $this->db->getRecord($str);				
+                $r= $this->db->getRecord($str);	
 				$this->dataUser['data_user']=$r[1];	
-                $userid=$this->dataUser['userid'];
+                $userid=$this->dataUser['data_user']['userid'];
                 $this->db->updateRecord("UPDATE user SET logintime=NOW() WHERE userid=$userid");
 			break;
 			case 'Manajemen' :				

@@ -1,0 +1,230 @@
+<%@ Title="Keuangan - Rekap. Pembayaran Semester Ganjil"%>
+<com:TContent ID="moduleheader">
+    <i class="fa fa-file-text-o"></i> Rekap. Pembayaran Semester Ganjil <br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li><a href="#">KEUANGAN</a></li>
+    <li><a href="#">REKAPITULASI</a></li>    
+    <li class="active"><span>REKAP. PEMBAYARAN SEMESTER GANJIL</span></li>
+</com:TContent>
+<com:TContent ID="configtools">    
+    <%include Application.layouts.cube.FilterMode12%>
+</com:TContent>
+<com:TContent ID="maincontent">
+<com:TContent ID="csscontent">
+<link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/css/libs/nifty-component.css"/>
+</com:TContent>
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>">  
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2><i class="fa fa-search"></i> Pencarian Data</h2>                    
+                </header>
+                <div class="main-box-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Kriteria :</label>
+                            <div class="col-lg-3">
+                                <com:TDropDownList ID="cmbKriteria" CssClass="form-control">
+                                    <com:TListItem Text="NIM" Value="nim" />
+                                    <com:TListItem Text="NIRM" Value="nirm" />
+                                    <com:TListItem Text="Nama Mahasiswa" Value="nama" />                                    
+                                </com:TDropDownList>
+                            </div>
+                        </div>
+                        <div class="form-group" id="divtxtKriteria">
+                            <label class="col-lg-2 control-label">Isi Kriteria :</label>
+                            <div class="col-lg-4">
+                                <com:TActiveTextBox ID="txtKriteria" CssClass="form-control" />                                                                            
+                                <com:TRequiredFieldValidator ID="spanKriteriaValidator2" ValidationGroup="filterForm" Display="Dynamic" ControlToValidate="txtKriteria" ErrorMessage="Input apa yang Anda cari, sesuai dengan kriteria yang Anda tentukan." FocusOnError="true" CssClass="has-error help-block">	
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divtxtKriteria').addClassName('has-error');
+                                        jQuery('#<%=$this->spanKriteriaValidator2->ClientID%>').removeAttr('style');                                
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divtxtKriteria').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator>                                         
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <com:TActiveCustomButton ID="btnSearch" CssClass="btn btn-info"  OnClick="Page.searchRecord" ValidationGroup="filterForm" Attributes.Title="Cari">
+                                    <prop:Text>                                        
+                                        <i class="fa fa-search"></i> Cari                                        
+                                    </prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>         
+                                        $('loading').show();
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnSearch->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	
+                                        $('<%=$this->btnSearch->ClientId%>').disabled='';						                               						                                        
+                                        $('loading').hide();
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>  
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>	
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left">&nbsp;</h2> 
+                    <div class="filter-block pull-right"> 
+                        <com:TActiveLinkButton ID="btnGenerateData" OnClick="generateData" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Generate Data">
+                            <prop:Text><i class="fa fa-refresh fa-lg"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnGenerateData->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnGenerateData->ClientId%>').disabled='';				
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton> 
+                        <com:TActiveLinkButton ID="btnPrintRekapAll" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out Rekap">
+                            <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnPrintRekapAll->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnPrintRekapAll->ClientId%>').disabled='';				
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton> 									
+                    </div>
+                </header>
+                <div class="main-box-body clearfix">       
+                    <div class="table-responsive">
+                        <com:TActiveRepeater ID="RepeaterS" AllowPaging="true" AllowCustomPaging="true" DataKeyField="idrekap" PageSize="10">
+                            <prop:HeaderTemplate>			
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col" width="50">NO</th>	         
+                                    <th scope="col">NIM</th>
+                                    <th scope="col">NIRM</th>                                       
+                                    <th scope="col">NAMA MAHASISWA</th>	
+                                    <th scope="col">JK</th>
+                                    <th scope="col">KELAS</th>
+                                    <th scope="col">KEWAJIBAN</th>
+                                    <th scope="col">PEMBAYARAN</th>
+                                    <th scope="col">SISA</th>
+                                    <th scope="col" width="70">AKSI</th>		
+                                </tr>			
+                                </thead>
+                                <tbody>
+                            </prop:HeaderTemplate>
+                            <prop:ItemTemplate>	
+                                <tr>
+                                    <td><%#$this->DataItem['no']%></td>					
+                                    <td><%#$this->DataItem['nim']%></td>
+                                    <td><%#$this->DataItem['nirm']%></td>															                            												
+                                    <td><%#$this->DataItem['nama_mhs']%></td>	
+                                    <td><%#$this->DataItem['jk']%></td>
+                                    <td><%#$this->DataItem['n_kelas']%></td>
+                                    <td><%#$this->DataItem['kewajiban']%></td>
+                                    <td><%#$this->DataItem['dibayarkan']%></td>
+                                    <td><%#$this->DataItem['sisa']%></td>
+                                    <td>
+                                        <com:TActiveLinkButton ID="btnRefresh" CssClass="table-link" OnClick="Page.refreshRecord" Attributes.Title="Refresh data pembayaran">
+                                            <prop:Text>
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-refresh fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </prop:Text> 
+                                            <prop:ClientSide.OnPreDispatch>
+                                                $('loading').show();
+                                            </prop:ClientSide.OnPreDispatch>
+                                            <prop:ClientSide.OnLoading>
+                                                $('<%=$this->btnRefresh->ClientId%>').disabled='disabled';				
+                                            </prop:ClientSide.OnLoading>
+                                            <prop:ClientSide.OnComplete>
+                                                $('<%=$this->btnRefresh->ClientId%>').disabled='';				
+                                                $('loading').hide();
+                                            </prop:ClientSide.OnComplete>
+                                        </com:TActiveLinkButton>
+                                    </td>
+                                </tr>	
+                            </prop:ItemTemplate>	       
+                            <prop:FooterTemplate>
+                                </tbody>				
+                                </table>
+                            </prop:FooterTemplate>
+                            <prop:EmptyTemplate>                                                       
+                                <div class="row">
+                                    <div class="main-box-body">
+                                        <div class="alert alert-info">
+                                            <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                            <strong>
+                                                Info!
+                                            </strong>
+                                             Tidak ada data yang bisa ditampilkan.
+                                        </div>
+                                    </div>
+                                </div>
+                            </prop:EmptyTemplate>
+                        </com:TActiveRepeater>
+                        <%include Application.CustomPaging%>
+                    </div>
+                    <h3>Summary Rekapitulasi Pembayaran Semester Ganjil</h3>
+                    <com:TActiveRepeater ID="RepeaterSummary" OnItemCreated="itemCreated">
+                        <prop:HeaderTemplate>			
+                        <table class="table table-striped table-hover" style="width:650px">
+                            <thead>
+                            <tr>
+                                <th scope="col">NO</th>	         
+                                <th scope="col">TAHUN MASUK</th>
+                                <th scope="col">KELAS</th>                                       
+                                <th scope="col">JUMLAH MHS</th>	
+                                <th scope="col">KEWAJIBAN</th>
+                                <th scope="col">DIBAYARKAN</th>
+                                <th scope="col">SISA</th>                                		
+                            </tr>			
+                            </thead>
+                            <tbody>
+                        </prop:HeaderTemplate>                           
+                        <prop:ItemTemplate>	
+                            <tr>
+                                <td><%#$this->DataItem['no']%></td>					
+                                <td><%#$this->DataItem['tahun_masuk']%></td>
+                                <td><%#$this->Page->DMaster->getNamaKelasByID($this->DataItem['idkelas'])%></td>															                            												
+                                <td><%#$this->DataItem['jumlah_mhs']%></td>	
+                                <td><%#$this->Page->Finance->toRupiah($this->DataItem['jumlah_kewajiban'])%></td>
+                                <td><%#$this->Page->Finance->toRupiah($this->DataItem['jumlah_dibayarkan'])%></td>
+                                <td><%#$this->Page->Finance->toRupiah($this->DataItem['jumlah_kewajiban']-$this->DataItem['jumlah_dibayarkan'])%></td>
+                                <td><%#$this->DataItem['sisa']%></td>                               		
+                            </tr>	
+                        </prop:itemtemplate>
+                         <prop:FooterTemplate>
+                            <tr>
+                                <td colspan="3">Total</td>
+                                <td><%=CRekapPembayaranSemesterGanjil::$TotalJumlahMahasiswa%></td>
+                                <td><%=$this->Page->Finance->toRupiah(CRekapPembayaranSemesterGanjil::$TotalKewajiban)%></td>
+                                <td><%=$this->Page->Finance->toRupiah(CRekapPembayaranSemesterGanjil::$TotalDibayarkan)%></td>  
+                                <td><%=$this->Page->Finance->toRupiah(CRekapPembayaranSemesterGanjil::$TotalKewajiban-CRekapPembayaranSemesterGanjil::$TotalDibayarkan)%></td>
+                            </tbody>				
+                            </table>
+                        </prop:FooterTemplate>
+                    </com:TActiveRepeater>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</com:TPanel>
+<%include Application.layouts.cube.ModalPrintOut%>
+</com:TContent>

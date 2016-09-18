@@ -44,10 +44,21 @@
                 <ul class="dropdown-menu dropdown-menu-right">
                     <li><a href="<%=$this->Page->constructUrl('settings.Profiles',true)%>"><i class="icon-user-plus"></i> My profile</a></li>                    
                     <li class="divider"></li>                    
-                    <li>
-                        <a href="<%=$this->Page->constructUrl('Logout')%>" title="Keluar">
+                    <li>                       
+                        <com:TActiveLinkButton ID="btnLogout" OnClick="logoutUser" ClientSide.PostState="false">
                             <i class="icon-switch2"></i> Logout
-                        </a>
+                            <prop:ClientSide.OnPreDispatch>
+                                Pace.stop();
+                                Pace.start();
+                                $('<%=$this->btnLogout->ClientId%>').disabled='disabled';						
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnLogout->ClientId%>').disabled='disabled';									                            
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.onComplete>
+                                $('<%=$this->btnLogout->ClientId%>').disabled='';									                            
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton>
                     </li>
                 </ul>
             </li>

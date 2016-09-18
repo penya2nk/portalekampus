@@ -89,9 +89,17 @@ class MainPageM extends MainPage {
      */
     public $showTranskripFinal=false;
     /**     
+     * show sub menu keuangan rekapitulasi[keuangan]
+     */
+    public $showSubMenuRekapKeuangan=false; 
+    /**     
+     * show page rekapitulasi pembayaran semester ganjil[keuangan]
+     */
+    public $showReportRekapPembayaranGanjil=false;
+    /**     
      * show sub menu setting akademik[setting]
      */
-    public $showSubMenuSettingAkademik=false;    
+    public $showSubMenuSettingAkademik=false;       
     /**     
      * show sub menu setting sistem[setting]
      */

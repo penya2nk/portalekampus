@@ -162,8 +162,7 @@ class CUserManajemen extends MainPageM {
             $username=addslashes($this->txtEditUsername->Text);    
             $data=$this->Pengguna->createHashPassword($this->txtEditPassword1->Text);
             $salt=$data['salt'];
-            $password=$data['password'];           
-            $page='m';
+            $password=$data['password']; 
             $group_id=$this->cmbEditGroup->Text;  
             $kjur=$this->cmbEditProdi->Text;
             $status=$this->cmbEditStatus->Text;

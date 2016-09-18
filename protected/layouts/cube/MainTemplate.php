@@ -46,5 +46,12 @@ class MainTemplate extends TTemplateControl {
         }
         return $str;
     }
+    public function logoutUser ($sender,$param) {
+        if (!$this->User->isGuest) {
+            $this->Application->getModule ('auth')->logout();
+            $this->Page->redirect('Login');
+		}
+    }
+    
 }
 ?>

@@ -1,0 +1,418 @@
+<%@ Title="Perkuliahan - Perubahan Kartu Studi Mahasiswa (PKRS)"%>
+<com:TContent ID="moduleheader">
+	<i class="fa fa-columns"></i> Perubahan Kartu Rencana Studi (PKRS) <br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li><a href="#">AKADEMIK</a></li>
+    <li><a href="#">PERKULIAHAN</a></li>
+    <li><a href="<%=$this->constructUrl('perkuliahan.PKRS',true)%>">PKRS</a></li>
+    <li class="active">DETAIL PERUBAHAN KRS</li>
+</com:TContent>
+<com:TContent ID="maincontent">
+<com:TPanel Visible="<%= $this->getViewProcess(false) %>" CssClass="row">                    
+    <div class="col-lg-12">
+        <div class="main-box clearfix">               
+            <header class="main-box-header clearfix">
+            </header>
+            <div class="main-box-body">
+                <div class="alert alert-warning">
+                    <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                    <strong>
+                        Info!
+                    </strong>
+                     <com:TLiteral ID="errorMessage" />
+                </div>
+            </div>            
+        </div>
+    </div>
+</com:TPanel>
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>">
+    <%include Application.layouts.cube.DataMHS%>
+    <com:TActiveRepeater ID="RepeaterS" OnItemCreated="itemCreated" DataKeyField="idkrsmatkul">
+        <prop:HeaderTemplate>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="main-box clearfix">
+                        <header class="main-box-header clearfix">
+                            <h2 class="pull-left"><i class="fa fa-columns"></i> DATA KRS</h2>                             
+                        </header>
+                        <div class="main-box-body clearfix">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-horizontal">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label"><strong>NO. KRS: </strong></label>
+                                            <div class="col-sm-8">
+                                                <p class="form-control-static"><%# $this->Page->KRS->DataKRS['krs']['no_krs']%></p>
+                                            </div>                            
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label"><strong>TANGGAL KRS: </strong></label>
+                                            <div class="col-sm-8">
+                                                <p class="form-control-static"><%# $this->Page->TGL->tanggal('l,j F Y',$this->Page->KRS->DataKRS['krs']['tgl_krs'])%></p>
+                                            </div>                            
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label"><strong>KETERANGAN: </strong></label>
+                                            <div class="col-sm-8">
+                                                <p class="form-control-static"><b><%# $this->Page->KRS->DataKRS['krs']['sah']==1?'Sah ('.$this->Page->TGL->tanggal('l,j F Y',$this->Page->KRS->DataKRS['tgl_disahkan']).')':'Belum di sahkan oleh dosen wali.'%></b></p>
+                                            </div>                            
+                                        </div>                            
+                                    </div>
+                                </div>          
+                            </div>          
+                        </div>          
+                    </div>          
+                </div>          
+            </div>          
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="main-box clearfix">
+                        <header class="main-box-header clearfix">
+                            <h2 class="pull-left"><i class="fa fa-columns"></i> DAFTAR MATAKULIAH YANG DIKONTRAK</h2>                     
+                        </header>
+                        <div class="main-box-body clearfix">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="alert alert-warning">
+                                        <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                        <strong>
+                                            Perhatian: Anda menghapus matakuliah berarti menghapus Nilai (Absenis, Quiz, UTS, UAS,dll).<br />
+                                            Kalau Anda membatalkan Matakuliah, data Nilai tidak kami hapus. Tetapi tidak tampil di KHS, Transkrip, Daftar Absensi, dll.
+                                        </strong>                                         
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover">	
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">NO</th>
+                                            <th scope="col">KODE</th>
+                                            <th scope="col">NAMA</th>
+                                            <th scope="col">SKS</th>
+                                            <th scope="col">SMT</th>
+                                            <th scope="col">DOSEN</th>
+                                             <th scope="col">KET</th>
+                                            <th scope="col" width="120">AKSI</th>					
+                                        </tr>						
+                                    </thead>
+                                    <tbody>
+        </prop:HeaderTemplate>
+        <prop:ItemTemplate>
+                                        <tr>
+                                            <td><%# $this->DataItem['no']%></td>
+                                            <td><%# $this->DataItem['kmatkul']%></td>
+                                            <td><%# $this->DataItem['nmatkul']%></td>
+                                            <td><%# $this->DataItem['sks']%></td>
+                                            <td><%# $this->DataItem['semester']%></td>							
+                                            <td><%# $this->DataItem['nama_dosen']%> [<%# $this->DataItem['nidn']%>]</td>					
+                                            <td><i class="<%#($this->Page->KRS->DataKRS['krs']['sah']&&!$this->DataItem['batal'])?'fa fa-check':'fa fa-times'%>"></i></td>
+                                            <td>                                                
+                                                <com:TActiveLinkButton ID="btnHapus" OnClick="Page.hapusMatkul" CommandParameter="<%# $this->DataItem['batal'].'_'.$this->DataItem['idpenyelenggaraan']%>"  ClientSide.PostState="false" CssClass="table-link danger" Attributes.onclick="if(!confirm('Anda ingin menghapus Matakuliah mahasiswa ini ?')) return false;" Attributes.Title="Hapus Matakuliah">
+                                                    <prop:Text>
+                                                        <span class="fa-stack">
+                                                            <i class="fa fa-square fa-stack-2x"></i>
+                                                            <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                        </span>
+                                                    </prop:Text>
+                                                    <prop:ClientSide.OnPreDispatch>
+                                                        $('loading').show();
+                                                    </prop:ClientSide.OnPreDispatch>
+                                                    <prop:ClientSide.OnLoading>				
+                                                        $('<%=$this->btnHapus->ClientId%>').disabled='disabled';														
+                                                    </prop:ClientSide.OnLoading>
+                                                    <prop:ClientSide.onComplete>																							
+                                                        $('loading').hide();
+                                                    </prop:ClientSide.OnComplete>
+                                                </com:TActiveLinkButton>   
+                                                <com:TActiveLinkButton ID="btnBatalkanMatkul" OnClick="Page.batalkanMatkul" CommandParameter="<%# $this->DataItem['batal'].'_'.$this->DataItem['idpenyelenggaraan'].'_'.$this->DataItem['sks']%>"  ClientSide.PostState="false">
+                                                    <prop:Text>
+                                                        <span class="fa-stack">
+                                                            <i class="fa fa-square fa-stack-2x"></i>
+                                                            <i class="fa fa-times-circle-o fa-stack-1x fa-inverse"></i>
+                                                        </span>
+                                                    </prop:Text>
+                                                    <prop:ClientSide.OnPreDispatch>
+                                                        $('loading').show();
+                                                    </prop:ClientSide.OnPreDispatch>
+                                                    <prop:ClientSide.OnLoading>				
+                                                        $('<%=$this->btnBatalkanMatkul->ClientId%>').disabled='disabled';														
+                                                    </prop:ClientSide.OnLoading>
+                                                    <prop:ClientSide.onComplete>																							
+                                                        $('loading').hide();
+                                                    </prop:ClientSide.OnComplete>
+                                                </com:TActiveLinkButton>   
+                                            </td>
+                                        </tr>
+        </prop:ItemTemplate>  
+        <prop:FooterTemplate>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <td colspan="3"><strong>Jumlah SKS</strong></td>
+                                        <td><%# CDetailPKRS::$totalSKS%></td>
+                                        <td colspan="3">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3"><strong>Jumlah Matakuliah</strong></td>
+                                        <td><%# CDetailPKRS::$jumlahMatkul%></td>
+                                        <td colspan="5">&nbsp;</td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </prop:FooterTemplate>
+        <prop:EmptyTemplate>                                                       
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="main-box clearfix">
+                        <header class="main-box-header clearfix">
+                            <h2 class="pull-left"><i class="fa fa-columns"></i> DATA KRS</h2>                                                         
+                        </header>
+                        <div class="main-box-body clearfix">
+                            <div class="alert alert-info">
+                                <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                <strong>
+                                    Info!
+                                </strong>
+                                 Tidak ada data yang bisa ditampilkan.
+                            </div>
+                        </div>          
+                    </div>          
+                </div>          
+            </div>                      
+        </prop:EmptyTemplate>
+    </com:TActiveRepeater>
+</com:TPanel>
+<com:TPanel Visible="<%= $this->getAddProcess() %>">
+    <com:THiddenField ID="txtIdKrs" />		
+    <div class="box">
+        <h3>Data KRS</h3>
+        <table width="100%">
+            <tr>
+                <td width="150">No KRS</td>
+                <td>: <%=$this->dataKrs['krs']['no_krs']%></td>
+            </tr>
+            <tr>
+                <td width="150">Tanggal KRS</td>
+                <td>: <%=$this->TGL->tanggal('l, j F Y',$this->dataKrs['krs']['tgl_krs'])%></td>
+            </tr>
+            <tr>
+                <td width="150">Maksimal SKS</td>
+                <td>: <%= $this->Page->dataKrs['krs']['maks_sks']%></td>
+            </tr>
+            <tr>
+                <td width="150">Keterangan</td>
+                <td>: <%=$this->dataKrs['krs']['sah']==true?'Sah ('.$this->TGL->tanggal('l, j F Y',$this->dataKrs['krs']['tgl_disahkan']).')':'Belum disahkan'%></td>
+            </tr>				
+        </table>
+    </div>
+    <div class="box">
+        <p class="controlbar">				
+            <com:TActiveButton ID="btnClose" Text="Keluar" OnClick="Page.closeKrs" CommandParameter="<%=$this->Page->dataKrs['krs']['idkrs']%>" Attributes.OnClick="if(!confirm('Keluar dari proses perubahan krs ?')) return false;" ClientSide.PostState="false" CssClass="btnStyle2" />				
+            <com:TActiveHyperLink ID="linkExcel" />
+        </p>			
+    </div>
+    <div class="box">
+        <p class="errormessages warn">
+            Perhatian: Anda menghapus matakuliah berarti menghapus Nilai (Absenis, Quiz, UTS, UAS,dll).<br />
+            Kalau Anda membatalkan Matakuliah, data Nilai tidak kami hapus. Tetapi tidak tampil di KHS, Transkrip, Daftar Absensi, dll.
+        </p>
+    </div>
+    <com:TActiveRepeater ID="KrsMahasiswa" OnItemDataBound="setDataBoundKrsMahasiswa" DataKeyField="idkrsmatkul">
+        <prop:HeaderTemplate>
+            <div class="box">
+            <h3>Daftar Matakuliah yang Di Kontrak</h3>				
+            <table id="datagrid3" style="width:100%;">
+                <thead>
+                <tr>
+                    <th scope="col">NO</th>
+                    <th scope="col">KODE</th>
+                    <th scope="col">NAMA MATAKULIAH</th>
+                    <th scope="col">SKS</th>
+                    <th scope="col">SMT</th>
+                    <th scope="col">NIDN</th>
+                    <th scope="col">NAMA DOSEN</th>
+                    <th scope="col">KET</th>
+                    <th scope="col">&nbsp;</th>
+                </tr>
+                </thead>
+                <tbody>
+        </prop:HeaderTemplate>
+        <prop:ItemTemplate>
+                <tr>
+                    <td><%# $this->DataItem['no']%></td>
+                    <td><%# $this->DataItem['kmatkul']%></td>
+                    <td><%# $this->DataItem['nmatkul']%></td>
+                    <td><%# $this->DataItem['sks']%></td>
+                    <td><%# $this->DataItem['semester']%></td>
+                    <td><%# $this->DataItem['nidn']%></td>
+                    <td><%# $this->DataItem['nama_dosen']%></td>
+                    <td><img src="<%#($this->DataItem['batal']==false&&$this->session['krs_sah']==true)?$this->Page->Themes->getIcon($this->page).'sah.png':$this->Page->Themes->getIcon($this->page).'error.png'%>" alt="Belum Di Sahkan" /></td>
+                    <td align="center">
+                        <com:TActiveLinkButton ID="btnHapus" Text="Hapus" CommandParameter="<%# $this->DataItem['idpenyelenggaraan']%>" OnClick="Page.hapusMatkul" Attributes.onclick="if(!confirm('Anda ingin menghapus Matakuliah mahasiswa ini ?')) return false;" ClientSide.PostState="false" CssClass="btnStyle2"> 
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>				
+                                $('<%=$this->btnBatalkanMatkul->ClientId%>').disabled='disabled';		
+                                $('<%=$this->btnHapus->ClientId%>').disabled='disabled';												
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.onComplete>																							
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>	
+                        </com:TActiveLinkButton>
+                        <com:TActiveLinkButton ID="btnBatalkanMatkul" CommandParameter="<%#$this->DataItem['idpenyelenggaraan'].'_'.$this->DataItem['sks']%>" Text="Batalkan" OnClick="Page.batalkanSahkanMatkul" ClientSide.PostState="false" CssClass="btnStyle2">
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>				
+                                $('<%=$this->btnBatalkanMatkul->ClientId%>').disabled='disabled';	
+                                $('<%=$this->btnHapus->ClientId%>').disabled='disabled';													
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.onComplete>																							
+                                $('<%=$this->btnBatalkanMatkul->ClientId%>').disabled='';														
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>	
+                        </com:TActiveLinkButton>
+                    </td>
+                </tr>
+        </prop:ItemTemplate>
+        <prop:AlternatingItemTemplate>
+                <tr>
+                    <td><%# $this->DataItem['no']%></td>
+                    <td><%# $this->DataItem['kmatkul']%></td>
+                    <td><%# $this->DataItem['nmatkul']%></td>
+                    <td><%# $this->DataItem['sks']%></td>
+                    <td><%# $this->DataItem['semester']%></td>
+                    <td><%# $this->DataItem['nidn']%></td>
+                    <td><%# $this->DataItem['nama_dosen']%></td>
+                    <td><img src="<%#($this->DataItem['batal']==false&&$this->session['krs_sah']==true)?$this->Page->Themes->getIcon($this->page).'sah.png':$this->Page->Themes->getIcon($this->page).'error.png'%>" alt="Belum Di Sahkan" /></td>
+                    <td align="center">
+                        <com:TActiveLinkButton ID="btnHapus" Text="Hapus" CommandParameter="<%# $this->DataItem['idpenyelenggaraan']%>" OnClick="Page.hapusMatkul" Attributes.onclick="if(!confirm('Anda ingin menghapus Matakuliah mahasiswa ini ?')) return false;" ClientSide.PostState="false" CssClass="btnStyle2"> 
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>				
+                                $('<%=$this->btnBatalkanMatkul->ClientId%>').disabled='disabled';		
+                                $('<%=$this->btnHapus->ClientId%>').disabled='disabled';												
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.onComplete>																							
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>	
+                        </com:TActiveLinkButton>
+                        <com:TActiveLinkButton ID="btnBatalkanMatkul" CommandParameter="<%#$this->DataItem['idpenyelenggaraan'].'_'.$this->DataItem['sks']%>" Text="Batalkan" OnClick="Page.batalkanSahkanMatkul" ClientSide.PostState="false" CssClass="btnStyle2">
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>				
+                                $('<%=$this->btnBatalkanMatkul->ClientId%>').disabled='disabled';	
+                                $('<%=$this->btnHapus->ClientId%>').disabled='disabled';													
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.onComplete>																							
+                                $('<%=$this->btnBatalkanMatkul->ClientId%>').disabled='';														
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>	
+                        </com:TActiveLinkButton>
+                    </td>
+                </tr>
+        </prop:AlternatingItemTemplate>
+        <prop:FooterTemplate>	
+                </tbody>		
+                <tfoot>
+                <tr>
+                    <td colspan="3">Jumlah SKS (Yang Sah)</td>
+                    <td><%= $this->Page->totalSks%></td>
+                    <td colspan="5">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan="3">Jumlah Matakuliah</td>
+                    <td><%= $this->Page->jumlahMatkul%></td>
+                    <td colspan="5">&nbsp;</td>
+                </tr>	
+                </tfoot>
+            </table>
+            </div>
+        </prop:FooterTemplate>
+    </com:TActiveRepeater>
+    <com:TActiveLabel ID="ErrorMessageTambahMatkul" CssClass="errorMessage" />
+    <com:TActiveRepeater ID="repeaterPenyelenggaraan" DataKeyField="idpenyelenggaraan">	
+        <prop:HeaderTemplate>
+            <div class="box">
+            <h3>Daftar Matakuliah Yang Di Selenggarakan</h3>				
+            <table id="datagrid3" style="width:100%;">
+                <thead>	
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Kode</th>
+                    <th scope="col">Nama</th>
+                    <th scope="col">SKS</th>
+                    <th scope="col">Semester</th>
+                    <th scope="col">Dosen Pengampu</th>						
+                    <th scope="col">&nbsp;</th>
+                </tr>	
+                </thead>									
+                <tbody>					
+        </prop:HeaderTemplate>
+        <prop:ItemTemplate>
+                <tr>
+                    <td><%#$this->DataItem['no']%></td>
+                    <td><%#$this->DataItem['kmatkul']%></td>
+                    <td><%#$this->DataItem['nmatkul']%></td>
+                    <td><%#$this->DataItem['sks']%></td>
+                    <td><%#$this->DataItem['semester']%></td>
+                    <td><%#$this->DataItem['nama_dosen']%></td>
+                    <td width="100" align="center">
+                    <com:TActiveLinkButton ID="btnTambah" Text="Tambah" CommandParameter="<%#$this->DataItem['sks']%>" OnClick="Page.tambahMatkul" ClientSide.PostState="false" CssClass="btnStyle2">						
+                        <prop:ClientSide.OnPreDispatch>
+                            $('loading').show();
+                        </prop:ClientSide.OnPreDispatch>
+                        <prop:ClientSide.OnLoading>				
+                            $('<%=$this->btnTambah->ClientId%>').disabled='disabled';														
+                        </prop:ClientSide.OnLoading>
+                        <prop:ClientSide.onComplete>				
+                            $('<%=$this->btnTambah->ClientId%>').disabled='';
+                            $('loading').hide();																																					
+                        </prop:ClientSide.OnComplete>
+                    </com:TActiveLinkButton>
+                    </td>
+                </tr>
+        </prop:ItemTemplate>
+        <prop:AlternatingItemTemplate>
+                <tr>
+                    <td><%#$this->DataItem['no']%></td>
+                    <td><%#$this->DataItem['kmatkul']%></td>
+                    <td><%#$this->DataItem['nmatkul']%></td>
+                    <td><%#$this->DataItem['sks']%></td>
+                    <td><%#$this->DataItem['semester']%></td>
+                    <td><%#$this->DataItem['nama_dosen']%></td>
+                    <td width="100" align="center">
+                    <com:TActiveLinkButton ID="btnTambah" Text="Tambah" CommandParameter="<%#$this->DataItem['sks']%>" OnClick="Page.tambahMatkul" ClientSide.PostState="false" CssClass="btnStyle2">
+                        <prop:ClientSide.OnPreDispatch>
+                            $('loading').show();
+                        </prop:ClientSide.OnPreDispatch>						
+                        <prop:ClientSide.OnLoading>				
+                            $('<%=$this->btnTambah->ClientId%>').disabled='disabled';														
+                        </prop:ClientSide.OnLoading>
+                        <prop:ClientSide.onComplete>				
+                            $('<%=$this->btnTambah->ClientId%>').disabled='';	
+                            $('loading').hide();																																				
+                        </prop:ClientSide.OnComplete>
+                    </com:TActiveLinkButton>
+                    </td>
+                </tr>
+        </prop:AlternatingItemTemplate>
+        <prop:FooterTemplate>
+            </tbody>
+            </table>
+            </div>
+        </prop:FooterTemplate>
+    </com:TActiveRepeater>		
+</com:TPanel>	
+
+</com:TContent>

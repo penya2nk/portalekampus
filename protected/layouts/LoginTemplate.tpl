@@ -26,7 +26,7 @@
             </a>
         </div>
     </div>
-    <div class="cls-content">
+    <com:TPanel CssClass="cls-content" Visible="<%=$this->User->isGuest==true%>">
         <div class="cls-content-sm panel">
             <div class="panel-body">
                 <p class="pad-btm"><com:TContentPlaceHolder ID="messagewelcome" /></p>
@@ -35,7 +35,14 @@
                 </com:TForm>										
             </div>
         </div>
-    </div>    
+    </com:TPanel>    
+    <com:TPanel CssClass="cls-content" Visible="<%=$this->User->isGuest==false%>">
+        <div class="cls-content-sm panel">
+            <div class="panel-body">
+                <p class="pad-btm">Anda sudah melakukan login, silahkan klik <a href="<%=$this->Page->constructUrl('Home',true)%>" style="color:blue;">disini</a> untuk kembali.</p>               								
+            </div>
+        </div>
+    </com:TPanel>
 </div>
 <script src="<%=$this->Page->Theme->baseUrl%>/js/jquery-2.1.1.min.js"></script>
 <script type="text/javascript">

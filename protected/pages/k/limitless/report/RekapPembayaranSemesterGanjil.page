@@ -1,4 +1,4 @@
-<%@ Title="Pembayaran - Rekap. Pembayaran Semester Ganjil"%>
+<%@ Title="Report - Rekap. Pembayaran Semester Ganjil"%>
 <com:TContent ID="moduleheader">    
     <i class="icon-file-text position-left"></i> <span class="text-semibold">Rekapitulasi Pembayaran Semester Ganjil T.A <%=$this->Page->setup->getSettingValue('default_ta');%></span>
 </com:TContent>

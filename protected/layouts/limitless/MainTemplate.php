@@ -7,5 +7,11 @@ class MainTemplate extends TTemplateControl {
             $this->linkTopTASemester->NavigateUrl=$tipeuser=='m'?$this->Page->constructUrl('settings.Variables',true):'#';            
 		}  
 	}
+    public function logoutUser ($sender,$param) {
+        if (!$this->User->isGuest) {
+            $this->Application->getModule ('auth')->logout();
+            $this->Page->redirect('Login');
+		}
+    }
 }
 ?>

@@ -1,28 +1,31 @@
-<%@ Title="Perkuliahan - Perubahan Kartu Studi Mahasiswa (PKRS)"%>
+<%@ Title="Nilai - Transkrip KRS" %>
 <com:TContent ID="moduleheader">
-	<i class="fa fa-columns"></i> Perubahan Kartu Rencana Studi (PKRS) <br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
+    <i class="fa fa-book"></i> Transkrip KRS<br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
     <li><a href="#">AKADEMIK</a></li>
-    <li><a href="#">PERKULIAHAN</a></li>
-    <li class="active">PERUBAHAN KRS</li>
+    <li><a href="#">NILAI</a></li>
+    <li class="active"><span>TRANSKRIP KRS</span></li>
 </com:TContent>
 <com:TContent ID="configtools">    
-    <%include Application.layouts.cube.FilterMode2%>
+    <%include Application.layouts.cube.FilterMode7%>
+</com:TContent>
+<com:TContent ID="csscontent">
+<link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/css/libs/nifty-component.css"/>
 </com:TContent>
 <com:TContent ID="maincontent">	
-<com:TPanel Visible="<%= $this->getDefaultProcess() %>">
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>">	
     <div class="row">
         <div class="col-lg-12">
-            <div class="main-box">
+            <div class="main-box clearfix">
                 <header class="main-box-header clearfix">
-                    <h2><i class="fa fa-search"></i> Pencarian Data</h2>
+                    <h2><i class="fa fa-search"></i> Pencarian Data</h2>                    
                 </header>
-                <div class="main-box-body clearfix">
+                <div class="main-box-body">
                     <div class="form-horizontal">
                         <div class="form-group">
                             <label class="col-lg-2 control-label">Kriteria :</label>
-                            <div class="col-lg-2">
+                            <div class="col-lg-3">
                                 <com:TDropDownList ID="cmbKriteria" CssClass="form-control">                                                           
                                     <com:TListItem Text="NIM" Value="nim" />
                                     <com:TListItem Text="NIRM" Value="nirm" />
@@ -67,96 +70,93 @@
                     </div>
                 </div>
             </div>
-        </div>        
-    </div>
+        </div>
+    </div>		
     <div class="row">
         <div class="col-lg-12">
             <div class="main-box clearfix">
                 <header class="main-box-header clearfix">
-                    <h2 class="pull-left"><i class="fa fa-columns"></i> Daftar Mahasiswa yang PKRS </h2> 
-                    <div class="filter-block pull-right">   
-                        <div class="form-group pull-left" id="divAddNIMKRS">
-                           <com:TTextBox ID="txtAddNim" Attributes.PlaceHolder="NIM" CssClass="form-control" />                                                       
-                           <com:TRequiredFieldValidator ID="fieldValidatorFieldNIM" ControlToValidate="txtAddNim" Display="Dynamic" ErrorMessage="Isikan NIM" ValidationGroup="nimKRS" CssClass="has-error help-block" FocusOnError="true"> 										
-                                <prop:ClientSide.OnValidationError>
-                                    $('divAddNIMKRS').addClassName('has-error');
-                                    jQuery('#<%=$this->fieldValidatorFieldNIM->ClientID%>').removeAttr('style');
-                                </prop:ClientSide.OnValidationError>
-                                <prop:ClientSide.OnValidationSuccess>
-                                    $('divAddNIMKRS').removeClassName('has-error');
-                                </prop:ClientSide.OnValidationSuccess>
-                           </com:TRequiredFieldValidator>
-                           <com:TActiveCustomValidator ID="customValidatorFieldNIM" ControlToValidate="txtAddNim" Display="Dynamic" ValidationGroup="nimKRS" OnServerValidate="checkNIM" CssClass="has-error help-block">
-                               <prop:ClientSide.OnValidationError>
-                                    $('divAddNIMKRS').addClassName('has-error');
-                                    jQuery('#<%=$this->customValidatorFieldNIM->ClientID%>').removeAttr('style');
-                                </prop:ClientSide.OnValidationError>
-                                <prop:ClientSide.OnValidationSuccess>
-                                    $('divAddNIMKRS').removeClassName('has-error');
-                                </prop:ClientSide.OnValidationSuccess>
-                            </com:TActiveCustomValidator>  
-                        </div>
-                        <com:TActiveLinkButton ID="btnIsiKrs" OnClick="isiPKRS" ValidationGroup="nimKRS" CssClass="btn btn-primary pull-left" Attributes.Title="Isi KRS">					
-                            <prop:Text><i class="fa fa-file-o fa-lg"></i></prop:Text>
-                            <prop:ClientSide.OnPreDispatch>
-                                $('loading').show();
-                            </prop:ClientSide.OnPreDispatch>
-                            <prop:ClientSide.OnLoading>
-                                $('<%=$this->btnIsiKrs->ClientId%>').disabled='disabled';							
-                            </prop:ClientSide.OnLoading>
-                            <prop:ClientSide.OnComplete>										
-                                $('<%=$this->btnIsiKrs->ClientId%>').disabled='';							
-                                $('loading').hide();
-                            </prop:ClientSide.OnComplete>
-                        </com:TActiveLinkButton>       
-                        <com:TActiveLinkButton ID="btnPrintKRSAll" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Mencetak Per. Angkatan">
+                    <h2 class="pull-left"><i class="fa fa-book"></i> Daftar Nilai Transkrip KRS Mahasiswa</h2> 
+                    <div class="filter-block pull-right">                                                   
+                        <com:TActiveLinkButton ID="btnPrintTranskripKRSAll" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out Transkrip KRS">
                             <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
                             <prop:ClientSide.OnPreDispatch>
                                 $('loading').show();
                             </prop:ClientSide.OnPreDispatch>
                             <prop:ClientSide.OnLoading>
-                                $('<%=$this->btnPrintKRSAll->ClientId%>').disabled='disabled';				
+                                $('<%=$this->btnPrintTranskripKRSAll->ClientId%>').disabled='disabled';				
                             </prop:ClientSide.OnLoading>
                             <prop:ClientSide.OnComplete>
-                                $('<%=$this->btnPrintKRSAll->ClientId%>').disabled='';				
+                                $('<%=$this->btnPrintTranskripKRSAll->ClientId%>').disabled='';				
                                 $('loading').hide();
                             </prop:ClientSide.OnComplete>
                         </com:TActiveLinkButton> 									
                     </div>
                 </header>
-                <div class="main-box-body clearfix">                           
+                <div class="main-box-body clearfix">       
                     <div class="table-responsive">
-                        <com:TActiveRepeater ID="RepeaterS" AllowPaging="true" PageSize="10" AllowCustomPaging="true" DataKeyField="nim">
-                            <prop:HeaderTemplate>			
+                        <com:TActiveRepeater ID="RepeaterS" AllowPaging="true" AllowCustomPaging="true" DataKeyField="nim">
+                            <prop:HeaderTemplate>                        
                             <table class="table table-striped table-hover">
                                 <thead>
                                 <tr>
-                                    <th scope="col">NO</th>					
-                                    <th scope="col">NIM</th>					
-                                    <th scope="col">NAMA</th>					
-                                    <th scope="col">TAHUN MASUK</th>
-                                    <th scope="col">NAMA MATAKULIAH</th>
-                                    <th scope="col">SKS</th>
-                                    <th scope="col">KET.</th>
-                                    <th scope="col">TANGGAL</th>
-                                </tr>						
+                                    <th scope="col" width="15">NO</th>					
+                                    <th scope="col" width="100">NIM</th>
+                                    <th scope="col" width="300">NAMA</th>
+                                    <th scope="col">JK</th>
+                                    <th scope="col">KONSENTRASI</th>
+                                    <th scope="col">TAHUN <br/>MASUK</th>
+                                    <th scope="col">JUMLAH <br />MATAKULIAH</th>
+                                    <th scope="col">JUMLAH <br />SKS</th>
+                                    <th scope="col">IPK <br />SEMENTARA</th>					
+                                    <th scope="col" width="100">AKSI</th>                                
+                                </tr>			
                                 </thead>
+                                <tbody>
                             </prop:HeaderTemplate>
-                            <prop:ItemTemplate>
+                            <prop:ItemTemplate>	
                                 <tr>
-                                    <td><%# $this->DataItem['no']%></td>										
-                                    <td><%# $this->DataItem['nim']%></td>										
-                                    <td><%# $this->DataItem['nama_mhs']%></td>
-                                    <td><%# $this->DataItem['tahun_masuk']%></td>
-                                    <td><%# $this->DataItem['nmatkul']%></td>
-                                    <td><%# $this->DataItem['sks']%></td>
-                                    <td><%# $this->DataItem['ket']%></td>
-                                    <td><%# $this->Page->TGL->tanggal('d/m/Y H:i',$this->DataItem['tanggal'])%></td>
-                                </tr>
-                            </prop:ItemTemplate>
-                            <prop:FooterTemplate>				
+                                    <td><%# $this->Data['no']%></td>					
+                                    <td><a href="<%=$this->Page->constructUrl('kemahasiswaan.ProfilMahasiswa',true,array('id'=>$this->DataItem['nim']))%>"><%#$this->DataItem['nim']%></a></td>
+                                    <td><%# $this->Data['nama_mhs']%></td>
+                                    <td><%# $this->Data['jk']%></td>
+                                    <td><%# $this->Data['konsentrasi']%></td>
+                                    <td><%# $this->Data['tahun_masuk']%></td>                                
+                                    <td><%# $this->Data['matkul']%></td>                                
+                                    <td><%# $this->Data['sks']%></td>                                
+                                    <td><%# $this->Data['ips']%></td>                                
+                                    <td>
+                                        <a href="<%#$this->Page->constructUrl('nilai.DetailTranskripKRS',true,array('id'=>$this->DataItem['nim']))%>" class="table-link" title="Detail Transkrip">                                        
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-eye fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </a>
+                                        <com:TActiveLinkButton ID="btnPrintOutR" CssClass="table-link" OnClick="Page.printOut" Attributes.Title="Print Transkrip KRS" ClientSide.PostState="false">
+                                            <prop:Text>
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-print fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </prop:Text>
+                                            <prop:ClientSide.OnPreDispatch>                                                                   
+                                                $('loading').show(); 
+                                                $('<%=$this->btnPrintOutR->ClientId%>').disabled='disabled';						
+                                            </prop:ClientSide.OnPreDispatch>
+                                            <prop:ClientSide.OnLoading>
+                                                $('<%=$this->btnPrintOutR->ClientId%>').disabled='disabled';						
+                                            </prop:ClientSide.OnLoading>
+                                            <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                                $('<%=$this->btnPrintOutR->ClientId%>').disabled='';
+                                                $('loading').hide(); 
+                                            </prop:ClientSide.OnComplete>
+                                        </com:TActiveLinkButton>						
+                                    </td>                                
+                                </tr>	
+                            </prop:ItemTemplate>				
+                            <prop:FooterTemplate>	                            
                                 </tbody>
-                                </table>
+                            </table>
                             </prop:FooterTemplate>
                             <prop:EmptyTemplate>                                                       
                                 <div class="row">
@@ -171,12 +171,13 @@
                                     </div>
                                 </div>
                             </prop:EmptyTemplate>
-                        </com:TActiveRepeater>	
+                        </com:TActiveRepeater>
                         <%include Application.CustomPaging%>
                     </div>
                 </div>
             </div>
         </div>
-    </div>       										
-</com:TPanel>	
+    </div>		
+</com:TPanel>
+<%include Application.layouts.cube.ModalPrintOut%>
 </com:TContent>

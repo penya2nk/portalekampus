@@ -1,6 +1,6 @@
 <?php
 prado::using ('Application.MainPageDW');
-class CTambahKRS extends MainPageDW {
+class CTambahPKRS extends MainPageDW {
 	/**
 	* total SKS
 	*/
@@ -23,20 +23,20 @@ class CTambahKRS extends MainPageDW {
 	public function onLoad($param) {
 		parent::onLoad($param);	
         $this->showSubMenuAkademikPerkuliahan=true;
-        $this->showKRS = true;                   
+        $this->showPKRS = true;                   
         $this->createObj('KRS');
         $this->createObj('Nilai');
         $this->createObj('Finance');
 		if (!$this->IsPostBack&&!$this->IsCallback) {	            
             $this->lblModulHeader->Text=$this->getInfoToolbar();            
             try {	
-                $datakrs=$_SESSION['currentPageKRS']['DataKRS'];
+                $datakrs=$_SESSION['currentPagePKRS']['DataKRS'];
                 if (isset($datakrs['krs']['idkrs'])){
                     $this->KRS->DataKRS=$datakrs;
                     
                     $idsmt=$datakrs['krs']['idsmt'];
                     $tahun=$datakrs['krs']['tahun'];
-                    $datamhs=$_SESSION['currentPageKRS']['DataMHS'];                                            
+                    $datamhs=$_SESSION['currentPagePKRS']['DataMHS'];                                            
                     $nim=$datamhs['nim'];                
                     $this->KRS->setDataMHS($datamhs);   
 
@@ -75,9 +75,10 @@ class CTambahKRS extends MainPageDW {
     }
 	public function tambahMatkul($sender,$param) {
 		try {		
-            $datakrs=$_SESSION['currentPageKRS']['DataKRS']['krs'];
+            $datakrs=$_SESSION['currentPagePKRS']['DataKRS']['krs'];
             $datakrs['iddata_konversi']=$this->Pengguna->getDataUser('iddata_konversi');
             $this->KRS->setDataMHS($datakrs);
+            $nim=$datakrs['nim'];
 			$idkrs=$datakrs['idkrs'];
 			$str = "SELECT SUM(sks) AS jumlah FROM v_krsmhs WHERE idkrs='$idkrs'";
 			$this->DB->setFieldTable(array('jumlah'));
@@ -88,11 +89,16 @@ class CTambahKRS extends MainPageDW {
 			$idpenyelenggaraan=$this->getDataKeyField($sender,$this->RepeaterPenyelenggaraan);
 			//check kmatkul syarat apakah lulus		
 			$this->KRS->checkMatkulSyaratIDPenyelenggaraan($idpenyelenggaraan);
+            $this->DB->query('BEGIN');
 			if (!$this->DB->checkRecordIsExist('idpenyelenggaraan','krsmatkul',$idpenyelenggaraan,' AND idkrs='.$idkrs)) { 
 				$str = "INSERT INTO krsmatkul (idkrsmatkul,idkrs,idpenyelenggaraan,batal) VALUES (NULL,'$idkrs',$idpenyelenggaraan,0)";
-				$this->DB->insertRecord($str);			
-				$this->redirect ('perkuliahan.TambahKRS',true);
-			}
+				$this->DB->insertRecord($str);
+                $this->DB->insertRecord("INSERT INTO pkrs (nim,idpenyelenggaraan,tambah,tanggal) VALUES ('$nim',$idpenyelenggaraan,1,NOW())");
+                $this->DB->query ('COMMIT');
+				$this->redirect ('perkuliahan.TambahPKRS',true);
+			}else{
+                $this->DB->query ('ROLLBACK');
+            }
 		}catch (Exception $e) {
             $this->modalMessageError->show();
 			$this->lblContentMessageError->Text=$e->getMessage();					
@@ -107,26 +113,18 @@ class CTambahKRS extends MainPageDW {
 		}else {
 			$this->DB->query ('ROLLBACK');
 		}	
-		$this->redirect ('perkuliahan.TambahKRS',true);
+		$this->redirect ('perkuliahan.TambahPKRS',true);
 	}	
 	
 	public function hitung ($sender,$param) {
 		$item=$param->Item;		
-		if ($item->ItemType==='Item' || $item->ItemType==='AlternatingItem') {					
-			$matkul=$item->DataItem['kmatkul'].'-'.$item->DataItem['nmatkul'];									
-			if ($_SESSION['currentPageKRS']['DataKRS']['krs']['sah']&&!$item->DataItem['batal']) {
-				$onclick="alert('Tidak bisa menghapus Matakuliah $matkul, karena sudah disahkan oleh Dosen Wali.')";
-				$item->btnHapus->Enabled=false;
-			}else{
-				$onclick="if(!confirm('Anda yakin mau menghapus $matkul')) return false;";			
-			}
-			$item->btnHapus->Attributes->OnClick=$onclick;
-			TambahKRS::$totalSKS+=$item->DataItem['sks'];	
-			TambahKRS::$jumlahMatkul+=1;	
+		if ($item->ItemType==='Item' || $item->ItemType==='AlternatingItem') {
+			TambahPKRS::$totalSKS+=$item->DataItem['sks'];	
+			TambahPKRS::$jumlahMatkul+=1;	
 		}
 	}	
-	public function closeTambahKRS ($sender,$param) {
-        unset($_SESSION['currentPageKRS']);
+	public function closeTambahPKRS ($sender,$param) {
+        unset($_SESSION['currentPagePKRS']);
         $this->redirect ('perkuliahan.KRS',true);
     }
 }

@@ -1,6 +1,6 @@
 <?php
-prado::using ('Application.MainPageM');
-class CKHSEkstension extends MainPageM {	
+prado::using ('Application.MainPageDW');
+class KHSEkstension extends MainPageDW {	
 	public $nilai_semester_lalu;
 	public $total_sks_nm_saat_ini;
 	public function onLoad ($param) {
@@ -10,8 +10,8 @@ class CKHSEkstension extends MainPageM {
         
         $this->createObj('Nilai');
 		if (!$this->IsPostBack&&!$this->IsCallBack) {
-            if (!isset($_SESSION['currentPageKHSEkstension'])||$_SESSION['currentPageKHSEkstension']['page_name']!='m.nilai.KHSEkstension') {
-				$_SESSION['currentPageKHSEkstension']=array('page_name'=>'m.nilai.KHSEkstension','page_num'=>0,'search'=>false,'iddosen_wali'=>'none','tahun_masuk'=>$_SESSION['tahun_masuk']);
+            if (!isset($_SESSION['currentPageKHSEkstension'])||$_SESSION['currentPageKHSEkstension']['page_name']!='dw.nilai.KHSEkstension') {
+				$_SESSION['currentPageKHSEkstension']=array('page_name'=>'dw.nilai.KHSEkstension','page_num'=>0,'search'=>false,'iddosen_wali'=>'none','tahun_masuk'=>$_SESSION['tahun_masuk']);
 			}   
 			$_SESSION['currentPageKHSEkstension']['search']=false;
             $this->RepeaterS->PageSize=10;
@@ -96,11 +96,12 @@ class CKHSEkstension extends MainPageM {
 		$_SESSION['currentPageKHSEkstension']['search']=true;
 		$this->populateData($_SESSION['currentPageKHSEkstension']['search']);
 	}
-    public function populateData($search=false) {				
+    public function populateData($search=false) {	
+        $iddosen_wali=$this->iddosen_wali;
 		$ta=$_SESSION['ta'];
 		$idsmt=$_SESSION['semester'];
         if ($search) {
-            $str = "SELECT k.idkrs,k.tgl_krs,vdm.no_formulir,k.nim,vdm.nirm,vdm.nama_mhs,vdm.jk,vdm.kjur,vdm.tahun_masuk,vdm.semester_masuk,vdm.idkelas,k.sah,k.tgl_disahkan FROM krs k,v_datamhs vdm WHERE k.nim=vdm.nim AND vdm.idkelas='C' AND tahun='$ta' AND idsmt='$idsmt'";
+            $str = "SELECT k.idkrs,k.tgl_krs,vdm.no_formulir,k.nim,vdm.nirm,vdm.nama_mhs,vdm.jk,vdm.kjur,vdm.tahun_masuk,vdm.semester_masuk,vdm.idkelas,k.sah,k.tgl_disahkan FROM krs k,v_datamhs vdm WHERE k.nim=vdm.nim AND vdm.iddosen_wali=$iddosen_wali AND vdm.idkelas='C' AND tahun='$ta' AND idsmt='$idsmt'";
             $txtsearch=$this->txtKriteria->Text;
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
@@ -122,12 +123,10 @@ class CKHSEkstension extends MainPageM {
         }else{
             $kjur=$_SESSION['kjur'];
             $tahun_masuk=$_SESSION['currentPageKHSEkstension']['tahun_masuk'];	
-            $str_tahun_masuk=$tahun_masuk == 'none' ?'':"AND vdm.idkelas='C' AND vdm.tahun_masuk=$tahun_masuk";
-            $iddosen_wali=$_SESSION['currentPageKHSEkstension']['iddosen_wali'];
-            $str_dosen_wali=$iddosen_wali == 'none' ?'':"AND vdm.idkelas='C' AND vdm.iddosen_wali=$iddosen_wali";
-            $str = "SELECT k.idkrs,k.tgl_krs,vdm.no_formulir,k.nim,vdm.nirm,vdm.nama_mhs,vdm.jk,vdm.kjur,vdm.tahun_masuk,vdm.semester_masuk,vdm.idkelas,k.sah,k.tgl_disahkan FROM krs k,v_datamhs vdm WHERE k.nim=vdm.nim AND vdm.idkelas='C' AND tahun='$ta' AND idsmt='$idsmt' AND kjur=$kjur $str_tahun_masuk $str_dosen_wali";
+            $str_tahun_masuk=$tahun_masuk == 'none' ?'':" AND vdm.tahun_masuk=$tahun_masuk";            
+            $str = "SELECT k.idkrs,k.tgl_krs,vdm.no_formulir,k.nim,vdm.nirm,vdm.nama_mhs,vdm.jk,vdm.kjur,vdm.tahun_masuk,vdm.semester_masuk,vdm.idkelas,k.sah,k.tgl_disahkan FROM krs k,v_datamhs vdm WHERE k.nim=vdm.nim AND vdm.iddosen_wali=$iddosen_wali AND vdm.idkelas='C' AND tahun='$ta' AND idsmt='$idsmt' AND kjur=$kjur $str_tahun_masuk";
             
-            $jumlah_baris=$this->DB->getCountRowsOfTable("krs k,v_datamhs vdm WHERE k.nim=vdm.nim AND vdm.idkelas='C' AND tahun='$ta' AND idsmt='$idsmt' AND kjur=$kjur $str_tahun_masuk $str_dosen_wali",'k.idkrs');
+            $jumlah_baris=$this->DB->getCountRowsOfTable("krs k,v_datamhs vdm WHERE k.nim=vdm.nim AND vdm.iddosen_wali=$iddosen_wali AND vdm.idkelas='C' AND tahun='$ta' AND idsmt='$idsmt' AND kjur=$kjur $str_tahun_masuk",'k.idkrs');
         }
 		
 		$this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageKHSEkstension']['page_num'];
@@ -283,181 +282,5 @@ class CKHSEkstension extends MainPageM {
         $this->lblPrintout->Text='Kartu Hasil Studi';
         $this->modalPrintOut->show();
 	}
-//	public function checkNim ($sender,$param){
-//		$nim=addslashes($this->txtNim->Text);				
-//		try {
-//			if ($nim != '') {
-//				$this->KRS->setParameterGlobal ($this->session['ta'],$this->session['semester'],'');
-//				$this->KRS->setNim ($nim,true);		
-//				if (!$this->KRS->isNimExist()) throw new AkademikException ($nim,2);
-//				if (!$this->KRS->isKrsSah()) throw new KrsException ($nim,1);
-//                if ($this->KRS->dataMhs['idkelas']!='C') throw new Exception ("Nim ($nim) Tidak Terdaftar Pada Kelas Ekstensi");							
-//			}
-//		}catch (KrsException $e) {
-//			$param->IsValid=false;
-//			$sender->ErrorMessage=$e->pesanKesalahan();					
-//		}catch (AkademikException $e) {
-//			$sender->ErrorMessage=$e->pesanKesalahan();				
-//			$param->IsValid=false;
-//		}catch(Exception $e) {			
-//			$sender->ErrorMessage=$e->getMessage();				
-//			$param->IsValid=false;
-//		}	
-//	}
-//	public function searchNim ($sender,$param) {
-//		if ($this->IsValid) {
-//			$nim=$nim=addslashes($this->txtNim->Text);				
-//			$this->populateData("AND vdm.nim='$nim'");
-//		}		
-//	}
-//	public function populateData($str='') {		
-//		$this->Pengguna->updateActivity();			
-//		$ta=$this->session['ta'];
-//		$idsmt=$this->session['semester'];
-//		$kjur=$str==''?' AND kjur='.$this->session['kjur']:'';
-//		$tahun_masuk=$this->session['tahun_masuk'];		
-//		$dw=$this->session['currentPage']['dw']=='none'?'':" AND vdm.iddosen_wali='{$this->session['currentPage']['dw']}'";
-//		if ($str == '')$tahun_masuk=$tahun_masuk=='none'?'':"AND vdm.tahun_masuk='$tahun_masuk'";else $tahun_masuk= '';				
-//		$str2 = "krs k,v_datamhs vdm WHERE k.nim=vdm.nim AND idkelas='C' AND tahun='$ta' AND idsmt='$idsmt' $kjur $tahun_masuk $str $dw";
-//		$this->RepeaterS->CurrentPageIndex=$_SESSION['currentPage']['page_num'];
-//		$this->RepeaterS->VirtualItemCount=$this->DB->getCountRowsOfTable ($str2,'k.nim');
-//		$offset=$this->RepeaterS->CurrentPageIndex*$this->RepeaterS->PageSize;
-//		$limit=$this->RepeaterS->PageSize;
-//		if ($offset+$limit>$this->RepeaterS->VirtualItemCount) {
-//			$limit=$this->RepeaterS->VirtualItemCount-$offset;
-//		}
-//		if ($limit < 0) {$offset=0;$limit=10;$_SESSION['currentPage']['page_num']=0;}
-//		$str2 = "SELECT k.idkrs,k.tgl_krs,k.nim,vdm.nama_mhs,vdm.jk,vdm.tahun_masuk,k.sah,k.tgl_disahkan FROM krs k,v_datamhs vdm WHERE k.nim=vdm.nim AND idkelas='C' AND tahun='$ta' AND idsmt='$idsmt' $kjur $tahun_masuk $str $dw ORDER BY vdm.nama_mhs ASC LIMIT $offset,$limit";
-//		$this->DB->setFieldTable(array('idkrs','tgl_krs','nim','nama_mhs','jk','tahun_masuk','sah','tgl_disahkan'));
-//		$result=$this->DB->getRecord($str2);
-//		$this->RepeaterS->DataSource=$result;
-//		$this->RepeaterS->dataBind();
-//	}
-//	
-//	public function setDataBound ($sender,$param) {
-//		$item=$param->Item;
-//		if ($item->ItemType === 'Item' || $item->ItemType === 'AlternatingItem') {			
-//			$nim=$item->DataItem['nim'];			
-//			$ta=$this->session['ta'];
-//			$smt=$this->session['semester'];			
-//			$this->KRS->setNim($nim);
-//			$this->KRS->setParameterGlobal ($ta,$smt,'');
-//			if ($this->KRS->isKrsSah()) {					
-//				$this->nilai->setParameterGlobal ($ta,$smt,'');
-//				$this->nilai->setNim($nim);
-//				$this->nilai->getKHS();
-//				$item->lblIP->Text=$this->nilai->getIp ();
-//				$item->lblSKS->Text=$this->nilai->getTotalSKS();				
-//			}else {
-//				$item->lblIP->Text='0.00';
-//				$item->lblSKS->Text='0';
-//				$item->btnView->Attributes->OnClick = "alert('KRS $nim belum di sahkan, oleh dosen wali-nya.'); return false;";
-//				$item->btnToExcel->Attributes->OnClick = "alert('KRS $nim belum di sahkan, oleh dosen wali-nya.'); return false;";				
-//			}
-//		}
-//	}
-//	
-//	public function printOut ($sender,$param) {		
-//		$this->Pengguna->updateActivity();	
-//		$this->nilai->setParameterGlobal ($this->session['ta'],$this->session['semester'],'');
-//		switch ($sender->getId()) {
-//			case 'btnToPdf' :
-//				$nim=$sender->CommandParameter;	
-//				$this->nilai->setNim($nim,true);					
-//				$this->nilai->printKHS('pdf',$this->session['daftar_semester']);				
-//				$this->nilai->Report->printOut("khs_$nim");
-//				$this->nilai->Report->setLink($this->linkExcel2,"<br />khs_$nim");	
-//			break;
-//			case 'btnToExcel2' :
-//				$nim=$sender->CommandParameter;	
-//				$this->nilai->setNim($nim,true);					
-//				$this->nilai->printKHS('excel',$this->session['daftar_semester']);				
-//				$this->nilai->Report->setLink($this->linkExcel2,"<br />khs_$nim");	
-//			break;
-//			case 'btnToExcel' :				
-//				$nim=$this->getDataKeyField($sender,$this->RepeaterS);
-//				$this->nilai->setNim($nim,true);								
-//				$this->nilai->printKHS('excel',$this->session['daftar_semester']);				
-//				$this->nilai->Report->setLink($this->linkExcel);
-//				$this->populateData();		
-//			break;			
-//		}		
-//	}
-//	public function printAll () {
-//		$this->Pengguna->updateActivity();					
-//		if ($this->session['tahun_masuk'] != 'none' || $this->session['tahun_masuk'] == '') {
-//			$this->createObjFinance();
-//			$ta=$this->session['ta'];
-//			$semester=$this->session['semester'];
-//			$this->KRS->setParameterGlobal($ta,$semester,$this->session['kjur']);
-//			$this->nilai->setParameterGlobal($ta,$semester,$this->session['kjur']);				
-//			$this->Finance->setParameterGlobal ($this->session['ta'],$this->session['semester'],$this->session['kjur']);
-//			$dw=$this->session['currentPage']['dw']=='none'?null:$this->session['currentPage']['dw'];
-//			$result=$this->KRS->getMahasiswaInKRS ($dw,array('tahun_masuk'=>$this->session['tahun_masuk']));			
-//			while (list($k,$v)=each($result)) {		
-//				$nim=$v['nim'];												
-//				$this->KRS->setNim($nim);
-//				if ($this->KRS->isKrsSah()) {										
-//                    $this->nilai->setDataMode('litle');
-//                    $this->nilai->setNim($nim,true);					
-//                    $this->nilai->printKHS('pdf',$this->session['daftar_semester']);                				
-//                }else {
-//                    $this->nilai->setDataMode('litle');
-//                    $this->nilai->setNim($nim,true);					
-//                    $this->nilai->printKHS('pdf',$this->session['daftar_semester']);                
-//				}
-//			}
-//			$this->nilai->Report->printOut ("daftar_khs_ta_$ta".'_'.$this->session['daftar_semester'][$semester]);			
-//			$this->nilai->Report->setLink($this->linkExcel);
-//		}		
-//	}
-//	public function viewKHSperNim ($sender,$param) {		
-//		if ($this->IsValid) {						
-//			$this->Pengguna->updateActivity();	
-//			$nim=$this->txtNim->Text;		
-//			$_SESSION['view_khseksekutif_manajemen']=$nim;
-//			$this->Demik->redirect('a.m.Akademik.KHSEksekutif');
-//		}
-//	}
-//	
-//	public function printKHSperNim ($sender,$param) {
-//		if ($this->isValid) {
-//			$this->Pengguna->updateActivity();	
-//			$this->nilai->setParameterGlobal ($this->session['ta'],$this->session['semester'],'');
-//			$nim=$this->txtNim->Text;
-//			$this->nilai->setNim($nim,true);		
-//			$mode = $sender->getId()=='printExcel'?'excel':'pdf';							
-//			$this->nilai->printKHS($mode,$this->session['daftar_semester']);				
-//			if ($mode == 'pdf')$this->nilai->Report->printOut("khs_$nim");
-//			$this->nilai->Report->setLink($this->linkExcel);	
-//		}
-//	}
-//	public function viewKHS ($nim) {			
-//		$this->idProcess='view';
-//		$this->nilai->setParameterGlobal ($this->session['ta'],$this->session['semester'],'');			
-//		$this->nilai->setNim($nim,true);
-//		$this->dataMhs=$this->nilai->dataMhs;
-//		$krs = $this->nilai->getKHS();
-//		$this->total_sks_nm_saat_ini['total_sks']=$this->nilai->getTotalSKS();
-//		$this->total_sks_nm_saat_ini['total_m']=$this->nilai->getTotalM();		
-//		$this->nilai_semester_lalu=$this->nilai->getKumulatifSksDanNmSemesterLalu();		
-//		$this->errorMessage->Text='';
-//		if(!isset($krs[1])){
-//			$this->errorMessage->Text = 'Belum mengisi KRS atau KRS-nya belum disahkan oleh dosen wali.';
-//		}
-//		$this->RepeaterKHS->DataSource=$krs ;
-//		$this->RepeaterKHS->dataBind();	
-//	}
-//	
-//	public function processView ($sender,$param) {	
-//		$this->Pengguna->updateActivity();		
-//		$nim=$this->getDataKeyField($sender,$this->RepeaterS);
-//		$_SESSION['view_khseksekutif_manajemen']=$nim;
-//		$this->Demik->redirect('a.m.Akademik.KHSEksekutif');
-//	}	
-//	public function closeKHS($sender,$param) {	
-//		unset($_SESSION['view_khseksekutif_manajemen']);
-//		$this->Demik->redirect('a.m.Akademik.KHSEksekutif');
-//	}
 }
 ?>

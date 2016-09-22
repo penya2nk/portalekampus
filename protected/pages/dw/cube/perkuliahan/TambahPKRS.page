@@ -1,11 +1,11 @@
 <%@ Title="Perkuliahan - Kartu Studi Mahasiswa (KRS)"%>
 <com:TContent ID="moduleheader">
-	<i class="fa fa-columns"></i> Kartu Rencana Studi (KRS) KELAS EKSTENSION <br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
+	<i class="fa fa-columns"></i> Kartu Rencana Studi (KRS) <br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
     <li><a href="#">AKADEMIK</a></li>
     <li><a href="#">PERKULIAHAN</a></li>
-    <li><a href="<%=$this->constructUrl('perkuliahan.DetailKRSEkstension',true)%>">KRS EKSTENSION</a></li>
+    <li><a href="<%=$this->constructUrl('perkuliahan.KRS',true)%>">KRS</a></li>
     <li class="active"><a href="#">TAMBAH KRS</a></li>
 </com:TContent>
 <com:TContent ID="csscontent">
@@ -38,8 +38,8 @@
                     <div class="main-box clearfix">
                         <header class="main-box-header clearfix">
                             <h2 class="pull-left"><i class="fa fa-columns"></i> DATA KRS</h2>                             
-                            <div class="icon-box pull-right">                                                                       
-                                <a class="btn btn-default pull-right" href="<%=$this->Page->constructUrl('perkuliahan.DetailKRSEkstension',true,array('id'=>$this->Page->KRS->DataKRS['krs']['idkrs']))%>" title="Keluar Tambah KRS">                        
+                            <div class="icon-box pull-right">                        
+                                <a class="btn btn-default pull-right" href="<%=$this->Page->constructUrl('perkuliahan.DetailPKRS',true,array('id'=>$_SESSION['currentPagePKRS']['DataKRS']['krs']['idkrs']))%>" title="Keluar Detail KRS">                        
                                     <i class='fa  fa-times fa-lg'></i>
                                 </a>
                             </div>
@@ -100,8 +100,7 @@
                                             <th scope="col">NAMA</th>
                                             <th scope="col">SKS</th>
                                             <th scope="col">SMT</th>
-                                            <th scope="col">DOSEN</th>					
-                                            <th scope="col">AKSI</th>					
+                                            <th scope="col">DOSEN</th>				
                                         </tr>						
                                     </thead>
                                     <tbody>
@@ -113,26 +112,7 @@
                                             <td><%# $this->DataItem['nmatkul']%></td>
                                             <td><%# $this->DataItem['sks']%></td>
                                             <td><%# $this->DataItem['semester']%></td>							
-                                            <td><%# $this->DataItem['nama_dosen']%> [<%# $this->DataItem['nidn']%>]</td>					
-                                            <td>
-                                                <com:TActiveLinkButton ID="btnHapus" OnClick="Page.hapusMatkul" Enabled="<%#!$_SESSION['currentPageKRSEkstension']['DataKRS']['krs']['sah']%>" ClientSide.PostState="false" CssClass="table-link danger">
-                                                    <prop:Text>
-                                                        <span class="fa-stack">
-                                                            <i class="fa fa-square fa-stack-2x"></i>
-                                                            <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                        </span>
-                                                    </prop:Text>
-                                                    <prop:ClientSide.OnPreDispatch>
-                                                        $('loading').show();
-                                                    </prop:ClientSide.OnPreDispatch>
-                                                    <prop:ClientSide.OnLoading>				
-                                                        $('<%=$this->btnHapus->ClientId%>').disabled='disabled';														
-                                                    </prop:ClientSide.OnLoading>
-                                                    <prop:ClientSide.onComplete>																							
-                                                        $('loading').hide();
-                                                    </prop:ClientSide.OnComplete>
-                                                </com:TActiveLinkButton>                                                
-                                            </td>
+                                            <td><%# $this->DataItem['nama_dosen']%> [<%# $this->DataItem['nidn']%>]</td>
                                         </tr>
         </prop:ItemTemplate>  
         <prop:FooterTemplate>
@@ -140,12 +120,12 @@
                                     <tfoot>
                                     <tr>
                                         <td colspan="3"><strong>Jumlah SKS</strong></td>
-                                        <td><%# TambahKRSEkstension::$totalSKS%></td>
+                                        <td><%# TambahPKRS::$totalSKS%></td>
                                         <td colspan="3">&nbsp;</td>
                                     </tr>
                                     <tr>
                                         <td colspan="3"><strong>Jumlah Matakuliah</strong></td>
-                                        <td><%# TambahKRSEkstension::$jumlahMatkul%></td>
+                                        <td><%# TambahPKRS::$jumlahMatkul%></td>
                                         <td colspan="5">&nbsp;</td>
                                     </tr>
                                     </tfoot>
@@ -163,7 +143,7 @@
                         <header class="main-box-header clearfix">
                             <h2 class="pull-left"><i class="fa fa-columns"></i> DATA KRS</h2>                             
                             <div class="icon-box pull-right">                                                                       
-                                <a class="btn btn-default pull-right" href="<%=$this->Page->constructUrl('perkuliahan.DetailKRSEkstension',true,array('id'=>$_SESSION['currentPageKRSEkstension']['DataKRS']['krs']['idkrs']))%>" title="Keluar Tambah KRS">                        
+                                <a class="btn btn-default pull-right" href="<%=$this->Page->constructUrl('perkuliahan.DetailPKRS',true,array('id'=>$_SESSION['currentPagePKRS']['DataKRS']['krs']['idkrs']))%>" title="Keluar Detail KRS">                        
                                     <i class='fa  fa-times fa-lg'></i>
                                 </a>
                             </div>

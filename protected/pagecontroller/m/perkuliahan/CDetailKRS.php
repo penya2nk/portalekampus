@@ -83,6 +83,7 @@ class CDetailKRS extends MainPageM {
             $this->createObj('Finance');
             $this->Finance->setDataMHS($_SESSION['currentPageKRS']['DataMHS']);
             $maxSKS=$this->Finance->getSKSFromSP($tahun,$idsmt);
+            $this->Nilai->getKHSBeforeCurrentSemester($tahun,$idsmt);
         }else{
            $maxSKS=$this->Nilai->getMaxSKS($tahun,$idsmt);
         }

@@ -65,14 +65,14 @@ class CPKRS extends MainPageDW {
 		$this->populateData($_SESSION['currentPagePKRS']['search']);
 	}
     public function searchRecord ($sender,$param) {
-		$_SESSION['currentPageKRS']['search']=true;
-		$this->populateData($_SESSION['currentPageKRS']['search']);
+		$_SESSION['currentPagePKRS']['search']=true;
+		$this->populateData($_SESSION['currentPagePKRS']['search']);
 	}
 	private function populateData ($search=false) {
 		$iddosen_wali=$this->iddosen_wali;
 		$ta=$_SESSION['ta'];
 		$idsmt=$_SESSION['semester'];
-         $str = "SELECT p.nim,vdm.nama_mhs,vdm.jk,vdm.tahun_masuk,vp.nmatkul,vp.sks,p.tambah,p.hapus,p.batal,p.tanggal FROM pkrs p,v_datamhs vdm,v_penyelenggaraan vp WHERE p.nim=vdm.nim AND p.idpenyelenggaraan=vp.idpenyelenggaraan AND vp.idsmt='$idsmt' AND vp.tahun='$ta' AND vdm.iddosen_wali=$iddosen_wali";
+         $str = "SELECT p.nim,vdm.nama_mhs,vdm.jk,vdm.tahun_masuk,vp.nmatkul,vp.sks,p.tambah,p.hapus,p.batal,p.sah,p.tanggal FROM pkrs p,v_datamhs vdm,v_penyelenggaraan vp WHERE p.nim=vdm.nim AND p.idpenyelenggaraan=vp.idpenyelenggaraan AND vp.idsmt='$idsmt' AND vp.tahun='$ta' AND vdm.iddosen_wali=$iddosen_wali";
           
         if ($search) {
             $txtsearch=$this->txtKriteria->Text;
@@ -101,10 +101,23 @@ class CPKRS extends MainPageDW {
 		}
 		if ($limit < 0) {$offset=0;$limit=$this->setup->getSettingValue('default_pagesize');$_SESSION['currentPagePKRS']['page_num']=0;}
         $str = "$str ORDER BY vdm.nama_mhs ASC LIMIT $offset,$limit";	
-        $this->DB->setFieldTable(array('nim','nama_mhs','jk','tahun_masuk','nmatkul','sks','tambah','hapus','batal','tanggal'));
+        $this->DB->setFieldTable(array('nim','nama_mhs','jk','tahun_masuk','nmatkul','sks','tambah','hapus','batal','sah','tanggal'));
         $r = $this->DB->getRecord($str,$offset+1);	        
-
-        $this->RepeaterS->DataSource=$r;
+        while (list($k,$v)=each($r)) {
+            $ket = 'N.A';
+            if ($v['tambah'] == 1) {
+                $ket = 'TAMBAH';
+            }if ($v['hapus'] == 1) {
+                $ket = 'HAPUS';
+            }if ($v['batal'] == 1) {
+                $ket = 'BATAL';
+            }if ($v['sah'] == 1) {
+                $ket = 'SAH';
+            }
+            $v['ket']=$ket;
+            $result[$k]=$v;
+        }
+        $this->RepeaterS->DataSource=$result;
 		$this->RepeaterS->dataBind();     
         $this->paginationInfo->Text=$this->getInfoPaging($this->RepeaterS);
         
@@ -159,10 +172,22 @@ class CPKRS extends MainPageDW {
 	public function isiPKRS ($sender,$param) {	
 		if ($this->IsValid) {
             $this->createObj('Finance');
+            $this->createObj('Nilai');
             $krs=$_SESSION['currentPagePKRS']['DataKRS']['krs'];
+            $this->Finance->setDataMHS($krs);
+            $this->Nilai->setDataMHS($krs);
             $idkrs=$krs['idkrs'];
-            $krs['maxSKS']=$idsmt==3?$this->Finance->getSKSFromSP($tahun,$idsmt):$this->Nilai->getMaxSKS($tahun,$idsmt);                
-        $krs['ipstasmtbefore']=$this->Nilai->getIPS();           
+            $tahun=$krs['tahun'];
+            $idsmt=$krs['idsmt'];            
+            if ($idsmt==3) {               
+                $maxSKS=$this->Finance->getSKSFromSP($tahun,$idsmt);
+                $this->Nilai->getKHSBeforeCurrentSemester($tahun,$idsmt);
+            }else{
+               $maxSKS=$this->Nilai->getMaxSKS($tahun,$idsmt);
+            }            
+            $krs['maxSKS']=$maxSKS;
+            $krs['ipstasmtbefore']=$this->Nilai->getIPS();
+            $_SESSION['currentPagePKRS']['DataKRS']['krs']=$krs;
             $this->redirect ('perkuliahan.DetailPKRS',true,array('id'=>$idkrs));
         }		
 	}	

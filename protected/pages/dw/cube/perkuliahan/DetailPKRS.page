@@ -8,6 +8,9 @@
     <li><a href="<%=$this->constructUrl('perkuliahan.PKRS',true)%>">PKRS</a></li>
     <li class="active">DETAIL PERUBAHAN KRS</li>
 </com:TContent>
+<com:TContent ID="csscontent">
+<link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/css/libs/nifty-component.css"/>
+</com:TContent>
 <com:TContent ID="maincontent">
 <com:TPanel Visible="<%= $this->getViewProcess(false) %>" CssClass="row">                    
     <div class="col-lg-12">
@@ -27,6 +30,56 @@
     </div>
 </com:TPanel>
 <com:TPanel Visible="<%= $this->getDefaultProcess() %>">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left"></h2> 
+                    <div class="filter-block pull-right">                  
+                        <com:TActiveLinkButton ID="btnTambah" OnClick="tambahKRS" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Tambah KRS">
+                            <prop:Text><i class="fa fa-plus-circle fa-lg"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnTambah->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnTambah->ClientId%>').disabled='';				
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton>                         
+                        <com:TActiveLinkButton ID="btnPrintOut" OnClick="printKRS" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out KRS">
+                            <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnPrintOut->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnPrintOut->ClientId%>').disabled='';				
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton>
+                        <com:TActiveLinkButton ID="btnCloseDetail" OnClick="closeDetailKRS" ClientSide.PostState="false" CssClass="btn btn-default pull-left" Attributes.Title="Keluar Detail Kartu Rencana Studi">
+                            <prop:Text><i class="fa fa-times fa-lg"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnCloseDetail->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnCloseDetail->ClientId%>').disabled='';				
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton> 
+                    </div>
+                </header>
+            </div>
+        </div>
+    </div>   
     <%include Application.layouts.cube.DataMHS%>
     <com:TActiveRepeater ID="RepeaterS" OnItemCreated="itemCreated" DataKeyField="idkrsmatkul">
         <prop:HeaderTemplate>
@@ -59,8 +112,25 @@
                                             </div>                            
                                         </div>                            
                                     </div>
-                                </div>          
-                            </div>          
+                                </div>   
+                                <div class="col-sm-6">
+                                    <div class="form-horizontal">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label"><strong>IPS SEMESTER LALU: </strong></label>
+                                            <div class="col-sm-8">
+                                                <p class="form-control-static"><%# $this->Page->KRS->DataKRS['krs']['ipstasmtbefore']%></p>
+                                            </div>                            
+                                        </div>                            
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label"><strong>MAKSIMAL SKS: </strong></label>
+                                            <div class="col-sm-8">
+                                                <p class="form-control-static"><%# $this->Page->KRS->DataKRS['krs']['maxSKS']%></p>
+                                            </div>                            
+                                        </div>            
+                                    </div>
+                                </div>                                
+                            </div>    
+                            Catatan: Khusus untuk di semester Pendek, jumlah Maksimal SKS yang bisa diambil itu diperoleh dari pembayaran biaya kuliah pada Semester pendek.
                         </div>          
                     </div>          
                 </div>          
@@ -126,18 +196,12 @@
                                                         $('loading').hide();
                                                     </prop:ClientSide.OnComplete>
                                                 </com:TActiveLinkButton>   
-                                                <com:TActiveLinkButton ID="btnBatalkanMatkul" OnClick="Page.batalkanMatkul" CommandParameter="<%# $this->DataItem['batal'].'_'.$this->DataItem['idpenyelenggaraan'].'_'.$this->DataItem['sks']%>"  ClientSide.PostState="false">
-                                                    <prop:Text>
-                                                        <span class="fa-stack">
-                                                            <i class="fa fa-square fa-stack-2x"></i>
-                                                            <i class="fa fa-times-circle-o fa-stack-1x fa-inverse"></i>
-                                                        </span>
-                                                    </prop:Text>
+                                                <com:TActiveLinkButton ID="btnToggleStatusMatkul" OnClick="Page.toggleStatusMatkul" CommandParameter="<%# $this->DataItem['batal'].'_'.$this->DataItem['idpenyelenggaraan'].'_'.$this->DataItem['sks']%>"  ClientSide.PostState="false">
                                                     <prop:ClientSide.OnPreDispatch>
                                                         $('loading').show();
                                                     </prop:ClientSide.OnPreDispatch>
                                                     <prop:ClientSide.OnLoading>				
-                                                        $('<%=$this->btnBatalkanMatkul->ClientId%>').disabled='disabled';														
+                                                        $('<%=$this->btnToggleStatusMatkul->ClientId%>').disabled='disabled';														
                                                     </prop:ClientSide.OnLoading>
                                                     <prop:ClientSide.onComplete>																							
                                                         $('loading').hide();
@@ -414,5 +478,6 @@
         </prop:FooterTemplate>
     </com:TActiveRepeater>		
 </com:TPanel>	
-
+<%include Application.layouts.cube.ModalMessageError%>
+<%include Application.layouts.cube.ModalPrintOut%>
 </com:TContent>

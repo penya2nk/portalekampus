@@ -60,6 +60,10 @@ class MainPage extends TPage {
 	*/
 	public $Log;
     /**     
+     * show sidebar menu
+     */
+    public $showSideBarMenu=true;
+    /**     
      * show page dashboard
      */
     public $showDashboard=false;  

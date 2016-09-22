@@ -77,7 +77,7 @@
                                 $('loading').hide();
                             </prop:ClientSide.OnComplete>
                         </com:TActiveLinkButton> 
-                        <com:TActiveLinkButton ID="btnSahkan" CssClass="btn btn-primary pull-left" OnClick="Page.sahkanKRS" Attributes.Title="Sahkan KRS" ClientSide.PostState="false">
+                        <com:TActiveLinkButton ID="btnSahkan" CssClass="btn btn-primary pull-left" OnClick="Page.sahkanKRS" Attributes.Title="Sahkan KRS" ClientSide.PostState="false" Enabled="<%=!$this->KRS->DataKRS['krs']['sah']%>">
                             <prop:Text>
                                 <i class="fa fa-check"></i>                                
                             </prop:Text>

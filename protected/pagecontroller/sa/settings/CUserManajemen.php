@@ -78,12 +78,12 @@ class CUserManajemen extends MainPageM {
         $this->cmbAddProdi->DataBind();        
     }
     public function checkUsername ($sender,$param) {
-		$this->idProcess=$sender->getId()=='addKodeMatkul'?'add':'edit';
+		$this->idProcess=$sender->getId()=='addUsername'?'add':'edit';
         $username=$param->Value;		
         if ($username != '') {
             try {   
                 if ($this->hiddenid->Value!=$username) {                                                            
-                    if ($this->DB->checkRecordIsExist('username','user',$kmatkul)) {                                
+                    if ($this->DB->checkRecordIsExist('username','user',$username)) {                                
                         throw new Exception ("Username ($username) sudah tidak tersedia silahkan ganti dengan yang lain.");		
                     }                               
                 }                

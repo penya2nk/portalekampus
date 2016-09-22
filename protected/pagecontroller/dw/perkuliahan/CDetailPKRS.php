@@ -48,25 +48,6 @@ class CDetailPKRS extends MainPageDW {
             $this->idProcess='view';	
 			$this->errorMessage->Text=$e->getMessage();	
         }
-//		$this->dataMhs=$this->session['pkrs_mhs'];		
-//		$this->KRS->setNim($this->dataMhs['nim']);
-//		$this->KRS->setParameterGlobal ($this->session['ta'],$this->session['semester'],$this->session['pkrs_mhs']['kjur']);		
-//		$this->dataKrs=$this->KRS->getKrs();
-//		$this->txtIdKrs->Value=$this->dataKrs['krs']['idkrs'];
-//		$this->dataKrs['krs']['maks_sks']=$this->session['pkrs_mhs']['maks_sks'];
-//		$total=$this->KRS->getTotalSKSAndMatkulInKrs ();				
-//		$this->totalSks = $total['sks'];
-//		$this->jumlahMatkul=$total['matkul'];
-//		$this->session['krs_sah']=$this->dataKrs['krs']['sah'];				
-//		$this->KrsMahasiswa->DataSource=$this->dataKrs['matakuliah'];
-//		$this->KrsMahasiswa->dataBind();	
-//		$this->createObjDemik();					
-//		$this->Demik->setNim($this->dataMhs['nim']);        
-//		$idkur=$this->Demik->Matkul->getIDKurikulum ($this->dataMhs['tahun_masuk'],$this->dataMhs['kjur']);
-//		$this->Demik->setParameterGlobal ($this->session['ta'],$this->session['semester'],$this->dataMhs['kjur'],$idkur);		
-//		$penyelenggaraan=$this->Demik->getPenyelenggaraanMatakuliah('sudah',true,'');				
-//		$this->repeaterPenyelenggaraan->DataSource=$penyelenggaraan;
-//		$this->repeaterPenyelenggaraan->dataBind();
 	}
     public function itemCreated ($sender,$param) {
         $item=$param->Item;
@@ -74,75 +55,59 @@ class CDetailPKRS extends MainPageDW {
             CDetailPKRS::$totalSKS+=$item->DataItem['sks'];
             CDetailPKRS::$jumlahMatkul+=1;
             if ($item->DataItem['batal']) {
-				$item->btnBatalkanMatkul->Text='Sahkan';
-				$item->btnBatalkanMatkul->Attributes->onclick="if(!confirm('Anda ingin mensahkan Matakuliah mahasiswa ini ?')) return false;";					
-                $item->btnBatalkanMatkul->CssClass='table-link';                
+				$item->btnToggleStatusMatkul->Text='Sahkan';
+				$item->btnToggleStatusMatkul->Attributes->onclick="if(!confirm('Anda ingin mensahkan Matakuliah mahasiswa ini ?')) return false;";					
+                $item->btnToggleStatusMatkul->CssClass='table-link'; 
+                $item->btnToggleStatusMatkul->Attributes->Title='Sahkan Matakuliah';
+                $item->btnToggleStatusMatkul->Text='<span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                        <i class="fa fa-check fa-stack-1x fa-inverse"></i>
+                                                    </span>';
             }else {
-				$item->btnBatalkanMatkul->Attributes->onclick="if(!confirm('Anda ingin membatalkan Matakuliah mahasiswa ini ?')) return false;";						
-                $item->btnBatalkanMatkul->CssClass='table-link danger';
-                $item->btnBatalkanMatkul->Attributes->Title='Batalkan Matakuliah';
+				$item->btnToggleStatusMatkul->Attributes->onclick="if(!confirm('Anda ingin membatalkan Matakuliah mahasiswa ini ?')) return false;";						
+                $item->btnToggleStatusMatkul->CssClass='table-link danger';
+                $item->btnToggleStatusMatkul->Attributes->Title='Batalkan Matakuliah';
+                $item->btnToggleStatusMatkul->Text='<span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                        <i class="fa fa-times-circle-o fa-stack-1x fa-inverse"></i>
+                                                    </span>';
 			}
         }
-    }
-	public function tambahMatkul ($sender,$param) {
-		try {
-			
-			$idkrs=$this->txtIdKrs->Value;
-			$str = "SELECT SUM(sks) AS jumlah FROM v_krsmhs WHERE idkrs='$idkrs'";
-			$this->DB->setFieldTable(array('jumlah'));
-			$r=$this->DB->getRecord($str);
-			$jumlah=$r[1]['jumlah']+$sender->CommandParameter;
-			$maks_sks=$this->session['pkrs_mhs']['maks_sks'];
-			if ($jumlah > $maks_sks) throw new Exception ('Tidak bisa tambah sks lagi. Karena telah melebihi batas anda');
-			$idpenyelenggaraan=$this->getDataKeyField($sender,$this->repeaterPenyelenggaraan);
-			$this->KRS->dataMhs['nim']=$this->session['pkrs_mhs']['nim'];
-			$this->KRS->dataMhs['idkelas']=$this->session['pkrs_mhs']['idkelas'];
-			$this->KRS->checkMatkulSyarat(null,$idpenyelenggaraan);						
-			if (!$this->DB->checkRecordIsExist('idpenyelenggaraan','krsmatkul',$idpenyelenggaraan,' AND idkrs='.$idkrs)) { 
-				$str = "INSERT INTO krsmatkul (idkrsmatkul,idkrs,idpenyelenggaraan,batal) VALUES (NULL,'$idkrs',$idpenyelenggaraan,0)";
-				$this->DB->insertRecord($str);							
-			}
-			$this->DB->insertRecord("INSERT INTO pkrs (nim,idpenyelenggaraan,tambah,tanggal) VALUES ('{$this->session['pkrs_mhs']['nim']}',$idpenyelenggaraan,1,NOW())");			
-			$this->redirect('perkuliahan.PKRS',true);
-		}catch (Exception $e) {
-			$this->ErrorMessageTambahMatkul->Text=$e->getMessage();					
-		}		
-	}	
-	public function closeKrs ($sender,$param) {		
-		unset($this->session['krs_sah']);
-		unset($this->session['pkrs_mhs']);
-		$this->redirect('perkuliahan.PKRS',true);
-	}
-    public function batalkanSahkanMatkul ($sender,$param){
+    }	
+    public function toggleStatusMatkul ($sender,$param){
 		$datakrs=$_SESSION['currentPagePKRS']['DataKRS']['krs'];
+        $idkrs=$datakrs['idkrs'];
+        $nim=$datakrs['nim'];
 		$idkrsmatkul=$this->getDataKeyField($sender,$this->RepeaterS);		
 		$id=explode('_',$sender->CommandParameter);
 		$idpenyelenggaraan=$id[1];	
 		if ($id[0]==1) {			
 			try {				
-				$idkrs=$this->txtIdKrs->Value;
+				
 				$str = "SELECT SUM(sks) AS jumlah FROM v_krsmhs WHERE idkrs='$idkrs' AND batal=0";
 				$this->DB->setFieldTable(array('jumlah'));
 				$r=$this->DB->getRecord($str);	
-				$jumlah=$r[1]['jumlah']+$id[1];				
-				$maks_sks=$this->session['pkrs_mhs']['maks_sks'];
-				if ($jumlah > $maks_sks) throw new Exception ('Matakuliah, tidak bisa disahkan. Karena telah melebihi batas anda');
-				$str = "UPDATE krsmatkul SET batal=0 WHERE idkrsmatkul=$idkrsmatkul";
+				$jumlah=$r[1]['jumlah']+$id[2];				
+				$maks_sks=$datakrs['maxSKS'];
+				if ($jumlah > $maks_sks) {
+                    throw new Exception ('Matakuliah, tidak bisa disahkan. Karena telah melebihi batas anda');
+                }
+                $str = "UPDATE krsmatkul SET batal=0 WHERE idkrsmatkul=$idkrsmatkul";
 				$this->DB->updateRecord($str);
-				$this->DB->insertRecord("INSERT INTO pkrs (nim,idpenyelenggaraan,sah,tanggal) VALUES ('{$this->session['pkrs_mhs']['nim']}',$idpenyelenggaraan,1,NOW())");			
-				$this->redirect('perkuliahan.DetailPKRS',true,array('id'=>$datakrs['idkrs']));	
+				$this->DB->insertRecord("INSERT INTO pkrs (nim,idpenyelenggaraan,sah,tanggal) VALUES ('$nim',$idpenyelenggaraan,1,NOW())");			
+				$this->redirect('perkuliahan.DetailPKRS',true,array('id'=>$idkrs));	
 			} catch (Exception $e) {
-				$this->idProcess='view';	
-                $this->errorMessage->Text=$e->getMessage();						
+				$this->modalMessageError->show();
+                $this->lblContentMessageError->Text=$e->getMessage();						
 			}
 		}elseif ($id[0]==0) {		
 			$str = "UPDATE krsmatkul SET batal=1 WHERE idkrsmatkul=$idkrsmatkul";			
 			$this->DB->updateRecord($str);
-			$this->DB->insertRecord("INSERT INTO pkrs (nim,idpenyelenggaraan,batal,tanggal) VALUES ('{$this->session['pkrs_mhs']['nim']}',$idpenyelenggaraan,1,NOW())");			
-			$this->redirect('perkuliahan.DetailPKRS',true,array('id'=>$datakrs['idkrs']));	
+			$this->DB->insertRecord("INSERT INTO pkrs (nim,idpenyelenggaraan,batal,tanggal) VALUES ('$nim',$idpenyelenggaraan,1,NOW())");			
+			$this->redirect('perkuliahan.DetailPKRS',true,array('id'=>$idkrs));	
 		}
 		
-	}
+	}    
 	public function hapusMatkul ($sender,$param) {		
 		$idkrsmatkul=$this->getDataKeyField($sender,$this->RepeaterS);
         $id=explode('_',$sender->CommandParameter);				
@@ -159,65 +124,57 @@ class CDetailPKRS extends MainPageDW {
 		}		
 		$this->redirect('perkuliahan.DetailPKRS',true,array('id'=>$datakrs['idkrs']));
 	}
-	
-	public function viewKrs ($sender,$param) {		
-		
-		$nim=$this->getDataKeyField($sender,$this->RepeaterS);		
-		$nilai=$this->getLogic('Nilai');
-		$nilai->setParameterGlobal ($this->session['ta'],$this->session['semester'],'');
-		$nilai->setNim($nim,true);
-		$nilai->dataMhs['maks_sks']=$nilai->getMaxSks();
-		$_SESSION['pkrs_mhs']=$nilai->dataMhs;
-		$this->redirect('perkuliahan.PKRS',true);					
-	}
-	
-	public function isiKrs ($sender,$param) {						
-		if ($this->IsValid) {
-			
-			$nilai=$this->getLogic('Nilai');
-			$nilai->setParameterGlobal ($this->session['ta'],$this->session['semester'],'');
-			$nilai->setNim($this->txtAddNim->Text,true);
-			$nilai->dataMhs['maks_sks']=$nilai->getMaxSks();
-			$this->session['pkrs_mhs']=$nilai->dataMhs;
-			$this->redirect('perkuliahan.PKRS',true);
-		}		
-	}
-	public function viewLogPKRS ($sender,$param) {		
-		$this->idProcess='view';
-		$nim=$this->getDataKeyField($sender,$this->RepeaterS);	
-				
-		$idsmt=$this->session['semester'];
-		$ta=$this->session['ta'];		
-		$this->KRS->setNim($nim,true);
-		$this->dataMhs=$this->KRS->dataMhs;
-		$this->KRS->setParameterGlobal ($ta,$idsmt,'');
-		$result=$this->KRS->getKrs('data');	
-		if (isset($result['idkrs'])) {
-			$this->dataKrs=$result;			
-			$str = "SELECT vp.kmatkul,vp.nmatkul,vp.sks,vp.semester,p.tanggal,p.hapus,p.batal,p.sah,p.tambah FROM pkrs p,v_penyelenggaraan vp WHERE p.idpenyelenggaraan=vp.idpenyelenggaraan AND vp.idsmt='$idsmt' AND tahun='$ta' AND p.nim='$nim' ORDER BY p.tanggal DESC";
-			$this->DB->setFieldTable(array('kmatkul','nmatkul','sks','semester','tanggal','hapus','batal','sah','tambah'));
-			$r=$this->DB->getRecord($str);
-			$this->RepeaterViewLogPKRS->DataSource=$r;
-			$this->RepeaterViewLogPKRS->dataBind();
-		}else {
-			$this->RepeaterViewLogPKRS->DataSource=array();
-			$this->RepeaterViewLogPKRS->dataBind();
-		}					
-	}
-	public function dataBoundViewLogPKRS($sender,$param) {
-		$item=$param->Item;
-		if ($item->ItemType==='Item' || $item->ItemType==='AlternatingItem') {
-			$ket='-';
-			if ($item->DataItem['tambah']) 
-				$ket='Matakuliah ini ditambahkan ke KRS, oleh dosen wali.';
-			elseif ($item->DataItem['hapus']) 
-				$ket='Matakuliah ini dihapus dari KRS, oleh dosen wali.';
-			elseif ($item->DataItem['batal']) 
-				$ket='Matakuliah ini dibatalkan, oleh dosen wali.';
-			elseif ($item->DataItem['sah']) 
-				$ket='Matakuliah ini disahkan, oleh dosen wali.';
-			$item->txtKet->Text=$ket;
-		}
+    public function tambahKRS ($sender,$param) {        
+        $this->redirect ('perkuliahan.TambahPKRS',true);
+    }
+    
+	public function closeDetailKRS ($sender,$param) { 
+        unset($_SESSION['currentPagePKRS']);
+        $this->redirect ('perkuliahan.PKRS',true);
+    }
+	public function printKRS ($sender,$param) {
+        $this->createObj('reportkrs');
+        $this->linkOutput->Text='';
+        $this->linkOutput->NavigateUrl='#';
+        switch ($_SESSION['outputreport']) {
+            case  'summarypdf' :
+                $messageprintout="Mohon maaf Print out pada mode summary pdf tidak kami support.";                
+            break;
+            case  'summaryexcel' :
+                $messageprintout="Mohon maaf Print out pada mode summary excel tidak kami support.";                
+            break;
+            case  'excel2007' :
+                $messageprintout="Mohon maaf Print out pada mode excel 2007 belum kami support.";                
+            break;
+            case  'pdf' :                
+                $messageprintout='';                
+                $tahun=$_SESSION['ta'];
+                $semester=$_SESSION['semester'];
+                $nama_tahun = $this->DMaster->getNamaTA($tahun);
+                $nama_semester = $this->setup->getSemester($semester);
+
+                $dataReport=$_SESSION['currentPagePKRS']['DataMHS'];
+                $dataReport['krs']=$_SESSION['currentPagePKRS']['DataKRS']['krs'];        
+                $dataReport['matakuliah']=$_SESSION['currentPagePKRS']['DataKRS']['matakuliah'];        
+                $dataReport['nama_tahun']=$nama_tahun;
+                $dataReport['nama_semester']=$nama_semester;        
+                
+                $kaprodi=$this->KRS->getKetuaPRODI($dataReport['kjur']);                  
+                $dataReport['nama_kaprodi']=$kaprodi['nama_dosen'];
+                $dataReport['jabfung_kaprodi']=$kaprodi['nama_jabatan'];
+                $dataReport['nipy_kaprodi']=$kaprodi['nipy'];
+                
+                $dataReport['linkoutput']=$this->linkOutput;                 
+                $this->report->setDataReport($dataReport); 
+                $this->report->setMode($_SESSION['outputreport']);
+                $this->report->printKRS();				
+
+                
+            break;
+        }
+        $this->lblMessagePrintout->Text=$messageprintout;
+        $this->lblPrintout->Text="Kartu Rencana Studi T.A $nama_tahun Semester $nama_semester";
+        $this->modalPrintOut->show();
 	}
 }
 

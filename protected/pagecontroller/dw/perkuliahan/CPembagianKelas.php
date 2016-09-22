@@ -1,6 +1,6 @@
 <?php
-prado::using ('Application.MainPageM');
-class CPembagianKelas extends MainPageM {	
+prado::using ('Application.MainPageDW');
+class CPembagianKelas extends MainPageDW {	
 	public function onLoad($param) {
 		parent::onLoad($param);		
         $this->showSubMenuAkademikPerkuliahan=true;

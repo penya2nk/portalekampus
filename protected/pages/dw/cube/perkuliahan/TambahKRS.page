@@ -101,7 +101,7 @@
                                             <th scope="col">SKS</th>
                                             <th scope="col">SMT</th>
                                             <th scope="col">DOSEN</th>					
-                                            <th scope="col">&nbsp;</th>					
+                                            <th scope="col">AKSI</th>					
                                         </tr>						
                                     </thead>
                                     <tbody>

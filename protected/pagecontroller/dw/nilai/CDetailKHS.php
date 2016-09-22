@@ -1,6 +1,6 @@
 <?php
-prado::using ('Application.MainPageM');
-class CDetailKHSEkstension extends MainPageM {	
+prado::using ('Application.MainPageDW');
+class CDetailKHS extends MainPageDW {	
     public static $TotalSKS=0;
 	public static $TotalM=0;
     public $NilaiSemesterLalu;
@@ -8,12 +8,13 @@ class CDetailKHSEkstension extends MainPageM {
 	public function onLoad($param) {
 		parent::onLoad($param);							
 		$this->showSubMenuAkademikNilai=true;
-        $this->showKHSEkstension=true;    
-        $this->createObj('Nilai');        
+        $this->showKHS=true;    
+        $this->createObj('Nilai');
+        $this->createObj('Finance');
         
 		if (!$this->IsPostback&&!$this->IsCallback) {
-            if (!isset($_SESSION['currentPageDetailKHSEkstension'])||$_SESSION['currentPageDetailKHSEkstension']['page_name']!='m.nilai.DetailKHSEkstension') {
-				$_SESSION['currentPageDetailKHSEkstension']=array('page_name'=>'m.nilai.DetailKHSEkstension','page_num'=>0,'search'=>false,'DataMHS'=>array());												                                               
+            if (!isset($_SESSION['currentPageDetailKHS'])||$_SESSION['currentPageDetailKHS']['page_name']!='dw.nilai.DetailKHS') {
+				$_SESSION['currentPageDetailKHS']=array('page_name'=>'dw.nilai.DetailKHS','page_num'=>0,'search'=>false,'DataMHS'=>array());												                                               
 			}  
             $this->tbCmbOutputReport->DataSource=$this->setup->getOutputFileType();
             $this->tbCmbOutputReport->Text= $_SESSION['outputreport'];
@@ -27,24 +28,33 @@ class CDetailKHSEkstension extends MainPageM {
 	protected function populateData() {		
         try {
             $idkrs=addslashes($this->request['id']);            				
-            $str = "SELECT vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.jk,vdm.tempat_lahir,vdm.tanggal_lahir,vdm.kjur,vdm.nama_ps,vdm.idkonsentrasi,k.nama_konsentrasi,vdm.tahun_masuk,iddosen_wali,d.idkelas,d.k_status,krs.idsmt,krs.tahun,krs.tasmt,krs.sah FROM krs JOIN dulang d ON (d.nim=krs.nim) LEFT JOIN v_datamhs vdm ON (krs.nim=vdm.nim) LEFT JOIN konsentrasi k ON (vdm.idkonsentrasi=k.idkonsentrasi) WHERE krs.idkrs='$idkrs' AND vdm.idkelas='C'";
-            $this->DB->setFieldTable(array('no_formulir','nim','nirm','nama_mhs','jk','tempat_lahir','tanggal_lahir','kjur','nama_ps','idkonsentrasi','nama_konsentrasi','tahun_masuk','iddosen_wali','idkelas','k_status','idsmt','tahun','tasmt','sah'));
+            $str = "SELECT vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.jk,vdm.tempat_lahir,vdm.tanggal_lahir,vdm.kjur,vdm.nama_ps,vdm.idkonsentrasi,k.nama_konsentrasi,vdm.tahun_masuk,vdm.semester_masuk,iddosen_wali,d.idkelas,d.k_status,krs.idsmt,krs.tahun,krs.tasmt,krs.sah FROM krs JOIN dulang d ON (d.nim=krs.nim) LEFT JOIN v_datamhs vdm ON (krs.nim=vdm.nim) LEFT JOIN konsentrasi k ON (vdm.idkonsentrasi=k.idkonsentrasi) WHERE krs.idkrs='$idkrs'";
+            $this->DB->setFieldTable(array('no_formulir','nim','nirm','nama_mhs','jk','tempat_lahir','tanggal_lahir','kjur','nama_ps','idkonsentrasi','nama_konsentrasi','tahun_masuk','semester_masuk','iddosen_wali','idkelas','k_status','idsmt','tahun','tasmt','sah'));
             $r=$this->DB->getRecord($str);	           
             $datamhs=$r[1];
             if (!isset($r[1])) {
-                $_SESSION['currentPageDetailKHSEkstension']['DataMHS']=array();
+                $_SESSION['currentPageDetailKHS']['DataMHS']=array();
                 throw new Exception("KRS dengan ID ($idkrs) tidak terdaftar.");
             }            
+            if ($datamhs['iddosen_wali']!=$this->iddosen_wali){
+                $_SESSION['currentPageDetailKHS']['DataMHS']=array();
+                throw new Exception("KRS dengan ID ($idkrs) dimiliki oleh Mahasiswa diluar perwalian Anda.");
+            }
             $tahun=$datamhs['tahun'];
             $idsmt=$datamhs['idsmt'];
             if ($datamhs['sah']==0) {
                 throw new Exception("KRS dengan ID ($idkrs) belum disahkan.");
             }
+            $this->Finance->setDataMHS($datamhs);                
+            $lunaspembayaran=$this->Finance->getLunasPembayaran($_SESSION['ta'],$_SESSION['semester']);
+            if (($lunaspembayaran==false)&&$_SESSION['ta']>=2010) {                    					                    
+                throw new Exception ("Pembayaran uang kuliah pada {$tahun}{$idsmt} belum lunas.");
+            }
             $datamhs['nama_dosen']=$this->DMaster->getNamaDosenWaliByID ($datamhs['iddosen_wali']);
             $datamhs['nkelas']=$this->DMaster->getNamaKelasByID($datamhs['idkelas']);
             $datamhs['nama_konsentrasi']=($datamhs['idkonsentrasi']==0) ? '-':$datamhs['nama_konsentrasi'];                    
             $datamhs['status']=$this->DMaster->getNamaStatusMHSByID($datamhs['k_status']);
-            $_SESSION['currentPageDetailKHSEkstension']['DataMHS']=$datamhs;
+            $_SESSION['currentPageDetailKHS']['DataMHS']=$datamhs;
             $this->Nilai->setDataMHS($datamhs);
             $khs = $this->Nilai->getKHS($tahun,$idsmt);
             if(isset($khs[1])){
@@ -64,9 +74,9 @@ class CDetailKHSEkstension extends MainPageM {
         $item=$param->Item;
         if ($item->ItemType === 'Item' || $item->ItemType === 'AlternatingItem') { 
             $sks=$item->DataItem['sks'];
-            DetailKHSEkstension::$TotalSKS += $sks;            
+            DetailKHS::$TotalSKS += $sks;            
             $m = (intval($sks)) * $this->Nilai->getAngkaMutu($item->DataItem['n_kual']);
-            DetailKHSEkstension::$TotalM += $m;            
+            DetailKHS::$TotalM += $m;            
         }
     }
 	public function printOut ($sender,$param) {	
@@ -85,11 +95,11 @@ class CDetailKHSEkstension extends MainPageM {
             break;
             case  'pdf' :                
                 $messageprintout='';
-                $tahun=$_SESSION['currentPageDetailKHSEkstension']['DataMHS']['tahun'];
-                $semester=$_SESSION['currentPageDetailKHSEkstension']['DataMHS']['idsmt'];
+                $tahun=$_SESSION['currentPageDetailKHS']['DataMHS']['tahun'];
+                $semester=$_SESSION['currentPageDetailKHS']['DataMHS']['idsmt'];
                 $nama_tahun = $this->DMaster->getNamaTA($tahun);
                 $nama_semester = $this->setup->getSemester($semester);        
-                $dataReport=$_SESSION['currentPageDetailKHSEkstension']['DataMHS'];
+                $dataReport=$_SESSION['currentPageDetailKHS']['DataMHS'];
 
                 $dataReport['ta']=$tahun;
                 $dataReport['semester']=$semester;

@@ -172,7 +172,7 @@
 									<li class="nav-header nav-header-first hidden-sm hidden-xs">
 										NAVIGASI
 									</li>
-                                    <com:TLiteral Visible="<%=$this->Page->Pengguna->getTipeUser()=='sa'%>">
+                                    <com:TLiteral Visible="<%=$this->Page->Pengguna->getTipeUser()=='sa' && $this->Page->showSideBarMenu==true%>">
                                         <li<%=$this->Page->showDashboard==true?' class="active"':''%>>
                                             <a href="<%=$this->Page->constructUrl('Home',true)%>">
                                                 <i class="fa fa-dashboard"></i>
@@ -235,7 +235,7 @@
                                             </a>                                        
                                         </li> 
                                     </com:TLiteral>
-                                    <com:TLiteral Visible="<%=$this->Page->Pengguna->getTipeUser()=='m'%>">
+                                    <com:TLiteral Visible="<%=$this->Page->Pengguna->getTipeUser()=='m' && $this->Page->showSideBarMenu==true%>">
                                         <li<%=$this->Page->showDashboard==true?' class="active"':''%>>
                                             <a href="<%=$this->Page->constructUrl('Home',true)%>">
                                                 <i class="fa fa-dashboard"></i>
@@ -490,7 +490,7 @@
                                             </a>                                        
                                         </li> 
                                     </com:TLiteral>		
-                                    <com:TLiteral Visible="<%=$this->Page->Pengguna->getTipeUser()=='mh'%>">
+                                    <com:TLiteral Visible="<%=$this->Page->Pengguna->getTipeUser()=='mh' && $this->Page->showSideBarMenu==true%>">
                                         <li<%=$this->Page->showDashboard==true?' class="active"':''%>>
                                             <a href="<%=$this->Page->constructUrl('Home',true)%>">
                                                 <i class="fa fa-dashboard"></i>
@@ -582,7 +582,7 @@
                                             </a>                                        
                                         </li>                                        
                                     </com:TLiteral>	
-                                    <com:TLiteral Visible="<%=$this->Page->Pengguna->getTipeUser()=='mb'%>">
+                                    <com:TLiteral Visible="<%=$this->Page->Pengguna->getTipeUser()=='mb' && $this->Page->showSideBarMenu==true%>">
                                         <li<%=$this->Page->showDashboard==true?' class="active"':''%>>
                                             <a href="<%=$this->Page->constructUrl('Home',true)%>">
                                                 <i class="fa fa-dashboard"></i>
@@ -602,7 +602,7 @@
                                             </a>                                        
                                         </li>
                                     </com:TLiteral>	
-                                    <com:TLiteral Visible="<%=$this->Page->Pengguna->getTipeUser()=='d'%>">
+                                    <com:TLiteral Visible="<%=$this->Page->Pengguna->getTipeUser()=='d' && $this->Page->showSideBarMenu==true%>">
                                         <li<%=$this->Page->showDashboard==true?' class="active"':''%>>
                                             <a href="<%=$this->Page->constructUrl('Home',true)%>">
                                                 <i class="fa fa-dashboard"></i>
@@ -610,7 +610,7 @@
                                             </a>                                        
                                         </li>                                         
                                     </com:TLiteral>	
-                                    <com:TLiteral Visible="<%=$this->Page->Pengguna->getTipeUser()=='dw'%>">
+                                    <com:TLiteral Visible="<%=$this->Page->Pengguna->getTipeUser()=='dw' && $this->Page->showSideBarMenu==true%>">
                                         <li<%=$this->Page->showDashboard==true?' class="active"':''%>>
                                             <a href="<%=$this->Page->constructUrl('Home',true)%>">
                                                 <i class="fa fa-dashboard"></i>
@@ -723,12 +723,7 @@
                                                     <a href="<%=$this->Page->constructUrl('nilai.TranskripKRS',true)%>" <%=$this->Page->showTranskripKRS==true ? ' class="active" ':''%>>
                                                         Transkrip KRS
                                                     </a>
-                                                </li>                                                   
-                                                <li>
-                                                    <a href="<%=$this->Page->constructUrl('nilai.TranskripFinal',true)%>" <%=$this->Page->showTranskripFinal==true ? ' class="active" ':''%>>
-                                                        Transkrip Final
-                                                    </a>
-                                                </li>                                                   
+                                                </li>                                        
                                             </ul>
                                         </li>
                                         <li class="nav-header nav-header-first hidden-sm hidden-xs">

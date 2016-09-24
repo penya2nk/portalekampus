@@ -142,7 +142,7 @@ class CKonversiMatakuliah extends MainPageM {
             $kode_ps_asal=addslashes($this->txtAddKodePsAsal->Text);
             $ps_asal=addslashes(strtoupper($this->txtAddNamaPsAsal->Text));	
             $kjenjang=$this->cmbAddJenjang->Text;            
-			$kjur=$_SESSION['kjur'];
+			$kjur=$_SESSION['currentPageKonversiMatakuliah']['kjur'];
             $tahun_masuk=$_SESSION['tahun_masuk'];
 			$idkur=$this->hiddenidkur->Value;
             $i=1;

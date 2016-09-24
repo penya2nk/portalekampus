@@ -267,7 +267,7 @@ class KHSEkstension extends MainPageM {
                         $this->report->setMode('excel2007');
                         
                         $messageprintout="Summary Kartu Hasil Studi: <br/>";
-                        $this->report->printSummaryKHS($this->Nilai,true);
+                        $this->report->printSummaryKHS($this->Nilai,$this->DMaster,true);
                         
                     break;
                     case  'excel2007' :

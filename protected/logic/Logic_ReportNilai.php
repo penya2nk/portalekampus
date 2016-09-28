@@ -376,8 +376,9 @@ class Logic_ReportNilai extends Logic_Report {
     /**
      * digunakan untuk memprint KHS
      * @param type $objNilai object
+     * @param type $objDMaster object
      */
-    public function printSummaryKHS ($objNilai,$withsignature=false) {
+    public function printSummaryKHS ($objNilai,$objDMaster,$withsignature=false) {
         $ta=$this->dataReport['ta'];
         $tahun_masuk=$this->dataReport['tahun_masuk'];
         $semester=$this->dataReport['semester'];
@@ -388,16 +389,16 @@ class Logic_ReportNilai extends Logic_Report {
         switch ($this->getDriver()) {
             case 'excel2003' :               
             case 'excel2007' :          
-                $this->setHeaderPT('J'); 
+                $this->setHeaderPT('K'); 
                 $sheet=$this->rpt->getActiveSheet();
                 $this->rpt->getDefaultStyle()->getFont()->setName('Arial');                
                 $this->rpt->getDefaultStyle()->getFont()->setSize('9');                                    
                 
-                $sheet->mergeCells("A7:J7");
+                $sheet->mergeCells("A7:K7");
                 $sheet->getRowDimension(7)->setRowHeight(20);
                 $sheet->setCellValue("A7","SUMMARY KHS T.A $nama_tahun SEMESTER $nama_semester");                                
                 
-                $sheet->mergeCells("A8:J8");
+                $sheet->mergeCells("A8:K8");
                 $sheet->setCellValue("A8","PROGRAM STUDI $nama_ps");                                
                 $sheet->getRowDimension(8)->setRowHeight(20);
                 $styleArray=array(
@@ -406,7 +407,7 @@ class Logic_ReportNilai extends Logic_Report {
 								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
 												   'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
 							);
-                $sheet->getStyle("A7:J8")->applyFromArray($styleArray);
+                $sheet->getStyle("A7:K8")->applyFromArray($styleArray);
                 
                 $sheet->getRowDimension(10)->setRowHeight(20);              
                 
@@ -419,6 +420,7 @@ class Logic_ReportNilai extends Logic_Report {
                 $sheet->getColumnDimension('H')->setWidth(10);
                 $sheet->getColumnDimension('I')->setWidth(15);
                 $sheet->getColumnDimension('J')->setWidth(15);
+                $sheet->getColumnDimension('K')->setWidth(18);
                                 
                 $sheet->setCellValue('A10','NO');				
                 $sheet->setCellValue('B10','NIM');
@@ -429,7 +431,8 @@ class Logic_ReportNilai extends Logic_Report {
                 $sheet->setCellValue('G10','IPS');				
                 $sheet->setCellValue('H10','IPK');				
                 $sheet->setCellValue('I10','SKS SEMESTER');				
-                $sheet->setCellValue('J10','SKS TOTAL');				                                    
+                $sheet->setCellValue('J10','SKS TOTAL');	
+                $sheet->setCellValue('K10','KELAS');
                 
                 $styleArray=array(								
                                     'font' => array('bold' => true),
@@ -437,12 +440,12 @@ class Logic_ReportNilai extends Logic_Report {
                                                        'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
                                     'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
                                 );																					 
-                $sheet->getStyle("A10:J10")->applyFromArray($styleArray);
-                $sheet->getStyle("A10:J10")->getAlignment()->setWrapText(true);
+                $sheet->getStyle("A10:K10")->applyFromArray($styleArray);
+                $sheet->getStyle("A10:K10")->getAlignment()->setWrapText(true);
                 
                 $str_tahun_masuk=$tahun_masuk == 'none' ?'':"AND vdm.tahun_masuk=$tahun_masuk";
-                $str = "SELECT k.idkrs,k.tgl_krs,k.nim,nirm,vdm.nama_mhs,vdm.jk,vdm.kjur,vdm.tahun_masuk,vdm.semester_masuk FROM krs k,v_datamhs vdm WHERE k.nim=vdm.nim AND tahun='$ta' AND idsmt='$semester' AND kjur=$kjur AND k.sah=1 $str_tahun_masuk  ORDER BY vdm.nama_mhs ASC";
-                $this->db->setFieldTable(array('idkrs','tgl_krs','nim','nirm','nama_mhs','jk','kjur','tahun_masuk','semester_masuk'));
+                $str = "SELECT k.idkrs,k.tgl_krs,k.nim,nirm,vdm.nama_mhs,vdm.jk,vdm.kjur,vdm.idkelas,vdm.tahun_masuk,vdm.semester_masuk FROM krs k,v_datamhs vdm WHERE k.nim=vdm.nim AND tahun='$ta' AND idsmt='$semester' AND kjur=$kjur AND k.sah=1 $str_tahun_masuk  ORDER BY vdm.nama_mhs ASC,vdm.idkelas ASC";
+                $this->db->setFieldTable(array('idkrs','tgl_krs','nim','nirm','nama_mhs','jk','kjur','idkelas','tahun_masuk','semester_masuk'));
                 $r=$this->db->getRecord($str);
                 $row=11;                
                 while (list($k,$v)=each($r)) {
@@ -462,7 +465,8 @@ class Logic_ReportNilai extends Logic_Report {
                     $sheet->setCellValue("G$row",$ip);				
                     $sheet->setCellValue("H$row",$dataipk['ipk']);				
                     $sheet->setCellValue("I$row",$sks);				
-                    $sheet->setCellValue("J$row",$dataipk['sks']);				
+                    $sheet->setCellValue("J$row",$dataipk['sks']);
+                    $sheet->setCellValue("K$row",$objDMaster->getNamaKelasByID($v['idkelas']));
                     $row+=1;
                 }
                 $row-=1;
@@ -471,15 +475,15 @@ class Logic_ReportNilai extends Logic_Report {
                                                        'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
                                     'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
                                 );																					 
-                $sheet->getStyle("A11:J$row")->applyFromArray($styleArray);
-                $sheet->getStyle("A11:J$row")->getAlignment()->setWrapText(true);
+                $sheet->getStyle("A11:K$row")->applyFromArray($styleArray);
+                $sheet->getStyle("A11:K$row")->getAlignment()->setWrapText(true);
                 
                 $styleArray=array(								
                                     'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
                                 );
                 
                 $sheet->getStyle("A11:C$row")->applyFromArray($styleArray);
-                $sheet->getStyle("E11:J$row")->applyFromArray($styleArray);
+                $sheet->getStyle("E11:K$row")->applyFromArray($styleArray);
                 
                 if ($withsignature) {
                     $row+=3;

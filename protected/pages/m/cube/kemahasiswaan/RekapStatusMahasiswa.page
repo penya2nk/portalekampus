@@ -1,0 +1,436 @@
+<%@ Title="Keuangan - Rekap. Status Mahasiswa"%>
+<com:TContent ID="moduleheader">
+    <i class="fa fa-file-text-o"></i> Rekap. Status Mahasiswa <br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li><a href="#">KEMAHASISWAAN</a></li>    
+    <li class="active"><span>REKAP. STATUS MAHASISWA</span></li>
+</com:TContent>
+<com:TContent ID="configtools">    
+    <%include Application.layouts.cube.FilterMode17%>
+</com:TContent>
+<com:TContent ID="maincontent">
+<com:TContent ID="csscontent">
+<link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/css/libs/nifty-component.css"/>
+</com:TContent>
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>">  
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2><i class="fa fa-bookmark"></i> Filter Data</h2>                    
+                </header>
+                <div class="main-box-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Status Mahasiswa :</label>
+                            <div class="col-lg-3">
+                                <com:TDropDownList ID="cmbFilterStatus" CssClass="form-control">
+                                    <com:TListItem Text="KESELURUHAN" Value="none" />
+                                    <com:TListItem Text="AKTIF" Value="A" />
+                                    <com:TListItem Text="NON-AKTIF" Value="N" />
+                                    <com:TListItem Text="CUTI" Value="C" />
+                                    <com:TListItem Text="DROP OUT / PUTUS" Value="D" /> 
+                                    <com:TListItem Text="KELUAR" Value="K" />
+                                    <com:TListItem Text="LULUS" Value="L" />                                    
+                                </com:TDropDownList>
+                            </div>
+                        </div>                        
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <com:TActiveCustomButton ID="btnFilter" CssClass="btn btn-info"  OnClick="Page.filterRecord" ValidationGroup="filterForm" Attributes.Title="Cari">
+                                    <prop:Text>                                        
+                                        <i class="fa fa-bookmark"></i> Filter                                        
+                                    </prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>         
+                                        $('loading').show();
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnFilter->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	
+                                        $('<%=$this->btnFilter->ClientId%>').disabled='';						                               						                                        
+                                        $('loading').hide();
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>  
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>	
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left">&nbsp;</h2> 
+                    <div class="filter-block pull-right"> 
+                        <com:TActiveLinkButton ID="btnGenerateData" OnClick="generateData" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Generate Data">
+                            <prop:Text><i class="fa fa-refresh fa-lg"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnGenerateData->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnGenerateData->ClientId%>').disabled='';				
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton> 
+                        <com:TActiveLinkButton ID="btnPrintRekapAll" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out Rekap">
+                            <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnPrintRekapAll->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnPrintRekapAll->ClientId%>').disabled='';				
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton> 									
+                    </div>
+                </header>
+                <div class="main-box-body clearfix">       
+                    <div class="table-responsive">                        
+                        <com:TActiveRepeater ID="RepeaterAktifS" EnableViewState="false" OnItemCreated="itemCreated">
+                            <prop:HeaderTemplate>		
+                            <h3>STATUS MAHASISWA AKTIF</h3>
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col" width="50">NO</th>	         
+                                    <th scope="col">T.A</th>
+                                    <th scope="col">SEMESTER</th>                                       
+                                    <th scope="col">KELAS</th>	
+                                    <th scope="col">JMLH PRIA</th>
+                                    <th scope="col">JMLH WANITA</th> 
+                                    <th scope="col">TOTAL</th> 		
+                                </tr>			
+                                </thead>
+                                <tbody>
+                            </prop:HeaderTemplate>
+                            <prop:ItemTemplate>	
+                                <tr>
+                                    <td><%#$this->DataItem['no']%></td>					
+                                    <td><%#$this->DataItem['ta']%></td>
+                                    <td><%#$this->Page->setup->getSemester($this->DataItem['idsmt'])%></td>															                            												
+                                    <td><%#$this->Page->DMaster->getNamaKelasByID($this->DataItem['idkelas'])%></td>	
+                                    <td><%#$this->DataItem['jumlah_pria']%></td>
+                                    <td><%#$this->DataItem['jumlah_wanita']%></td>
+                                    <td><%#$this->DataItem['jumlah']%></td>    
+                                </tr>	
+                            </prop:ItemTemplate>	       
+                            <prop:FooterTemplate>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4">Total</td>					
+                                        <td><%#CRekapStatusMahasiswa::$TotalJumlahMahasiswaP%></td>
+                                        <td><%#CRekapStatusMahasiswa::$TotalJumlahMahasiswaW%></td>
+                                        <td><%#CRekapStatusMahasiswa::$TotalJumlahMahasiswaP+CRekapStatusMahasiswa::$TotalJumlahMahasiswaW%></td>                                        
+                                    </tr>
+                                </tfoot>
+                                </tbody>				
+                                </table>
+                            </prop:FooterTemplate>
+                            <prop:EmptyTemplate>                                                       
+                                <div class="row">
+                                    <div class="main-box-body">
+                                        <h3>STATUS MAHASISWA AKTIF</h3>
+                                        <div class="alert alert-info">
+                                            <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                            <strong>
+                                                Info!
+                                            </strong>
+                                             Tidak ada data yang bisa ditampilkan.
+                                        </div>
+                                    </div>
+                                </div>
+                            </prop:EmptyTemplate>
+                        </com:TActiveRepeater>                        
+                        <com:TActiveRepeater ID="RepeaterNonAktifS" EnableViewState="false" OnItemCreated="itemCreated">
+                            <prop:HeaderTemplate>		
+                            <h3>STATUS MAHASISWA NON-AKTIF</h3>
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col" width="50">NO</th>	         
+                                    <th scope="col">T.A</th>
+                                    <th scope="col">SEMESTER</th>                                       
+                                    <th scope="col">KELAS</th>	
+                                    <th scope="col">JMLH PRIA</th>
+                                    <th scope="col">JMLH WANITA</th> 
+                                    <th scope="col">TOTAL</th> 		
+                                </tr>			
+                                </thead>
+                                <tbody>
+                            </prop:HeaderTemplate>
+                            <prop:ItemTemplate>	
+                                <tr>
+                                    <td><%#$this->DataItem['no']%></td>					
+                                    <td><%#$this->DataItem['ta']%></td>
+                                    <td><%#$this->Page->setup->getSemester($this->DataItem['idsmt'])%></td>															                            												
+                                    <td><%#$this->Page->DMaster->getNamaKelasByID($this->DataItem['idkelas'])%></td>	
+                                    <td><%#$this->DataItem['jumlah_pria']%></td>
+                                    <td><%#$this->DataItem['jumlah_wanita']%></td>
+                                    <td><%#$this->DataItem['jumlah']%></td>    
+                                </tr>	
+                            </prop:ItemTemplate>	       
+                            <prop:FooterTemplate>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4">Total</td>					
+                                        <td><%#CRekapStatusMahasiswa::$TotalJumlahMahasiswaP%></td>
+                                        <td><%#CRekapStatusMahasiswa::$TotalJumlahMahasiswaW%></td>
+                                        <td><%#CRekapStatusMahasiswa::$TotalJumlahMahasiswaP+CRekapStatusMahasiswa::$TotalJumlahMahasiswaW%></td>                                        
+                                    </tr>
+                                </tfoot>
+                                </tbody>				
+                                </table>
+                            </prop:FooterTemplate>
+                            <prop:EmptyTemplate>                                                       
+                                <div class="row">
+                                    <div class="main-box-body">
+                                        <h3>STATUS MAHASISWA NON-AKTIF</h3>
+                                        <div class="alert alert-info">
+                                            <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                            <strong>
+                                                Info!
+                                            </strong>
+                                             Tidak ada data yang bisa ditampilkan.
+                                        </div>
+                                    </div>
+                                </div>
+                            </prop:EmptyTemplate>
+                        </com:TActiveRepeater> 
+                        <com:TActiveRepeater ID="RepeaterCutiS" EnableViewState="false" OnItemCreated="itemCreated">
+                            <prop:HeaderTemplate>
+                            <h3>STATUS MAHASISWA CUTI</h3>
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col" width="50">NO</th>	         
+                                    <th scope="col">T.A</th>
+                                    <th scope="col">SEMESTER</th>                                       
+                                    <th scope="col">KELAS</th>	
+                                    <th scope="col">JMLH PRIA</th>
+                                    <th scope="col">JMLH WANITA</th> 
+                                    <th scope="col">TOTAL</th> 		
+                                </tr>			
+                                </thead>
+                                <tbody>
+                            </prop:HeaderTemplate>
+                            <prop:ItemTemplate>	
+                                <tr>
+                                    <td><%#$this->DataItem['no']%></td>					
+                                    <td><%#$this->DataItem['ta']%></td>
+                                    <td><%#$this->Page->setup->getSemester($this->DataItem['idsmt'])%></td>															                            												
+                                    <td><%#$this->Page->DMaster->getNamaKelasByID($this->DataItem['idkelas'])%></td>	
+                                    <td><%#$this->DataItem['jumlah_pria']%></td>
+                                    <td><%#$this->DataItem['jumlah_wanita']%></td>
+                                    <td><%#$this->DataItem['jumlah']%></td>    
+                                </tr>	
+                            </prop:ItemTemplate>	       
+                            <prop:FooterTemplate>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4">Total</td>					
+                                        <td><%#CRekapStatusMahasiswa::$TotalJumlahMahasiswaP%></td>
+                                        <td><%#CRekapStatusMahasiswa::$TotalJumlahMahasiswaW%></td>
+                                        <td><%#CRekapStatusMahasiswa::$TotalJumlahMahasiswaP+CRekapStatusMahasiswa::$TotalJumlahMahasiswaW%></td>                                        
+                                    </tr>
+                                </tfoot>
+                                </tbody>				
+                                </table>
+                            </prop:FooterTemplate>
+                            <prop:EmptyTemplate>                                                       
+                                <div class="row">
+                                    <div class="main-box-body">
+                                        <h3>STATUS MAHASISWA CUTI</h3>
+                                        <div class="alert alert-info">
+                                            <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                            <strong>
+                                                Info!
+                                            </strong>
+                                             Tidak ada data yang bisa ditampilkan.
+                                        </div>
+                                    </div>
+                                </div>
+                            </prop:EmptyTemplate>
+                        </com:TActiveRepeater> 
+                        <com:TActiveRepeater ID="RepeaterDOS" EnableViewState="false" OnItemCreated="itemCreated">
+                            <prop:HeaderTemplate>
+                            <h3>STATUS MAHASISWA DROP OUT / PUTUS</h3>
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col" width="50">NO</th>	         
+                                    <th scope="col">T.A</th>
+                                    <th scope="col">SEMESTER</th>                                       
+                                    <th scope="col">KELAS</th>	
+                                    <th scope="col">JMLH PRIA</th>
+                                    <th scope="col">JMLH WANITA</th> 
+                                    <th scope="col">TOTAL</th> 		
+                                </tr>			
+                                </thead>
+                                <tbody>
+                            </prop:HeaderTemplate>
+                            <prop:ItemTemplate>	
+                                <tr>
+                                    <td><%#$this->DataItem['no']%></td>					
+                                    <td><%#$this->DataItem['ta']%></td>
+                                    <td><%#$this->Page->setup->getSemester($this->DataItem['idsmt'])%></td>															                            												
+                                    <td><%#$this->Page->DMaster->getNamaKelasByID($this->DataItem['idkelas'])%></td>	
+                                    <td><%#$this->DataItem['jumlah_pria']%></td>
+                                    <td><%#$this->DataItem['jumlah_wanita']%></td>
+                                    <td><%#$this->DataItem['jumlah']%></td>    
+                                </tr>	
+                            </prop:ItemTemplate>	       
+                            <prop:FooterTemplate>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4">Total</td>					
+                                        <td><%#CRekapStatusMahasiswa::$TotalJumlahMahasiswaP%></td>
+                                        <td><%#CRekapStatusMahasiswa::$TotalJumlahMahasiswaW%></td>
+                                        <td><%#CRekapStatusMahasiswa::$TotalJumlahMahasiswaP+CRekapStatusMahasiswa::$TotalJumlahMahasiswaW%></td>                                        
+                                    </tr>
+                                </tfoot>
+                                </tbody>				
+                                </table>
+                            </prop:FooterTemplate>
+                            <prop:EmptyTemplate>                                                       
+                                <div class="row">
+                                    <div class="main-box-body">
+                                        <h3>STATUS MAHASISWA DROP OUT / PUTUS</h3>
+                                        <div class="alert alert-info">
+                                            <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                            <strong>
+                                                Info!
+                                            </strong>
+                                             Tidak ada data yang bisa ditampilkan.
+                                        </div>
+                                    </div>
+                                </div>
+                            </prop:EmptyTemplate>
+                        </com:TActiveRepeater> 
+                        <com:TActiveRepeater ID="RepeaterKS" EnableViewState="false" OnItemCreated="itemCreated">
+                            <prop:HeaderTemplate>
+                            <h3>STATUS MAHASISWA KELUAR</h3>
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col" width="50">NO</th>	         
+                                    <th scope="col">T.A</th>
+                                    <th scope="col">SEMESTER</th>                                       
+                                    <th scope="col">KELAS</th>	
+                                    <th scope="col">JMLH PRIA</th>
+                                    <th scope="col">JMLH WANITA</th> 
+                                    <th scope="col">TOTAL</th> 		
+                                </tr>			
+                                </thead>
+                                <tbody>
+                            </prop:HeaderTemplate>
+                            <prop:ItemTemplate>	
+                                <tr>
+                                    <td><%#$this->DataItem['no']%></td>					
+                                    <td><%#$this->DataItem['ta']%></td>
+                                    <td><%#$this->Page->setup->getSemester($this->DataItem['idsmt'])%></td>															                            												
+                                    <td><%#$this->Page->DMaster->getNamaKelasByID($this->DataItem['idkelas'])%></td>	
+                                    <td><%#$this->DataItem['jumlah_pria']%></td>
+                                    <td><%#$this->DataItem['jumlah_wanita']%></td>
+                                    <td><%#$this->DataItem['jumlah']%></td>    
+                                </tr>	
+                            </prop:ItemTemplate>	       
+                            <prop:FooterTemplate>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4">Total</td>					
+                                        <td><%#CRekapStatusMahasiswa::$TotalJumlahMahasiswaP%></td>
+                                        <td><%#CRekapStatusMahasiswa::$TotalJumlahMahasiswaW%></td>
+                                        <td><%#CRekapStatusMahasiswa::$TotalJumlahMahasiswaP+CRekapStatusMahasiswa::$TotalJumlahMahasiswaW%></td>                                        
+                                    </tr>
+                                </tfoot>
+                                </tbody>				
+                                </table>
+                            </prop:FooterTemplate>
+                            <prop:EmptyTemplate>                                                       
+                                <div class="row">
+                                    <div class="main-box-body">
+                                        <h3>STATUS MAHASISWA KELUAR</h3>
+                                        <div class="alert alert-info">
+                                            <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                            <strong>
+                                                Info!
+                                            </strong>
+                                             Tidak ada data yang bisa ditampilkan.
+                                        </div>
+                                    </div>
+                                </div>
+                            </prop:EmptyTemplate>
+                        </com:TActiveRepeater>
+                        <com:TActiveRepeater ID="RepeaterLulusS" EnableViewState="false" OnItemCreated="itemCreated">
+                            <prop:HeaderTemplate>
+                            <h3>STATUS MAHASISWA LULUS</h3>
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col" width="50">NO</th>	         
+                                    <th scope="col">T.A</th>
+                                    <th scope="col">SEMESTER</th>                                       
+                                    <th scope="col">KELAS</th>	
+                                    <th scope="col">JMLH PRIA</th>
+                                    <th scope="col">JMLH WANITA</th> 
+                                    <th scope="col">TOTAL</th> 		
+                                </tr>			
+                                </thead>
+                                <tbody>
+                            </prop:HeaderTemplate>
+                            <prop:ItemTemplate>	
+                                <tr>
+                                    <td><%#$this->DataItem['no']%></td>					
+                                    <td><%#$this->DataItem['ta']%></td>
+                                    <td><%#$this->Page->setup->getSemester($this->DataItem['idsmt'])%></td>															                            												
+                                    <td><%#$this->Page->DMaster->getNamaKelasByID($this->DataItem['idkelas'])%></td>	
+                                    <td><%#$this->DataItem['jumlah_pria']%></td>
+                                    <td><%#$this->DataItem['jumlah_wanita']%></td>
+                                    <td><%#$this->DataItem['jumlah']%></td>    
+                                </tr>	
+                            </prop:ItemTemplate>	       
+                            <prop:FooterTemplate>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4">Total</td>					
+                                        <td><%#CRekapStatusMahasiswa::$TotalJumlahMahasiswaP%></td>
+                                        <td><%#CRekapStatusMahasiswa::$TotalJumlahMahasiswaW%></td>
+                                        <td><%#CRekapStatusMahasiswa::$TotalJumlahMahasiswaP+CRekapStatusMahasiswa::$TotalJumlahMahasiswaW%></td>                                        
+                                    </tr>
+                                </tfoot>
+                                </tbody>				
+                                </table>
+                            </prop:FooterTemplate>
+                            <prop:EmptyTemplate>                                                       
+                                <div class="row">
+                                    <div class="main-box-body">
+                                        <h3>STATUS MAHASISWA LULUS</h3>
+                                        <div class="alert alert-info">
+                                            <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                            <strong>
+                                                Info!
+                                            </strong>
+                                             Tidak ada data yang bisa ditampilkan.
+                                        </div>
+                                    </div>
+                                </div>
+                            </prop:EmptyTemplate>
+                        </com:TActiveRepeater>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+</com:TPanel>
+<%include Application.layouts.cube.ModalPrintOut%>
+</com:TContent>

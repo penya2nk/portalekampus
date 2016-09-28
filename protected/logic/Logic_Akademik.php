@@ -227,14 +227,46 @@ class Logic_Akademik extends Logic_Mahasiswa {
         return $result;
     }
     /**
-     * digunakan untuk mendapatkan daftar dosen pada penyelenggaraan
-     * @param type $idsmt
-     * @param type $tahun
-     * @return daftar jadwal
+     * digunakan untuk mendapatkan rekap status mahasiswa
+     * @param type $periode_awal
+     * @param type $periode_akhir
+     * @param type $status
+     * @return rekap status mahasiswa
      */
-    public function getJadwalKuliahMHS ($idsmt,$tahun) {
-        $nim=$this->DataMHS['nim'];
-        $str = "SELECT * FROM krs k JOIN krsmatkul km ON (km.idkrsmatkul=k.idkrsmatkul) LEFT JOIN kelas_mhs_detail kmd ON (kmd.idkrsmatkul=km.idkrsmatkul) JOIN kelas_mhs km (km.idkelas_mhs=kmd.idkelas_mhs) JOIN v_pengampu_penyelenggaraan vpp ON (km.idpengampu_penyelenggaraan=vpp.idpengampu_penyelenggaraan) WHERE k.nim='$nim' AND k.tahun='$tahun' AND k.idsmt='$idsmt' ";
+    public function getRekapStatusMHS ($kjur,$periode_awal,$periode_akhir,$k_status) {
+        $str = "SELECT ta,idsmt,idkelas,jk,COUNT(nim) AS jumlah FROM rekap_status_mahasiswa WHERE (ta >= $periode_awal AND ta <= $periode_akhir) AND k_status='$k_status' AND kjur=$kjur GROUP BY ta,idsmt,idkelas,jk";
+        $this->db->setFieldTable(array('ta','idsmt','idkelas','jk','jumlah'));			
+        $r = $this->db->getRecord($str);  
+        
+        $result=array();
+        if (isset($r[1])) {
+            $temp_data1 =array();
+            while (list($k,$v)=each ($r)) {            
+                $index=$v['ta'].$v['idsmt'].$v['idkelas'];
+                $data=array('index'=>$index,'ta'=>$v['ta'],'idsmt'=>$v['idsmt'],'idkelas'=>$v['idkelas'],'jumlah_pria'=>0,'jumlah_wanita'=>0,'jumlah'=>0);
+                $temp_data1[$index]=$data;
+            }     
+            $i=1;
+            while (list($m,$n)=each ($temp_data1)) {            
+                reset($r);
+                $temp_data2=array();
+                while (list($a,$b)=each ($r)) {            
+                    $index=$b['ta'].$b['idsmt'].$b['idkelas'];
+                    if ($b['jk']=='L') {
+                        $temp_data2[$index]['p']=$b['jumlah'];
+                    }else{
+                        $temp_data2[$index]['w']=$b['jumlah'];
+                    }                                     
+                } 
+                $n['no']=$i;
+                $n['jumlah_pria']=$temp_data2[$m]['p'] == ''?0:$temp_data2[$m]['p'];
+                $n['jumlah_wanita']=$temp_data2[$m]['w'] == ''?0:$temp_data2[$m]['w'];
+                $n['jumlah']=$temp_data2[$m]['p']+$temp_data2[$m]['w'];
+                $result[$m]=$n;
+                $i+=1;
+            }
+        }    
+        return $result;  
     }    
 }
 ?>

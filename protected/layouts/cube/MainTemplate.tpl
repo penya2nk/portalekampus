@@ -347,7 +347,12 @@
                                                     <a href="<%=$this->Page->constructUrl('kemahasiswaan.PendaftaranKonsentrasi',true)%>" <%=$this->Page->showPendaftaranKonsentrasi==true ? ' class="active" ':''%>>
                                                         Pend. Konsentrasi
                                                     </a>
-                                                </li>                                                
+                                                </li>  
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('kemahasiswaan.RekapStatusMahasiswa',true)%>" <%=$this->Page->showRekapStatusMahasiswa==true ? ' class="active" ':''%>>
+                                                        Rekap. Status Mahasiswa
+                                                    </a>
+                                                </li>  
                                             </ul>
                                         </li>                                                                                                                       
                                         <li<%=$this->Page->showSubMenuAkademikDulang==true?' class="active"':''%>>

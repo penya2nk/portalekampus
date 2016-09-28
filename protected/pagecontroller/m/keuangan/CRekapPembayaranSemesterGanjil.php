@@ -99,7 +99,7 @@ class CRekapPembayaranSemesterGanjil Extends MainPageM {
                 case 'nim' :
                     $clausa="AND nim='$txtsearch'";
                     $jumlah_baris=$this->DB->getCountRowsOfTable ("rekap_laporan_pembayaran_per_semester WHERE kjur='$kjur' AND tahun=$ta AND idsmt='$semester'$str_kelas AND tahun_masuk=$tahun_masuk $clausa",'nim');
-                    echo$str = "$str $clausa";
+                    $str = "$str $clausa";
                 break;
                 case 'nirm' :
                     $clausa="AND nirm='$txtsearch'";

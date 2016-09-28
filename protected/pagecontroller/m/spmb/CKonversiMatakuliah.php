@@ -83,13 +83,13 @@ class CKonversiMatakuliah extends MainPageM {
 			$str = "SELECT iddata_konversi,nama,alamat,no_telp FROM data_konversi2 WHERE kjur='$kjur' AND tahun='$tahun_masuk' AND perpanjangan=0";
         }			
 		$this->RepeaterS->VirtualItemCount=$jumlah_baris;
-		$this->RepeaterS->CurrentPageIndex=$_SESSION['currentPage']['page_num'];
+		$this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageKonversiMatakuliah']['page_num'];
 		$offset=$this->RepeaterS->CurrentPageIndex*$this->RepeaterS->PageSize;
 		$limit=$this->RepeaterS->PageSize;
 		if (($offset+$limit)>$this->RepeaterS->VirtualItemCount) {
 			$limit=$this->RepeaterS->VirtualItemCount-$offset;
 		}
-		if ($limit < 0) {$offset=0;$limit=10;$_SESSION['currentPage']['page_num']=0;}
+		if ($limit < 0) {$offset=0;$limit=10;$_SESSION['currentPageKonversiMatakuliah']['page_num']=0;}
 		$str = $str . " ORDER BY nama ASC LIMIT $offset,$limit";		
 		$this->DB->setFieldTable(array('iddata_konversi','nama','alamat','no_telp'));
 		$r = $this->DB->getRecord($str,$offset+1);

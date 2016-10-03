@@ -1,0 +1,194 @@
+<%@ Title="Pengumuman" %>
+<com:TContent ID="moduleheader">
+    <i class="fa fa-hacker-news"></i> Pengumuman
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li class="active"><span>PENGUMUMAN</span></li>
+</com:TContent> 
+<com:TContent ID="maincontent">
+<com:TPanel Visible="<%=$this->getDefaultProcess() %>" CssClass="row">
+    <div class="col-lg-12">
+        <div class="main-box clearfix">
+            <div class="tabs-wrapper profile-tabs">
+                <com:TActiveMultiView  ID="MVMenuForum" OnActiveViewChanged="changeView">
+                    <com:TView ID="viewnewsfeed">
+                        <ul class="nav nav-tabs">
+                            <li class="active">                                
+                                <a href="#tab-newsfeed" data-toggle="tab">Pengumuman</a>
+                            </li>                                                                       
+                            <li>
+                                <com:TActiveLinkButton ID="btnViewBelumDibacaHome" Text="Belum Dibaca" CommandName="SwitchViewIndex" CommandParameter="1" ClientSide.PostState="false">
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->btnViewBelumDibacaHome->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnViewBelumDibacaHome->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>                                        
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveLinkButton>                                    
+                            </li>                                                
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="tab-newsfeed">
+                                <div id="newsfeed">
+                                    <com:TActiveRepeater ID="RepeaterS" DataKeyField="idpost" AllowPaging="true" AllowCustomPaging="true">                                
+                                        <prop:ItemTemplate>	
+                                           <div class="story">
+                                                <div class="story-user">
+                                                    <a href="<%#$this->DataItem['urlprofiluser']%>">
+                                                        <img src="resources/userimages/no_photo.png" alt=""/>
+                                                    </a>
+                                                </div>
+                                                <div class="story-content">
+                                                    <header class="story-header">
+                                                        <div class="story-author">                                                    
+                                                            <%#$this->DataItem['nama_user']%>                                                    
+                                                            <em>menulis di</em> <span class="label label-success"><%#$this->DataItem['nama_kategori']%></span>
+                                                        </div>
+                                                        <div class="story-time">
+                                                            <i class="fa fa-clock-o"></i> <%#$this->DataItem['tanggal_post']%>
+                                                        </div>
+                                                    </header>
+                                                    <div class="story-inner-content">
+                                                        <a href="<%#$this->Page->constructUrl('forum.DetailPengumuman',true,array('id'=>$this->DataItem['idpost']))%>" class="story-author-link">
+                                                            <%#$this->DataItem['title']%>
+                                                        </a>                                                        
+                                                    </div>
+                                                    <footer class="story-footer">
+                                                        <a href="#" class="story-comments-link">
+                                                            <i class="fa fa-comment fa-lg"></i> <%#$this->DataItem['jumlahcomment']%> Comments
+                                                        </a>
+                                                        <a href="#" class="story-likes-link">
+                                                            <i class="fa fa-heart fa-lg"></i> 0 Likes
+                                                        </a>
+                                                    </footer>
+                                                </div>
+                                            </div>
+                                        </prop:ItemTemplate>	                                                                                    
+                                        <prop:EmptyTemplate>                                                       
+                                            <div class="row">
+                                                <div class="main-box-body">
+                                                    <div class="alert alert-info">
+                                                        <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                                        <strong>
+                                                            Info!
+                                                        </strong>
+                                                         Tidak ada data yang bisa ditampilkan.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </prop:EmptyTemplate>
+                                    </com:TActiveRepeater>
+                                    <%include Application.CustomPaging%>                                                        
+                                </div>
+                            </div>                            
+                        </div>
+                    </com:TView>                    
+                    <com:TView ID="viewunread">
+                        <ul class="nav nav-tabs">
+                            <li>                                
+                                <com:TActiveLinkButton ID="btnViewUnreadPengumumanHome" Text="Pengumuman" CommandName="SwitchViewIndex" CommandParameter="0" ClientSide.PostState="false">
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->btnViewUnreadPengumumanHome->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnViewUnreadPengumumanHome->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>                                        
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveLinkButton>  
+                            </li>                            
+                            <li class="active">
+                                <a href="#tab-unread-discussion" data-toggle="tab">Belum Dibaca</a>
+                            </li>             
+                        </ul>
+                        <div class="tab-content">                            
+                            <div class="tab-pane fade in active" id="tab-unread-discussion"> 
+                                <div id="newsfeed">
+                                    <com:TActiveRepeater ID="RepeaterUnread" DataKeyField="idpost" AllowPaging="true" AllowCustomPaging="true">                                
+                                        <prop:ItemTemplate>	
+                                           <div class="story">
+                                                <div class="story-user">
+                                                    <a href="#">
+                                                        <img src="resources/userimages/no_photo.png" alt=""/>
+                                                    </a>
+                                                </div>
+                                                <div class="story-content">
+                                                    <header class="story-header">
+                                                        <div class="story-author">                                                    
+                                                            <%#$this->DataItem['nama_user']%>                                                    
+                                                            <em>menulis di</em> <span class="label label-success"><%#$this->DataItem['nama_kategori']%></span>
+                                                        </div>
+                                                        <div class="story-time">
+                                                            <i class="fa fa-clock-o"></i> <%#$this->DataItem['tanggal_post']%>
+                                                        </div>
+                                                    </header>
+                                                    <div class="story-inner-content">
+                                                        <com:TActiveLinkButton ID="btnUnreadPengumuman" Text="<%#$this->DataItem['title']%>" ClientSide.PostState="false" OnClick="Page.setUnreadFalse">
+                                                            <prop:ClientSide.OnPreDispatch>                                                                   
+                                                                $('loading').show(); 
+                                                                $('<%=$this->btnUnreadPengumuman->ClientId%>').disabled='disabled';						
+                                                            </prop:ClientSide.OnPreDispatch>
+                                                            <prop:ClientSide.OnLoading>
+                                                                $('<%=$this->btnUnreadPengumuman->ClientId%>').disabled='disabled';						
+                                                            </prop:ClientSide.OnLoading>
+                                                            <prop:ClientSide.OnComplete>                                        
+                                                                $('loading').hide(); 
+                                                            </prop:ClientSide.OnComplete>
+                                                        </com:TActiveLinkButton>                                                                                                            
+                                                    </div>
+                                                    <footer class="story-footer">
+                                                        <a href="#" class="story-comments-link">
+                                                            <i class="fa fa-comment fa-lg"></i> <%#$this->DataItem['jumlahcomment']%> Comments
+                                                        </a>
+                                                        <a href="#" class="story-likes-link">
+                                                            <i class="fa fa-heart fa-lg"></i> 0 Likes
+                                                        </a>
+                                                    </footer>
+                                                </div>
+                                            </div>
+                                        </prop:ItemTemplate>	                                                                                    
+                                        <prop:EmptyTemplate>                                                       
+                                            <div class="row">
+                                                <div class="main-box-body">
+                                                    <div class="alert alert-info">
+                                                        <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                                        <strong>
+                                                            Info!
+                                                        </strong>
+                                                         Semua pengumuman telah Anda baca.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </prop:EmptyTemplate>
+                                    </com:TActiveRepeater>
+                                    <div class="box-footer clearfix">    
+                                        <div class="pull-left">
+                                            <com:TActiveLabel ID="paginationInfo2"/>        
+                                        </div>
+                                        <div class="pull-right">        
+                                            <com:TActiveCustomPager ID="pager2" OnCallBack="Page.renderCallback" ControlToPaginate="RepeaterUnread" Mode="Numeric" OnPageIndexChanged="Page.Page_Changed" PrevPageText="&laquo; Previous" NextPageText="Next &raquo;" PageButtonCount="10" FirstPageText="First" LastPageText="Last" CssClass="custompaging" ButtonCssClass="page">	
+                                                <prop:ClientSide.OnPreDispatch>
+                                                    $('loading').show();                                                                                                                 
+                                                </prop:ClientSide.OnPreDispatch>                    
+                                                <prop:ClientSide.onComplete>                                            
+                                                    $('loading').hide();
+                                                </prop:ClientSide.OnComplete>
+                                            </com:TActiveCustomPager>            
+                                        </div>    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </com:TView>
+                </com:TActiveMultiView>
+            </div>
+        </div>
+    </div>
+</com:TPanel>
+</com:TContent>

@@ -1,0 +1,155 @@
+<%@ Title="Pengumuman" %>
+<com:TContent ID="moduleheader">
+    <i class="fa fa-hacker-news"></i> Pengumuman
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li><a href="<%=$this->constructUrl('forum.Pengumuman',true)%>"><span>PENGUMUMAN</span></a></li>
+    <li class="active"><span>DETAIL TOPIK</span></li>
+</com:TContent> 
+<com:TContent ID="maincontent">
+
+<com:TPanel Visible="<%=$this->getDefaultProcess() %>" CssClass="email-inbox-wrapper">    
+    <div class="row">
+        <div class="col-lg-12">							
+            <div id="email-box" class="clearfix">
+                <div class="row">
+                    <div class="col-lg-12">										
+                        <div class="email-detail-nano">
+                            <div class="email-detail-nano-content">
+                                <div id="email-detail-inner">
+                                    <div id="email-detail-subject" class="clearfix">
+                                        <span class="subject"><%=$this->DataDiskusi['title']%></span>
+                                        <span class="label label-success"><%=$this->DataDiskusi['nama_kategori']%></span>
+                                    </div>
+
+                                    <div id="email-detail-sender" class="clearfix">
+                                        <div class="picture hidden-xs">
+                                            <img src="resources/userimages/no_photo.png" alt=""/>
+                                        </div>
+
+                                        <div class="users">
+                                            <div class="from clearfix">
+                                                <div class="name">
+                                                    <%=$this->DataDiskusi['nama_user']%>
+                                                </div>
+                                                <div class="email hidden-xs"></div>
+                                            </div>
+                                            <div class="to">                                                
+                                            </div>
+                                        </div>														
+                                        <div class="tools">
+                                            <div class="date">
+                                                <%=$this->TGL->tanggal('l, d F Y',$this->DataDiskusi['date_added'])%> 
+                                            </div>															
+                                        </div>														
+                                    </div>													
+                                    <div id="email-body">
+                                        <%=$this->Page->Forum->parsingMarkdown($this->DataDiskusi['content'])%>
+                                    </div>													
+                                    <div id="email-detail-attachments">                                        
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="main-box clearfix">
+                                                    <div class="tabs-wrapper profile-tabs">
+                                                        <ul class="nav nav-tabs">
+                                                            <li class="active"><a href="#tab-commentfeed" data-toggle="tab">Komentar</a></li>                                                            
+                                                        </ul>
+                                                        <div class="tab-content">
+                                                            <div class="tab-pane fade in active" id="tab-commentfeed">
+                                                                <div id="newsfeed">
+                                                                    <com:TActiveRepeater ID="RepeaterS" DataKeyField="idpost" AllowPaging="true" AllowCustomPaging="true">                                
+                                                                        <prop:ItemTemplate>	
+                                                                           <div class="story">
+                                                                                <div class="story-user">
+                                                                                    <a href="#">
+                                                                                        <img src="resources/userimages/no_photo.png" alt=""/>
+                                                                                    </a>
+                                                                                </div>
+                                                                                <div class="story-content">
+                                                                                    <header class="story-header">
+                                                                                        <div class="story-author">                                                    
+                                                                                            <%#$this->DataItem['nama_user']%>                                                                                            
+                                                                                        </div>
+                                                                                        <div class="story-time">
+                                                                                            <i class="fa fa-clock-o"></i> <%#$this->page->TGL->relativeTime(date('Y-m-d H:i:s'),$this->DataItem['date_added'],'lasttweet')%>
+                                                                                        </div>
+                                                                                    </header>
+                                                                                    <div class="story-inner-content">
+                                                                                        <%=$this->Page->Forum->parsingMarkdown($this->DataItem['content'])%>
+                                                                                    </div>
+                                                                                    <footer class="story-footer">                                                                                        
+                                                                                        <a href="#" class="story-likes-link">
+                                                                                            <i class="fa fa-heart fa-lg"></i> 0 Likes
+                                                                                        </a>
+                                                                                    </footer>
+                                                                                </div>
+                                                                            </div>
+                                                                        </prop:ItemTemplate>	                                                                                                                                
+                                                                        <prop:EmptyTemplate>                                                       
+                                                                            <div class="row">
+                                                                                <div class="main-box-body">
+                                                                                    <div class="alert alert-info">
+                                                                                        <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                                                                        <strong>
+                                                                                            Info!
+                                                                                        </strong>
+                                                                                         Belum ada komentar. Jadikan Anda yang pertamax memberikan komentar :).
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </prop:EmptyTemplate>
+                                                                    </com:TActiveRepeater>
+                                                                    <div class="form-horizontal">
+                                                                        <div class="form-group" id="divAddIsi">
+                                                                            <label class="col-lg-1 control-label">&nbsp;</label>
+                                                                            <div class="col-lg-10">
+                                                                                <com:TActiveTextBox ID="txtAddContent" CssClass="form-control" TextMode="MultiLine" />
+                                                                                Anda dapat menggunakan <a href="http://en.wikipedia.org/wiki/Markdown">markdown</a> di isi pengumumannya, dan belajar sintaknya di <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">sini</a>.
+                                                                                <com:TRequiredFieldValidator ID="FieldAddIsi" ControlToValidate="txtAddContent" ValidationGroup="addpengumuman" ErrorMessage="Isi komentar" Display="Dynamic" CssClass="has-error help-block" FocusOnError="true">	
+                                                                                    <prop:ClientSide.OnValidationError>
+                                                                                        $('divAddIsi').addClassName('has-error');
+                                                                                        jQuery('#<%=$this->FieldAddIsi->ClientID%>').removeAttr('style');
+                                                                                    </prop:ClientSide.OnValidationError>
+                                                                                    <prop:ClientSide.OnValidationSuccess>
+                                                                                        $('divAddIsi').removeClassName('has-error');
+                                                                                    </prop:ClientSide.OnValidationSuccess>
+                                                                                </com:TRequiredFieldValidator>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <div class="col-lg-offset-1 col-lg-11">
+                                                                                <com:TActiveCustomButton ID="btnKirim" CssClass="btn btn-primary" OnClick="Page.kirimKonten" ValidationGroup="addpengumuman">
+                                                                                    <prop:Text><i class="fa fa-send-o"></i> Kirim</prop:Text>
+                                                                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                                                                        $('loading').show(); 
+                                                                                        $('<%=$this->btnKirim->ClientId%>').disabled='disabled';						
+                                                                                    </prop:ClientSide.OnPreDispatch>
+                                                                                    <prop:ClientSide.OnLoading>
+                                                                                        $('<%=$this->btnKirim->ClientId%>').disabled='disabled';						
+                                                                                    </prop:ClientSide.OnLoading>
+                                                                                    <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                                                                        $('<%=$this->btnKirim->ClientId%>').disabled='';
+                                                                                        $('loading').hide(); 
+                                                                                    </prop:ClientSide.OnComplete>
+                                                                                </com:TActiveCustomButton>
+                                                                            </div>                        
+                                                                        </div>
+                                                                    </div>                                                                
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>                                                                                                                        
+                                    </div>													
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>								
+            </div>							
+        </div>
+    </div>					
+</com:TPanel>
+</com:TContent>

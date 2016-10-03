@@ -387,6 +387,142 @@ class Logic_ReportAkademik extends Logic_Report {
         }
         $this->setLink($this->dataReport['linkoutput'],"Daftar Hadir Mahasiswa");
     }
+    /**
+     * digunakan untuk mencetak rekap status mahasiswa
+     * @return type void
+     */
+    public function printRekapStatusMahasiswa ($objDemik,$objDMaster) {
+        $kjur=$this->dataReport['kjur'];
+        $nama_ps=$this->dataReport['nama_ps'];
+        $ta1=$this->dataReport['ta1'];
+        $ta2=$this->dataReport['ta2'];                
+        $nama_tahun1=$this->dataReport['nama_tahun1'];                
+        $nama_tahun2=$this->dataReport['nama_tahun2'];   
+        switch ($this->getDriver()) {
+            case 'excel2003' :               
+            case 'excel2007' :                
+                $this->setHeaderPT('Q'); 
+                $sheet=$this->rpt->getActiveSheet();
+                $this->rpt->getDefaultStyle()->getFont()->setName('Arial');                
+                $this->rpt->getDefaultStyle()->getFont()->setSize('9');                                    
+                
+                $sheet->mergeCells("A7:Q7");
+                $sheet->getRowDimension(7)->setRowHeight(20);
+                $sheet->setCellValue("A7","LAPORAN JUMLAH STATUS MAHASISWA");  
+                
+                $sheet->mergeCells("A8:Q8");
+                $sheet->getRowDimension(8)->setRowHeight(20);
+                $sheet->setCellValue("A8","PERIODE TAHUN AKADEMIK $nama_tahun1 S.D TAHUN AKADEMIK $nama_tahun2");   
+                
+                $sheet->mergeCells("A9:Q9");
+                $sheet->setCellValue("A9","PROGRAM STUDI $nama_ps");                                
+                $sheet->getRowDimension(9)->setRowHeight(20); 
+                
+                $styleArray=array(
+								'font' => array('bold' => true,
+                                                'size' => 16),
+								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+												   'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+							);
+                $sheet->getStyle("A7:Q9")->applyFromArray($styleArray);
+                
+                $sheet->getRowDimension(11)->setRowHeight(20);                                                
+                
+//                $sheet->getColumnDimension('C')->setWidth(12);
+//                $sheet->getColumnDimension('F')->setWidth(23);
+//                $sheet->getColumnDimension('H')->setWidth(20);
+//                $sheet->getColumnDimension('I')->setWidth(3);
+//                $sheet->getColumnDimension('L')->setWidth(12);
+//                $sheet->getColumnDimension('M')->setWidth(23);
+//                $sheet->getColumnDimension('Q')->setWidth(20);
+                
+                //field of column ganjil
+                $sheet->mergeCells('A11:A12');
+				$sheet->setCellValue('A11','T.A');
+                $sheet->mergeCells('B11:B12');
+				$sheet->setCellValue('B11','SMT');
+                $sheet->mergeCells('C11:c12');
+				$sheet->setCellValue('C11','KELAS');				
+				
+                $sheet->mergeCells('D11:F11');
+                $sheet->setCellValue('D11','AKTIF');
+				$sheet->setCellValue('D12','L');				
+				$sheet->setCellValue('E12','P');				
+				$sheet->setCellValue('F12','L + P');		
+                
+                $sheet->mergeCells('G11:I11');
+                $sheet->setCellValue('G11','NON-AKTIF');
+				$sheet->setCellValue('G12','L');				
+				$sheet->setCellValue('H12','P');				
+				$sheet->setCellValue('I12','L + P');
+                
+                $sheet->mergeCells('J11:M11');
+                $sheet->setCellValue('J11','CUTI');
+				$sheet->setCellValue('J12','L');				
+				$sheet->setCellValue('K12','P');				
+				$sheet->setCellValue('L12','L + P');
+                                
+                $sheet->mergeCells('N11:P11');
+                $sheet->setCellValue('N11','KELUAR');
+				$sheet->setCellValue('N12','L');				
+				$sheet->setCellValue('O12','P');				
+				$sheet->setCellValue('P12','L + P');
+                
+                $sheet->mergeCells('Q11:S11');
+                $sheet->setCellValue('Q11','DROP OUT');
+				$sheet->setCellValue('Q12','L');				
+				$sheet->setCellValue('R12','P');				
+				$sheet->setCellValue('S12','L + P');
+                
+                $sheet->mergeCells('T11:W11');
+                $sheet->setCellValue('T11','LULUS');
+				$sheet->setCellValue('T12','L');				
+				$sheet->setCellValue('U12','P');				
+				$sheet->setCellValue('V12','L + P');
+                
+                $styleArray=array(
+								'font' => array('bold' => true),
+								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+												   'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+								'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+							);
+                $sheet->getStyle("A11:V12")->applyFromArray($styleArray);
+                $sheet->getStyle("A11:V12")->getAlignment()->setWrapText(true);
+                
+                
+                $str = "SELECT ta,idsmt,idkelas FROM rekap_status_mahasiswa WHERE (ta >= $ta1 AND ta <= $ta2) AND kjur=$kjur GROUP BY ta,idsmt,idkelas";
+                $this->db->setFieldTable(array('ta','idsmt','idkelas'));	
+                $r = $this->db->getRecord($str);  
+                
+                $result=array();
+                if (isset($r[1])) {
+                    $data =array();
+                    while (list($k,$v)=each ($r)) {            
+                        $index=$v['ta'].$v['idsmt'].$v['idkelas'];                        
+                        $data[$index]=array();
+                    }  
+                    $dataaktif=$objDemik->getRekapStatusMHS($kjur,$ta1,$ta2,'A');
+                    $row=13;
+                    while (list($m,$n)=each ($data)) {            
+                        $sheet->setCellValue("D$row",$dataaktif[$m]['jumlah_pria']);				
+                        $sheet->setCellValue("E$row",$dataaktif[$m]['jumlah_wanita']);				
+                        $sheet->setCellValue("F$row",'L + P');	
+                        $row+=1;
+                    } 
+                    $styleArray=array(
+								'font' => array('bold' => true),
+								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+												   'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+								'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+							);
+                    $sheet->getStyle("A13:V$row")->applyFromArray($styleArray);
+                    $sheet->getStyle("A13:V$row")->getAlignment()->setWrapText(true);
+                }
+                $this->printOut('rekapstatusmahasiswa');
+            break;
+        }
+        $this->setLink($this->dataReport['linkoutput'],"Rekap Status Mahasiswa");
+    }
 }
 ?>
 

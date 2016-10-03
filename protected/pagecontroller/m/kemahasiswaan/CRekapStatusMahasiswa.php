@@ -187,45 +187,39 @@ class CRekapStatusMahasiswa Extends MainPageM {
     }
     
 	public function printOut ($sender,$param) {	
-//        $this->createObj('reportfinance');
-//        $this->linkOutput->Text='';
-//        $this->linkOutput->NavigateUrl='#';
-//        switch ($_SESSION['outputreport']) {
-//            case  'summarypdf' :
-//                $messageprintout="Mohon maaf Print out pada mode summary pdf tidak kami support.";                
-//            break;
-//            case  'summaryexcel' :
-//                $messageprintout="Mohon maaf Print out pada mode summary excel tidak kami support.";                
-//            break;
-//            case  'excel2007' :
-//                $messageprintout="";
-//                $dataReport['kjur']=$_SESSION['kjur'];
-//                $dataReport['nama_ps']=$_SESSION['daftar_jurusan'][$_SESSION['kjur']];
-//                $tahun=$_SESSION['ta'];                
-//                $tahun_masuk=$_SESSION['tahun_masuk'];                
-//                $nama_tahun = $this->DMaster->getNamaTA($tahun);
-//                
-//                $dataReport['ta']=$tahun;                
-//                $dataReport['nama_tahun']=$nama_tahun;                
-//                $dataReport['tahun_masuk']=$tahun_masuk;                
-//                $dataReport['nama_tahun_masuk']=$this->DMaster->getNamaTA($tahun_masuk);
-//                $dataReport['semester']=$_SESSION['currentPageRekapStatusMahasiswa']['semester'];
-//                $dataReport['nama_semester']=$this->setup->getSemester($_SESSION['currentPageRekapStatusMahasiswa']['semester']);
-//                
-//                $dataReport['kelas']=$_SESSION['currentPageRekapStatusMahasiswa']['kelas'];
-//                $dataReport['linkoutput']=$this->linkOutput;
-//                $this->report->setDataReport($dataReport); 
-//                $this->report->setMode($_SESSION['outputreport']);
-//                
-//                $this->report->printRekapPembayaranSemester($this->Finance,$this->DMaster); 
-//            break;
-//            case  'pdf' :
-//                $messageprintout="Mohon maaf Print out pada mode pdf belum kami support.";                
-//            break;
-//        }
-//        $this->lblMessagePrintout->Text=$messageprintout;
-//        $this->lblPrintout->Text='Rekapitulasi Pembayaran Semester Ganjil';
-//        $this->modalPrintOut->show();
+        $this->createObj('reportakademik');
+        $this->linkOutput->Text='';
+        $this->linkOutput->NavigateUrl='#';
+        switch ($_SESSION['outputreport']) {
+            case  'summarypdf' :
+                $messageprintout="Mohon maaf Print out pada mode summary pdf tidak kami support.";                
+            break;
+            case  'summaryexcel' :
+                $messageprintout="Mohon maaf Print out pada mode summary excel tidak kami support.";                
+            break;
+            case  'excel2007' :
+                $messageprintout="";
+                $dataReport['kjur']=$_SESSION['kjur'];
+                $dataReport['nama_ps']=$_SESSION['daftar_jurusan'][$_SESSION['kjur']];                
+                
+                $dataReport['ta1']=$_SESSION['currentPageRekapStatusMahasiswa']['ta1'];
+                $dataReport['ta2']=$_SESSION['currentPageRekapStatusMahasiswa']['ta2'];                
+                $dataReport['nama_tahun1']=$this->DMaster->getNamaTA($dataReport['ta1']);                
+                $dataReport['nama_tahun2']=$this->DMaster->getNamaTA($dataReport['ta2']);   
+                
+                $dataReport['linkoutput']=$this->linkOutput;
+                $this->report->setDataReport($dataReport); 
+                $this->report->setMode($_SESSION['outputreport']);
+                
+                $this->report->printRekapStatusMahasiswa($this->Demik,$this->DMaster); 
+            break;
+            case  'pdf' :
+                $messageprintout="Mohon maaf Print out pada mode pdf belum kami support.";                
+            break;
+        }
+        $this->lblMessagePrintout->Text=$messageprintout;
+        $this->lblPrintout->Text='Rekapitulasi Status Mahasiswa Periode ';
+        $this->modalPrintOut->show();
     }
 }
 ?>

@@ -241,7 +241,13 @@
                                                 <i class="fa fa-dashboard"></i>
                                                 <span>Dashboard</span>											
                                             </a>                                        
-                                        </li>  
+                                        </li>
+                                        <li<%=$this->Page->showPengumuman==true?' class="active"':''%>>
+                                            <a href="<%=$this->Page->constructUrl('forum.Pengumuman',true)%>">
+                                                <i class="fa fa-hacker-news"></i>
+                                                <span>Pengumuman</span>											
+                                            </a>                                        
+                                        </li>
                                         <li<%=$this->Page->showForumDiskusi==true?' class="active"':''%>>
                                             <a href="<%=$this->Page->constructUrl('forum.Diskusi',true)%>">
                                                 <i class="fa fa-comment"></i>
@@ -501,7 +507,13 @@
                                                 <i class="fa fa-dashboard"></i>
                                                 <span>Dashboard</span>											
                                             </a>                                        
-                                        </li>         
+                                        </li> 
+                                        <li<%=$this->Page->showPengumuman==true?' class="active"':''%>>
+                                            <a href="<%=$this->Page->constructUrl('forum.Pengumuman',true)%>">
+                                                <i class="fa fa-hacker-news"></i>
+                                                <span>Pengumuman</span>											
+                                            </a>                                        
+                                        </li>
                                         <li<%=$this->Page->showForumDiskusi==true?' class="active"':''%>>
                                             <a href="<%=$this->Page->constructUrl('forum.Diskusi',true)%>">
                                                 <i class="fa fa-comment"></i>

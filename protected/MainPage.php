@@ -72,6 +72,10 @@ class MainPage extends TPage {
      */
     public $showDMaster=false;
     /**     
+     * show page pengumuman
+     */
+    public $showPengumuman=false;
+    /**     
      * show page forum diskusi
      */
     public $showForumDiskusi=false;    

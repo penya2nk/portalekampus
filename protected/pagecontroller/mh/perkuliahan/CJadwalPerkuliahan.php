@@ -30,7 +30,6 @@ class CJadwalPerkuliahan extends MainPageMHS {
             $this->lblModulHeader->Text=$this->getInfoToolbar();
 			$this->populateData();
             
-            $this->Demik->getJadwalKuliahMHS($_SESSION['tahun'],$_SESSION['semester']);
 		}			
 	}
     public function changeTbTA ($sender,$param) {

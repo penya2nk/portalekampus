@@ -4,8 +4,8 @@ class CPendaftaranViaWeb extends MainPageM {
 	public function onLoad($param) {
 		parent::onLoad($param);			
         $this->showSubMenuSPMBPendaftaran=true;
-		$this->showPendaftaranViaWeb=true;            
-                
+		$this->showPendaftaranViaWeb=true; 
+        $this->createObj('Akademik');        
 		if (!$this->IsPostBack && !$this->IsCallBack) {	
             if (!isset($_SESSION['currentPagePendaftaranWeb'])||$_SESSION['currentPagePendaftaranWeb']['page_name']!='m.spmb.PendaftaranWeb') {
 				$_SESSION['currentPagePendaftaranWeb']=array('page_name'=>'m.spmb.PendaftaranWeb','page_num'=>0,'offset'=>0,'limit'=>0,'search'=>false,'status_dulang'=>'none');												
@@ -86,7 +86,7 @@ class CPendaftaranViaWeb extends MainPageM {
         $semester=$_SESSION['semester'];
         $kjur=$_SESSION['kjur'];
         if ($search) {            
-            $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.jk,fp.alamat_rumah,fp.telp_hp,nomor_ijazah,IF(char_length(COALESCE(rm.nim,''))>0,'dulang','-') AS nim FROM formulir_pendaftaran fp JOIN bipend bp ON (fp.no_formulir=bp.no_formulir) LEFT JOIN register_mahasiswa rm ON (rm.no_formulir=fp.no_formulir)";
+            $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.jk,fp.alamat_rumah,fp.telp_hp,nomor_ijazah,IF(char_length(COALESCE(rm.nim,''))>0,'dulang','-') AS ket,rm.nim FROM formulir_pendaftaran fp JOIN bipend bp ON (fp.no_formulir=bp.no_formulir) LEFT JOIN register_mahasiswa rm ON (rm.no_formulir=fp.no_formulir)";
             $txtsearch=$this->txtKriteria->Text;
             switch ($this->cmbKriteria->Text) {
                 case 'no_formulir' :
@@ -147,36 +147,49 @@ class CPendaftaranViaWeb extends MainPageM {
 	}	
 	public function updateData ($sender,$param) {
 		if ($this->IsValid) {
-			$this->Pengguna->updateActivity();	
 			$no_formulir=$this->txtEditNoFormulir->Text;
 			$nama_mhs=addslashes(strtoupper(trim($this->txtEditNamaMhs->Text)));			
 			$tempat_lahir=strtoupper(trim($this->txtEditTempatLahir->Text));						
-			$tgl_lahir=$this->TGL->tukarTanggal ($this->txtEditTanggalLahir->Text);
-			$jk=$this->cmbEditJK->Text;
-			$idwarga=$this->editWNI->Checked===true?'WNI':'WNA';
-			$idstatus=$this->edittidak_bekerja->Checked===true?'TIDAK_BEKERJA':'PEKERJA';
-			$alamat_kantor=strtoupper(trim($this->txtEditAlamatKantor->Text));						
-			$alamat_rumah=strtoupper(trim($this->txtEditAlamatRumah->Text));	
-			$telp_kantor=trim($this->txtEditNoKantor->Text);
-			$telp_rumah=trim($this->txtEditNoTelpRumah->Text);		
-			$telp_hp=trim($this->txtEditNoHP->Text);
-			$pendidikan_terakhir=strtoupper(trim($this->txtEditPendidikanTerakhir->Text));
-			$jurusan=strtoupper(trim($this->txtEditJurusan->Text));	
-			$kota=strtoupper(trim($this->txtEditKota->Text));	
-			$provinsi=strtoupper(trim($this->txtEditProvinsi->Text));	
-			$tahun_pa=strtoupper(trim($this->txtEditTahun->Text));		
-			$asal_slta=strtoupper(trim($this->txtEditAsalSlta->Text));			
-			$nomor_ijazah=trim($this->txtEditNoIjazah->Text);
-			if ($this->txtAddWaktuMendaftar->Value == '0000-00-00 00:00:00') {
-				$waktu_mendaftar=date('Y-m-d H:m:s');
-				$waktu_mendaftar=",waktu_mendaftar='$waktu_mendaftar'";
-			}
-			$str ="UPDATE formulir_pendaftaran SET nama_mhs='$nama_mhs',tempat_lahir='$tempat_lahir',tanggal_lahir='$tgl_lahir',jk='$jk',idagama=".$this->cmbEditAgama->Text.",idwarga='$idwarga',idstatus='$idstatus',alamat_kantor='$alamat_kantor',alamat_rumah='$alamat_rumah',telp_kantor='$telp_kantor',telp_rumah='$telp_rumah',telp_hp='$telp_hp',idjp=".$this->cmbEditPekerjaanOrtu->Text.",pendidikan_terakhir='$pendidikan_terakhir',jurusan='$jurusan',kota='$kota',provinsi='$provinsi',tahun_pa='$tahun_pa',jenis_slta='".$this->cmbEditJenisSlta->Text."',asal_slta='$asal_slta',status_slta='".$this->cmbEditStatusSlta->Text."',nomor_ijazah='$nomor_ijazah',kjur1=".$this->cmbEditKjur1->Text.",kjur2='".$this->cmbEditKjur2->Text."'$waktu_mendaftar,ta='".$this->cmbEditTa->Text."',idsmt='".$this->cmbEditSemester->Text."',idkelas='".$this->cmbEditKelas->Text."' WHERE no_formulir='$no_formulir'";			
-			$this->DB->updateRecord($str);
-			$this->spmb->redirect('a.m.SPMB.PendaftaranViaFO');
-		}else {
-			$this->idProcess='edit';
-		}
+			$tgl_lahir=date ('Y-m-d',$this->txtEditTanggalLahir->TimeStamp);
+			$jk=$this->rdEditPria->Checked===true?'L':'P';
+            $idagama=$this->cmbEditAgama->Text;
+			$idwarga=$this->rdEditWNI->Checked===true?'WNI':'WNA';
+            $alamat_rumah=strtoupper(trim(addslashes($this->txtEditAlamatKTP->Text)));	
+            $telp_rumah=addslashes($this->txtEditNoTelpRumah->Text);		
+            $telp_hp=addslashes($this->txtEditNoTelpHP->Text);
+            $email=addslashes($this->txtEditEmail->Text);            
+			$idstatus=$this->rdEditTidakBekerja->Checked===true?'TIDAK_BEKERJA':'PEKERJA';
+			$alamat_kantor=strtoupper(trim($this->txtEditAlamatKantor->Text));									
+			$telp_kantor=addslashes($this->txtEditNoTelpKantor->Text);
+			$idjp=$this->cmbEditPekerjaanOrtu->Text;
+			$pendidikan_terakhir=strtoupper(addslashes($this->txtEditPendidikanTerakhir->Text));
+			$jurusan=strtoupper(addslashes($this->txtEditJurusan->Text));	
+			$kota=strtoupper(addslashes($this->txtEditKotaPendidikanTerakhir->Text));	
+			$provinsi=strtoupper(addslashes($this->txtEditProvinsiPendidikanTerakhir->Text));	
+			$tahun_pa=strtoupper(trim($this->txtEditTahunPendidikanTerakhir->Text));		
+            $jenisslta=$this->cmbEditJenisSLTA->Text;
+			$asal_slta=strtoupper(addslashes($this->txtEditAsalSLTA->Text));			
+            $statusslta=$this->cmbEditStatusSLTA->Text;
+			$nomor_ijazah=trim($this->txtEditNomorIjazah->Text);	
+            
+            $idkelas=$this->cmbEditKelas->Text; 
+            $kjur1=$this->cmbEditKjur1->Text;
+            $kjur2=$this->cmbEditKjur2->Text;                       
+            $ta=$this->cmbEditTahunMasuk->Text;
+            $idsmt=$this->cmbEditSemester->Text;           
+            	
+            $str ="UPDATE formulir_pendaftaran SET nama_mhs='$nama_mhs',tempat_lahir='$tempat_lahir',tanggal_lahir='$tgl_lahir',jk='$jk',idagama=$idagama,idwarga='$idwarga',idstatus='$idstatus',alamat_kantor='$alamat_kantor',alamat_rumah='$alamat_rumah',telp_kantor='$telp_kantor',telp_rumah='$telp_rumah',telp_hp='$telp_hp',idjp=$idjp,pendidikan_terakhir='$pendidikan_terakhir',jurusan='$jurusan',kota='$kota',provinsi='$provinsi',tahun_pa='$tahun_pa',jenis_slta='$jenisslta',asal_slta='$asal_slta',status_slta='$statusslta',nomor_ijazah='$nomor_ijazah',idkelas='$idkelas',kjur1='$kjur1',kjur2='$kjur2',ta=$ta,idsmt=$idsmt,daftar_via='WEB' WHERE no_formulir='$no_formulir'";
+            $this->DB->query('BEGIN');
+			if ($this->DB->updateRecord($str)) {
+                $email=$this->txtEditEmail->Text;                
+                $str = "UPDATE profiles_mahasiswa SET email='$email' WHERE no_formulir=$no_formulir";
+                $this->DB->updateRecord($str);
+                $this->DB->query('COMMIT');
+            }else {
+                $this->DB->query('ROLLBACK');
+            }			
+            $this->redirect('spmb.PendaftaranViaWeb',true);
+        }
 	}
 	public function saveData ($sender,$param) {
 		if ($this->IsValid) {
@@ -215,71 +228,108 @@ class CPendaftaranViaWeb extends MainPageM {
 		}
 	}
 	
-	public function ubahRecord($sender,$param) {
-		$this->Pengguna->updateActivity();	
+	public function editRecord($sender,$param) {
 		$this->idProcess='edit';
 		$no_formulir=$this->getDataKeyField($sender,$this->RepeaterS);
-		$this->txtEditNoFormulir->Text = $no_formulir;		
-		$this->spmb->setDataMode('complete');		
-		$this->spmb->setNoFormulir($no_formulir,true);		
+        
+        $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.tempat_lahir,fp.tanggal_lahir,fp.jk,fp.idagama,a.nama_agama,fp.idwarga,fp.idstatus,fp.alamat_kantor,fp.alamat_rumah,fp.telp_rumah,fp.telp_kantor,fp.telp_hp,pm.email,fp.idjp,fp.pendidikan_terakhir,fp.jurusan,fp.kota,fp.provinsi,fp.tahun_pa,jp.nama_pekerjaan,fp.jenis_slta,fp.asal_slta,fp.status_slta,fp.nomor_ijazah,fp.kjur1,fp.kjur2,fp.idkelas,fp.waktu_mendaftar,fp.ta,fp.idsmt FROM formulir_pendaftaran fp,agama a,jenis_pekerjaan jp,profiles_mahasiswa pm WHERE fp.idagama=a.idagama AND fp.idjp=jp.idjp AND pm.no_formulir=fp.no_formulir AND fp.no_formulir='$no_formulir'";
+        $this->DB->setFieldTable(array('no_formulir','nama_mhs','tempat_lahir','tanggal_lahir','jk','idagama','nama_agama','idwarga','idstatus','alamat_kantor','alamat_rumah','telp_rumah','telp_kantor','telp_hp','email','idjp','pendidikan_terakhir','jurusan','kota','provinsi','tahun_pa','nama_pekerjaan','jenis_slta','asal_slta','status_slta','nomor_ijazah','kjur1','kjur2','idkelas','waktu_mendaftar','ta','idsmt'));
+        $r=$this->DB->getRecord($str);
+        $dataMhs=$r[1];								
+        if ($dataMhs['waktu_mendaftar']=='0000-00-00 00:00:00') {							
+            $dataMhs['tanggal_lahir']='';
+            $dataMhs['jk']='';
+            $dataMhs['nama_agama']='';
+            $dataMhs['idwarga']='';														
+            $dataMhs['idstatus']='';		
+            $dataMhs['nama_pekerjaan']='';
+            $dataMhs['tahun_pa']='';
+            $dataMhs['jenis_slta']='';
+            $dataMhs['status_slta']='';
+        }
+        $this->txtEditNoFormulir->Text = $no_formulir;				        
+        $this->txtEditNamaMhs->Text = $dataMhs['nama_mhs'];
+        $this->txtEditTempatLahir->Text = $dataMhs['tempat_lahir'];
+        $this->txtEditTanggalLahir->Text=$this->TGL->tanggal('d-m-Y',$dataMhs['tanggal_lahir'],'entoid');
+        if ($dataMhs['jk']=='L')
+            $this->rdEditPria->Checked=true;
+        else
+            $this->rdEditWanita->Checked=true;
+        $this->cmbEditAgama->DataSource=$this->DMaster->getListAgama();
+        $this->cmbEditAgama->Text=$dataMhs['idagama'];
+        $this->cmbEditAgama->dataBind();		
+        if ($dataMhs['idwarga']=='WNI')
+            $this->rdEditWNI->Checked=true;
+        else
+            $this->rdEditWNA->Checked=true;
+        
+        $this->txtEditAlamatKTP->Text=$dataMhs['alamat_rumah'];	
+        $this->txtEditNoTelpRumah->Text=$dataMhs['telp_rumah'];		
+        $this->txtEditNoTelpHP->Text=$dataMhs['telp_hp'];
+        $this->txtEditEmail->Text=$dataMhs['email'];  
+        $this->hiddenemail->Value=$dataMhs['email'];
+        
+        if ($dataMhs['idstatus']=='PEKERJA') {
+            $this->rdEditBekerja->Checked=true;						
+        }else {
+            $this->rdEditTidakBekerja->Checked=true;
+        }
+        $this->txtEditAlamatKantor->Text=$dataMhs['alamat_kantor'];
+        $this->txtEditNoTelpKantor->Text=$dataMhs['telp_kantor'];
+        
+        $this->cmbEditPekerjaanOrtu->DataSource=$this->DMaster->getListJenisPekerjaan ();
+        $this->cmbEditPekerjaanOrtu->Text=$dataMhs['idjp'];
+        $this->cmbEditPekerjaanOrtu->dataBind();		
+        
+        $this->txtEditPendidikanTerakhir->Text=$dataMhs['pendidikan_terakhir'];
+        $this->txtEditJurusan->Text=$dataMhs['jurusan'];
+        $this->txtEditKotaPendidikanTerakhir->Text=$dataMhs['kota'];
+        $this->txtEditProvinsiPendidikanTerakhir->Text=$dataMhs['provinsi'];
+        $this->txtEditTahunPendidikanTerakhir->Text=$dataMhs['tahun_pa'];        
+        $this->cmbEditJenisSLTA->Text=$dataMhs['jenis_slta'];
+        $this->txtEditAsalSLTA->Text=$dataMhs['asal_slta'];
+        $this->cmbEditStatusSLTA->Text=$dataMhs['status_slta'];
+        $this->txtEditNomorIjazah->Text=$dataMhs['nomor_ijazah'];
+        
+        $daftarkelas=$this->DMaster->removeIdFromArray($this->DMaster->getListKelas(),'none');        
+        $this->cmbEditKelas->DataSource=$daftarkelas;
+        $this->cmbEditKelas->Text=$dataMhs['idkelas'];
+        $this->cmbEditKelas->dataBind();
+		
+        $bool=!$this->DB->checkRecordIsExist ('no_formulir','nilai_ujian_masuk',$no_formulir);
+        $daftar_jurusan=$this->DMaster->removeIdFromArray($_SESSION['daftar_jurusan'],'none');
+        if ($dataMhs['kjur1'] =='') {
+            $this->cmbEditKjur1->DataSource=$daftar_jurusan;
+            $this->cmbEditKjur1->Text=$dataMhs['kjur1'];
+            $this->cmbEditKjur1->Enabled=$bool;
+            $this->cmbEditKjur1->dataBind();
+            $this->cmbEditKjur2->Enabled=true;	            
+        }else {					
+            $this->cmbEditKjur1->DataSource=$daftar_jurusan;
+            $this->cmbEditKjur1->Text=$dataMhs['kjur1'];
+            $this->cmbEditKjur1->Enabled=$bool;
+            $this->cmbEditKjur1->dataBind();
 
-		$this->txtEditNoFormulir->Text = $no_formulir;
-		$this->txtEditNamaMhs->Text = $this->spmb->dataMhs['nama_mhs'];;
-		$this->txtEditTempatLahir->Text = $this->spmb->dataMhs['tempat_lahir'];;
-		$this->txtEditTanggalLahir->Date=$this->TGL->tukarTanggal($this->spmb->dataMhs['tanggal_lahir'],'entoid');
-		$this->cmbEditJK->Text=$this->spmb->dataMhs['jk'];
-		$this->WNI->Checked=($this->spmb->dataMhs['idwarga']=='WNI')?true:false;		
-		$dmaster=$this->getLogic('DMaster');
-		$this->cmbEditAgama->DataSource=$dmaster->getListAgama();
-		$this->cmbEditAgama->Text=$this->spmb->dataMhs['idagama'];
-		$this->cmbEditAgama->dataBind();		
-		$this->txtEditAlamatRumah->Text = $this->spmb->dataMhs['alamat_rumah'];
-		$this->txtEditNoTelpRumah->Text = $this->spmb->dataMhs['telp_rumah'];
-		$this->txtEditNoHP->Text = $this->spmb->dataMhs['telp_hp'];
-		$this->cmbEditPekerjaanOrtu->DataSource=$dmaster->getJenisPekerjaan ();
-		$this->cmbEditPekerjaanOrtu->dataBind();			
-		if ($this->spmb->dataMhs['idstatus']=='PEKERJA') {
-			$this->editpekerja->Checked=true;
-			$this->txtEditAlamatKantor->Enabled=true;
-			$this->txtEditNoKantor->Enabled=true;
-			$this->txtEditAlamatKantor->Text=$this->spmb->dataMhs['alamat_kantor'];
-			$this->txtEditNoKantor->Text=$this->spmb->dataMhs['telp_kantor'];
-		}else {
-			$this->edittidak_bekerja->Checked=true;
-		}
-		$this->cmbEditPekerjaanOrtu->Text=$this->spmb->dataMhs['idjp'];
-		$this->txtEditPendidikanTerakhir->Text=$this->spmb->dataMhs['pendidikan_terakhir'];
-		$this->txtEditJurusan->Text=$this->spmb->dataMhs['jurusan'];
-		$this->txtEditKota->Text=$this->spmb->dataMhs['kota'];
-		$this->txtEditProvinsi->Text=$this->spmb->dataMhs['provinsi'];
-		$this->txtEditTahun->Text=$this->spmb->dataMhs['tahun_pa'];
-							
-		$this->cmbEditJenisSlta->Text=$this->spmb->dataMhs['jenis_slta'];
-		if ($this->cmbEditJenisSlta->Text != '') {
-			$this->txtEditAsalSlta->Enabled=true;
-		}
-		$this->txtEditAsalSlta->Text=$this->spmb->dataMhs['asal_slta'];
-		$this->cmbEditStatusSlta->Text=$this->spmb->dataMhs['status_slta'];
-		$this->txtEditNoIjazah->Text=$this->spmb->dataMhs['nomor_ijazah'];
-		$this->cmbEditKjur1->DataSource=$_SESSION['daftar_jurusan'];
-		$this->cmbEditKjur1->dataBind();
-		$this->cmbEditKjur2->DataSource=$this->getLogic('Jurusan')->removeKJur($_SESSION['daftar_jurusan'],$this->spmb->dataMhs['kjur1']);
-		$this->cmbEditKjur2->dataBind();				
-		$this->cmbEditKjur1->Text=$this->spmb->dataMhs['kjur1'];
-		$this->cmbEditKjur2->Text=$this->spmb->dataMhs['kjur2'];
-		$this->cmbEditKelas->DataSource=$this->spmb->removeNone($_SESSION['daftar_kelas']);
-		$this->cmbEditKelas->Text=$this->spmb->dataMhs['idkelas'];
-		$this->cmbEditKelas->dataBind();
-		$this->cmbEditTa->DataSource=$this->spmb->removeNone($_SESSION['tahun_akademik']);
-		$this->cmbEditTa->Text=$this->spmb->dataMhs['ta'];
-		$this->cmbEditTa->dataBind();
-		$this->cmbEditSemester->DataSource=$this->spmb->removeNone($_SESSION['daftar_semester']);
-		$this->cmbEditSemester->Text=$this->spmb->dataMhs['idsmt'];
-		$this->cmbEditSemester->dataBind();
-		$this->spmb->setParameterGlobal ('','',$_SESSION['kjur']);
-		if ($this->spmb->isMhsRegistered()) {
+            $jurusan=$this->DMaster->removeKjur($_SESSION['daftar_jurusan'],$dataMhs['kjur1']);									            
+            $this->cmbEditKjur2->DataSource=$jurusan;
+            $this->cmbEditKjur2->Text=$dataMhs['kjur2'];
+            $this->cmbEditKjur2->dataBind();
+            $this->cmbEditKjur2->Enabled=true;
+        }
+        
+        $tahun_masuk=$this->DMaster->removeIdFromArray($this->DMaster->getListTA(),'none');			
+        $this->cmbEditTahunMasuk->DataSource=$tahun_masuk	;					
+        $this->cmbEditTahunMasuk->Text=$dataMhs['ta'];						
+        $this->cmbEditTahunMasuk->dataBind();
+
+        $semester=$this->DMaster->removeIdFromArray($this->setup->getSemester(),'none'); 
+        $this->cmbEditSemester->DataSOurce=$semester;
+        $this->cmbEditSemester->Text=$dataMhs['idsmt'];
+        $this->cmbEditSemester->DataBind();
+        $this->Demik->setDataMHS(array('no_formulir'=>$no_formulir,'kjur'=>'none'));
+		if ($this->Demik->isMhsRegistered(true)) {
 			$this->cmbEditKelas->Enabled=false;
-			$this->cmbEditTa->Enabled=false;
+			$this->cmbEditTahunMasuk->Enabled=false;
 			$this->cmbEditSemester->Enabled=false;
 			$this->cmbEditKjur1->Enabled=false;
 			$this->cmbEditKjur2->Enabled=false;

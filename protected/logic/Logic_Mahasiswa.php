@@ -56,6 +56,7 @@ class Logic_Mahasiswa extends Logic_Global {
         $no_formulir=$this->DataMHS['no_formulir'];
         $kjur=$this->DataMHS['kjur'];
 		$bool=$tanpaprodi==true?$this->db->checkRecordIsExist('no_formulir','register_mahasiswa',$no_formulir):$this->db->checkRecordIsExist('no_formulir','register_mahasiswa',$no_formulir," AND kjur=$kjur");
+        
         return $bool;
 
 	}

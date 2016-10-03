@@ -273,17 +273,7 @@ class CFormulirPendaftaran extends MainPageMB {
             $waktu_mendaftar=date('Y-m-d H:m:s');            
             $ta=$this->Pengguna->getDataUser('tahun_masuk');
             $idkelas=$this->cmbEditKelas->Text;
-            switch ($idkelas) {
-                case 'A' :
-                    $dibayarkan=$_SESSION['currentPageFormulirPendaftaran']['reguler'];
-                break;
-                case 'B' :
-                    $dibayarkan=$_SESSION['currentPageFormulirPendaftaran']['karyawan'];
-                break;
-                case 'C' :
-                    $dibayarkan=$_SESSION['currentPageFormulirPendaftaran']['ekstensi'];
-                break;
-            }			
+         			
             $str ="UPDATE formulir_pendaftaran SET nama_mhs='$nama_mhs',tempat_lahir='$tempat_lahir',tanggal_lahir='$tgl_lahir',jk='$jk',idagama=$idagama,idwarga='$idwarga',idstatus='$idstatus',alamat_kantor='$alamat_kantor',alamat_rumah='$alamat_rumah',telp_kantor='$telp_kantor',telp_rumah='$telp_rumah',telp_hp='$telp_hp',idjp=$idjp,pendidikan_terakhir='$pendidikan_terakhir',jurusan='$jurusan',kota='$kota',provinsi='$provinsi',tahun_pa='$tahun_pa',jenis_slta='$jenisslta',asal_slta='$asal_slta',status_slta='$statusslta',nomor_ijazah='$nomor_ijazah',kjur1='$kjur1',kjur2='$kjur2',waktu_mendaftar='$waktu_mendaftar',ta=$ta,idsmt=1,idkelas='$idkelas',daftar_via='WEB' WHERE no_formulir='$no_formulir'";
             $this->DB->query('BEGIN');
 			if ($this->DB->updateRecord($str)) {

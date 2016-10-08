@@ -99,6 +99,21 @@
                             </com:TRequiredFieldValidator>                  
                         </div>
                     </div>
+                    <div class="form-group" id="divEditNamaIbuKandung">
+                        <label class="col-lg-2 control-label">Nama Ibu Kandung :</label>
+                        <div class="col-lg-3">
+                            <com:TTextBox ID="txtEditNamaIbuKandung" CssClass="form-control" />
+                            <com:TRequiredFieldValidator ID="FieldEditNamaIbuKandungValidator" ControlToValidate="txtEditNamaIbuKandung" Display="Dynamic" ErrorMessage="Isi Nama Ibu Kandung" ValidationGroup="editformulir" CssClass="has-error help-block">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divEditNamaIbuKandung').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldEditNamaIbuKandungValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divEditNamaIbuKandung').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="col-lg-2 control-label">Kewarganegaraan :</label>
                         <div class="col-lg-5">
@@ -126,6 +141,36 @@
                             </com:TRequiredFieldValidator>
                         </div>
                     </div>  
+                    <div class="form-group" id="divEditKelurahan">
+                        <label class="col-lg-2 control-label">Kelurahan :</label>
+                        <div class="col-lg-3">
+                            <com:TTextBox ID="txtEditKelurahan" CssClass="form-control" />
+                            <com:TRequiredFieldValidator ID="FieldEditKelurahanValidator" ControlToValidate="txtEditKelurahan" Display="Dynamic" ErrorMessage="Isi Kelurahan" ValidationGroup="editformulir" CssClass="has-error help-block">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divEditKelurahan').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldEditKelurahanValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divEditKelurahan').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div> 
+                    <div class="form-group" id="divEditKecamatan">
+                        <label class="col-lg-2 control-label">Kecamatan :</label>
+                        <div class="col-lg-3">
+                            <com:TTextBox ID="txtEditKecamatan" CssClass="form-control" />
+                            <com:TRequiredFieldValidator ID="FieldEditKecamatanValidator" ControlToValidate="txtEditKecamatan" Display="Dynamic" ErrorMessage="Isi Kecamatan" ValidationGroup="editformulir" CssClass="has-error help-block">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divEditKecamatan').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldEditKecamatanValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divEditKecamatan').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div> 
                     <div class="form-group">
                         <label class="col-lg-2 control-label">Nomor Telepon Rumah :</label>
                         <div class="col-lg-2">

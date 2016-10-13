@@ -155,6 +155,7 @@ class CPendaftaranViaWeb extends MainPageM {
             $idagama=$this->cmbEditAgama->Text;
             $nama_ibu_kandung=addslashes($this->txtEditNamaIbuKandung->Text);
 			$idwarga=$this->rdEditWNI->Checked===true?'WNI':'WNA';
+            $no_ktp=strtoupper(trim(addslashes($this->txtEditNoKTP->Text)));
             $alamat_rumah=strtoupper(trim(addslashes($this->txtEditAlamatKTP->Text)));
             $kelurahan=addslashes($this->txtEditKelurahan->Text);
             $kecamatan=addslashes($this->txtEditKecamatan->Text);
@@ -181,7 +182,7 @@ class CPendaftaranViaWeb extends MainPageM {
             $ta=$this->cmbEditTahunMasuk->Text;
             $idsmt=$this->cmbEditSemester->Text;           
             	
-            $str ="UPDATE formulir_pendaftaran SET nama_mhs='$nama_mhs',tempat_lahir='$tempat_lahir',tanggal_lahir='$tgl_lahir',jk='$jk',idagama=$idagama,nama_ibu_kandung='$nama_ibu_kandung',idwarga='$idwarga',idstatus='$idstatus',alamat_kantor='$alamat_kantor',alamat_rumah='$alamat_rumah',kelurahan='$kelurahan',kecamatan='$kecamatan',telp_kantor='$telp_kantor',telp_rumah='$telp_rumah',telp_hp='$telp_hp',idjp=$idjp,pendidikan_terakhir='$pendidikan_terakhir',jurusan='$jurusan',kota='$kota',provinsi='$provinsi',tahun_pa='$tahun_pa',jenis_slta='$jenisslta',asal_slta='$asal_slta',status_slta='$statusslta',nomor_ijazah='$nomor_ijazah',idkelas='$idkelas',kjur1='$kjur1',kjur2='$kjur2',ta=$ta,idsmt=$idsmt,daftar_via='WEB' WHERE no_formulir='$no_formulir'";
+            $str ="UPDATE formulir_pendaftaran SET nama_mhs='$nama_mhs',tempat_lahir='$tempat_lahir',tanggal_lahir='$tgl_lahir',jk='$jk',idagama=$idagama,nama_ibu_kandung='$nama_ibu_kandung',idwarga='$idwarga',nik='$no_ktp',idstatus='$idstatus',alamat_kantor='$alamat_kantor',alamat_rumah='$alamat_rumah',kelurahan='$kelurahan',kecamatan='$kecamatan',telp_kantor='$telp_kantor',telp_rumah='$telp_rumah',telp_hp='$telp_hp',idjp=$idjp,pendidikan_terakhir='$pendidikan_terakhir',jurusan='$jurusan',kota='$kota',provinsi='$provinsi',tahun_pa='$tahun_pa',jenis_slta='$jenisslta',asal_slta='$asal_slta',status_slta='$statusslta',nomor_ijazah='$nomor_ijazah',idkelas='$idkelas',kjur1='$kjur1',kjur2='$kjur2',ta=$ta,idsmt=$idsmt,daftar_via='WEB' WHERE no_formulir='$no_formulir'";
             $this->DB->query('BEGIN');
 			if ($this->DB->updateRecord($str)) {
                 $email=$this->txtEditEmail->Text;                
@@ -194,49 +195,13 @@ class CPendaftaranViaWeb extends MainPageM {
             $this->redirect('spmb.PendaftaranViaWeb',true);
         }
 	}
-	public function saveData ($sender,$param) {
-		if ($this->IsValid) {
-			$this->Pengguna->updateActivity();	
-			$this->idProcess='add';
-			$no_formulir=$_SESSION['addProcess'];
-			$nama_mhs=addslashes(strtoupper(trim($this->txtAddNamaMhs->Text)));			
-			$tempat_lahir=strtoupper(trim($this->txtAddTempatLahir->Text));						
-			$tgl_lahir=$this->TGL->tukarTanggal ($this->txtAddTanggalLahir->Text);
-			$jk=$this->cmbAddJK->Text;
-			$idwarga=$this->WNI->Checked===true?'WNI':'WNA';
-			$idstatus=$this->tidak_bekerja->Checked===true?'TIDAK_BEKERJA':'PEKERJA';
-			$alamat_kantor=strtoupper(trim($this->txtAddAlamatKantor->Text));						
-			$alamat_rumah=strtoupper(trim($this->txtAddAlamatRumah->Text));	
-			$telp_kantor=trim($this->txtAddNoKantor->Text);
-			$telp_rumah=trim($this->txtAddNoTelpRumah->Text);		
-			$telp_hp=trim($this->txtAddNoHP->Text);
-			$pendidikan_terakhir=strtoupper(trim($this->txtAddPendidikanTerakhir->Text));
-			$jurusan=strtoupper(trim($this->txtAddJurusan->Text));	
-			$kota=strtoupper(trim($this->txtAddKota->Text));	
-			$provinsi=strtoupper(trim($this->txtAddProvinsi->Text));	
-			$tahun_pa=strtoupper(trim($this->txtAddTahun->Text));		
-			$asal_slta=strtoupper(trim($this->txtAddAsalSlta->Text));			
-			$nomor_ijazah=trim($this->txtAddNoIjazah->Text);
-			if ($this->txtAddWaktuMendaftar->Value == '0000-00-00 00:00:00') {
-				$waktu_mendaftar=date('Y-m-d H:m:s');
-				$waktu_mendaftar=",waktu_mendaftar='$waktu_mendaftar'";
-			}
-			$str ="UPDATE formulir_pendaftaran SET nama_mhs='$nama_mhs',tempat_lahir='$tempat_lahir',tanggal_lahir='$tgl_lahir',jk='$jk',idagama=".$this->cmbAddAgama->Text.",idwarga='$idwarga',idstatus='$idstatus',alamat_kantor='$alamat_kantor',alamat_rumah='$alamat_rumah',telp_kantor='$telp_kantor',telp_rumah='$telp_rumah',telp_hp='$telp_hp',idjp=".$this->cmbAddPekerjaanOrtu->Text.",pendidikan_terakhir='$pendidikan_terakhir',jurusan='$jurusan',kota='$kota',provinsi='$provinsi',tahun_pa='$tahun_pa',jenis_slta='".$this->cmbAddJenisSlta->Text."',asal_slta='$asal_slta',status_slta='".$this->cmbAddStatusSlta->Text."',nomor_ijazah='$nomor_ijazah',kjur1=".$this->cmbAddKjur1->Text.",kjur2='".$this->cmbAddKjur2->Text."'$waktu_mendaftar,ta='".$this->cmbAddTa->Text."',idkelas='".$this->cmbAddKelas->Text."' WHERE no_formulir='$no_formulir'";
-			unset($_SESSION['addProcess']);
-			$this->DB->updateRecord($str);
-			$this->spmb->redirect('a.m.SPMB.PendaftaranViaFO');
-			
-		}else {
-			$this->idProcess='add';
-		}
-	}
 	
 	public function editRecord($sender,$param) {
 		$this->idProcess='edit';
 		$no_formulir=$this->getDataKeyField($sender,$this->RepeaterS);
         
-        $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.tempat_lahir,fp.tanggal_lahir,fp.jk,fp.idagama,a.nama_agama,fp.nama_ibu_kandung,fp.idwarga,fp.idstatus,fp.alamat_kantor,fp.alamat_rumah,kelurahan,kecamatan,fp.telp_rumah,fp.telp_kantor,fp.telp_hp,pm.email,fp.idjp,fp.pendidikan_terakhir,fp.jurusan,fp.kota,fp.provinsi,fp.tahun_pa,jp.nama_pekerjaan,fp.jenis_slta,fp.asal_slta,fp.status_slta,fp.nomor_ijazah,fp.kjur1,fp.kjur2,fp.idkelas,fp.waktu_mendaftar,fp.ta,fp.idsmt FROM formulir_pendaftaran fp,agama a,jenis_pekerjaan jp,profiles_mahasiswa pm WHERE fp.idagama=a.idagama AND fp.idjp=jp.idjp AND pm.no_formulir=fp.no_formulir AND fp.no_formulir='$no_formulir'";
-        $this->DB->setFieldTable(array('no_formulir','nama_mhs','tempat_lahir','tanggal_lahir','jk','idagama','nama_agama','nama_ibu_kandung','idwarga','idstatus','alamat_kantor','alamat_rumah','kelurahan','kecamatan','telp_rumah','telp_kantor','telp_hp','email','idjp','pendidikan_terakhir','jurusan','kota','provinsi','tahun_pa','nama_pekerjaan','jenis_slta','asal_slta','status_slta','nomor_ijazah','kjur1','kjur2','idkelas','waktu_mendaftar','ta','idsmt'));
+        $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.tempat_lahir,fp.tanggal_lahir,fp.jk,fp.idagama,a.nama_agama,fp.nama_ibu_kandung,fp.idwarga,fp.nik,fp.idstatus,fp.alamat_kantor,fp.alamat_rumah,kelurahan,kecamatan,fp.telp_rumah,fp.telp_kantor,fp.telp_hp,pm.email,fp.idjp,fp.pendidikan_terakhir,fp.jurusan,fp.kota,fp.provinsi,fp.tahun_pa,jp.nama_pekerjaan,fp.jenis_slta,fp.asal_slta,fp.status_slta,fp.nomor_ijazah,fp.kjur1,fp.kjur2,fp.idkelas,fp.waktu_mendaftar,fp.ta,fp.idsmt FROM formulir_pendaftaran fp,agama a,jenis_pekerjaan jp,profiles_mahasiswa pm WHERE fp.idagama=a.idagama AND fp.idjp=jp.idjp AND pm.no_formulir=fp.no_formulir AND fp.no_formulir='$no_formulir'";
+        $this->DB->setFieldTable(array('no_formulir','nama_mhs','tempat_lahir','tanggal_lahir','jk','idagama','nama_agama','nama_ibu_kandung','idwarga','nik','idstatus','alamat_kantor','alamat_rumah','kelurahan','kecamatan','telp_rumah','telp_kantor','telp_hp','email','idjp','pendidikan_terakhir','jurusan','kota','provinsi','tahun_pa','nama_pekerjaan','jenis_slta','asal_slta','status_slta','nomor_ijazah','kjur1','kjur2','idkelas','waktu_mendaftar','ta','idsmt'));
         $r=$this->DB->getRecord($str);
         $dataMhs=$r[1];								
         if ($dataMhs['waktu_mendaftar']=='0000-00-00 00:00:00') {							
@@ -267,6 +232,7 @@ class CPendaftaranViaWeb extends MainPageM {
         else
             $this->rdEditWNA->Checked=true;
         
+        $this->txtEditNoKTP->Text=$dataMhs['nik'];
         $this->txtEditAlamatKTP->Text=$dataMhs['alamat_rumah'];
 		$this->txtEditKelurahan->Text=$dataMhs['kelurahan'];
         $this->txtEditKecamatan->Text=$dataMhs['kecamatan'];
@@ -359,7 +325,6 @@ class CPendaftaranViaWeb extends MainPageM {
 	}
 	
 	public function checkFormulir ($sender,$param) {
-		$error='';
 		if ($this->IsValid) {			
 			try {
 				$no_formulir=trim($this->txtNoFormulir->Text);			

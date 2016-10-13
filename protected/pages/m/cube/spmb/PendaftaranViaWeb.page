@@ -119,6 +119,21 @@
                             <label>WNA</label>
                         </div>
                     </div> 
+                    <div class="form-group" id="divEditNoKTP">
+                        <label class="col-lg-2 control-label">No. KTP :</label>
+                        <div class="col-lg-3">
+                            <com:TTextBox ID="txtEditNoKTP" CssClass="form-control" />
+                            <com:TRequiredFieldValidator ID="FieldEditNoKTPValidator" ControlToValidate="txtEditNoKTP" Display="Dynamic" ErrorMessage="Isi Nomor KTP" ValidationGroup="editformulir" CssClass="has-error help-block">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divEditNoKTP').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldEditNoKTPValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divEditNoKTP').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>
                 </div>
                 <h3>Tempat Tinggal</h3>                
                 <div class="form-horizontal">

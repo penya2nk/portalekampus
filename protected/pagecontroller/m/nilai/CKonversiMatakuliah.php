@@ -4,6 +4,7 @@ class CKonversiMatakuliah extends MainPageM {
 	public function onLoad($param) {
 		parent::onLoad($param);					
         $this->showKonversiMatakuliah=true;
+        $this->showSubMenuAkademikNilai=true;
         $this->createObj('Nilai');
 		$this->Pengguna->moduleForbiden('spmb','ks');			
 		if (!$this->IsPostBack && !$this->IsCallBack) {

@@ -22,7 +22,7 @@
                 <header class="main-box-header clearfix">
                     <h2 class="pull-left"><i class="fa fa-plus"></i> Tambah Mahasiswa Konversi Berdasarkan Kurikulum <com:TLabel ID="lblAddKurikulum" /></h2>
                     <div class="icon-box pull-right">                                       
-                        <a class="btn pull-left" href="<%=$this->constructUrl('spmb.KonversiMatakuliah',true)%>">
+                        <a class="btn pull-left" href="<%=$this->constructUrl('nilai.KonversiMatakuliah',true)%>">
                             <i class="fa fa-times"></i>
                         </a>
                     </div>
@@ -276,7 +276,7 @@
                 <header class="main-box-header clearfix">
                     <h2 class="pull-left"><i class="fa fa-edit"></i> Ubah Data & Nilai Konversi Matakuliah Berdasarkan Kurikulum <com:TLabel ID="lblEditKurikulum" /></h2>
                     <div class="icon-box pull-right">                                       
-                        <a class="btn pull-left" href="<%=$this->constructUrl('spmb.KonversiMatakuliah',true)%>">
+                        <a class="btn pull-left" href="<%=$this->constructUrl('nilai.KonversiMatakuliah',true)%>">
                             <i class="fa fa-times"></i>
                         </a>
                     </div>
@@ -652,7 +652,7 @@
                                     <td><%# $this->DataItem['jumlahmatkul']%></td>
                                     <td><%# $this->DataItem['jumlahsks']%></td>
                                     <td>
-                                        <a href="<%#$this->Page->constructUrl('spmb.DetailKonversiMatakuliah',true,array('id'=>$this->DataItem['iddata_konversi']))%>" class="table-link" title="Detail Konversi Matakuliah">                                        
+                                        <a href="<%#$this->Page->constructUrl('nilai.DetailKonversiMatakuliah',true,array('id'=>$this->DataItem['iddata_konversi']))%>" class="table-link" title="Detail Konversi Matakuliah">                                        
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-eye fa-stack-1x fa-inverse"></i>

@@ -4,7 +4,7 @@
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
     <li><a href="#">SPMB</a></li>
-    <li><a href="<%=$this->constructUrl('spmb.KonversiMatakuliah',true)%>">KONVERSI MATAKULIAH</a></li>    
+    <li><a href="<%=$this->constructUrl('nilai.KonversiMatakuliah',true)%>">KONVERSI MATAKULIAH</a></li>    
     <li class="active"><span>DETAIL KONVERSI MATAKULIAH</span></li>
 </com:TContent>
 <com:TContent ID="configtools">
@@ -44,7 +44,7 @@
         <div class="main-box clearfix">               
             <header class="main-box-header clearfix">
                 <div class="icon-box pull-right">                                       
-                    <a class="btn pull-left" href="<%=$this->constructUrl('spmb.KonversiMatakuliah',true)%>">
+                    <a class="btn pull-left" href="<%=$this->constructUrl('nilai.KonversiMatakuliah',true)%>">
                         <i class="fa fa-times"></i>
                     </a>
                 </div>
@@ -177,7 +177,7 @@
                                 $('loading').hide();
                             </prop:ClientSide.OnComplete>
                         </com:TActiveLinkButton>  				
-                        <a class="btn btn-default pull-right" href="<%=$this->constructUrl('spmb.KonversiMatakuliah',true)%>" title="Keluar Detail Kartu Hasil Studi">                        
+                        <a class="btn btn-default pull-right" href="<%=$this->constructUrl('nilai.KonversiMatakuliah',true)%>" title="Keluar Detail Kartu Hasil Studi">                        
                             <i class='fa fa-times fa-lg'></i>
                         </a>
                     </div>

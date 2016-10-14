@@ -298,8 +298,10 @@ class Logic_Nilai extends Logic_Akademik {
                     }			
                     $b['am']=$am;
                     $b['m']=$m;
+                    $b['bool_isi_kuesioner']=false;
                 }else{                    
-                    $b['keterangan']='BELUM ISI KUESIONER';                            
+                    $b['keterangan']=$hm == ''?'BELUM ISI NILAI':'BELUM ISI KUESIONER';
+                    $b['bool_isi_kuesioner']=$hm == ''?false:true;
                     $b['n_kual']='';
                     $b['am']=0;
                     $b['m']=0;                

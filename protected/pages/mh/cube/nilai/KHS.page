@@ -87,12 +87,14 @@
                                         <td><%# $this->DataItem['nama_dosen']%></td>					
                                         <td><%# $this->DataItem['keterangan']%></td>
                                         <td>
-                                            <a href="<%#$this->Page->constructUrl('perkuliahan.Kuesioner',true,array('id'=>$this->DataItem['idkrsmatkul']))%>" class="table-link" title="Isi Kuesioner">                                        
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-list-alt fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>                                        
+                                            <com:TCustomHyperLink NavigateUrl="<%#$this->Page->constructUrl('perkuliahan.Kuesioner',true,array('id'=>$this->DataItem['idkrsmatkul']))%>" CssClass="table-link" Attributes.Title="Isi Kuesioner" Enabled="<%#$this->DataItem['bool_isi_kuesioner']%>">                                        
+                                                <prop:Text>
+                                                    <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                        <i class="fa fa-list-alt fa-stack-1x fa-inverse"></i>
+                                                    </span>
+                                                </prop:Text>
+                                            </com:TCustomHyperLink>                                        
                                         </td>				                                 
                                     </tr>
                                 </prop:ItemTemplate>				                

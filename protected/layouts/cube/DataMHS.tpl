@@ -23,7 +23,12 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label"><strong>NIM: </strong></label>
                                 <div class="col-sm-9">
-                                    <p class="form-control-static"><a href="<%=$this->Page->constructUrl('kemahasiswaan.ProfilMahasiswa',true,array('id'=>$this->getDataMHS('nim')))%>"><%= $this->getDataMHS('nim')%></a> <%=$this->getDataMHS('iddata_konversi') == 0? '' :'<span class="label label-warning">Pindahan</span>'%></p>
+                                    <p class="form-control-static">
+                                        <a href="<%=$this->Page->constructUrl('kemahasiswaan.ProfilMahasiswa',true,array('id'=>$this->getDataMHS('nim')))%>">
+                                            <%= $this->getDataMHS('nim')%>
+                                        </a> 
+                                        <%=$this->getDataMHS('iddata_konversi') == 0? '' :'<span class="label label-warning">Pindahan</span>'%>
+                                    </p>
                                 </div>                            
                             </div>
                             <div class="form-group">

@@ -47,9 +47,7 @@ class Login extends MainPage {
                 $auth = $this->Application->getModule ('auth');	
                 $page=$this->getGoingToPage ();		
                 $password = trim(addslashes($this->txtPassword->Text));
-                if (!$auth->login ($username.'/'.$page,$password)){			                    
-                    throw new Exception ("Gagal. Silahkan masukan username dan password dengan benar.");						
-                }        
+                $auth->login ($username.'/'.$page,$password);	
             }catch (Exception $e) {		
                 $message='<br /><div class="alert alert-danger">
                     <strong>Error!</strong>

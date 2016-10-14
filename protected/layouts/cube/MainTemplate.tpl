@@ -244,7 +244,7 @@
                                         </li>
                                         <li<%=$this->Page->showPengumuman==true?' class="active"':''%>>
                                             <a href="<%=$this->Page->constructUrl('forum.Pengumuman',true)%>">
-                                                <i class="fa fa-hacker-news"></i>
+                                                <i class="fa fa-info-circle"></i>
                                                 <span>Pengumuman</span>											
                                             </a>                                        
                                         </li>
@@ -509,7 +509,7 @@
                                         </li> 
                                         <li<%=$this->Page->showPengumuman==true?' class="active"':''%>>
                                             <a href="<%=$this->Page->constructUrl('forum.Pengumuman',true)%>">
-                                                <i class="fa fa-hacker-news"></i>
+                                                <i class="fa fa-info-circle"></i>
                                                 <span>Pengumuman</span>											
                                             </a>                                        
                                         </li>

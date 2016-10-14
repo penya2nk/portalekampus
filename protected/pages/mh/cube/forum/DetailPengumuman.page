@@ -1,6 +1,6 @@
 <%@ Title="Pengumuman" %>
 <com:TContent ID="moduleheader">
-    <i class="fa fa-hacker-news"></i> Pengumuman
+    <i class="fa fa-info-circle"></i> Pengumuman
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
     <li><a href="<%=$this->constructUrl('forum.Pengumuman',true)%>"><span>PENGUMUMAN</span></a></li>
@@ -46,7 +46,36 @@
                                     <div id="email-body">
                                         <%=$this->Page->Forum->parsingMarkdown($this->DataDiskusi['content'])%>
                                     </div>													
-                                    <div id="email-detail-attachments">                                        
+                                    <div id="email-detail-attachments">  
+                                        <div id="email-attachments-header" class="clearfix">
+                                            <div class="headline">
+                                                <i class="fa fa-paperclip"></i> <span>Attachments:</span> 
+                                            </div>                                              
+                                        </div>
+                                        <div id="email-attachments-content">
+                                            <com:TRepeater ID="RepeaterAttachment" EnableViewState="false">
+                                                <prop:HeaderTemplate>
+                                                    <ul class="clearfix">
+                                                </prop:HeaderTemplate>
+                                                <prop:ItemTemplate>
+                                                    <li>
+                                                        <div class="img">
+                                                            <i class="fa fa-file"></i>
+                                                        </div>
+                                                        <span class="name">
+                                                            <%#$this->DataItem['file_name']%> <br/>[<%#$this->DataItem['file_size']%>]
+                                                        </span>
+                                                        <a href="<%#$this->Page->setup->getAddress().'/'.$this->DataItem['file_url']%>">Download</a>
+                                                    </li>
+                                                </prop:ItemTemplate>
+                                                <prop:FooterTemplate>
+                                                    </ul>  
+                                                </prop:FooterTemplate>
+                                                <prop:EmptyTemplate>
+                                                    N.A  
+                                                </prop:EmptyTemplate>
+                                            </com:TRepeater>                         
+                                        </div>
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="main-box clearfix">

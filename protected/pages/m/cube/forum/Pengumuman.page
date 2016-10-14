@@ -1,6 +1,6 @@
 <%@ Title="Pengumuman" %>
 <com:TContent ID="moduleheader">
-    <i class="fa fa-hacker-news"></i> Pengumuman
+    <i class="fa fa-info-circle"></i> Pengumuman
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
     <li class="active"><span>PENGUMUMAN</span></li>
@@ -166,6 +166,19 @@
                                                     $('divAddTitle').removeClassName('has-error');
                                                 </prop:ClientSide.OnValidationSuccess>
                                             </com:TRequiredFieldValidator>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label">File Attachment  :</label>
+                                        <div class="col-lg-5">
+                                            <com:TActiveFileUpload ID="filepengumuman" OnFileUpload="filepengumumanUploaded" MaxFileSize="5242880" />    
+                                            <span class="">Maksimal 5 MB</span>
+                                            <com:TActiveHiddenField ID="hiddenfile_name" />
+                                            <com:TActiveHiddenField ID="hiddenfile_type" />
+                                            <com:TActiveHiddenField ID="hiddenfile_size" />
+                                            <com:TActiveHiddenField ID="hiddenfile_path" />
+                                            <com:TActiveHiddenField ID="hiddenfile_path_temp" />
+                                            <com:TActiveHiddenField ID="hiddenfile_url" />
                                         </div>
                                     </div>
                                     <div class="form-group" id="divAddIsi">

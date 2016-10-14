@@ -167,10 +167,8 @@ class UserManager extends TAuthManager {
 				$nim=$this->username;
 				$str = "SELECT nim,userpassword,k_status FROM v_datamhs WHERE nim='$nim'";
 				$this->db->setFieldTable (array('nim','userpassword','k_status'));					
-				$result = $this->db->getRecord($str);                                
-				if ($result[1]['k_status']!='A' && $result[1]['k_status']!='C') {                    
-					$result=array();
-                }
+				$result = $this->db->getRecord($str);
+                $result[1]['page']='mh';
 			break;			
 			case 'MahasiswaBaru' :
 				$this->db->setFieldTable (array('username','userpassword'));					

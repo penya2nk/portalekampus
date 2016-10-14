@@ -148,7 +148,7 @@ class Logic_Setup extends Logic_Global {
     public function cleanFileNameString ($filename) {
         $data=explode ('.',$filename);           
         $extensi=$data[count($data)-1];        
-        $replacefile=preg_replace('/\W+/', '_', $filename);
+        $replacefile=preg_replace('/\W+/', '', $filename);
         $files= str_replace($extensi, '', $replacefile);
         return "$files.$extensi";
         

@@ -108,6 +108,26 @@ class CPengumuman extends MainPageM {
 		$this->RepeaterUnread->dataBind();
         
         $this->paginationInfo2->Text=$this->getInfoPaging($this->RepeaterS);
+    }    
+    public function filepengumumanUploaded ($sender,$param) {
+        if($sender->HasFile) {
+            $file_name=$sender->FileName;
+            $file_size=$sender->FileSize;
+            $file_type=$sender->FileType;
+            $real_file_name=$this->setup->cleanFileNameString($file_name);
+            $file_path=BASEPATH."resources/files/$real_file_name";
+            $file_path_temp=BASEPATH."resources/tmp/$real_file_name";
+            $file_url="resources/files/$real_file_name";
+            
+            $this->hiddenfile_name->Value=addslashes($file_name);
+            $this->hiddenfile_type->Value=addslashes($file_type);
+            $this->hiddenfile_size->Value=addslashes($file_size);
+            $this->hiddenfile_path->Value=addslashes($file_path);
+            $this->hiddenfile_path_temp->Value=addslashes($file_path_temp);
+            $this->hiddenfile_url->Value=addslashes($file_url);
+            
+            $sender->saveAs($file_path_temp);
+        }            
     }
     public function kirimKonten ($sender,$param) {
 		if ($this->IsValid) {	
@@ -115,8 +135,18 @@ class CPengumuman extends MainPageM {
             $judul = strip_tags(addslashes($this->txtAddTitle->Text));
             $content = strip_tags(addslashes($this->txtAddContent->Text));
             $userid=$this->Pengguna->getDataUser('userid');                        
-            $nama_user=$this->Pengguna->getDataUser('username');                        
-            $str = "INSERT INTO pengumuman (idpost,idkategori,title,content,userid,tipe,nama_user,date_added) VALUES (NULL,$idkategori,'$judul','$content',$userid,'m','$nama_user',NOW())";
+            $nama_user=$this->Pengguna->getDataUser('username'); 
+            
+            $file_name=$this->hiddenfile_name->Value;
+            $file_type=$this->hiddenfile_type->Value;
+            $file_size=$this->hiddenfile_size->Value;
+            $file_path=$this->hiddenfile_path->Value;
+            $file_path_temp=$this->hiddenfile_path_temp->Value;
+            $file_url=$this->hiddenfile_url->Value;
+            
+            rename ($file_path_temp,$file_path);
+            
+            $str = "INSERT INTO pengumuman SET idpost=NULL,idkategori=$idkategori,title='$judul',content='$content',userid=$userid,tipe='m',nama_user='$nama_user',file_name='$file_name',file_type='$file_type',file_size='$file_size',file_path='$file_path',file_url='$file_url',date_added=NOW()";
             $this->DB->insertRecord($str);
             $_SESSION['currentPagePengumuman']['activeviewindex']=0;
             $this->redirect('forum.Pengumuman', true);

@@ -1,6 +1,6 @@
 <%@ Title="Pengumuman" %>
 <com:TContent ID="moduleheader">
-    <i class="fa fa-hacker-news"></i> Pengumuman
+    <i class="fa fa-info-circle"></i> Pengumuman
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
     <li class="active"><span>PENGUMUMAN</span></li>

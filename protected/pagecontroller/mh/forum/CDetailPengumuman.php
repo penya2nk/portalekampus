@@ -12,14 +12,20 @@ class CDetailPengumuman extends MainPageMHS {
             }            
             try {
                 $id=addslashes($this->request['id']);
-                $str = "SELECT fp.idpost,fp.idkategori,fk.nama_kategori,fp.title,fp.content,fp.nama_user,fp.date_added FROM pengumuman fp LEFT JOIN forumkategori fk ON (fp.idkategori=fk.idkategori)  WHERE fp.idpost=$id";        
-                $this->DB->setFieldTable (array('idpost','idkategori','nama_kategori','title','content','nama_user','date_added'));			
+                $str = "SELECT fp.idpost,fp.idkategori,fk.nama_kategori,fp.title,fp.content,fp.nama_user,file_name,file_type,file_size,file_url,fp.date_added FROM pengumuman fp LEFT JOIN forumkategori fk ON (fp.idkategori=fk.idkategori)  WHERE fp.idpost=$id";        
+                $this->DB->setFieldTable (array('idpost','idkategori','nama_kategori','title','content','nama_user','file_name','file_type','file_size','file_url','date_added'));			
                 $r=$this->DB->getRecord($str);	
                 if (isset($r[1])) {                              
                     $str="UPDATE pengumuman SET unread=0 WHERE idpost=$id";
                     $this->DB->updateRecord($str);
                     
                     $this->DataDiskusi=$r[1];
+                    $attachment=array();
+                    if ($this->DataDiskusi['file_size'] > 0) {
+                        $attachment[]=array('file_name'=>$r[1]['file_name'],'file_size'=>$this->setup->formatSizeUnits($r[1]['file_size']),'file_url'=>$r[1]['file_url']);
+                    }
+                    $this->RepeaterAttachment->DataSource=$attachment;
+                    $this->RepeaterAttachment->DataBind();
                     $_SESSION['currentPageDetailPengumuman']['DataDiskusi']=$r[1];                    
                     $this->populateData();
                 }

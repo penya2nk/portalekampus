@@ -40,19 +40,28 @@ class Autorisasi extends TModule implements IUserManager {
 	public function validateUser ($username,$password) {		
 		$um = new UserManager();
 		$um->setUser($username);
-		$result = $um->getUser();	 
+		$result = $um->getUser();
         switch ($result['page']) {
+            case 'mh' :
+                if ($result['k_status']=='A' || $result['k_status']=='C') {
+                    $pass=md5($password);                    			
+                }else{
+                    $message="Mohon maaf status Anda diluar aktif atau cuti. Hubungi Bagian Administrasi.";		
+                }
+            break;
             case 'k' :
             case 'sa' :
                 $pass=hash('sha256', $result['salt'] . hash('sha256', $password));
+                $message="Gagal. Silahkan masukan username dan password dengan benar.";
             break;
             default :
+                $message="Gagal. Silahkan masukan username dan password dengan benar.";
                 $pass=md5($password);
-        }                        
+        }    
 		if ($result['userpassword']==$pass) {
 			return true;
         }else{
-			throw new Exception ("Gagal. Silahkan masukan username dan password dengan benar.");
+			throw new Exception ($message);
         }
 		
 	}	

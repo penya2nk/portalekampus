@@ -284,7 +284,13 @@
                                         </li>    
                                         <li class="nav-header nav-header-first hidden-sm hidden-xs">
                                             SPMB
-                                        </li>                                        
+                                        </li>  
+                                        <li<%=$this->Page->showPIN==true ? ' class="active" ':''%>>                                            
+                                            <a href="<%=$this->Page->constructUrl('spmb.PIN',true)%>">
+                                                <i class="fa fa-circle-o"></i>
+                                                <span>PIN</span>                                                
+                                            </a>
+                                        </li>
                                         <li<%=$this->Page->showSubMenuSPMBPendaftaran==true?' class="active"':''%>>
                                             <a href="#" class="dropdown-toggle">
                                                 <i class="fa fa-sign-in"></i>
@@ -317,7 +323,7 @@
                                                     </a>
                                                 </li>                                                
                                                 <li>
-                                                    <a href="<%=$this->Page->constructUrl('spmb.NilaiUjian',true)%>"<%=$this->Page->showNilaiUjianPMB==true ? ' class="active" ':''%>>
+                                                    <a href="<%=$this->Page->constructUrl('spmb.NilaiUjianPMB',true)%>"<%=$this->Page->showNilaiUjianPMB==true ? ' class="active" ':''%>>
                                                         Nilai Ujian
                                                     </a>
                                                 </li>                                                

@@ -65,11 +65,11 @@ class CFormulirPendaftaran extends MainPageMB {
         $this->cmbEditAgama->Text=$dataMhs['idagama'];
         $this->cmbEditAgama->dataBind();		
         $this->txtEditNamaIbuKandung->Text=$dataMhs['nama_ibu_kandung'];
-        if ($dataMhs['idwarga']=='WNI')
+        if ($dataMhs['idwarga']=='WNI'){
             $this->rdEditWNI->Checked=true;
-        else
+        }else{
             $this->rdEditWNA->Checked=true;
-        
+        }
         $this->txtEditNoKTP->Text=$dataMhs['nik'];
         $this->txtEditAlamatKTP->Text=$dataMhs['alamat_rumah'];	
         $this->txtEditKelurahan->Text=$dataMhs['kelurahan'];

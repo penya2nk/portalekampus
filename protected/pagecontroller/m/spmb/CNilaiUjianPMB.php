@@ -1,6 +1,6 @@
 <?php
 prado::using ('Application.MainPageM');
-class CNilaiUjian extends MainPageM {
+class CNilaiUjianPMB extends MainPageM {
     public $DataUjian;
 	public function onLoad($param) {
 		parent::onLoad($param);			
@@ -8,16 +8,16 @@ class CNilaiUjian extends MainPageM {
 		$this->showNilaiUjianPMB=true;
         $this->createObj('Akademik');
 		if (!$this->IsPostBack && !$this->IsCallBack) {	
-            if (!isset($_SESSION['currentPageNilaiUjian'])||$_SESSION['currentPageNilaiUjian']['page_name']!='m.spmb.NilaiUjian') {
-				$_SESSION['currentPageNilaiUjian']=array('page_name'=>'m.spmb.NilaiUjian','page_num'=>0,'offset'=>0,'limit'=>0,'search'=>false,'kjur'=>'none','passinggrade'=>array());												
+            if (!isset($_SESSION['currentPageNilaiUjianPMB'])||$_SESSION['currentPageNilaiUjianPMB']['page_name']!='m.spmb.NilaiUjianPMB') {
+				$_SESSION['currentPageNilaiUjianPMB']=array('page_name'=>'m.spmb.NilaiUjianPMB','page_num'=>0,'offset'=>0,'limit'=>0,'search'=>false,'kjur'=>'none','passinggrade'=>array());												
 			}
-            $_SESSION['currentPageNilaiUjian']['search']=false;
+            $_SESSION['currentPageNilaiUjianPMB']['search']=false;
             $this->RepeaterS->PageSize=$this->setup->getSettingValue('default_pagesize');
 
             $daftar_prodi=$_SESSION['daftar_jurusan'];                        
             $daftar_prodi['none']='BELUM DITERIMA DI PRODI MANAPUN';
 			$this->tbCmbPs->DataSource=$daftar_prodi;
-			$this->tbCmbPs->Text=$_SESSION['currentPageNilaiUjian']['kjur'];			
+			$this->tbCmbPs->Text=$_SESSION['currentPageNilaiUjianPMB']['kjur'];			
 			$this->tbCmbPs->dataBind();
             
             $tahun_masuk=$this->DMaster->removeIdFromArray($this->DMaster->getListTA(),'none');			
@@ -34,7 +34,7 @@ class CNilaiUjian extends MainPageM {
             $this->tbCmbOutputCompress->Text= $_SESSION['outputcompress'];
             $this->tbCmbOutputCompress->DataBind();
             
-            $_SESSION['currentPageNilaiUjian']['passinggrade']=$this->DMaster->getDataPassingGrade($_SESSION['tahun_masuk']);
+            $_SESSION['currentPageNilaiUjianPMB']['passinggrade']=$this->DMaster->getDataPassingGrade($_SESSION['tahun_masuk']);
             
             $this->lblModulHeader->Text=$this->getInfoToolbar();            
             $this->populateData ();	
@@ -45,36 +45,37 @@ class CNilaiUjian extends MainPageM {
     }
 	public function changeTbTahunMasuk($sender,$param) {					
 		$_SESSION['tahun_masuk']=$this->tbCmbTahunMasuk->Text;
-        $_SESSION['currentPageNilaiUjian']['passinggrade']=$this->DMaster->getDataPassingGrade($_SESSION['tahun_masuk']);
+        $_SESSION['currentPageNilaiUjianPMB']['passinggrade']=$this->DMaster->getDataPassingGrade($_SESSION['tahun_masuk']);
         $this->lblModulHeader->Text=$this->getInfoToolbar();
 		$this->populateData();
 	}
 	public function changeTbPs ($sender,$param) {		
-        $_SESSION['currentPageNilaiUjian']['kjur']=$this->tbCmbPs->Text;
+        $_SESSION['currentPageNilaiUjianPMB']['kjur']=$this->tbCmbPs->Text;
         $this->lblModulHeader->Text=$this->getInfoToolbar();
         $this->populateData();
 	}
 	public function getInfoToolbar() {        
-        $kjur=$_SESSION['currentPageNilaiUjian']['kjur'];        		
+        $kjur=$_SESSION['currentPageNilaiUjianPMB']['kjur'];        		
         $ps=$kjur=='none'?'Yang belum diterima di Prodi Manapun':'Program Studi '.$_SESSION['daftar_jurusan'][$kjur];
 		$tahunmasuk=$this->DMaster->getNamaTA($_SESSION['tahun_masuk']);		
 		$text="$ps Tahun Masuk $tahunmasuk";
 		return $text;
 	}
+    
 	public function searchRecord ($sender,$param) {
-		$_SESSION['currentPageNilaiUjian']['search']=true;
-		$this->populateData($_SESSION['currentPageNilaiUjian']['search']);
+		$_SESSION['currentPageNilaiUjianPMB']['search']=true;
+		$this->populateData($_SESSION['currentPageNilaiUjianPMB']['search']);
 	}	
 	public function renderCallback ($sender,$param) {
 		$this->RepeaterS->render($param->NewWriter);	
 	}
 	public function Page_Changed ($sender,$param) {
-		$_SESSION['currentPageNilaiUjian']['page_num']=$param->NewPageIndex;
-		$this->populateData($_SESSION['currentPageNilaiUjian']['search']);
+		$_SESSION['currentPageNilaiUjianPMB']['page_num']=$param->NewPageIndex;
+		$this->populateData($_SESSION['currentPageNilaiUjianPMB']['search']);
 	}		
 	public function populateData ($search=false) {	
         $tahun_masuk=$_SESSION['tahun_masuk'];
-        $kjur=$_SESSION['currentPageNilaiUjian']['kjur'];        
+        $kjur=$_SESSION['currentPageNilaiUjianPMB']['kjur'];        
         if ($search) {                        
             $str_kjur=$kjur=='none'?' WHERE (num.kjur=0 OR num.kjur IS NULL)':" AND num.kjur=$kjur";	                
             $str = "SELECT fp.no_formulir,fp.nama_mhs,ku.tgl_ujian,ts.nama_tempat,num.kjur,num.jumlah_soal,num.jawaban_benar,num.jawaban_salah,num.nilai,fp.kjur1,fp.kjur2,num.passinggrade,num.kjur AS diterima_di_prodi FROM kartu_ujian ku JOIN formulir_pendaftaran fp ON (fp.no_formulir=ku.no_formulir) JOIN tempat_spmb ts ON (ku.idtempat_spmb=ts.idtempat_spmb) JOIN nilai_ujian_masuk num ON (ku.no_formulir=num.no_formulir)$str_kjur";
@@ -96,21 +97,21 @@ class CNilaiUjian extends MainPageM {
             $str = "SELECT fp.no_formulir,fp.nama_mhs,ku.tgl_ujian,ts.nama_tempat,num.kjur,num.jumlah_soal,num.jawaban_benar,num.jawaban_salah,num.nilai,fp.kjur1,fp.kjur2,num.passinggrade,num.kjur AS diterima_di_prodi FROM kartu_ujian ku JOIN formulir_pendaftaran fp ON (fp.no_formulir=ku.no_formulir) JOIN tempat_spmb ts ON (ku.idtempat_spmb=ts.idtempat_spmb) JOIN nilai_ujian_masuk num ON (ku.no_formulir=num.no_formulir) WHERE fp.ta='$tahun_masuk'$str_kjur";
             $jumlah_baris=$this->DB->getCountRowsOfTable("kartu_ujian ku JOIN formulir_pendaftaran fp ON (fp.no_formulir=ku.no_formulir) JOIN tempat_spmb ts ON (ku.idtempat_spmb=ts.idtempat_spmb) JOIN nilai_ujian_masuk num ON (ku.no_formulir=num.no_formulir) WHERE fp.ta='$tahun_masuk'$str_kjur",'ku.no_formulir');			            
         }	
-		$this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageNilaiUjian']['page_num'];
+		$this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageNilaiUjianPMB']['page_num'];
 		$this->RepeaterS->VirtualItemCount=$jumlah_baris;
 		$offset=$this->RepeaterS->CurrentPageIndex*$this->RepeaterS->PageSize;
 		$limit=$this->RepeaterS->PageSize;
 		if (($offset+$limit)>$this->RepeaterS->VirtualItemCount) {
 			$limit=$this->RepeaterS->VirtualItemCount-$offset;
 		}
-		if ($limit < 0) {$offset=0;$limit=$this->setup->getSettingValue('default_pagesize');$_SESSION['currentPageNilaiUjian']['page_num']=0;}
+		if ($limit < 0) {$offset=0;$limit=$this->setup->getSettingValue('default_pagesize');$_SESSION['currentPageNilaiUjianPMB']['page_num']=0;}
 		$str = $str . " ORDER BY fp.nama_mhs ASC LIMIT $offset,$limit";				
-        $_SESSION['currentPageNilaiUjian']['offset']=$offset;
-        $_SESSION['currentPageNilaiUjian']['limit']=$limit;
+        $_SESSION['currentPageNilaiUjianPMB']['offset']=$offset;
+        $_SESSION['currentPageNilaiUjianPMB']['limit']=$limit;
         $this->DB->setFieldTable(array('no_formulir','nama_mhs','tgl_ujian','jumlah_soal','jawaban_benar','jawaban_salah','nilai','kjur1','kjur2','passinggrade','diterima_di_prodi'));				
 		$r = $this->DB->getRecord($str,$offset+1);
         $result=array();
-        $passinggrade=$_SESSION['currentPageNilaiUjian']['passinggrade'];        
+        $passinggrade=$_SESSION['currentPageNilaiUjianPMB']['passinggrade'];        
         while (list($k,$v)=each($r)) { 
             if ($kjur=='none') {
                 $pil1='N.A';
@@ -193,7 +194,7 @@ class CNilaiUjian extends MainPageM {
         $kjur=$param->Value;		
         if ($kjur != '') {
             try {
-                $passinggrade=$_SESSION['currentPageNilaiUjian']['passinggrade'][$kjur];
+                $passinggrade=$_SESSION['currentPageNilaiUjianPMB']['passinggrade'][$kjur];
                 if (!($passinggrade > 0)) {
                     throw new Exception ("Untuk Program studi ini, Nilai passing grade belum disetting.");	
                 }               
@@ -207,16 +208,16 @@ class CNilaiUjian extends MainPageM {
 		if ($this->IsValid) {		            
             $id=$this->hiddenid->Value;
             $prodi=$this->cmbAddKjur->Text;
-            $passinggrade=$_SESSION['currentPageNilaiUjian']['passinggrade'][$prodi];
+            $passinggrade=$_SESSION['currentPageNilaiUjianPMB']['passinggrade'][$prodi];
 			$str = "UPDATE nilai_ujian_masuk SET passinggrade=$passinggrade,ket_lulus=1,kjur=$prodi WHERE idnilai_ujian_masuk=$id";
 			$this->DB->updateRecord($str);
-			$this->redirect('spmb.NilaiUjian',true);
+			$this->redirect('spmb.NilaiUjianPMB',true);
 		}
 	}
     public function printOut ($sender,$param) {
         $this->createObj('reportspmb');
         $tahun_masuk=$_SESSION['tahun_masuk'];
-        $kjur=$_SESSION['currentPageNilaiUjian']['kjur'];                       
+        $kjur=$_SESSION['currentPageNilaiUjianPMB']['kjur'];                       
         $this->linkOutput->Text='';
         $this->linkOutput->NavigateUrl='#';
         switch ($_SESSION['outputreport']) {
@@ -236,7 +237,7 @@ class CNilaiUjian extends MainPageM {
                 $dataReport['linkoutput']=$this->linkOutput; 
                 $this->report->setDataReport($dataReport); 
                 $this->report->setMode($_SESSION['outputreport']);                
-                $this->report->printNilaiUjian($_SESSION['currentPageNilaiUjian']['passinggrade'],$_SESSION['daftar_jurusan']);
+                $this->report->printNilaiUjian($_SESSION['currentPageNilaiUjianPMB']['passinggrade'],$_SESSION['daftar_jurusan']);
             break;        
             
         }

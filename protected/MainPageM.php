@@ -49,6 +49,10 @@ class MainPageM extends MainPage {
      */
     public $showKonversiMatakuliah=false;
     /**     
+     * show page PIN [spmb]
+     */
+    public $showPIN=false;
+    /**     
      * show sub menu spmb pendaftaran
      */
     public $showSubMenuSPMBPendaftaran=false;
@@ -65,7 +69,7 @@ class MainPageM extends MainPage {
      */
     public $showSubMenuSPMBUjianPMB=false;
     /**     
-     * show page passing grade [ujian PMB]
+     * show page passing grade [spmb ujian PMB]
      */
     public $showPassingGradePMB=false; 
     /**     

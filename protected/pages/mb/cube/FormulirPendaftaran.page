@@ -690,6 +690,16 @@
                                     $('divAddEmail').removeClassName('has-error');
                                 </prop:ClientSide.OnValidationSuccess>
                             </com:TRequiredFieldValidator>
+                            <com:TEmailAddressValidator ID="FieldAddEmailFormatValidator" ValidationGroup="addformulir" ControlToValidate="txtAddEmail" FocusOnError="true" Display="Dynamic" Text="Format Alamat email salah.">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddEmail').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldAddEmailFormatValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddEmail').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TEmailAddressValidator>
+                            <com:TActiveCustomValidator ID="addEmail" ControlToValidate="txtAddEmail" Display="Dynamic" OnServerValidate="checkEmail" ValidationGroup="addformulir" CssClass="has-error help-block" />
                         </div>
                     </div> 
                 </div>

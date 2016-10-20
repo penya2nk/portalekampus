@@ -174,5 +174,38 @@ class CDaftarMahasiswa extends MainPageM {
 		$this->RepeaterS->dataBind();     
         $this->paginationInfo->Text=$this->getInfoPaging($this->RepeaterS);
     }
+    public function printOut ($sender,$param) {	
+        $this->createObj('reportakademik');
+        $this->linkOutput->Text='';
+        $this->linkOutput->NavigateUrl='#';
+        switch ($_SESSION['outputreport']) {
+            case  'summarypdf' :
+                $messageprintout="Mohon maaf Print out pada mode summary pdf tidak kami support.";                
+            break;
+            case  'summaryexcel' :
+                $messageprintout="Mohon maaf Print out pada mode summary excel tidak kami support.";                
+            break;
+            case  'excel2007' :
+                $messageprintout="";
+                $dataReport['kjur']=$_SESSION['kjur'];
+                $dataReport['nama_ps']=$_SESSION['daftar_jurusan'][$_SESSION['kjur']];                
+                
+                $dataReport['tahun_masuk']=$_SESSION['tahun_masuk'];                 
+                $dataReport['nama_tahun']=$this->DMaster->getNamaTA($_SESSION['tahun_masuk']);     
+                
+                $dataReport['linkoutput']=$this->linkOutput;
+                $this->report->setDataReport($dataReport); 
+                $this->report->setMode($_SESSION['outputreport']);
+                
+                $this->report->printDaftarMahasiswa($this->Demik,$this->DMaster); 
+            break;
+            case  'pdf' :
+                $messageprintout="Mohon maaf Print out pada mode pdf belum kami support.";                
+            break;
+        }
+        $this->lblMessagePrintout->Text=$messageprintout;
+        $this->lblPrintout->Text='Daftar Mahasiswa';
+        $this->modalPrintOut->show();
+    }
 }
 ?>

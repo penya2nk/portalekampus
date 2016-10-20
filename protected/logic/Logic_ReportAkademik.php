@@ -217,6 +217,131 @@ class Logic_ReportAkademik extends Logic_Report {
         $this->setLink($this->dataReport['linkoutput'],"Daftar Matakuliah $nama_ps");
     }
     /**
+     * digunakan untuk mencetak data mahasiwa mahasiswa
+     * @return type void
+     */
+    public function printDaftarMahasiswa ($objDemik,$objDMaster) {
+        $kjur=$this->dataReport['kjur'];
+        $nama_ps=$this->dataReport['nama_ps'];
+        $tahun_masuk=$this->dataReport['tahun_masuk'];
+        $nama_tahun=$this->dataReport['nama_tahun'];
+        switch ($this->getDriver()) {
+            case 'excel2003' :               
+            case 'excel2007' :    
+                $this->setHeaderPT('S');                
+                $sheet=$this->rpt->getActiveSheet();
+                $this->rpt->getDefaultStyle()->getFont()->setName('Arial');                
+                $this->rpt->getDefaultStyle()->getFont()->setSize('9');                                    
+                
+                $sheet->mergeCells("A7:S7");
+                $sheet->getRowDimension(7)->setRowHeight(20);
+                $sheet->setCellValue("A7","DAFTAR MAHASISWA");
+                $sheet->mergeCells("A8:S8");
+                $sheet->getRowDimension(8)->setRowHeight(20);
+                $sheet->setCellValue("A8","PROGRAM STUDI $nama_ps TAHUN MASUK $nama_tahun");   
+                
+                $styleArray=array(
+								'font' => array('bold' => true,
+                                                'size' => 16),
+								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+												   'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+							);
+                $sheet->getStyle("A7:S9")->applyFromArray($styleArray);
+                
+                $sheet->getRowDimension(11)->setRowHeight(25); 
+                $sheet->getColumnDimension('C')->setWidth(3);
+                $sheet->getColumnDimension('D')->setWidth(10);
+                $sheet->getColumnDimension('E')->setWidth(15);
+                $sheet->getColumnDimension('F')->setWidth(35);
+                $sheet->getColumnDimension('G')->setWidth(8);
+                $sheet->getColumnDimension('H')->setWidth(13);
+                $sheet->getColumnDimension('I')->setWidth(35);
+                $sheet->getColumnDimension('J')->setWidth(25);
+                $sheet->getColumnDimension('K')->setWidth(18);
+                $sheet->getColumnDimension('L')->setWidth(35);
+                $sheet->getColumnDimension('M')->setWidth(10);
+                $sheet->getColumnDimension('N')->setWidth(19);
+                $sheet->getColumnDimension('O')->setWidth(40);
+                $sheet->getColumnDimension('P')->setWidth(25);
+                $sheet->getColumnDimension('Q')->setWidth(25);
+                $sheet->getColumnDimension('R')->setWidth(15);
+                
+                $sheet->setCellValue('A11','NO');
+                $sheet->mergeCells("B11:C11");
+                $sheet->setCellValue('B11','NO. FORMULIR');
+                $sheet->setCellValue('D11','NIM');
+                $sheet->setCellValue('E11','NIRM');
+                $sheet->setCellValue('F11','NAMA');
+                $sheet->setCellValue('G11','JK');
+                $sheet->setCellValue('H11','STATUS AKHIR');
+                $sheet->setCellValue('I11','DOSEN WALI');
+                $sheet->setCellValue('J11','TEMPAT LAHIR');
+                $sheet->setCellValue('K11','TANGGAL LAHIR');
+                $sheet->setCellValue('L11','NAMA IBU');
+                $sheet->setCellValue('M11','AGAMA');
+                $sheet->setCellValue('N11','NO. NIK');
+                $sheet->setCellValue('O11','ALAMAT');
+                $sheet->setCellValue('P11','KELURAHAN');
+                $sheet->setCellValue('Q11','KECAMATAN');
+                $sheet->setCellValue('R11','KELAS');
+                $sheet->setCellValue('S11','KET.');
+               
+                $styleArray=array(
+								'font' => array('bold' => true),
+								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+												   'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+								'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+							);
+                $sheet->getStyle("A11:S11")->applyFromArray($styleArray);
+                $sheet->getStyle("A11:S11")->getAlignment()->setWrapText(true);
+                
+                $str = "SELECT fp.no_formulir,rm.nim,rm.nirm,rm.no_formulir,fp.nama_mhs,fp.jk,rm.k_status,rm.iddosen_wali,fp.tempat_lahir,fp.tanggal_lahir,fp.nama_ibu_kandung,a.nama_agama,fp.nik,fp.alamat_rumah,fp.kelurahan,fp.kecamatan,rm.idkelas FROM formulir_pendaftaran fp JOIN register_mahasiswa rm ON (fp.no_formulir=rm.no_formulir) LEFT JOIN agama a ON (a.idagama=fp.idagama) WHERE rm.kjur='$kjur' AND fp.ta=$tahun_masuk ORDER BY fp.nama_mhs ASC,rm.idkelas ASC";
+                $this->db->setFieldTable(array('no_formulir','nim','nirm','no_formulir','nama_mhs','jk','k_status','iddosen_wali','tempat_lahir','tanggal_lahir','nama_ibu_kandung','nama_agama','nik','alamat_rumah','kelurahan','kecamatan','idkelas'));	
+                $r = $this->db->getRecord($str);
+                $row=12;
+                while (list($k,$v)=each ($r)) {            
+                    $sheet->setCellValue("A$row",$v['no']);
+                    $sheet->mergeCells("B$row:C$row");
+                    $sheet->setCellValue("B$row",$v['no_formulir']);
+                    $sheet->setCellValueExplicit("D$row",$v['nim'],PHPExcel_Cell_DataType::TYPE_STRING);
+                    $sheet->setCellValueExplicit("E$row",$v['nirm'],PHPExcel_Cell_DataType::TYPE_STRING);
+                    $sheet->setCellValue("F$row",$v['nama_mhs']);
+                    $sheet->setCellValue("G$row",$v['jk']);
+                    $sheet->setCellValue("H$row",$objDMaster->getNamaStatusMHSByID($v['k_status']));
+                    $sheet->setCellValue("I$row",$objDMaster->getNamaDosenWaliByID($v['iddosen_wali']));
+                    $sheet->setCellValue("J$row",$v['tempat_lahir']);
+                    $sheet->setCellValue("K$row",$this->tgl->tanggal('j F Y',$v['tanggal_lahir']));
+                    $sheet->setCellValue("L$row",$v['nama_ibu_kandung']);
+                    $sheet->setCellValue("M$row",$v['nama_agama']);
+                    $sheet->setCellValueExplicit("N$row",$v['nik'],PHPExcel_Cell_DataType::TYPE_STRING);                    
+                    $sheet->setCellValue("O$row",$v['alamat_rumah']);
+                    $sheet->setCellValue("P$row",$v['kelurahan']);
+                    $sheet->setCellValue("Q$row",$v['kecamatan']);
+                    $sheet->setCellValue("R$row",$objDMaster->getNamaKelasByID($v['idkelas']));
+                    $sheet->setCellValue("S$row",$v['keterangan']);
+                    $row+=1;
+                } 
+                $row-=1;
+                $styleArray=array(								
+                                    'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                                                       'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+                                    'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+                                );																					 
+                $sheet->getStyle("A12:S$row")->applyFromArray($styleArray);
+                $sheet->getStyle("A12:S$row")->getAlignment()->setWrapText(true);
+                
+                $styleArray=array(								
+                                    'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_LEFT)
+                                );																					 
+                $sheet->getStyle("F12:F$row")->applyFromArray($styleArray);
+                $sheet->getStyle("I12:M$row")->applyFromArray($styleArray);
+                $sheet->getStyle("O12:R$row")->applyFromArray($styleArray);
+                $this->printOut("daftarmahasiswa$kjur");
+            break;
+        }
+        $this->setLink($this->dataReport['linkoutput'],"Daftar Mahasiswa $nama_ps tahun masuk $nama_tahun");
+    }
+    /**
      * digunakan untuk mencetak daftar hadir mahasiswa
      * @return type void
      */

@@ -3,6 +3,9 @@
     <i class="fa fa-user"></i> Daftar Mahasiswa Program Studi <small><com:TActiveLabel ID="lblProdi" /></small>
 </com:TContent>
 <com:TContent ID="configtools">    
+<com:TContent ID="csscontent">
+<link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/css/libs/nifty-component.css"/>
+</com:TContent>
 <div id="config-tool" class="closed">
     <a id="config-tool-cog">
         <i class="fa fa-cog"></i>
@@ -108,56 +111,33 @@
     <li class="active">DAFTAR MAHASISWA</li>
 </com:TContent>
 <com:TContent ID="maincontent">
-<com:TPanel Visible="<%= $this->getDefaultProcess() %>">       
-    <com:TActiveRepeater ID="RepeaterKonsentrasi" DataKeyField="idkonsentrasi">                                    
-        <prop:HeaderTemplate>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="main-box clearfix">
-                        <header class="main-box-header clearfix">
-                            <h2 class="pull-left">Konsentrasi Program Studi :</h2>
-                            <div class="icon-box pull-right">
-                                <com:TActiveLinkButton ID="btnResetKonsentrasi" CssClass="btn btn-warning pull-left" OnClick="Page.resetKonsentrasi" ClientSide.PostState="false" Attributes.Title="Reset">
-                                    <prop:Text><i class="fa fa-refresh"></i></prop:Text>
-                                    <prop:ClientSide.OnPreDispatch>                                                                   
-                                        $('loading').show(); 
-                                        $('<%=$this->btnResetKonsentrasi->ClientId%>').disabled='disabled';						
-                                    </prop:ClientSide.OnPreDispatch>
-                                    <prop:ClientSide.OnLoading>
-                                        $('<%=$this->btnResetKonsentrasi->ClientId%>').disabled='disabled';						
-                                    </prop:ClientSide.OnLoading>
-                                    <prop:ClientSide.OnComplete>																	                                    						                                                                            
-                                        $('<%=$this->btnResetKonsentrasi->ClientId%>').disabled='';
-                                        $('loading').hide(); 
-                                    </prop:ClientSide.OnComplete>
-                                </com:TActiveLinkButton>  
-                            </div>
-                        </header>
-                        <div class="main-box-body">
-        </prop:HeaderTemplate>
-        <prop:ItemTemplate>
-                            <com:TActiveLinkButton ID="btnDetailKonsentrasi" OnClick="Page.filterKonsentrasi" ClientSide.PostState="false" Enabled="<%#$_SESSION['currentPageDaftarMahasiswa']['idkonsentrasi']=='none'||$_SESSION['currentPageDaftarMahasiswa']['idkonsentrasi']!=$this->DataItem['idkonsentrasi']%>" CssClass="btn btn-link">
-                                <prop:Text><%#$this->DataItem['nama_konsentrasi']%> (<%#$this->DataItem['jumlah_mhs']%>)</prop:Text>
-                                <prop:ClientSide.OnPreDispatch>                                                                   
-                                    $('loading').show(); 
-                                    $('<%=$this->btnDetailKonsentrasi->ClientId%>').disabled='disabled';						
-                                </prop:ClientSide.OnPreDispatch>
-                                <prop:ClientSide.OnLoading>
-                                    $('<%=$this->btnDetailKonsentrasi->ClientId%>').disabled='disabled';						
-                                </prop:ClientSide.OnLoading>
-                                <prop:ClientSide.OnComplete>																	                                    						                                                                            
-                                    $('<%=$this->btnDetailKonsentrasi->ClientId%>').disabled='';
-                                    $('loading').hide(); 
-                                </prop:ClientSide.OnComplete>
-                            </com:TActiveLinkButton> |                                         
-        </prop:ItemTemplate>
-        <prop:FooterTemplate> 
-                       </div>
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>"> 
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left">&nbsp;</h2> 
+                    <div class="filter-block pull-right">
+                        <com:TActiveLinkButton ID="btnPrintOut" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out Rekap">
+                            <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnPrintOut->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnPrintOut->ClientId%>').disabled='';				
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton> 									
                     </div>
+                </header>
+                <div class="main-box-body clearfix">  
                 </div>
             </div>
-        </prop:FooterTemplate>
-    </com:TActiveRepeater>
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="main-box clearfix">
@@ -214,7 +194,56 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>    
+    <com:TActiveRepeater ID="RepeaterKonsentrasi" DataKeyField="idkonsentrasi">                                    
+        <prop:HeaderTemplate>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="main-box clearfix">
+                        <header class="main-box-header clearfix">
+                            <h2 class="pull-left">Konsentrasi Program Studi :</h2>
+                            <div class="icon-box pull-right">
+                                <com:TActiveLinkButton ID="btnResetKonsentrasi" CssClass="btn btn-warning pull-left" OnClick="Page.resetKonsentrasi" ClientSide.PostState="false" Attributes.Title="Reset">
+                                    <prop:Text><i class="fa fa-refresh"></i></prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->btnResetKonsentrasi->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnResetKonsentrasi->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                        $('<%=$this->btnResetKonsentrasi->ClientId%>').disabled='';
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveLinkButton>  
+                            </div>
+                        </header>
+                        <div class="main-box-body">
+        </prop:HeaderTemplate>
+        <prop:ItemTemplate>
+                            <com:TActiveLinkButton ID="btnDetailKonsentrasi" OnClick="Page.filterKonsentrasi" ClientSide.PostState="false" Enabled="<%#$_SESSION['currentPageDaftarMahasiswa']['idkonsentrasi']=='none'||$_SESSION['currentPageDaftarMahasiswa']['idkonsentrasi']!=$this->DataItem['idkonsentrasi']%>" CssClass="btn btn-link">
+                                <prop:Text><%#$this->DataItem['nama_konsentrasi']%> (<%#$this->DataItem['jumlah_mhs']%>)</prop:Text>
+                                <prop:ClientSide.OnPreDispatch>                                                                   
+                                    $('loading').show(); 
+                                    $('<%=$this->btnDetailKonsentrasi->ClientId%>').disabled='disabled';						
+                                </prop:ClientSide.OnPreDispatch>
+                                <prop:ClientSide.OnLoading>
+                                    $('<%=$this->btnDetailKonsentrasi->ClientId%>').disabled='disabled';						
+                                </prop:ClientSide.OnLoading>
+                                <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                    $('<%=$this->btnDetailKonsentrasi->ClientId%>').disabled='';
+                                    $('loading').hide(); 
+                                </prop:ClientSide.OnComplete>
+                            </com:TActiveLinkButton> |                                         
+        </prop:ItemTemplate>
+        <prop:FooterTemplate> 
+                       </div>
+                    </div>
+                </div>
+            </div>
+        </prop:FooterTemplate>
+    </com:TActiveRepeater>
     <div class="table-responsive">
         <com:TActiveRepeater ID="RepeaterS" DataKeyField="nim" AllowPaging="true" PageSize="6" AllowCustomPaging="true">
             <prop:HeaderTemplate>			
@@ -300,5 +329,6 @@
             </div>
         </div>
     </div>
-</com:TPanel>	
+</com:TPanel>
+<%include Application.layouts.cube.ModalPrintOut%>
 </com:TContent>

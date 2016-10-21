@@ -283,32 +283,11 @@ class Logic_Nilai extends Logic_Akademik {
 		$this->db->setFieldTable(array('idkrsmatkul','idsmt','tahun','kmatkul','nmatkul','sks','n_kual','nidn','nama_dosen','telah_isi_kuesioner'));
 		$r=$this->db->getRecord($str);		
 		$result=array();
-        if ($cek_isikuesioner) {
-            while (list($a,$b)=each($r)) {
-                $b['kmatkul']=$this->getKMatkul($b['kmatkul']);
-                $hm=$b['n_kual'];
-                if ($b['tahun']>=2015){
-                    if ($b['telah_isi_kuesioner']) {  
-                        if ($hm == '') {
-                            $am=0;
-                            $m=0;
-                            $hm='-';
-                        }else {
-                            $am=$this->AngkaMutu[$hm];
-                            $m=$am*$b['sks'];
-                        }			
-                        $b['am']=$am;
-                        $b['m']=$m;
-                        $b['bool_isi_kuesioner']=false;
-                    }else{                    
-                        $b['keterangan']=$hm == ''?'BELUM ISI NILAI':'BELUM ISI KUESIONER';
-                        $b['bool_isi_kuesioner']=$hm == ''?false:true;
-                        $b['n_kual']='';
-                        $b['am']=0;
-                        $b['m']=0;                
-                    }
-                    $result[$a]=$b;
-                }else{                                
+		while (list($a,$b)=each($r)) {
+            $b['kmatkul']=$this->getKMatkul($b['kmatkul']);
+            $hm=$b['n_kual'];
+            if ($b['tahun']>=2015){
+                if ($b['telah_isi_kuesioner']) {  
                     if ($hm == '') {
                         $am=0;
                         $m=0;
@@ -316,22 +295,19 @@ class Logic_Nilai extends Logic_Akademik {
                     }else {
                         $am=$this->AngkaMutu[$hm];
                         $m=$am*$b['sks'];
-                    }	                   
-                    if ($b['telah_isi_kuesioner']) {
-                        $b['keterangan']='-';
-                    }else{
-                        $b['keterangan']=$hm == '-'?'BELUM ISI NILAI':'BELUM ISI KUESIONER';
-                    }
+                    }			
                     $b['am']=$am;
                     $b['m']=$m;
-
-                    $result[$a]=$b;
-                }			
-            }
-        }else{
-            while (list($a,$b)=each($r)) {
-                $b['kmatkul']=$this->getKMatkul($b['kmatkul']);
-                $hm=$b['n_kual'];                
+                    $b['bool_isi_kuesioner']=false;
+                }else{                    
+                    $b['keterangan']=$hm == ''?'BELUM ISI NILAI':'BELUM ISI KUESIONER';
+                    $b['bool_isi_kuesioner']=$hm == ''?false:true;
+                    $b['n_kual']='';
+                    $b['am']=0;
+                    $b['m']=0;                
+                }
+                $result[$a]=$b;
+            }else{                                
                 if ($hm == '') {
                     $am=0;
                     $m=0;
@@ -342,14 +318,10 @@ class Logic_Nilai extends Logic_Akademik {
                 }			
                 $b['am']=$am;
                 $b['m']=$m;
-                if ($b['telah_isi_kuesioner']) {
-                    $b['keterangan']='-';
-                }else{
-                    $b['keterangan']=$hm == '-'?'BELUM ISI NILAI':'BELUM ISI KUESIONER';
-                }
-                $result[$a]=$b;                    
-            }
-        }
+                
+                $result[$a]=$b;
+            }			
+		}
 		$this->DataNilai=$result;		
 		return $result;
 	}

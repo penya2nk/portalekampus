@@ -68,7 +68,7 @@ class CKHS extends MainPageMHS {
                 
 				if (!$data['bool'])throw new Exception ("Anda tidak bisa melihat KHS karena Anda baru membayar (".$this->Finance->toRupiah($data['total_bayar'],false)."), dari total kewajiban sebesar (".$this->Finance->toRupiah($data['total_biaya'],false).").");		
 			}			
-			$khs = $this->Nilai->getKHS($_SESSION['ta'],$_SESSION['semester'],true);            
+			$khs = $this->Nilai->getKHS($_SESSION['ta'],$_SESSION['semester']);            
 			if(isset($khs[1])){
 				$this->NilaiSemesterLalu=$this->Nilai->getKumulatifSksDanNmSemesterLalu($_SESSION['ta'],$_SESSION['semester']);				
                 $this->NilaiSemesterSekarang=$this->Page->Nilai->getIPKSampaiTASemester($_SESSION['ta'],$_SESSION['semester'],'ipksksnm');

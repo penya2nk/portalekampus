@@ -112,7 +112,8 @@
                                         <th scope="col">AM</th>
                                         <th scope="col" style="text-align:right">SKS</th>
                                         <th scope="col" style="text-align:right">M</th>
-                                        <th scope="col">DOSEN</th>                                        
+                                        <th scope="col">DOSEN</th>    
+                                        <th scope="col">KETERANGAN</th>
                                     </tr>								
                                     </thead>
                                     <tbody>
@@ -122,11 +123,12 @@
                                     <td><%# $this->DataItem['no']%></td>
                                     <td><%# $this->DataItem['kmatkul']%></td>
                                     <td><%# $this->DataItem['nmatkul']%></td>
-                                    <td><%# $this->DataItem['n_kual']==''?'-':$this->DataItem['n_kual']%></td>
-                                    <td><%# $this->DataItem['am']==''?'-':$this->DataItem['am']%></td>										
+                                    <td><%# $this->DataItem['n_kual']===''?'-':$this->DataItem['n_kual']%></td>
+                                    <td><%# $this->DataItem['am']===''?'-':$this->DataItem['am']%></td>										
                                     <td style="text-align:right"><%# $this->DataItem['sks']%></td>							
                                     <td style="text-align:right"><%# $this->DataItem['m']%></td>
-                                    <td><%# $this->DataItem['nama_dosen']%></td>					                                   	                                 
+                                    <td><%# $this->DataItem['nama_dosen']%></td>	
+                                    <td><%# $this->DataItem['keterangan']%></td>
                                 </tr>
                             </prop:ItemTemplate>				                
                             <prop:FooterTemplate>               

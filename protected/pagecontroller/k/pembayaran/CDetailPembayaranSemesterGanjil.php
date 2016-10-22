@@ -36,12 +36,11 @@ class CDetailPembayaranSemesterGanjil Extends MainPageK {
                 $datamhs['nama_konsentrasi']=($datamhs['idkonsentrasi']==0) ? '-':$datamhs['nama_konsentrasi'];
 
                 $nama_dosen=$this->DMaster->getNamaDosenWaliByID($datamhs['iddosen_wali']);				                    
-                $datamhs['nama_dosen']=$nama_dosen;                
-                $this->Finance->setDataMHS($datamhs);
-                
+                $datamhs['nama_dosen']=$nama_dosen;
                 $datamhs['no_transaksi']=isset($_SESSION['currentPagePembayaranSemesterGanjil']['DataMHS']['no_transaksi']) ? $_SESSION['currentPagePembayaranSemesterGanjil']['DataMHS']['no_transaksi'] : 'none';
                 $_SESSION['currentPagePembayaranSemesterGanjil']['DataMHS']=$datamhs;         
                 $this->checkPembayaranSemesterLalu ();
+                $this->Finance->setDataMHS($datamhs);
                 CDetailPembayaranSemesterGanjil::$KewajibanMahasiswa=$this->Finance->getTotalBiayaMhsPeriodePembayaran ('lama');
                 $this->populateTransaksi();
             }catch (Exception $ex) {

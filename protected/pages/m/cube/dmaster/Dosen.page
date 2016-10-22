@@ -1,31 +1,78 @@
-<%@ Title="Sistem - User Manajemen" %>
+<%@ Title="Data Master - Dosen" %>
 <com:TContent ID="moduleheader">
-    <i class="fa fa-user"></i> User Manajemen</small>
+    <i class="fa fa-user"></i> Dosen</small>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
-    <li><a href="#">SETTING</a></li> 
-    <li><a href="#">SISTEM</a></li>
-    <li class="active"><span>USER MANAJEMEN</span></li>
+    <li><a href="#">DATA MASTER</a></li>
+    <li class="active"><span>DOSEN</span></li>
 </com:TContent>
 <com:TContent ID="maincontent">  
 <com:TPanel Visible="<%= $this->getAddProcess(false) %>" CssClass="row">                
     <div class="col-lg-12">
         <div class="main-box">
             <header class="main-box-header clearfix">
-                <h2 class="pull-left"><i class="fa fa-plus"></i> Tambah User</h2>
+                <h2 class="pull-left"><i class="fa fa-plus"></i> Tambah Dosen</h2>
                 <div class="icon-box pull-right">                                       
-                    <a class="btn pull-left" href="<%=$this->constructUrl('settings.UserManajemen',true)%>">
+                    <a class="btn pull-left" href="<%=$this->constructUrl('dmaster.Dosen',true)%>">
                         <i class="fa fa-times"></i>
                     </a>
                 </div>
             </header> 
             <div class="main-box-body clearfix">
                 <div class="form-horizontal">
+                    <div class="form-group" id="divAddNIDN">
+                        <label class="col-lg-2 control-label">NIDN / NIDK :</label>
+                        <div class="col-lg-4">
+                            <com:TTextBox ID="txtAddNIDN" CssClass="form-control" MaxLength="10" Width="120px" />
+                            <com:TRequiredFieldValidator ID="FieldAddNIDNValidator" ControlToValidate="txtAddNIDN" Display="Dynamic" ErrorMessage="Isi NIDN / NIDK Dosen (Untuk dosen yang belum mendapatkan NIDN di isi dengan 0000000000)" ValidationGroup="addDosen" CssClass="has-error help-block">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddNIDN').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldAddNIDNValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddNIDN').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                            <com:TActiveCustomValidator ID="addNIDN" ControlToValidate="txtAddNIDN" Display="Dynamic" OnServerValidate="checkNIDN" ValidationGroup="addDosen" ErrorMessage="NIDN / NIDK Yang Anda Inputkan Sudah Ada" FocusOnError="true">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddNIDN').addClassName('has-error');
+                                    jQuery('#<%=$this->addNIDN->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddNIDN').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TActiveCustomValidator>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAddNIPY">
+                        <label class="col-lg-2 control-label">NIPY :</label>
+                        <div class="col-lg-4">
+                            <com:TTextBox ID="txtAddNIPY" CssClass="form-control" MaxLength="20" Width="180px" />
+                            <com:TRequiredFieldValidator ID="FieldAddNIPYValidator" ControlToValidate="txtAddNIPY" Display="Dynamic" ErrorMessage="Isi NIPY Dosen (Untuk dosen yang belum mendapatkan NIPY di isi dengan 0000000000)" ValidationGroup="addDosen" CssClass="has-error help-block">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddNIPY').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldAddNIPYValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddNIPY').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                            <com:TActiveCustomValidator ID="addNIPY" ControlToValidate="txtAddNIPY" Display="Dynamic" OnServerValidate="checkNIPY" ValidationGroup="addDosen" ErrorMessage="NIPY Yang Anda Inputkan Sudah Ada" FocusOnError="true">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddNIPY').addClassName('has-error');
+                                    jQuery('#<%=$this->addNIPY->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddNIPY').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TActiveCustomValidator>
+                        </div>
+                    </div>
                     <div class="form-group" id="divAddNama">
                         <label class="col-lg-2 control-label">Nama :</label>
                         <div class="col-lg-4">
                             <com:TTextBox ID="txtAddNama" CssClass="form-control" />
-                            <com:TRequiredFieldValidator ID="FieldAddNamaValidator" ControlToValidate="txtAddNama" Display="Dynamic" ErrorMessage="Isi Nama User" ValidationGroup="addUser" CssClass="has-error help-block">
+                            <com:TRequiredFieldValidator ID="FieldAddNamaValidator" ControlToValidate="txtAddNama" Display="Dynamic" ErrorMessage="Isi Nama User" ValidationGroup="addDosen" CssClass="has-error help-block">
                                 <prop:ClientSide.OnValidationError>
                                     $('divAddNama').addClassName('has-error');
                                     jQuery('#<%=$this->FieldAddNamaValidator->ClientID%>').removeAttr('style');
@@ -40,7 +87,7 @@
                         <label class="col-lg-2 control-label">Email :</label>
                         <div class="col-lg-3">
                             <com:TTextBox ID="txtAddEmail" CssClass="form-control"  />
-                            <com:TRequiredFieldValidator ID="FieldAddEmailValidator" ControlToValidate="txtAddEmail" Display="Dynamic" ErrorMessage="Isi Email Pengguna" ValidationGroup="addUser" FocusOnError="true" CssClass="has-error help-block">				
+                            <com:TRequiredFieldValidator ID="FieldAddEmailValidator" ControlToValidate="txtAddEmail" Display="Dynamic" ErrorMessage="Isi Email Pengguna" ValidationGroup="addDosen" FocusOnError="true" CssClass="has-error help-block">				
                                 <prop:ClientSide.OnValidationError>
                                     $('divAddEmail').addClassName('has-error');
                                     jQuery('#<%=$this->FieldAddEmailValidator->ClientID%>').removeAttr('style');
@@ -49,7 +96,7 @@
                                     $('divAddEmail').removeClassName('has-error');
                                 </prop:ClientSide.OnValidationSuccess>
                             </com:TRequiredFieldValidator>
-                            <com:TEmailAddressValidator ID="FieldAddFormatEmailValidator" ControlToValidate="txtAddEmail" Display="Dynamic" ErrorMessage="Format Email salah" ValidationGroup="addUser" FocusOnError="true" CheckMXRecord="false" CssClass="has-error help-block">
+                            <com:TEmailAddressValidator ID="FieldAddFormatEmailValidator" ControlToValidate="txtAddEmail" Display="Dynamic" ErrorMessage="Format Email salah" ValidationGroup="addDosen" FocusOnError="true" CheckMXRecord="false" CssClass="has-error help-block">
                                 <prop:ClientSide.OnValidationError>
                                     $('divAddEmail').addClassName('has-error');
                                     jQuery('#<%=$this->FieldAddFormatEmailValidator->ClientID%>').removeAttr('style');
@@ -58,7 +105,7 @@
                                     $('divAddEmail').removeClassName('has-error');
                                 </prop:ClientSide.OnValidationSuccess>
                             </com:TEmailAddressValidator>
-                            <com:TActiveCustomValidator ID="addEmail" ControlToValidate="txtAddEmail" Display="Dynamic" OnServerValidate="checkEmail" ValidationGroup="addUser" ErrorMessage="Email Yang Anda Inputkan Sudah Ada" FocusOnError="true">
+                            <com:TActiveCustomValidator ID="addEmail" ControlToValidate="txtAddEmail" Display="Dynamic" OnServerValidate="checkEmail" ValidationGroup="addDosen" ErrorMessage="Email Yang Anda Inputkan Sudah Ada" FocusOnError="true">
                                 <prop:ClientSide.OnValidationError>
                                     $('divAddEmail').addClassName('has-error');
                                     jQuery('#<%=$this->addEmail->ClientID%>').removeAttr('style');
@@ -78,7 +125,7 @@
                                     <com:TTextBox ID="txtAddUsername" Columns="6" MaxLength="6" CssClass="form-control" />
                                 </div>
                                 <div class="col-lg-6">                                
-                                    <com:TRequiredFieldValidator ID="FieldAddUsernameValidator" ControlToValidate="txtAddUsername" Display="Dynamic" ErrorMessage="Isi Kode Matakuliah" ValidationGroup="addUser" CssClass="has-error help-block" FocusOnError="true">
+                                    <com:TRequiredFieldValidator ID="FieldAddUsernameValidator" ControlToValidate="txtAddUsername" Display="Dynamic" ErrorMessage="Isi Kode Matakuliah" ValidationGroup="addDosen" CssClass="has-error help-block" FocusOnError="true">
                                         <prop:ClientSide.OnValidationError>
                                             $('divAddUsername').addClassName('has-error');
                                             jQuery('#<%=$this->FieldAddUsernameValidator->ClientID%>').removeAttr('style');
@@ -87,10 +134,10 @@
                                             $('divAddUsername').removeClassName('has-error');
                                         </prop:ClientSide.OnValidationSuccess>
                                     </com:TRequiredFieldValidator>
-                                    <com:TActiveCustomValidator ID="addUsername" ControlToValidate="txtAddUsername" Display="Dynamic" OnServerValidate="checkUsername" ValidationGroup="addUser" ErrorMessage="Kode Matakuliah Yang Anda Inputkan Sudah Ada ..." CssClass="has-error help-block">
+                                    <com:TActiveCustomValidator ID="addDosenname" ControlToValidate="txtAddUsername" Display="Dynamic" OnServerValidate="checkUsername" ValidationGroup="addDosen" ErrorMessage="Kode Matakuliah Yang Anda Inputkan Sudah Ada ..." CssClass="has-error help-block">
                                         <prop:ClientSide.OnValidationError>
                                             $('divAddUsername').addClassName('has-error');
-                                            jQuery('#<%=$this->addUsername->ClientID%>').removeAttr('style');
+                                            jQuery('#<%=$this->addDosenname->ClientID%>').removeAttr('style');
                                         </prop:ClientSide.OnValidationError>
                                         <prop:ClientSide.OnValidationSuccess>
                                             $('divAddUsername').removeClassName('has-error');
@@ -104,7 +151,7 @@
                         <label class="col-lg-2 control-label">Password :</label>
                         <div class="col-lg-2">
                             <com:TTextBox ID="txtAddPassword1" CssClass="form-control" TextMode="Password" />
-                            <com:TRequiredFieldValidator ID="FieldAddPassword1Validator" ControlToValidate="txtAddPassword1" Display="Dynamic" ErrorMessage="Isi Password User" ValidationGroup="addUser" CssClass="has-error help-block">
+                            <com:TRequiredFieldValidator ID="FieldAddPassword1Validator" ControlToValidate="txtAddPassword1" Display="Dynamic" ErrorMessage="Isi Password User" ValidationGroup="addDosen" CssClass="has-error help-block">
                                 <prop:ClientSide.OnValidationError>
                                     $('divAddPassword1').addClassName('has-error');
                                     jQuery('#<%=$this->FieldAddPassword1Validator->ClientID%>').removeAttr('style');
@@ -119,7 +166,7 @@
                         <label class="col-lg-2 control-label">Re-type Password :</label>
                         <div class="col-lg-2">
                             <com:TTextBox ID="txtAddPassword2" CssClass="form-control" TextMode="Password" />
-                            <com:TCompareValidator ID="FieldAddPassword2Validator" ControlToValidate="txtAddPassword1" ControlToCompare="txtAddPassword2" Display="Dynamic" ErrorMessage="Isi Password tidak sama" ValidationGroup="addUser" FocusOnError="true" CssClass="has-error help-block">				
+                            <com:TCompareValidator ID="FieldAddPassword2Validator" ControlToValidate="txtAddPassword1" ControlToCompare="txtAddPassword2" Display="Dynamic" ErrorMessage="Isi Password tidak sama" ValidationGroup="addDosen" FocusOnError="true" CssClass="has-error help-block">				
                                 <prop:ClientSide.OnValidationError>
                                     $('divAddPassword2').addClassName('has-error');
                                     jQuery('#<%=$this->FieldAddPassword2Validator->ClientID%>').removeAttr('style');
@@ -145,7 +192,7 @@
                     </div>                    
                     <div class="form-group">
                         <div class="col-lg-offset-2 col-lg-10">
-                            <com:TActiveCustomButton ID="btnSave" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="addUser">
+                            <com:TActiveCustomButton ID="btnSave" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="addDosen">
                                 <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
                                 <prop:ClientSide.OnPreDispatch>                                                                   
                                     $('loading').show(); 
@@ -174,7 +221,7 @@
             <header class="main-box-header clearfix">
                 <h2 class="pull-left"><i class="fa fa-edit"></i> Ubah User</h2>
                 <div class="icon-box pull-right">                                       
-                    <a class="btn pull-left" href="<%=$this->constructUrl('settings.UserManajemen',true)%>">
+                    <a class="btn pull-left" href="<%=$this->constructUrl('dmaster.Dosen',true)%>">
                         <i class="fa fa-times"></i>
                     </a>
                 </div>
@@ -185,7 +232,7 @@
                         <label class="col-lg-2 control-label">Nama :</label>
                         <div class="col-lg-4">
                             <com:TTextBox ID="txtEditNama" CssClass="form-control" />
-                            <com:TRequiredFieldValidator ID="FieldEditNamaValidator" ControlToValidate="txtEditNama" Display="Dynamic" ErrorMessage="Isi Nama User" ValidationGroup="editUser" CssClass="has-error help-block">
+                            <com:TRequiredFieldValidator ID="FieldEditNamaValidator" ControlToValidate="txtEditNama" Display="Dynamic" ErrorMessage="Isi Nama User" ValidationGroup="editDosen" CssClass="has-error help-block">
                                 <prop:ClientSide.OnValidationError>
                                     $('divEditNama').editClassName('has-error');
                                     jQuery('#<%=$this->FieldEditNamaValidator->ClientID%>').removeAttr('style');
@@ -200,7 +247,7 @@
                         <label class="col-lg-2 control-label">Email :</label>
                         <div class="col-lg-3">
                             <com:TTextBox ID="txtEditEmail" CssClass="form-control"  />
-                            <com:TRequiredFieldValidator ID="FieldEditEmailValidator" ControlToValidate="txtEditEmail" Display="Dynamic" ErrorMessage="Isi Email Pengguna" ValidationGroup="editUser" FocusOnError="true" CssClass="has-error help-block">				
+                            <com:TRequiredFieldValidator ID="FieldEditEmailValidator" ControlToValidate="txtEditEmail" Display="Dynamic" ErrorMessage="Isi Email Pengguna" ValidationGroup="editDosen" FocusOnError="true" CssClass="has-error help-block">				
                                 <prop:ClientSide.OnValidationError>
                                     $('divEditEmail').editClassName('has-error');
                                     jQuery('#<%=$this->FieldEditEmailValidator->ClientID%>').removeAttr('style');
@@ -209,7 +256,7 @@
                                     $('divEditEmail').removeClassName('has-error');
                                 </prop:ClientSide.OnValidationSuccess>
                             </com:TRequiredFieldValidator>
-                            <com:TEmailAddressValidator ID="FieldEditFormatEmailValidator" ControlToValidate="txtEditEmail" Display="Dynamic" ErrorMessage="Format Email salah" ValidationGroup="editUser" FocusOnError="true" CheckMXRecord="false" CssClass="has-error help-block">
+                            <com:TEmailAddressValidator ID="FieldEditFormatEmailValidator" ControlToValidate="txtEditEmail" Display="Dynamic" ErrorMessage="Format Email salah" ValidationGroup="editDosen" FocusOnError="true" CheckMXRecord="false" CssClass="has-error help-block">
                                 <prop:ClientSide.OnValidationError>
                                     $('divEditEmail').editClassName('has-error');
                                     jQuery('#<%=$this->FieldEditFormatEmailValidator->ClientID%>').removeAttr('style');
@@ -218,7 +265,7 @@
                                     $('divEditEmail').removeClassName('has-error');
                                 </prop:ClientSide.OnValidationSuccess>
                             </com:TEmailAddressValidator>
-                            <com:TActiveCustomValidator ID="editEmail" ControlToValidate="txtEditEmail" Display="Dynamic" OnServerValidate="checkEmail" ValidationGroup="editUser" ErrorMessage="Email Yang Anda Inputkan Sudah Ada" FocusOnError="true">
+                            <com:TActiveCustomValidator ID="editEmail" ControlToValidate="txtEditEmail" Display="Dynamic" OnServerValidate="checkEmail" ValidationGroup="editDosen" ErrorMessage="Email Yang Anda Inputkan Sudah Ada" FocusOnError="true">
                                 <prop:ClientSide.OnValidationError>
                                     $('divEditEmail').editClassName('has-error');
                                     jQuery('#<%=$this->editEmail->ClientID%>').removeAttr('style');
@@ -238,7 +285,7 @@
                                     <com:TTextBox ID="txtEditUsername" Columns="6" MaxLength="6" CssClass="form-control" />
                                 </div>
                                 <div class="col-lg-6">                                
-                                    <com:TRequiredFieldValidator ID="FieldEditUsernameValidator" ControlToValidate="txtEditUsername" Display="Dynamic" ErrorMessage="Isi Kode Matakuliah" ValidationGroup="editUser" CssClass="has-error help-block" FocusOnError="true">
+                                    <com:TRequiredFieldValidator ID="FieldEditUsernameValidator" ControlToValidate="txtEditUsername" Display="Dynamic" ErrorMessage="Isi Kode Matakuliah" ValidationGroup="editDosen" CssClass="has-error help-block" FocusOnError="true">
                                         <prop:ClientSide.OnValidationError>
                                             $('divEditUsername').editClassName('has-error');
                                             jQuery('#<%=$this->FieldEditUsernameValidator->ClientID%>').removeAttr('style');
@@ -247,10 +294,10 @@
                                             $('divEditUsername').removeClassName('has-error');
                                         </prop:ClientSide.OnValidationSuccess>
                                     </com:TRequiredFieldValidator>
-                                    <com:TActiveCustomValidator ID="editUsername" ControlToValidate="txtEditUsername" Display="Dynamic" OnServerValidate="checkUsername" ValidationGroup="editUser" ErrorMessage="Kode Matakuliah Yang Anda Inputkan Sudah Ada ..." CssClass="has-error help-block">
+                                    <com:TActiveCustomValidator ID="editDosenname" ControlToValidate="txtEditUsername" Display="Dynamic" OnServerValidate="checkUsername" ValidationGroup="editDosen" ErrorMessage="Kode Matakuliah Yang Anda Inputkan Sudah Ada ..." CssClass="has-error help-block">
                                         <prop:ClientSide.OnValidationError>
                                             $('divEditUsername').editClassName('has-error');
-                                            jQuery('#<%=$this->editUsername->ClientID%>').removeAttr('style');
+                                            jQuery('#<%=$this->editDosenname->ClientID%>').removeAttr('style');
                                         </prop:ClientSide.OnValidationError>
                                         <prop:ClientSide.OnValidationSuccess>
                                             $('divEditUsername').removeClassName('has-error');
@@ -270,7 +317,7 @@
                         <label class="col-lg-2 control-label">Re-type Password :</label>
                         <div class="col-lg-2">
                             <com:TTextBox ID="txtEditPassword2" CssClass="form-control" TextMode="Password" />
-                            <com:TCompareValidator ID="FieldEditPassword2Validator" ControlToValidate="txtEditPassword1" ControlToCompare="txtEditPassword2" Display="Dynamic" ErrorMessage="Isi Password tidak sama" ValidationGroup="editUser" FocusOnError="true" CssClass="has-error help-block">				
+                            <com:TCompareValidator ID="FieldEditPassword2Validator" ControlToValidate="txtEditPassword1" ControlToCompare="txtEditPassword2" Display="Dynamic" ErrorMessage="Isi Password tidak sama" ValidationGroup="editDosen" FocusOnError="true" CssClass="has-error help-block">				
                                 <prop:ClientSide.OnValidationError>
                                     $('divEditPassword2').editClassName('has-error');
                                     jQuery('#<%=$this->FieldEditPassword2Validator->ClientID%>').removeAttr('style');
@@ -305,7 +352,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-lg-offset-2 col-lg-10">
-                            <com:TActiveCustomButton ID="btnUpdate" CssClass="btn btn-primary" OnClick="updateData" ValidationGroup="editUser">
+                            <com:TActiveCustomButton ID="btnUpdate" CssClass="btn btn-primary" OnClick="updateData" ValidationGroup="editDosen">
                                 <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
                                 <prop:ClientSide.OnPreDispatch>                                                                   
                                     $('loading').show(); 
@@ -437,7 +484,7 @@
         <div class="col-lg-12">
             <div class="main-box clearfix">
                 <header class="main-box-header clearfix">
-                    <h2 class="pull-left"><i class="fa fa-user"></i> Daftar User Manajemen</h2> 
+                    <h2 class="pull-left"><i class="fa fa-user"></i> Daftar Dosen</h2> 
                     <div class="filter-block pull-right">   
                         <com:TLinkButton ID="add" CssClass="btn btn-primary pull-right" Text="<i class='fa  fa-plus-circle fa-lg'></i>" Attributes.Title="Tambah Matakuliah" OnClick="addProcess" CausesValidation="false" />                        
                     </div>

@@ -1,6 +1,10 @@
 <?php
 class MainPageM extends MainPage {   
     /**     
+     * show page dosen [datamaster]
+     */
+    public $showDosen=false;
+    /**     
      * show page matakuliah [datamaster]
      */
     public $showMatakuliah=false;

@@ -211,7 +211,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="<%=$this->Page->constructUrl('settings.UserManajemen',true)%>"<%=$this->Page->showUserDosen==true ? ' class="active" ':''%>>
+                                                    <a href="<%=$this->Page->constructUrl('settings.UserDosen',true)%>"<%=$this->Page->showUserDosen==true ? ' class="active" ':''%>>
                                                         User Dosen
                                                     </a>
                                                 </li>
@@ -256,6 +256,12 @@
                                         </li>  
                                         <li class="nav-header nav-header-first hidden-sm hidden-xs">
                                             DATA MASTER
+                                        </li>
+                                        <li<%=$this->Page->showDosen==true ? ' class="active" ':''%>>                                            
+                                            <a href="<%=$this->Page->constructUrl('dmaster.Dosen',true)%>">
+                                                <i class="fa fa-user"></i>
+                                                <span>Dosen</span>                                                
+                                            </a>
                                         </li>
                                         <li<%=$this->Page->showMatakuliah==true ? ' class="active" ':''%>>                                            
                                             <a href="<%=$this->Page->constructUrl('dmaster.Matakuliah',true)%>">

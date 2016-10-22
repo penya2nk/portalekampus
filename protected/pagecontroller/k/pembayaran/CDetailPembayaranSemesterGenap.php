@@ -37,12 +37,12 @@ class CDetailPembayaranSemesterGenap Extends MainPageK {
 
                 $nama_dosen=$this->DMaster->getNamaDosenWaliByID($datamhs['iddosen_wali']);				                    
                 $datamhs['nama_dosen']=$nama_dosen;                
-                $this->Finance->setDataMHS($datamhs);
-                
+                               
                 $datamhs['no_transaksi']=isset($_SESSION['currentPagePembayaranSemesterGenap']['DataMHS']['no_transaksi']) ? $_SESSION['currentPagePembayaranSemesterGenap']['DataMHS']['no_transaksi'] : 'none';
                 $_SESSION['currentPagePembayaranSemesterGenap']['DataMHS']=$datamhs;                
                 $this->checkPembayaranSemesterLalu ();
-                $this->Finance->setDataMHS($_SESSION['currentPagePembayaranSemesterGenap']['DataMHS']);
+                
+                $this->Finance->setDataMHS($datamhs);
                 CDetailPembayaranSemesterGenap::$KewajibanMahasiswa=$this->Finance->getTotalBiayaMhsPeriodePembayaran ('lama');
                 $this->populateTransaksi();
             }catch (Exception $ex) {

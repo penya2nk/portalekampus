@@ -39,7 +39,7 @@
 </com:TContent>
 <com:TContent ID="sidebarcontent">
 <div class="sidebar sidebar-main sidebar-default sidebar-separate" style="width:330px">
-    <div class="sidebar-content">                    
+    <div class="sidebar-content" style="margin-right:5px">                    
         <%include Application.layouts.limitless.FilterMode14%>
         <%include Application.layouts.limitless.OutputReportMode1%>
     </div>

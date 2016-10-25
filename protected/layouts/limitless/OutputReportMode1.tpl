@@ -17,8 +17,7 @@
                <prop:ClientSide.OnLoading>
                     $('<%=$this->tbCmbOutputReport->ClientId%>').disabled='disabled';
                 </prop:ClientSide.OnLoading>
-                <prop:ClientSide.onComplete>
-                    $('loading').hide();
+                <prop:ClientSide.onComplete>                    
                     $('<%=$this->tbCmbOutputReport->ClientId%>').disabled='';
                 </prop:ClientSide.OnComplete>	
             </com:TActiveDropDownList>

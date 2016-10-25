@@ -98,6 +98,27 @@
                     </li>
                 </ul>
             </li>
+            <li class="dropdown mega-menu mega-menu-wide<%=$this->Page->showMenuAkademik==true?' active':''%> visible">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="icon-stars position-left"></i> Akademik <span class="caret"></span>
+                </a>
+                <div class="dropdown-menu dropdown-content">
+                    <div class="dropdown-content-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <span class="menu-heading underlined">Perkuliahan</span>
+                                <ul class="menu-list">
+                                    <li<%=$this->Page->showKUM==true?' class="active"':''%>>
+                                        <a href="<%=$this->Page->constructUrl('perkuliahan.KUM',true)%>">
+                                            <i class="icon-width"></i> Kartu Ujian Mahasiswa
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
             <li class="dropdown<%=$this->Page->showPembayaran==true?' active':''%> visible">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="icon-book2 position-left"></i> Pembayaran <span class="caret"></span>

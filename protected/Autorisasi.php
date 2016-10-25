@@ -43,8 +43,9 @@ class Autorisasi extends TModule implements IUserManager {
 		$result = $um->getUser();
         switch ($result['page']) {
             case 'mh' :
-                if ($result['k_status']=='A' || $result['k_status']=='C') {
-                    $pass=md5($password);                    			
+                $pass=md5($password);
+                if ($result['k_status']=='A' || $result['k_status']=='C') {                                        			
+                    $message="Gagal. Silahkan masukan username dan password dengan benar.";
                 }else{
                     $message="Mohon maaf status Anda diluar aktif atau cuti. Hubungi Bagian Administrasi.";		
                 }

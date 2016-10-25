@@ -78,7 +78,11 @@ class MainPage extends TPage {
     /**     
      * show page forum diskusi
      */
-    public $showForumDiskusi=false;    
+    public $showForumDiskusi=false;  
+    /**     
+     * show menu Akademik
+     */
+    public $showMenuAkademik=false;
     /**     
      * show sub menu [akademik kemahasiswaan]
      */
@@ -107,6 +111,10 @@ class MainPage extends TPage {
      * show page KRS [perkuliahan]
      */
     public $showKRS=false;
+    /**     
+     * show page Kartu Ujian Mahasiswa [perkuliahan]
+     */
+    public $showKUM=false;
     /**     
      * show page kuesioner [perkuliahan]
      */

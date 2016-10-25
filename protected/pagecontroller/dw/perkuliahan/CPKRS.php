@@ -102,7 +102,8 @@ class CPKRS extends MainPageDW {
 		if ($limit < 0) {$offset=0;$limit=$this->setup->getSettingValue('default_pagesize');$_SESSION['currentPagePKRS']['page_num']=0;}
         $str = "$str ORDER BY vdm.nama_mhs ASC LIMIT $offset,$limit";	
         $this->DB->setFieldTable(array('nim','nama_mhs','jk','tahun_masuk','nmatkul','sks','tambah','hapus','batal','sah','tanggal'));
-        $r = $this->DB->getRecord($str,$offset+1);	        
+        $r = $this->DB->getRecord($str,$offset+1);
+        $result=array();
         while (list($k,$v)=each($r)) {
             $ket = 'N.A';
             if ($v['tambah'] == 1) {
@@ -173,9 +174,11 @@ class CPKRS extends MainPageDW {
 		if ($this->IsValid) {
             $this->createObj('Finance');
             $this->createObj('Nilai');
-            $krs=$_SESSION['currentPagePKRS']['DataKRS']['krs'];
+            $krs=$_SESSION['currentPagePKRS']['DataKRS']['krs'];          
+            $krs['tahun_masuk']=$_SESSION['currentPagePKRS']['DataMHS']['tahun_masuk'];
+            $krs['semester_masuk']=$_SESSION['currentPagePKRS']['DataMHS']['semester_masuk'];
             $this->Finance->setDataMHS($krs);
-            $this->Nilai->setDataMHS($krs);
+            $this->Nilai->setDataMHS($krs);            
             $idkrs=$krs['idkrs'];
             $tahun=$krs['tahun'];
             $idsmt=$krs['idsmt'];            

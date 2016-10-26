@@ -28,7 +28,9 @@ class DetailPembayaranSemesterGanjil Extends CDetailPembayaranSemesterGanjil {
 				$totalbiaya=($tahun_masuk==$ta&&$semester_masuk==$semester)?$this->Finance->getTotalBiayaMhs ():$this->Finance->getTotalBiayaMhs ('lama');
 				$totalbayar=$this->Finance->getTotalBayarMhs($ta,$semester);
                 $sisa=$totalbiaya-$totalbayar;
-                if ($sisa>0) {
+                
+                $datadulang=$this->Finance->getDataDulang($semester,$ta);
+                if ($sisa>0 && $datadulang['k_status'] != 'C') {
 					$sisa=$this->Finance->toRupiah($sisa);
 					$tasmt="T.A ".$this->DMaster->getNamaTA($ta).' semester '.$this->setup->getSemester($semester);
 					throw new Exception ('Mahasiswa a.n '.$datamhs['nama_mhs']." Memiliki tunggakan sebesar ($sisa) pada $tasmt, harap untuk dilunasi terlebih dahulu.");

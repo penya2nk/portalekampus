@@ -5,10 +5,10 @@ class CDosen extends MainPageM {
 		parent::onLoad($param);		     
         $this->showDosen=true;   
 		if (!$this->IsPostBack&&!$this->IsCallback) {
-            if (!isset($_SESSION['currentPageUserManajemen'])||$_SESSION['currentPageUserManajemen']['page_name']!='sa.settings.UserManajemen') {
-				$_SESSION['currentPageUserManajemen']=array('page_name'=>'sa.settings.UserManajemen','page_num'=>0,'search'=>false);
+            if (!isset($_SESSION['currentPageDosen'])||$_SESSION['currentPageDosen']['page_name']!='sa.settings.UserManajemen') {
+				$_SESSION['currentPageDosen']=array('page_name'=>'sa.settings.UserManajemen','page_num'=>0,'search'=>false);
 			}
-            $_SESSION['currentPageUserManajemen']['search']=false;
+            $_SESSION['currentPageDosen']['search']=false;
             $this->populateData();            
 		}
 	}       
@@ -16,35 +16,40 @@ class CDosen extends MainPageM {
 		$this->RepeaterS->render($param->NewWriter);	
 	}
 	public function Page_Changed ($sender,$param) {
-		$_SESSION['currentPageUserManajemen']['page_num']=$param->NewPageIndex;
-		$this->populateData($_SESSION['currentPageUserManajemen']['search']);
+		$_SESSION['currentPageDosen']['page_num']=$param->NewPageIndex;
+		$this->populateData($_SESSION['currentPageDosen']['search']);
 	}
     
     public function searchRecord ($sender,$param) {
-		$_SESSION['currentPageUserManajemen']['search']=true;
-        $this->populateData($_SESSION['currentPageUserManajemen']['search']);
+		$_SESSION['currentPageDosen']['search']=true;
+        $this->populateData($_SESSION['currentPageDosen']['search']);
 	}    
 	protected function populateData ($search=false) {
         if ($search) {
-            $str = "SELECT u.userid,u.username,u.nama,u.email,ug.group_name,u.active,u.foto,u.logintime FROM user u LEFT JOIN user_group ug ON (ug.group_id=u.group_id) WHERE page='m'";			
+            $str = "SELECT iddosen,nidn,nipy,gelar_depan,nama_dosen,gelar_belakang,telp_hp,username,status FROM dosen";			
             $txtsearch=$this->txtKriteria->Text;
             switch ($this->cmbKriteria->Text) {
-                case 'kode' :
-                    $cluasa="AND kmatkul='{$idkur}_$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable("matakuliah WHERE idkur=$idkur $cluasa",'kmatkul');		            
+                case 'nidn' :
+                    $cluasa="WHERE nidn='$txtsearch'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable("dosen $cluasa",'iddosen');		            
                     $str = "$str $cluasa";
                 break;
-                case 'nama' :
-                    $cluasa="AND nmatkul LIKE '%$txtsearch%'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable("matakuliah WHERE idkur=$idkur $cluasa",'kmatkul');		            
+                case 'nip' :
+                    $cluasa="WHERE nipy='$txtsearch'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable("dosen $cluasa",'iddosen');		            
+                    $str = "$str $cluasa";
+                break;
+                case 'nama_dosen' :
+                    $cluasa="WHERE nama_dosen LIKE '%$txtsearch%'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable("dosen $cluasa",'iddosen');		            
                     $str = "$str $cluasa";
                 break;
             }
         }else{
-            $jumlah_baris=$this->DB->getCountRowsOfTable("user WHERE page='m'",'userid');		            
-            $str = "SELECT u.userid,u.username,u.nama,u.email,ug.group_name,u.active,u.foto,u.kjur,u.logintime FROM user u LEFT JOIN user_group ug ON (ug.group_id=u.group_id) WHERE page='m'";			
+            $jumlah_baris=$this->DB->getCountRowsOfTable("dosen",'iddosen');		            
+            $str = "SELECT iddosen,nidn,nipy,gelar_depan,nama_dosen,gelar_belakang,telp_hp,username,status FROM dosen";			
         }
-        $this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageUserManajemen']['page_num'];
+        $this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageDosen']['page_num'];
 		$this->RepeaterS->VirtualItemCount=$jumlah_baris;
 		$currentPage=$this->RepeaterS->CurrentPageIndex;
 		$offset=$currentPage*$this->RepeaterS->PageSize;		
@@ -53,39 +58,60 @@ class CDosen extends MainPageM {
 		if (($offset+$limit)>$itemcount) {
 			$limit=$itemcount-$offset;
 		}
-		if ($limit < 0) {$offset=0;$limit=$this->setup->getSettingValue('default_pagesize');$_SESSION['currentPageUserManajemen']['page_num']=0;}
-        $str = "$str ORDER BY username ASC LIMIT $offset,$limit";				
-        $this->DB->setFieldTable(array('userid','username','nama','email','email','group_name','active','foto','kjur','logintime'));
+		if ($limit < 0) {$offset=0;$limit=$this->setup->getSettingValue('default_pagesize');$_SESSION['currentPageDosen']['page_num']=0;}
+        $str = "$str ORDER BY nama_dosen ASC LIMIT $offset,$limit";				
+        $this->DB->setFieldTable(array('iddosen','nidn','nipy','gelar_depan','nama_dosen','gelar_belakang','telp_hp','username','status'));
 		$r = $this->DB->getRecord($str,$offset+1);	
-        $result=array();
-        while (list($k,$v)=each($r)) {
-            $v['logintime']=$v['logintime']=='0000-00-00 00:00:00'?'BELUM PERNAH':$this->Page->TGL->tanggal('d F Y',$this->DataItem['logintime']);
-            $v['group_name']=$v['kjur']==0?$v['group_name']:$v['group_name'] . ' '.$_SESSION['daftar_jurusan'][$v['kjur']];
-            $result[$k]=$v;
-        }
-        $this->RepeaterS->DataSource=$result;
+        
+        $this->RepeaterS->DataSource=$r;
 		$this->RepeaterS->dataBind();     
         $this->paginationInfo->Text=$this->getInfoPaging($this->RepeaterS);        
 	}		    
     public function addProcess ($sender,$param) {
         $this->idProcess='add';
-        $this->cmbAddGroup->DataSource=$this->Pengguna->removeIdFromArray($this->Pengguna->getListGroup(),'none');
-        $this->cmbAddGroup->DataBind();
-        $daftar_jurusan=$_SESSION['daftar_jurusan'];
-        $daftar_jurusan['none'] = ' ';
-        $this->cmbAddProdi->DataSource=$daftar_jurusan;
-        $this->cmbAddProdi->DataBind();        
+        $this->cmbAddJabatanAkademik->dataSource=$this->DMaster->getListJabfung ();
+        $this->cmbAddJabatanAkademik->dataBind();	             
     }
+    public function checkNIDN ($sender,$param) {	
+        $this->idProcess=$sender->getId()=='addNidn'?'add':'edit';
+        $nidn=$param->Value;
+        if ($nidn != '') {
+            try {   
+                if ($this->hiddennidn->Value!=$nidn) {                                                            
+                    if ($this->DB->checkRecordIsExist('nidn','dosen',$nidn)) {                                
+                        throw new Exception ("NIDN/NIDK ($nidn) sudah tidak tersedia silahkan ganti dengan yang lain.");		
+                    }                               
+                }                
+            }catch (Exception $e) {
+                $param->IsValid=false;
+                $sender->ErrorMessage=$e->getMessage();
+            }	
+        }
+	}
+	public function checkNIPY ($sender,$param) {						
+		$this->idProcess=$sender->getId()=='addNidn'?'add':'edit';
+        $nipy=$param->Value;
+        if ($nipy != '') {
+            try {   
+                if ($this->hiddennipy->Value!=$nipy) {                                                            
+                    if ($this->DB->checkRecordIsExist('nipy','dosen',$nipy)) {                                
+                        throw new Exception ("NIP Yayasan ($nipy) sudah tidak tersedia silahkan ganti dengan yang lain.");		
+                    }                               
+                }                
+            }catch (Exception $e) {
+                $param->IsValid=false;
+                $sender->ErrorMessage=$e->getMessage();
+            }	
+        }
+	}
     public function checkUsername ($sender,$param) {
 		$this->idProcess=$sender->getId()=='addUsername'?'add':'edit';
         $username=$param->Value;		
         if ($username != '') {
-            try {   
-                if ($this->hiddenid->Value!=$username) {                                                            
-                    if ($this->DB->checkRecordIsExist('username','user',$username)) {                                
-                        throw new Exception ("Username ($username) sudah tidak tersedia silahkan ganti dengan yang lain.");		
-                    }                               
-                }                
+            try {                                                           
+                if ($this->DB->checkRecordIsExist('username','dosen',$username)) {                                
+                    throw new Exception ("Username ($username) sudah tidak tersedia silahkan ganti dengan yang lain.");		
+                }
             }catch (Exception $e) {
                 $param->IsValid=false;
                 $sender->ErrorMessage=$e->getMessage();
@@ -98,7 +124,7 @@ class CDosen extends MainPageM {
         if ($email != '') {
             try {   
                 if ($this->hiddenemail->Value!=$email) {                    
-                    if ($this->DB->checkRecordIsExist('email','user',$email)) {                                
+                    if ($this->DB->checkRecordIsExist('email','dosen',$email)) {                                
                         throw new Exception ("Email ($email) sudah tidak tersedia silahkan ganti dengan yang lain.");		
                     }                               
                 }                
@@ -110,78 +136,100 @@ class CDosen extends MainPageM {
     }
     public function saveData ($sender,$param) {
 		if ($this->Page->isValid) {
-            $nama = addslashes($this->txtAddNama->Text);
-            $email = addslashes($this->txtAddEmail->Text);
-            $username=addslashes($this->txtAddUsername->Text);    
-            $data=$this->Pengguna->createHashPassword($this->txtAddPassword1->Text);
-            $salt=$data['salt'];
-            $password=$data['password'];           
-            $page='m';
-            $group_id=$this->cmbAddGroup->Text;  
-            $kjur=$this->cmbAddProdi->Text;
-            $str = "INSERT INTO user (userid,username,userpassword,salt,nama,email,page,group_id,kjur,active,theme,date_added) VALUES (NULL,'$username','$password','$salt','$nama','$email','$page','$group_id','$kjur',1,'cube',NOW())";
-            $this->DB->insertRecord($str);           
+            $nidn=addslashes($this->txtAddNIDN->Text);
+            $nipy=addslashes($this->txtAddNIPY->Text);
+            $nama=strtoupper(addslashes($this->txtAddNama->Text));
+			$gelar_depan=addslashes($this->txtAddGelarDepan->Text);
+			$gelar_belakang=addslashes($this->txtAddGelarBelakang->Text);
+            $idjabatanfungsional=$this->cmbAddJabatanAkademik->Text;
+			$alamat_dosen=strtoupper(addslashes($this->txtAddAlamat->Text));
+            $no_telepon=addslashes($this->txtAddTelepon->Text);
+            $email=addslashes($this->txtAddEmail->Text);
+            $username=addslashes($this->txtAddUsername->Text);
+			$password=md5(txtAddPassword1);
             
-			$this->redirect('settings.UserManajemen',true);
+			$str = "INSERT INTO dosen SET nidn='$nidn',nipy='$nipy',nama_dosen='$nama',gelar_depan='$gelar_depan',gelar_belakang='$gelar_belakang',idjabatan='$idjabatanfungsional',alamat_dosen='$alamat_dosen',telp_hp='$no_telepon',email='$email',username='$username',userpassword='$password',theme='cube'";
+			$this->DB->query('BEGIN');
+            if ($this->DB->insertRecord($str)) {
+                $data=$this->Pengguna->createHashPassword($this->txtAddPassword1->Text);
+                $salt=$data['salt'];
+                $password=$data['password'];           
+                $page='d';
+                $str = "INSERT INTO user SET username='$username',userpassword='$password',salt='$salt',nama='$nama',email='$email',page='$page',active=1,theme='CUBE',date_added=NOW()";
+                $this->DB->insertRecord($str);
+                $this->DB->query('COMMIT');
+                $this->Redirect('dmaster.Dosen',true);
+            }else{
+                $this->DB->query('ROLLBACK');
+            }
         }
     }
     public function editRecord ($sender,$param) {
         $this->idProcess='edit';        
-        $id=$this->getDataKeyField($sender,$this->RepeaterS);        
-		$this->hiddenid->Value=$id;     
+        $iddosen=$this->getDataKeyField($sender,$this->RepeaterS);        
+		$this->hiddenid->Value=$iddosen;     
         
-        $str = "SELECT userid,username,nama,email,group_id,kjur,active FROM user WHERE userid='$id'";
-        $this->DB->setFieldTable(array('userid','username','nama','email','group_id','kjur','active'));
+        $str = "SELECT nidn,nipy,nama_dosen,gelar_depan,gelar_belakang,idjabatan,alamat_dosen,telp_hp,email,status FROM dosen WHERE iddosen='$iddosen'";
+		$this->DB->setFieldTable(array('nidn','nipy','nama_dosen','gelar_depan','gelar_belakang','idjabatan','alamat_dosen','telp_hp','email','status'));
         $r=$this->DB->getRecord($str);
+        $result=$r[1];   
         
-        $result=$r[1];        	
-        $this->txtEditNama->Text=$result['nama'];
+        $this->hiddenid->Value=$iddosen;
+        $this->hiddennidn->Value=$result['nidn'];
+        $this->hiddennipy->Value=$result['nipy'];
+        $this->hiddenemail->Value=$result['email'];
+        
+        $this->txtEditNIDN->Text=$result['nidn'];
+        $this->txtEditNIPY->Text=$result['nipy'];
+        $this->txtEditNama->Text=$result['nama_dosen'];
+        $this->txtEditGelarDepan->Text=$result['gelar_depan'];
+        $this->txtEditGelarBelakang->Text=$result['gelar_belakang'];
+        $this->cmbEditJabatanAkademik->dataSource=$this->DMaster->getListJabfung ();
+        $this->cmbEditJabatanAkademik->dataBind();	
+        $this->cmbEditJabatanAkademik->Text=$result['idjabatan'];
+        $this->txtEditAlamat->Text=$result['alamat_dosen'];
+        $this->txtEditTelepon->Text=$result['telp_hp'];
         $this->txtEditEmail->Text=$result['email'];
-        $this->hiddenemail->Value=$result['email'];     
-        $this->txtEditUsername->Text=$result['username'];    
         
-        $this->cmbEditGroup->DataSource=$this->Pengguna->removeIdFromArray($this->Pengguna->getListGroup(),'none');
-        $this->cmbEditGroup->Text=$result['group_id'];  
-        $this->cmbEditGroup->DataBind();
-        $daftar_jurusan=$_SESSION['daftar_jurusan'];
-        $daftar_jurusan['none'] = ' ';
-        $this->cmbEditProdi->DataSource=$daftar_jurusan;
-        $this->cmbEditProdi->Text=$result['kjur'];
-        $this->cmbEditProdi->DataBind();       
-        
-        
-        
-        $this->cmbEditStatus->Text=$result['active'];
+        $this->cmbEditStatus->Text=$result['status'];
     }
     public function updateData ($sender,$param) {
-		if ($this->Page->isValid) {			
-            $id=$this->hiddenid->Value;
-            $nama = addslashes($this->txtEditNama->Text);
-            $email = addslashes($this->txtEditEmail->Text);
-            $username=addslashes($this->txtEditUsername->Text);    
-            $data=$this->Pengguna->createHashPassword($this->txtEditPassword1->Text);
-            $salt=$data['salt'];
-            $password=$data['password']; 
-            $group_id=$this->cmbEditGroup->Text;  
-            $kjur=$this->cmbEditProdi->Text;
-            $status=$this->cmbEditStatus->Text;
+		if ($this->Page->isValid) {
+            $iddosen=$this->hiddenid->Value;
+            $nidn=addslashes($this->txtEditNIDN->Text);
+            $nipy=addslashes($this->txtEditNIPY->Text);
+            $nama=strtoupper(addslashes($this->txtEditNama->Text));
+			$gelar_depan=addslashes($this->txtEditGelarDepan->Text);
+			$gelar_belakang=addslashes($this->txtEditGelarBelakang->Text);
+            $idjabatanfungsional=$this->cmbEditJabatanAkademik->Text;
+			$alamat_dosen=strtoupper(addslashes($this->txtEditAlamat->Text));
+            $no_telepon=addslashes($this->txtEditTelepon->Text);
+            $email=addslashes($this->txtEditEmail->Text);
             
-            if ($this->txtEditPassword1->Text == '') {
-                $str = "UPDATE user SET username='$username',nama='$nama',email='$email',group_id='$group_id',kjur='$kjur',active='$status' WHERE userid=$id";               
-            }else {
-                $data=$this->Pengguna->createHashPassword($this->txtEditPassword->Text);
-                $salt=$data['salt'];
-                $password=$data['password'];
-                $str = "UPDATE user SET username='$username',userpassword='$password',salt='$salt',nama='$nama',email='$email',group_id='$group_id',kjur='$kjur',active='$status' WHERE userid=$id";               
-            }
-            $this->DB->updateRecord($str); 
-			$this->redirect('settings.UserManajemen',true);
-		}
+			$str = "UPDATE dosen SET nidn='$nidn',nipy='$nipy',nama_dosen='$nama',gelar_depan='$gelar_depan',gelar_belakang='$gelar_belakang',idjabatan='$idjabatanfungsional',alamat_dosen='$alamat_dosen',telp_hp='$no_telepon',email='$email' WHERE iddosen=$iddosen";
+			$this->DB->updateRecord($str);           
+            $this->Redirect('dmaster.Dosen',true);
+           
+        }
 	}
     public function deleteRecord ($sender,$param) {        
-		$id=$this->getDataKeyField($sender,$this->RepeaterS);        
-        $this->DB->deleteRecord("user WHERE userid=$id");
-        $this->redirect('settings.UserManajemen',true);
+		$iddosen=$this->getDataKeyField($sender,$this->RepeaterS);  		
+        if ($this->DB->checkRecordIsExist('iddosen','pengampu_penyelenggaraan',$iddosen)) {
+            $this->lblHeaderMessageError->Text='Menghapus Dosen';
+            $this->lblContentMessageError->Text="Anda tidak bisa menghapus dosen dengan ID ($iddosen) karena sedang digunakan di pengampu penyelenggaraan.";
+            $this->modalMessageError->Show();
+        }elseif ($this->DB->checkRecordIsExist('iddosen','dosen_wali',$iddosen)) {
+            $this->lblHeaderMessageError->Text='Menghapus Dosen';
+            $this->lblContentMessageError->Text="Anda tidak bisa menghapus dosen dengan ID ($iddosen) karena telah menjadi Dosen Wali.";
+            $this->modalMessageError->Show();
+        }elseif ($this->DB->checkRecordIsExist('iddosen','kjur',$iddosen)) {
+            $this->lblHeaderMessageError->Text='Menghapus Matakuliah';
+            $this->lblContentMessageError->Text="Anda tidak bisa menghapus dosen dengan ID ($iddosen) karena sedang menjadi Ketua Jurusan.";
+            $this->modalMessageError->Show();
+        }else{
+            $this->DB->deleteRecord("dosen WHERE iddosen=$iddosen");
+            $this->redirect('dmaster.Dosen',true);
+        }        
     }   
     
 }

@@ -413,5 +413,23 @@ class Logic_DMaster extends Logic_Global {
         }
         return $dataitem;         
 	}
+    /**
+	* digunakan untuk mendapatkan daftar jabatan akademik
+	*
+	*/
+	public function getListJabfung () {        
+        if ($this->Application->Cache) {            
+            $dataitem=$this->Application->Cache->get('listjabfung');            
+            if (!isset($dataitem['none'])) {                  
+                $dataitem=$this->getList('jabatan_akademik',array('idjabatan','nama_jabatan','idjabatan'),'idjabatan',null,1);
+                $dataitem['none']='Daftar Jabatan Fungsional';
+                $this->Application->Cache->set('listjabfung',$dataitem);
+            }
+        }else {                        
+            $this->getList('jabatan_akademik',array('idjabatan','nama_jabatan','idjabatan'),'idjabatan',null,1);
+            $dataitem['none']='Daftar Jabatan Fungsional';
+        }
+        return $dataitem;  
+	}
 }
 ?>

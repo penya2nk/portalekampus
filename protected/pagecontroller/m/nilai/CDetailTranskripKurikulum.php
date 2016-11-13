@@ -49,19 +49,37 @@ class CDetailTranskripKurikulum extends MainPageM {
         }        
 	}
 	public function printOut ($sender,$param) {	
-        $this->createObj('reportnilai');             		
-        $dataReport=$_SESSION['currentPageDetailTranskripKurikulum']['DataMHS'];  
-        
-        $dataReport['nama_jabatan_transkrip']=$this->setup->getSettingValue('nama_jabatan_transkrip');
-        $dataReport['nama_penandatangan_transkrip']=$this->setup->getSettingValue('nama_penandatangan_transkrip');
-        $dataReport['jabfung_penandatangan_transkrip']=$this->setup->getSettingValue('jabfung_penandatangan_transkrip');
-        $dataReport['nipy_penandatangan_transkrip']=$this->setup->getSettingValue('nipy_penandatangan_transkrip');
+        $this->createObj('reportnilai');            
+        $this->linkOutput->Text='';
+        $this->linkOutput->NavigateUrl='#';        
+        $dataReport=$_SESSION['currentPageDetailTranskripKurikulum']['DataMHS']; 
+        $nim=$dataReport['nim'];
+        switch ($_SESSION['outputreport']) {
+            case  'summarypdf' :
+                $messageprintout="Mohon maaf Print out pada mode summary pdf tidak kami support.";                
+            break;
+            case  'summaryexcel' :
+                $messageprintout="Mohon maaf Print out pada mode summary excel tidak kami support.";                
+            break;
+            case  'excel2007' :
+                $messageprintout="Mohon maaf Print out pada mode excel 2007 belum kami support.";                
+            break;
+            case 'pdf' :
+                $dataReport['nama_jabatan_transkrip']=$this->setup->getSettingValue('nama_jabatan_transkrip');
+                $dataReport['nama_penandatangan_transkrip']=$this->setup->getSettingValue('nama_penandatangan_transkrip');
+                $dataReport['jabfung_penandatangan_transkrip']=$this->setup->getSettingValue('jabfung_penandatangan_transkrip');
+                $dataReport['nipy_penandatangan_transkrip']=$this->setup->getSettingValue('nipy_penandatangan_transkrip');
+
+                $dataReport['linkoutput']=$this->linkOutput; 
+                $this->report->setDataReport($dataReport); 
+                $this->report->setMode($_SESSION['outputreport']);
+                $this->report->printTranskripKurikulum($this->Nilai,true);
                 
-        $dataReport['linkoutput']=$this->linkOutput; 
-        $this->report->setDataReport($dataReport); 
-        $this->report->setMode($_SESSION['outputreport']);
-		$this->report->printTranskripKurikulum($this->Nilai,true);				
+                $messageprintout="Transkrip Kurikulum $nim : <br/>";
+            break;
+        }
         
+        $this->lblMessagePrintout->Text=$messageprintout;
         $this->lblPrintout->Text='Transkrip Kurikulum';
         $this->modalPrintOut->show();
 	}

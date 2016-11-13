@@ -30,11 +30,11 @@
                                 </div>                            
                             </div>                            
                             <div class="form-group">
-                                <label class="col-sm-4 control-label"><strong>T.A: </strong></label>
+                                <label class="col-sm-4 control-label"><strong>T.A / SEMESTER: </strong></label>
                                 <div class="col-sm-8">
-                                    <p class="form-control-static"><%= $this->Demik->InfoMatkul['ta']%></p>
+                                    <p class="form-control-static"><%= $this->Demik->InfoMatkul['ta']%> <%=$this->Demik->InfoMatkul['nama_semester']%></p>
                                 </div>                            
-                            </div>  
+                            </div>
                         </div>
                     </div>                    
                     <div class="col-sm-6">
@@ -48,21 +48,21 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label"><strong>DOSEN PENGAMPU UTAMA: </strong></label>
                                 <div class="col-sm-8">
+                                    <p class="form-control-static"><%= $this->Demik->InfoMatkul['nama_dosen_pengampu']%> [<%= $this->Demik->InfoMatkul['nidn_dosen_pengampu']%>]</p>
+                                </div>                            
+                            </div> 
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"><strong>DOSEN PENGAJAR: </strong></label>
+                                <div class="col-sm-8">
                                     <p class="form-control-static"><%= $this->Demik->InfoMatkul['nama_dosen']%> [<%= $this->Demik->InfoMatkul['nidn']%>]</p>
                                 </div>                            
-                            </div>                            
+                            </div> 
                             <div class="form-group">
                                 <label class="col-sm-4 control-label"><strong>JUMLAH PESERTA: </strong></label>
                                 <div class="col-sm-8">
                                     <p class="form-control-static"><%= $this->Demik->InfoMatkul['jumlah_peserta']%></p>
                                 </div>                            
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label"><strong>SEMESTER: </strong></label>
-                                <div class="col-sm-8">
-                                    <p class="form-control-static"><%= $this->Demik->InfoMatkul['nama_semester']%></p>
-                                </div>                            
-                            </div>  
+                            </div>                             
                         </div>
                     </div>
                 </div>                

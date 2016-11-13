@@ -36,7 +36,7 @@
                                 </div>                            
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-4 control-label"><strong>DOSEN: </strong></label>
+                                <label class="col-sm-4 control-label"><strong>DOSEN PENGAJAR: </strong></label>
                                 <div class="col-sm-8">
                                     <p class="form-control-static"><%= $this->Demik->InfoKelas['nama_dosen']%> [<%= $this->Demik->InfoKelas['nidn']%>]</p>
                                 </div>                            

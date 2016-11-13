@@ -133,7 +133,27 @@
                         </com:TActiveLinkButton> 									
                     </div>
                 </header>
-                <div class="main-box-body clearfix">  
+                <div class="main-box-body clearfix">
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-6 col-xs-12">
+                            <a href="#" OnClick="return false;">
+                                <div class="main-box infographic-box colored emerald-bg">
+                                    <i class="fa fa-users"></i>
+                                    <span class="headline">Jumlah MHS Pria</span>
+                                    <com:TActiveLabel ID="labelJumlahMHSPria" CssClass="value" />
+                                </div>
+                            </a>
+                        </div> 
+                        <div class="col-lg-3 col-sm-6 col-xs-12">
+                            <a href="#" OnClick="return false;">
+                                <div class="main-box infographic-box colored emerald-bg">
+                                    <i class="fa fa-users"></i>
+                                    <span class="headline">Jumlah MHS Wanita</span>
+                                    <com:TActiveLabel ID="labelJumlahMHSWanita" CssClass="value" />
+                                </div>
+                            </a>
+                        </div> 
+                    </div>
                 </div>
             </div>
         </div>

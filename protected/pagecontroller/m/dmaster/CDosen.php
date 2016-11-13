@@ -108,10 +108,13 @@ class CDosen extends MainPageM {
 		$this->idProcess=$sender->getId()=='addUsername'?'add':'edit';
         $username=$param->Value;		
         if ($username != '') {
-            try {                                                           
-                if ($this->DB->checkRecordIsExist('username','dosen',$username)) {                                
+            try {
+                if ($this->DB->checkRecordIsExist('username','dosen',$username) ) {
                     throw new Exception ("Username ($username) sudah tidak tersedia silahkan ganti dengan yang lain.");		
-                }
+                }                
+                if($this->DB->checkRecordIsExist('username','user',$username)) {
+                    throw new Exception ("Username ($username) sudah tidak tersedia silahkan ganti dengan yang lain.");		
+                }                              
             }catch (Exception $e) {
                 $param->IsValid=false;
                 $sender->ErrorMessage=$e->getMessage();
@@ -155,7 +158,7 @@ class CDosen extends MainPageM {
                 $salt=$data['salt'];
                 $password=$data['password'];           
                 $page='d';
-                $str = "INSERT INTO user SET username='$username',userpassword='$password',salt='$salt',nama='$nama',email='$email',page='$page',active=1,theme='CUBE',date_added=NOW()";
+                $str = "INSERT INTO user SET username='$username',userpassword='$password',salt='$salt',nama='$nama',email='$email',page='$page',active=1,theme='cube',foto='resources/userimages/no_photo.png',date_added=NOW()";
                 $this->DB->insertRecord($str);
                 $this->DB->query('COMMIT');
                 $this->Redirect('dmaster.Dosen',true);
@@ -169,8 +172,8 @@ class CDosen extends MainPageM {
         $iddosen=$this->getDataKeyField($sender,$this->RepeaterS);        
 		$this->hiddenid->Value=$iddosen;     
         
-        $str = "SELECT nidn,nipy,nama_dosen,gelar_depan,gelar_belakang,idjabatan,alamat_dosen,telp_hp,email,status FROM dosen WHERE iddosen='$iddosen'";
-		$this->DB->setFieldTable(array('nidn','nipy','nama_dosen','gelar_depan','gelar_belakang','idjabatan','alamat_dosen','telp_hp','email','status'));
+        $str = "SELECT nidn,nipy,nama_dosen,gelar_depan,gelar_belakang,idjabatan,alamat_dosen,telp_hp,email,username,status FROM dosen WHERE iddosen='$iddosen'";
+		$this->DB->setFieldTable(array('nidn','nipy','nama_dosen','gelar_depan','gelar_belakang','idjabatan','alamat_dosen','telp_hp','email','username','status'));
         $r=$this->DB->getRecord($str);
         $result=$r[1];   
         
@@ -178,6 +181,7 @@ class CDosen extends MainPageM {
         $this->hiddennidn->Value=$result['nidn'];
         $this->hiddennipy->Value=$result['nipy'];
         $this->hiddenemail->Value=$result['email'];
+        $this->hiddenusername->Value=$result['username'];
         
         $this->txtEditNIDN->Text=$result['nidn'];
         $this->txtEditNIPY->Text=$result['nipy'];
@@ -196,6 +200,7 @@ class CDosen extends MainPageM {
     public function updateData ($sender,$param) {
 		if ($this->Page->isValid) {
             $iddosen=$this->hiddenid->Value;
+            $username=$this->hiddenusername->Value;
             $nidn=addslashes($this->txtEditNIDN->Text);
             $nipy=addslashes($this->txtEditNIPY->Text);
             $nama=strtoupper(addslashes($this->txtEditNama->Text));
@@ -205,9 +210,26 @@ class CDosen extends MainPageM {
 			$alamat_dosen=strtoupper(addslashes($this->txtEditAlamat->Text));
             $no_telepon=addslashes($this->txtEditTelepon->Text);
             $email=addslashes($this->txtEditEmail->Text);
-            
-			$str = "UPDATE dosen SET nidn='$nidn',nipy='$nipy',nama_dosen='$nama',gelar_depan='$gelar_depan',gelar_belakang='$gelar_belakang',idjabatan='$idjabatanfungsional',alamat_dosen='$alamat_dosen',telp_hp='$no_telepon',email='$email' WHERE iddosen=$iddosen";
-			$this->DB->updateRecord($str);           
+            $status=$this->cmbEditStatus->Text;
+			$str = "UPDATE dosen SET nidn='$nidn',nipy='$nipy',nama_dosen='$nama',gelar_depan='$gelar_depan',gelar_belakang='$gelar_belakang',idjabatan='$idjabatanfungsional',alamat_dosen='$alamat_dosen',telp_hp='$no_telepon',email='$email',status=$status WHERE iddosen=$iddosen";
+			$this->DB->query('BEGIN');
+            if ($this->DB->updateRecord($str)) {   
+                if($this->DB->checkRecordIsExist('username','user',$username)) {
+                    $str = "UPDATE user SET nama='$nama',email='$email',active=$status WHERE username='$username'";
+                    $this->DB->updateRecord($str);
+                }else{
+                    $data=$this->Pengguna->createHashPassword(1234);
+                    $salt=$data['salt'];
+                    $password=$data['password'];           
+                    $page='d';
+                    $str = "INSERT INTO user SET username='$username',userpassword='$password',salt='$salt',nama='$nama',email='$email',page='$page',active=1,theme='cube',foto='resources/userimages/no_photo.png',date_added=NOW()";
+                    $this->DB->insertRecord($str);
+                }                
+                $this->DB->query('COMMIT');
+                $this->Redirect('dmaster.Dosen',true);
+            }else{
+                $this->DB->query('ROLLBACK');
+            }
             $this->Redirect('dmaster.Dosen',true);
            
         }
@@ -227,7 +249,12 @@ class CDosen extends MainPageM {
             $this->lblContentMessageError->Text="Anda tidak bisa menghapus dosen dengan ID ($iddosen) karena sedang menjadi Ketua Jurusan.";
             $this->modalMessageError->Show();
         }else{
+            $str = "SELECT username,status FROM dosen WHERE iddosen='$iddosen'";
+            $this->DB->setFieldTable(array('username'));
+            $r=$this->DB->getRecord($str);
+            $username=$r[1]['username'];
             $this->DB->deleteRecord("dosen WHERE iddosen=$iddosen");
+            $this->DB->deleteRecord("user WHERE username='$username'");
             $this->redirect('dmaster.Dosen',true);
         }        
     }   

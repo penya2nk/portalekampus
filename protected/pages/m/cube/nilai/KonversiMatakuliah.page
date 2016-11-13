@@ -637,7 +637,8 @@
                                     <th width="300">ALAMAT</th>
                                     <th>NO. TELP</th>
                                     <th>JUMLAH <br />MATAKULIAH </th>
-                                    <th>JUMLAH <br />SKS</th>						
+                                    <th>JUMLAH <br />SKS</th>	
+                                     <th>NIM</th>
                                     <th width="150">AKSI</th>
                                 </tr>
                                 </thead>
@@ -651,6 +652,7 @@
                                     <td><%# $this->DataItem['no_telp']%></td>
                                     <td><%# $this->DataItem['jumlahmatkul']%></td>
                                     <td><%# $this->DataItem['jumlahsks']%></td>
+                                    <td><%# $this->DataItem['nim_alias']%></td>
                                     <td>
                                         <a href="<%#$this->Page->constructUrl('nilai.DetailKonversiMatakuliah',true,array('id'=>$this->DataItem['iddata_konversi']))%>" class="table-link" title="Detail Konversi Matakuliah">                                        
                                             <span class="fa-stack">

@@ -114,13 +114,22 @@ class Logic_Akademik extends Logic_Mahasiswa {
 				}
 			break;
 			case 'pengampu_penyelenggaraan' :
-				$this->db->setFieldTable (array('idpenyelenggaraan','kmatkul','nmatkul','sks','semester','iddosen','nama_dosen','nidn'));
-				$str = "SELECT pp.idpenyelenggaraan,vp.kmatkul,vp.nmatkul,vp.sks,vp.semester,pp.iddosen,d.nama_dosen,d.nidn FROM v_penyelenggaraan vp,pengampu_penyelenggaraan pp,dosen d WHERE d.iddosen=pp.iddosen AND pp.idpenyelenggaraan=vp.idpenyelenggaraan AND pp.idpengampu_penyelenggaraan='$id'";
+				$this->db->setFieldTable (array('idpengampu_penyelenggaraan','idpenyelenggaraan','kmatkul','nmatkul','sks','semester','iddosen','nama_dosen','nidn','tahun','idsmt'));
+				$str = "SELECT pp.idpengampu_penyelenggaraan,pp.idpenyelenggaraan,vp.kmatkul,vp.nmatkul,vp.sks,vp.semester,pp.iddosen,CONCAT(d.gelar_depan,' ',d.nama_dosen,',',d.gelar_belakang) AS nama_dosen,d.nidn,vp.tahun,vp.idsmt FROM v_penyelenggaraan vp,pengampu_penyelenggaraan pp,dosen d WHERE d.iddosen=pp.iddosen AND pp.idpenyelenggaraan=vp.idpenyelenggaraan AND pp.idpengampu_penyelenggaraan='$id'";
 				$r=$this->db->getRecord($str);
 				if (isset($r[1])) {
-					$r[1]['kmatkul']=$this->getKmatkul($r[1]['kmatkul']);					
+                    $idpenyelenggaraan=$r[1]['idpenyelenggaraan'];
+                                        
+                    $r[1]['kmatkul']=$this->getKmatkul($r[1]['kmatkul']);					
 					$r[1]['jumlah_peserta']=$this->getJumlahMhsInPengampuPenyelenggaraan($id);
-					$this->InfoMatkul=$r[1]; 
+					$this->InfoMatkul=$r[1];
+                    
+                    $this->db->setFieldTable (array('nama_dosen','nidn'));
+                    $str = "SELECT nidn,CONCAT(gelar_depan,' ',nama_dosen,',',gelar_belakang) AS nama_dosen FROM penyelenggaraan p,dosen d WHERE d.iddosen=p.iddosen AND p.idpenyelenggaraan=$idpenyelenggaraan";
+					$r=$this->db->getRecord($str);
+                    $this->InfoMatkul['nama_dosen_pengampu']=$r[1]['nama_dosen'];
+                    $this->InfoMatkul['nidn_dosen_pengampu']=$r[1]['nidn'];
+                    
 				}
 			break;
 			case 'krsmatkul' :
@@ -176,7 +185,7 @@ class Logic_Akademik extends Logic_Mahasiswa {
      * @return type int
      */
 	public function getJumlahMhsInPengampuPenyelenggaraan ($idpengampu_penyelenggaraan) {
-		$str = "SELECT COUNT(vkm.idpenyelenggaraan) AS jmlh_peserta FROM kelas_mhs_detail kmd,v_krsmhs vkm,v_datamhs vdm,kelas_mhs km WHERE vkm.sah=1 AND vkm.batal=0 AND km.idkelas_mhs=kmd.idkelas_mhs AND kmd.idkrsmatkul=vkm.idkrsmatkul AND vkm.nim=vdm.nim AND km.idpengampu_penyelenggaraan='$idpengampu_penyelenggaraan'";
+        $str = "SELECT COUNT(vkm.nim) AS jmlh_peserta FROM v_krsmhs vkm JOIN pengampu_penyelenggaraan pp ON (pp.idpenyelenggaraan=vkm.idpenyelenggaraan) WHERE vkm.sah=1 AND vkm.batal=0 AND pp.idpengampu_penyelenggaraan='$idpengampu_penyelenggaraan' ";		
         $this->db->setFieldTable(array ('jmlh_peserta'));
         $result=$this->db->getRecord($str);
         return $result[1]['jmlh_peserta'];		

@@ -40,6 +40,7 @@ class CDaftarMahasiswa extends MainPageM {
             $this->tbCmbOutputReport->Text= $_SESSION['outputreport'];
             $this->tbCmbOutputReport->DataBind();
             
+            $this->populateSummary();
             $this->populateKonsentrasi();
 			$this->populateData();
 		}		
@@ -48,21 +49,29 @@ class CDaftarMahasiswa extends MainPageM {
 		$_SESSION['kjur']=$this->tbCmbPs->Text;
         $this->lblProdi->Text=$_SESSION['daftar_jurusan'][$_SESSION['kjur']];        
         $_SESSION['currentPageDaftarMahasiswa']['idkonsentrasi']='none';
+        
+        $this->populateSummary();
         $this->populateKonsentrasi();
 		$this->populateData();
 	}
 	public function changeTbTahunMasuk($sender,$param) {    				
-		$_SESSION['tahun_masuk']=$this->tbCmbTahunMasuk->Text;		
+		$_SESSION['tahun_masuk']=$this->tbCmbTahunMasuk->Text;	
+        
+        $this->populateSummary();
         $this->populateKonsentrasi();
 		$this->populateData();
 	}
 	public function changeTbKelas ($sender,$param) {				
 		$_SESSION['kelas']=$this->tbCmbKelas->Text;		
+        
+        $this->populateSummary();
         $this->populateKonsentrasi();
 		$this->populateData();
 	}
     public function changeTbStatus ($sender,$param) {				
-		$_SESSION['currentPageDaftarMahasiswa']['k_status']=$this->tbCmbStatus->Text;		
+		$_SESSION['currentPageDaftarMahasiswa']['k_status']=$this->tbCmbStatus->Text;	
+        
+        $this->populateSummary();
         $this->populateKonsentrasi();
 		$this->populateData();
 	}
@@ -76,6 +85,8 @@ class CDaftarMahasiswa extends MainPageM {
     public function filterKonsentrasi ($sender,$param) {
         $id=$this->getDataKeyField($sender, $this->RepeaterKonsentrasi);
         $_SESSION['currentPageDaftarMahasiswa']['idkonsentrasi']=$id;
+        
+        $this->populateSummary();
         $this->populateKonsentrasi();
         $this->populateData();
     }
@@ -83,6 +94,36 @@ class CDaftarMahasiswa extends MainPageM {
 		$_SESSION['currentPageDaftarMahasiswa']['search']=true;
         $this->populateData($_SESSION['currentPageDaftarMahasiswa']['search']);
 	} 
+    public function populateSummary () {
+        $kjur=$_SESSION['kjur'];
+        $tahun_masuk=$_SESSION['tahun_masuk'];        
+        $str_tahun_masuk=$tahun_masuk == 'none' ?'':"AND tahun_masuk=$tahun_masuk";
+        $idkonsentrasi=$_SESSION['currentPageDaftarMahasiswa']['idkonsentrasi'];
+        $str_konsentrasi = $idkonsentrasi == 'none'?'':" AND idkonsentrasi=$idkonsentrasi";
+        $kelas=$_SESSION['kelas'];
+        $str_kelas = $kelas == 'none'?'':" AND idkelas='$kelas'";
+        $status=$_SESSION['currentPageDaftarMahasiswa']['k_status'];
+        $str_status = $status == 'none'?'':" AND k_status='$status'";
+
+        $str = "SELECT jk,COUNT(nim) AS jumlah FROM v_datamhs WHERE kjur='$kjur' $str_tahun_masuk $str_konsentrasi $str_kelas $str_status GROUP BY jk ORDER BY jk ASC";			
+        $this->DB->setFieldTable(array('jk','jumlah'));
+		$jumlah_jk = $this->DB->getRecord($str);
+        
+        $jumlah_pria=0;
+        $jumlah_wanita=0;
+        foreach ($jumlah_jk as $v) {
+            switch ($v['jk']) {
+                case 'L' :
+                    $jumlah_pria=$v['jumlah'];
+                break;
+                case 'P' :
+                    $jumlah_wanita=$v['jumlah'];
+                break;
+            }
+        }
+        $this->labelJumlahMHSPria->Text=$jumlah_pria;
+        $this->labelJumlahMHSWanita->Text=$jumlah_wanita;
+    }
     public function populateKonsentrasi () {			
         $datakonsentrasi=$this->DMaster->getListKonsentrasiProgramStudi();        
         $r=array();

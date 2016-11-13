@@ -38,7 +38,7 @@
                                     <th scope="col">NAMA KELAS</th>
                                     <th scope="col">HARI</th>
                                     <th scope="col">JAM</th> 
-                                    <th scope="col">RUANG</th>                                    >                                    
+                                    <th scope="col">RUANG</th>                                                                     
                                 </tr>	
                                 </thead>		
                                 <tbody>		

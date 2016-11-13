@@ -50,6 +50,7 @@ class Autorisasi extends TModule implements IUserManager {
                     $message="Mohon maaf status Anda diluar aktif atau cuti. Hubungi Bagian Administrasi.";		
                 }
             break;
+            case 'd' :
             case 'k' :
             case 'sa' :
                 $pass=hash('sha256', $result['salt'] . hash('sha256', $password));

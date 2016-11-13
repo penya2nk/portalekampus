@@ -81,7 +81,7 @@ class CKonversiMatakuliah extends MainPageM {
             }            			
         }else{
             $jumlah_baris=$this->DB->getCountRowsOfTable("data_konversi2 WHERE kjur='$kjur' AND tahun='$tahun_masuk' AND perpanjangan=0",'iddata_konversi');
-			$str = "SELECT iddata_konversi,nama,alamat,no_telp FROM data_konversi2 WHERE kjur='$kjur' AND tahun='$tahun_masuk' AND perpanjangan=0";
+			$str = "SELECT dk2.iddata_konversi,dk2.nama,dk2.alamat,dk2.no_telp,dk.nim FROM data_konversi2 dk2 LEFT JOIN data_konversi dk ON (dk2.iddata_konversi=dk.iddata_konversi) WHERE dk2.kjur='$kjur' AND dk2.tahun='$tahun_masuk' AND dk2.perpanjangan=0";
         }			
 		$this->RepeaterS->VirtualItemCount=$jumlah_baris;
 		$this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageKonversiMatakuliah']['page_num'];
@@ -92,13 +92,14 @@ class CKonversiMatakuliah extends MainPageM {
 		}
 		if ($limit < 0) {$offset=0;$limit=10;$_SESSION['currentPageKonversiMatakuliah']['page_num']=0;}
 		$str = $str . " ORDER BY nama ASC LIMIT $offset,$limit";		
-		$this->DB->setFieldTable(array('iddata_konversi','nama','alamat','no_telp'));
+		$this->DB->setFieldTable(array('iddata_konversi','nama','alamat','no_telp','nim'));
 		$r = $this->DB->getRecord($str,$offset+1);
 		$result=array();        
-        while (list($k,$v)=each($r)) {             
+        while (list($k,$v)=each($r)) {
             $iddata_konversi=$v['iddata_konversi'];
             $v['jumlahmatkul']=$this->DB->getCountRowsOfTable("nilai_konversi2 WHERE iddata_konversi=$iddata_konversi");
             $v['jumlahsks']=$this->DB->getSumRowsOfTable('sks',"v_konversi2 WHERE iddata_konversi=$iddata_konversi");
+            $v['nim_alias']=$v['nim']=='' ? 'N.A' : $v['nim'];
             $result[$k]=$v;
         }
 		$this->RepeaterS->DataSource=$result;

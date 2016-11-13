@@ -27,7 +27,12 @@ class CDetailKonversiMatakuliah extends MainPageM {
     }
 	protected function populateData() {		
         try {
-            $iddata_konversi=addslashes($this->request['id']);            				
+            $iddata_konversi=addslashes($this->request['id']);  
+            $str = "SELECT nim FROM data_konversi WHERE iddata_konversi=$iddata_konversi";
+            $this->DB->setFieldTable(array('nim'));
+            $r = $this->DB->getRecord($str);
+            $this->txtAddNIM->Text=isset($r[1])?$r[1]['nim']:'';
+            
             $str = "SELECT dk.iddata_konversi,dk.nama,dk.alamat,dk.no_telp,dk.nim_asal,dk.kode_pt_asal,dk.nama_pt_asal,js.njenjang,dk.kode_ps_asal,dk.nama_ps_asal,dk.tahun,dk.kjur,dk.idkur,date_added FROM data_konversi2 dk,jenjang_studi js WHERE dk.kjenjang=js.kjenjang AND dk.iddata_konversi=$iddata_konversi";
             $this->DB->setFieldTable(array('iddata_konversi','nama','alamat','no_telp','nim_asal','kode_pt_asal','nama_pt_asal','njenjang','kode_ps_asal','nama_ps_asal','tahun','kjur','idkur','date_added'));
             $r = $this->DB->getRecord($str);			
@@ -47,7 +52,36 @@ class CDetailKonversiMatakuliah extends MainPageM {
             $this->idProcess='view';	
 			$this->errorMessage->Text=$ex->getMessage();
         }        
-	}    
+	}  
+    public function checkNIM ($sender,$param) {					
+		$nim=$param->Value;		
+        if ($nim != '') {
+            try {   
+                $str = "SELECT nama_mhs,k_status FROM v_datamhs WHERE nim='$nim'";
+                $this->DB->setFieldTable(array('nama_mhs','k_status'));
+                $r = $this->DB->getRecord($str);
+                if (!isset($r[1])) {  
+                    throw new Exception ("NIM ($nim) tidak terdaftar di Portal, silahkan ganti dengan yang lain.");		
+                }
+                if ($r[1]['k_status']=='L') {
+                    throw new Exception ("Tidak bisa dihubungkan, karena status ($nim) sudah lulus.");
+                }
+				if ($this->DB->checkRecordIsExist('nim','data_konversi',$nim))throw new Exception ("NIM ($nim) sudah terhubung dengan data konversi ini.");
+            }catch (Exception $e) {
+                $param->IsValid=false;
+                $sender->ErrorMessage=$e->getMessage();
+            }	
+        }	
+	}
+    public function saveData ($sender,$param) {		
+		if ($this->IsValid) {		
+			$iddata_konversi=$_SESSION['currentPageDetailKonversiMatakuliah']['DataKonversi']['iddata_konversi'];
+			$nim=$this->txtAddNim->Text;
+			$str = "INSERT INTO data_konversi (idkonversi,iddata_konversi,nim) VALUES (NULL,$iddata_konversi,'$nim')";
+			$this->DB->insertRecord($str);
+			$this->konversi->redirect('a.m.Akademik.Konversi');
+        }
+    }
 	public function printOut ($sender,$param) {	
         $this->createObj('reportnilai');             
         $this->linkOutput->Text='';

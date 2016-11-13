@@ -636,7 +636,29 @@
                                                 <i class="fa fa-dashboard"></i>
                                                 <span>Dashboard</span>											
                                             </a>                                        
-                                        </li>                                         
+                                        </li>  
+                                        <li class="nav-header nav-header-first hidden-sm hidden-xs">
+                                            AKADEMIK
+                                        </li>
+                                        <li<%=$this->Page->showSubMenuAkademikNilai==true?' class="active"':''%>>
+                                            <a href="#" class="dropdown-toggle">
+                                                <i class="fa fa-file-excel-o"></i>
+                                                <span>Nilai</span>
+                                                <i class="fa fa-angle-right drop-icon"></i>
+                                            </a>
+                                            <ul class="submenu">                                                
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('nilai.DPNA',true)%>"<%=$this->Page->showDPNA==true ? ' class="active" ':''%>>
+                                                        DPNA
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('nilai.EditNilai',true)%>"<%=$this->Page->showEditNilai==true ? ' class="active" ':''%>>
+                                                        Edit Nilai
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li> 
                                     </com:TLiteral>	
                                     <com:TLiteral Visible="<%=$this->Page->Pengguna->getTipeUser()=='dw' && $this->Page->showSideBarMenu==true%>">
                                         <li<%=$this->Page->showDashboard==true?' class="active"':''%>>

@@ -40,7 +40,7 @@
                                     <label class="col-lg-3 control-label">Jumlah SKS :</label>
                                     <div class="col-lg-9">                                                                                        
                                         <p class="form-control-static">
-                                            <com:THiddenField ID="hiddenJumlahSKS" Value="<%=$this->Nilai->getTotalSKSAdaNilai()%>" />
+                                            <com:THiddenField ID="hiddenJumlahSKS" />
                                             <%=$this->hiddenJumlahSKS->Value%>
                                             <com:TCompareValidator ID="jumlahSKSCompareValidator" ValidationGroup="daftarkonsentrasivalidation" ControlToValidate="hiddenJumlahSKS" ValueToCompare="60" DataType="Integer" Operator="GreaterThan" Text="Jumlah SKS harus lebih besar dari 60." CssClass="has-error help-block" Display="Dynamic">                                                
                                                 <prop:ClientSide.OnValidationError>

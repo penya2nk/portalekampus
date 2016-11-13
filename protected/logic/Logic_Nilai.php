@@ -489,10 +489,7 @@ class Logic_Nilai extends Logic_Akademik {
 					$totalSks+=$b['sks'];
 				}							
 			}			
-		}else{
-            $nim=$this->DataMHS['nim'];            
-            $totalSks=$this->db->getSumRowsOfTable('sks',"(SELECT sks, MIN(n_kual) AS n_kual FROM `v_nilai` WHERE nim='$nim' GROUP BY kmatkul) AS temp");
-        }           
+		}          
 		return $totalSks;
 	}
     /**

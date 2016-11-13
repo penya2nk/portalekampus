@@ -23,6 +23,9 @@ class CDetailPendaftaranKonsentrasi Extends MainPageM {
                 $datamhs['status']=$this->DMaster->getNamaStatusMHSByID($datamhs['k_status']);
                 $_SESSION['currentPagePendaftaranKonsentrasi']['DataMHS']=$datamhs;
                 $this->Nilai->setDataMHS($datamhs);
+                $this->Nilai->getTranskripNilaiKurikulum();
+                $this->hiddenJumlahSKS->Value=$this->Nilai->getTotalSKSAdaNilai();
+                
                 $str = "SELECT idkonsentrasi,jumlah_sks,tahun,idsmt,status_daftar FROM pendaftaran_konsentrasi WHERE nim='$nim'";
                 $this->DB->setFieldTable(array('idkonsentrasi','jumlah_sks','tahun','idsmt','status_daftar'));
                 $r=$this->DB->getRecord($str);

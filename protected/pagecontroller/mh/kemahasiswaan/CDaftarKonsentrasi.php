@@ -10,7 +10,9 @@ class CDaftarKonsentrasi extends MainPageMHS {
             if (!isset($_SESSION['currentPageDaftarKonsentrasi'])||$_SESSION['currentPageDaftarKonsentrasi']['page_name']!='mh.akademik.DaftarKonsentrasi') {
 				$_SESSION['currentPageDaftarKonsentrasi']=array('page_name'=>'mh.akademik.DaftarKonsentrasi','page_num'=>0,'search'=>false);												
 			}    
-            $this->Nilai->setDataMHS($this->Pengguna->getDataUser());        
+            $this->Nilai->setDataMHS($this->Pengguna->getDataUser()); 
+            $this->Nilai->getTranskripNilaiKurikulum(true);
+            $this->hiddenJumlahSKS->Value=$this->Nilai->getTotalSKSAdaNilai();
             $this->cmbKonsentrasiProdi->DataSource=$this->DMaster->getListKonsentrasiProgramStudi($this->Pengguna->getDataUser('kjur'));
             $this->cmbKonsentrasiProdi->DataBind();
             

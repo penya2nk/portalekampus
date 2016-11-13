@@ -54,15 +54,11 @@ class CPendaftaranKonsentrasi extends MainPageM {
     public function populateKonsentrasi () {			
         $datakonsentrasi=$this->DMaster->getListKonsentrasiProgramStudi();        
         $r=array();
-        $i=1;
-        $tahun_masuk=$_SESSION['tahun_masuk'];        
-        $str_tahun_masuk=$tahun_masuk == 'none' ?'':"AND tahun=$tahun_masuk";
-        $kelas=$_SESSION['kelas'];
-        $str_kelas = $kelas == 'none'?'':" AND idkelas='$kelas'";
+        $i=1;        
         while (list($k,$v)=each($datakonsentrasi)) {                        
             if ($v['kjur']==$_SESSION['kjur']){
                 $idkonsentrasi=$v['idkonsentrasi'];
-                $jumlah = $this->DB->getCountRowsOfTable("pendaftaran_konsentrasi WHERE idkonsentrasi=$idkonsentrasi $str_tahun_masuk $str_kelas",'nim');
+                $jumlah = $this->DB->getCountRowsOfTable("pendaftaran_konsentrasi WHERE idkonsentrasi=$idkonsentrasi",'nim');
                 $v['jumlah_mhs']=$jumlah > 10000 ? 'lebih dari 10.000' : $jumlah;
                 $r[$i]=$v;
                 $i+=1;
@@ -96,7 +92,7 @@ class CPendaftaranKonsentrasi extends MainPageM {
 	public function populateData ($search=false) {			
         $kjur=$_SESSION['kjur'];        
         if ($search) {
-            $str = "SELECT vdm.nim,vdm.nama_mhs,pk.jumlah_sks,pk.kjur,pk.idkonsentrasi,status_daftar FROM v_datamhs vdm,pendaftaran_konsentrasi pk WHERE pk.nim=vdm.nim";			
+            $str = "SELECT vdm.nim,vdm.nama_mhs,pk.jumlah_sks,pk.kjur,pk.idkonsentrasi,pk.status_daftar FROM v_datamhs vdm,pendaftaran_konsentrasi pk WHERE pk.nim=vdm.nim";			
             $txtsearch=$this->txtKriteria->Text;
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
@@ -114,7 +110,7 @@ class CPendaftaranKonsentrasi extends MainPageM {
             $idkonsentrasi=$_SESSION['currentPagePendaftaranKonsentrasi']['idkonsentrasi'];
             $str_konsentrasi = $idkonsentrasi == 'none'?'':" AND pk.idkonsentrasi=$idkonsentrasi";            
             $jumlah_baris=$this->DB->getCountRowsOfTable("pendaftaran_konsentrasi pk WHERE kjur=$kjur $str_konsentrasi",'nim');		            
-            $str = "SELECT vdm.nim,vdm.nama_mhs,pk.jumlah_sks,pk.kjur,pk.idkonsentrasi,status_daftar FROM v_datamhs vdm,pendaftaran_konsentrasi pk WHERE pk.nim=vdm.nim AND pk.kjur='$kjur' $str_konsentrasi";			
+            $str = "SELECT vdm.nim,vdm.nama_mhs,pk.jumlah_sks,pk.kjur,pk.idkonsentrasi,pk.status_daftar FROM v_datamhs vdm,pendaftaran_konsentrasi pk WHERE pk.nim=vdm.nim AND pk.kjur='$kjur' $str_konsentrasi";			
         }		
         $this->RepeaterS->CurrentPageIndex=$_SESSION['currentPagePendaftaranKonsentrasi']['page_num'];
 		$this->RepeaterS->VirtualItemCount=$jumlah_baris;

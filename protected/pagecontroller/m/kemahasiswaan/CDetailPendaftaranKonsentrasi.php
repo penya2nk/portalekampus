@@ -21,10 +21,7 @@ class CDetailPendaftaranKonsentrasi Extends MainPageM {
                 $datamhs['nkelas']=$this->DMaster->getNamaKelasByID($datamhs['idkelas']);
                 $datamhs['nama_konsentrasi']=($datamhs['idkonsentrasi']==0) ? '-':$datamhs['nama_konsentrasi'];                    
                 $datamhs['status']=$this->DMaster->getNamaStatusMHSByID($datamhs['k_status']);
-                $_SESSION['currentPagePendaftaranKonsentrasi']['DataMHS']=$datamhs;
-                $this->Nilai->setDataMHS($datamhs);
-                $this->Nilai->getTranskripNilaiKurikulum();
-                $this->hiddenJumlahSKS->Value=$this->Nilai->getTotalSKSAdaNilai();
+                $_SESSION['currentPagePendaftaranKonsentrasi']['DataMHS']=$datamhs;                
                 
                 $str = "SELECT idkonsentrasi,jumlah_sks,tahun,idsmt,status_daftar FROM pendaftaran_konsentrasi WHERE nim='$nim'";
                 $this->DB->setFieldTable(array('idkonsentrasi','jumlah_sks','tahun','idsmt','status_daftar'));
@@ -38,6 +35,10 @@ class CDetailPendaftaranKonsentrasi Extends MainPageM {
                 $this->cmbKonsentrasiProdi->DataSource=$this->DMaster->removeIdFromArray($this->DMaster->getListKonsentrasiProgramStudi($datamhs['kjur']),'none');
                 $this->cmbKonsentrasiProdi->Text=$r[1]['idkonsentrasi'];
                 $this->cmbKonsentrasiProdi->DataBind();
+                
+                $this->Nilai->setDataMHS($datamhs);
+                $this->Nilai->getTranskripNilaiKurikulum();
+                $this->hiddenJumlahSKS->Value=$this->Nilai->getTotalSKSAdaNilai();
             } catch (Exception $ex) {
                 $this->idProcess='view';	
                 $this->errorMessage->Text=$ex->getMessage();

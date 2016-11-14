@@ -39,23 +39,25 @@ class CDetailEditNilai extends MainPageD {
 	}
 	protected function populateData() {	
         $idkelas_mhs=$_SESSION['currentPageDetailEditNilai']['DataEditNilai']['idkelas_mhs'];
-        $str = "SELECT vkm.idkrsmatkul,vdm.nim,vdm.nama_mhs,n.persentase_quiz, n.persentase_tugas, n.persentase_uts, n.persentase_uas, n.persentase_absen, n.nilai_quiz, n.nilai_tugas, n.nilai_uts, n.nilai_uas, n.nilai_absen, n.nilai_akhir,n.n_kual FROM kelas_mhs_detail kmd LEFT JOIN nilai_matakuliah n ON (n.idkrsmatkul=kmd.idkrsmatkul) JOIN v_krsmhs vkm ON (vkm.idkrsmatkul=kmd.idkrsmatkul) JOIN v_datamhs vdm ON (vkm.nim=vdm.nim) WHERE kmd.idkelas_mhs=$idkelas_mhs AND vkm.sah=1 AND vkm.batal=0 ORDER BY vdm.nama_mhs ASC";        
-        $this->DB->setFieldTable(array('idkrsmatkul','nim','nama_mhs','persentase_quiz', 'persentase_tugas', 'persentase_uts', 'persentase_uas', 'persentase_absen', 'nilai_quiz', 'nilai_tugas', 'nilai_uts', 'nilai_uas', 'nilai_absen','n_kual'));
+        $str = "SELECT vkm.idkrsmatkul,vdm.nim,vdm.nama_mhs,n.persentase_quiz, n.persentase_tugas, n.persentase_uts, n.persentase_uas, n.persentase_absen, n.nilai_quiz, n.nilai_tugas, n.nilai_uts, n.nilai_uas, n.nilai_absen, n.n_kuan,n.n_kual FROM kelas_mhs_detail kmd LEFT JOIN nilai_matakuliah n ON (n.idkrsmatkul=kmd.idkrsmatkul) JOIN v_krsmhs vkm ON (vkm.idkrsmatkul=kmd.idkrsmatkul) JOIN v_datamhs vdm ON (vkm.nim=vdm.nim) WHERE kmd.idkelas_mhs=$idkelas_mhs AND vkm.sah=1 AND vkm.batal=0 ORDER BY vdm.nama_mhs ASC";        
+        $this->DB->setFieldTable(array('idkrsmatkul','nim','nama_mhs','persentase_quiz', 'persentase_tugas', 'persentase_uts', 'persentase_uas', 'persentase_absen', 'nilai_quiz', 'nilai_tugas', 'nilai_uts', 'nilai_uas', 'nilai_absen','n_kuan','n_kual'));
         $r=$this->DB->getRecord($str);	           
         $result=array();
         $sks=$this->Demik->InfoMatkul['sks'];
+        $persentase_quiz=0.15;
+        $persentase_tugas=0.15;
+        $persentase_uts=0.30;
+        $persentase_uas=0.30;
+        $persentase_absen=0.10;
+        
         while (list($k,$v)=each($r)) {                
-            $n_kual='-';
-            $am='-';
-            $hm='-';
-            if ($v['n_kual']!= '') {
-                $n_kual=$v['n_kual'];
-                $am=$this->Nilai->getAngkaMutu($v['n_kual']);
-                $hm=$am*$sks;
-            }
-            $v['n_kual']=$n_kual;
-            $v['am']=$am;
-            $v['hm']=$hm;
+            $v['persentase_quiz']=$v['persentase_quiz']>0?$v['persentase_quiz']:$persentase_quiz;
+            $v['persentase_tugas']=$v['persentase_tugas']>0?$v['persentase_tugas']:$persentase_tugas;
+            $v['persentase_uts']=$v['persentase_uts']>0?$v['persentase_uts']:$persentase_uts;
+            $v['persentase_uas']=$v['persentase_uas']>0?$v['persentase_uas']:$persentase_uas;
+            $v['persentase_absen']=$v['persentase_absen']>0?$v['persentase_absen']:$persentase_absen;
+            
+            $v['am']=$this->Nilai->getAngkaMutu($v['n_kual']);
             $result[$k]=$v;
         }
         $this->RepeaterS->DataSource=$result;
@@ -63,8 +65,62 @@ class CDetailEditNilai extends MainPageD {
 	}	
     public function saveData ($sender,$param) {
         if ($this->IsValid) {
-            
+            $idkelas_mhs=$_SESSION['currentPageDetailEditNilai']['DataEditNilai']['idkelas_mhs'];
+            $userid=$this->Pengguna->getDataUser('iddosen');
+            foreach ($this->RepeaterS->Items As $inputan) {
+                if ($inputan->chkProcess->Checked) {
+                    $item=$inputan->txtNilaiQuiz->getNamingContainer();
+                    $idkrsmatkul=$this->RepeaterS->DataKeys[$item->getItemIndex()];
+                    $persentase_quiz=$inputan->hiddenpersenquiz->Value;
+                    $persentase_tugas=$inputan->hiddenpersentugas->Value;
+                    $persentase_uts=$inputan->hiddenpersenuts->Value;
+                    $persentase_uas=$inputan->hiddenpersenuas->Value;
+                    $persentase_absen=$inputan->hiddenpersenabsen->Value;
+
+                    $nilai_quiz=addslashes($inputan->txtNilaiQuiz->Text);
+                    $nilai_tugas=addslashes($inputan->txtNilaiTugas->Text);
+                    $nilai_uts=addslashes($inputan->txtNilaiUTS->Text);
+                    $nilai_uas=addslashes($inputan->txtNilaiUAS->Text);
+                    $nilai_absen=addslashes($inputan->txtNilaiAbsen->Text);                    
+                    $n_kuan=($persentase_quiz*$nilai_quiz)+($persentase_tugas*$nilai_tugas)+($persentase_uts*$nilai_uts)+($persentase_uas*$nilai_uas)+($persentase_absen*$nilai_absen);
+                    $n_kual=$this->Nilai->getRentangNilaiNKuan($n_kuan);
+                    
+                    $str = "REPLACE INTO nilai_matakuliah (idkrsmatkul,persentase_quiz, persentase_tugas, persentase_uts, persentase_uas, persentase_absen, nilai_quiz, nilai_tugas, nilai_uts, nilai_uas, nilai_absen, n_kuan,n_kual,userid_input,tanggal_input,bydosen) VALUES ($idkrsmatkul,'$persentase_quiz','$persentase_tugas','$persentase_uts','$persentase_uas','$persentase_absen','$nilai_quiz','$nilai_tugas','$nilai_uts','$nilai_uas','$nilai_absen','$n_kuan','$n_kual',$userid,NOW(),1)";																				
+                    $this->DB->insertRecord($str);
+                }
+            }
+            $this->redirect("nilai.DetailEditNilai", true,array('id'=>$idkelas_mhs));
         }
+        
+    }
+    public function resetData ($sender,$param) {
+        if ($this->IsValid) {
+            $idkelas_mhs=$_SESSION['currentPageDetailEditNilai']['DataEditNilai']['idkelas_mhs'];
+            $userid=$this->Pengguna->getDataUser('iddosen');
+            foreach ($this->RepeaterS->Items As $inputan) {
+                if ($inputan->chkProcess->Checked) {
+                    $item=$inputan->txtNilaiQuiz->getNamingContainer();
+                    $idkrsmatkul=$this->RepeaterS->DataKeys[$item->getItemIndex()];
+                    $persentase_quiz=0.00;
+                    $persentase_tugas=0.00;
+                    $persentase_uts=0.00;
+                    $persentase_uas=0.00;
+                    $persentase_absen=0.00;
+
+                    $nilai_quiz=0.00;
+                    $nilai_tugas=0.00;
+                    $nilai_uts=0.00;
+                    $nilai_uas=0.00;
+                    $nilai_absen=0.00;                    
+                    $n_kuan=0.00;
+                    $n_kual='';
+                    $str = "REPLACE INTO nilai_matakuliah (idkrsmatkul,persentase_quiz, persentase_tugas, persentase_uts, persentase_uas, persentase_absen, nilai_quiz, nilai_tugas, nilai_uts, nilai_uas, nilai_absen, n_kuan,n_kual,userid_input,tanggal_input,bydosen) VALUES ($idkrsmatkul,'$persentase_quiz','$persentase_tugas','$persentase_uts','$persentase_uas','$persentase_absen','$nilai_quiz','$nilai_tugas','$nilai_uts','$nilai_uas','$nilai_absen','$n_kuan','$n_kual',$userid,NOW(),1)";																				
+                    $this->DB->insertRecord($str);
+                }
+            }
+            $this->redirect("nilai.DetailEditNilai", true,array('id'=>$idkelas_mhs));
+        }
+        
     }
 }	
 

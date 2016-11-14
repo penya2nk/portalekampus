@@ -69,7 +69,33 @@
             <div class="main-box clearfix">
                 <header class="main-box-header clearfix">
                     <h2 class="pull-left"></h2>                     
-                    <div class="filter-block pull-right">                                                   
+                    <div class="filter-block pull-right">       
+                        <com:TActiveLinkButton ID="btnSave" OnClick="Page.saveData" CssClass="btn btn-primary pull-left" Attributes.Title="Simpan Nilai">
+                            <prop:Text><i class="fa fa-save fa-lg"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnSave->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnSave->ClientId%>').disabled='';				
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton> 
+                        <com:TActiveLinkButton ID="btnReset" OnClick="resetData" CssClass="btn btn-danger pull-left" Attributes.Title="Reset Nilai" Attributes.OnClick="if(!confirm('Anda ingin mereset nilai Matakuliah ini ?')) return false;">
+                            <prop:Text><i class="fa fa-undo fa-lg"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnReset->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnReset->ClientId%>').disabled='';				
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton>
                         <com:TActiveLinkButton ID="btnPrintEditNilai" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out Evaluasi Hasil Belajar">
                             <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
                             <prop:ClientSide.OnPreDispatch>
@@ -82,21 +108,8 @@
                                 $('<%=$this->btnPrintEditNilai->ClientId%>').disabled='';				
                                 $('loading').hide();
                             </prop:ClientSide.OnComplete>
-                        </com:TActiveLinkButton> 
-                        <com:TActiveLinkButton ID="btnSave" OnClick="saveData" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out Evaluasi Hasil Belajar">
-                            <prop:Text><i class="fa fa-save fa-lg"></i></prop:Text>
-                            <prop:ClientSide.OnPreDispatch>
-                                $('loading').show();
-                            </prop:ClientSide.OnPreDispatch>
-                            <prop:ClientSide.OnLoading>
-                                $('<%=$this->btnSave->ClientId%>').disabled='disabled';				
-                            </prop:ClientSide.OnLoading>
-                            <prop:ClientSide.OnComplete>
-                                $('<%=$this->btnSave->ClientId%>').disabled='';				
-                                $('loading').hide();
-                            </prop:ClientSide.OnComplete>
-                        </com:TActiveLinkButton>  	
-                        <a class="btn btn-default pull-right" href="<%=$this->constructUrl('nilai.EditNilai',true)%>" title="Keluar Detail Kartu Hasil Studi">                        
+                        </com:TActiveLinkButton>                        
+                        <a class="btn btn-default pull-right" href="<%=$this->constructUrl('nilai.EditNilai',true)%>" title="Keluar Detail Edit Nilai">                        
                             <i class='fa  fa-times fa-lg'></i>
                         </a>
                     </div>
@@ -104,15 +117,16 @@
                 <div class="main-box-body clearfix"> 
                     <div class="table-responsive">
                         <com:TActiveRepeater ID="RepeaterS" DataKeyField="idkrsmatkul">
-                            <prop:HeaderTemplate>			
+                            <prop:HeaderTemplate>
                                 <table class="table table-striped table-hover">	
                                     <thead>
-                                    <tr>                                            
+                                    <tr>    
+                                        <th scope="col"></th>
                                         <th scope="col">NO</th>
                                         <th scope="col">NAMA</th>
                                         <th scope="col">NIM</th>
                                         <th scope="col">PR/QUIZ<br/>(15%)</th>                                        
-                                        <th scope="col">TUGAS<br/>(30%)</th>
+                                        <th scope="col">TUGAS<br/>(15%)</th>
                                         <th scope="col">UTS<br/>(30%)</th>
                                         <th scope="col">UAS<br/>(30%)</th>
                                         <th scope="col">ABSEN<br/>(10%)</th>
@@ -124,7 +138,10 @@
                                     <tbody>
                             </prop:HeaderTemplate>
                             <prop:ItemTemplate>
-                                <tr>
+                                <tr>                      
+                                    <td>
+                                        <com:TCheckBox ID="chkProcess" />
+                                    </td>
                                     <td><%# $this->DataItem['no']%></td>
                                     <td><%# $this->DataItem['nama_mhs']%></td>                                    
                                     <td><%#$this->DataItem['nim']%></td>
@@ -148,9 +165,9 @@
                                         <com:THiddenField ID="hiddenpersenabsen" Value="<%#$this->DataItem['persentase_absen']%>" />
                                         <com:TTextBox ID="txtNilaiAbsen" CssClass="form-control" Text="<%#$this->DataItem['nilai_absen']%>" Width="70px" />
                                     </td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>					                                   	                                 
+                                    <td><%=$this->DataItem['n_kuan']%></td>
+                                    <td><%=$this->DataItem['am']%></td>
+                                    <td><%=$this->DataItem['n_kual']%></td>					                                   	                                 
                                 </tr>
                             </prop:ItemTemplate>				                
                             <prop:FooterTemplate>               

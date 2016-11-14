@@ -18,6 +18,32 @@ class Logic_Nilai extends Logic_Akademik {
 		parent::__construct ($db);			
 	} 
     /**
+     * digunakan untuk mendapatkan rentang nilai kualitatif
+     */
+    public function getRentangNilaiNKual($id=null){
+        if ($id==NULL) {
+            return $this->RentangNilai;
+        }else{
+            return $this->RentangNilai[$id];
+        }
+    }
+    /**
+     * digunakan untuk mendapatkan rentang nilai kuanitatif
+     */
+    public function getRentangNilaiNKuan($n_kuan){
+        $n_kual='E';
+        if ($n_kuan >= 85) {
+            $n_kual = 'A';
+        }elseif ($n_kuan >= 70 && $n_kuan < 85) {
+            $n_kual = 'B';
+        }elseif ($n_kuan >= 55 && $n_kuan < 70) {
+            $n_kual = 'C';
+        }elseif ($n_kuan >= 45 && $n_kuan < 55) {
+            $n_kual = 'D';
+        }
+        return $n_kual;
+    }
+    /**
      * digunakan untuk mendapatkan data nilai
      * @param type $idx nomor index array
      * @param type $field nama field dari array

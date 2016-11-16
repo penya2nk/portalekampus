@@ -1,15 +1,15 @@
 <?php
 prado::using ('Application.MainPageSA');
-class CUserManajemen extends MainPageSA {		    	
+class CUserON extends MainPageSA {		    	
 	public function onLoad($param) {
 		parent::onLoad($param);		     
         $this->showSubMenuSettingSistem=true;
-        $this->showUserManajemen=true;   
+        $this->showUserON=true;   
 		if (!$this->IsPostBack&&!$this->IsCallback) {
-            if (!isset($_SESSION['currentPageUserManajemen'])||$_SESSION['currentPageUserManajemen']['page_name']!='sa.settings.UserManajemen') {
-				$_SESSION['currentPageUserManajemen']=array('page_name'=>'sa.settings.UserManajemen','page_num'=>0,'search'=>false);
+            if (!isset($_SESSION['currentPageUserON'])||$_SESSION['currentPageUserON']['page_name']!='sa.settings.UserON') {
+				$_SESSION['currentPageUserON']=array('page_name'=>'sa.settings.UserON','page_num'=>0,'search'=>false);
 			}
-            $_SESSION['currentPageUserManajemen']['search']=false;
+            $_SESSION['currentPageUserON']['search']=false;
             $this->populateData();            
 		}
 	}       
@@ -17,40 +17,40 @@ class CUserManajemen extends MainPageSA {
 		$this->RepeaterS->render($param->NewWriter);	
 	}
 	public function Page_Changed ($sender,$param) {
-		$_SESSION['currentPageUserManajemen']['page_num']=$param->NewPageIndex;
-		$this->populateData($_SESSION['currentPageUserManajemen']['search']);
+		$_SESSION['currentPageUserON']['page_num']=$param->NewPageIndex;
+		$this->populateData($_SESSION['currentPageUserON']['search']);
 	}
     
     public function searchRecord ($sender,$param) {
-		$_SESSION['currentPageUserManajemen']['search']=true;
-        $this->populateData($_SESSION['currentPageUserManajemen']['search']);
+		$_SESSION['currentPageUserON']['search']=true;
+        $this->populateData($_SESSION['currentPageUserON']['search']);
 	}    
 	protected function populateData ($search=false) {
         if ($search) {
-            $str = "SELECT u.userid,u.username,u.nama,u.email,ug.group_name,u.active,u.foto,u.logintime FROM user u LEFT JOIN user_group ug ON (ug.group_id=u.group_id) WHERE page='m'";			
+            $str = "SELECT u.userid,u.username,u.nama,u.email,ug.group_name,u.active,u.foto,u.logintime FROM user u LEFT JOIN user_group ug ON (ug.group_id=u.group_id) WHERE page='on'";			
             $txtsearch=$this->txtKriteria->Text;
             switch ($this->cmbKriteria->Text) {
                 case 'username' :
                     $cluasa="AND username='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable("user WHERE page='m' $cluasa",'userid');		            
+                    $jumlah_baris=$this->DB->getCountRowsOfTable("user WHERE page='on' $cluasa",'userid');		            
                     $str = "$str $cluasa";
                 break;
                 case 'nama' :
                     $cluasa="AND nama LIKE '%$txtsearch%'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable("user WHERE page='m' $cluasa",'userid');		            
+                    $jumlah_baris=$this->DB->getCountRowsOfTable("user WHERE page='on' $cluasa",'userid');		            
                     $str = "$str $cluasa";
                 break;
                 case 'email' :
                     $cluasa="AND email LIKE '%$txtsearch%'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable("user WHERE page='m' $cluasa",'userid');		            
+                    $jumlah_baris=$this->DB->getCountRowsOfTable("user WHERE page='on' $cluasa",'userid');		            
                     $str = "$str $cluasa";
                 break;
             }
         }else{
-            $jumlah_baris=$this->DB->getCountRowsOfTable("user WHERE page='m'",'userid');		            
-            $str = "SELECT u.userid,u.username,u.nama,u.email,ug.group_name,u.active,u.foto,u.kjur,u.logintime FROM user u LEFT JOIN user_group ug ON (ug.group_id=u.group_id) WHERE page='m'";			
+            $jumlah_baris=$this->DB->getCountRowsOfTable("user WHERE page='on'",'userid');		            
+            $str = "SELECT u.userid,u.username,u.nama,u.email,ug.group_name,u.active,u.foto,u.kjur,u.logintime FROM user u LEFT JOIN user_group ug ON (ug.group_id=u.group_id) WHERE page='on'";			
         }
-        $this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageUserManajemen']['page_num'];
+        $this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageUserON']['page_num'];
 		$this->RepeaterS->VirtualItemCount=$jumlah_baris;
 		$currentPage=$this->RepeaterS->CurrentPageIndex;
 		$offset=$currentPage*$this->RepeaterS->PageSize;		
@@ -59,7 +59,7 @@ class CUserManajemen extends MainPageSA {
 		if (($offset+$limit)>$itemcount) {
 			$limit=$itemcount-$offset;
 		}
-		if ($limit < 0) {$offset=0;$limit=$this->setup->getSettingValue('default_pagesize');$_SESSION['currentPageUserManajemen']['page_num']=0;}
+		if ($limit < 0) {$offset=0;$limit=$this->setup->getSettingValue('default_pagesize');$_SESSION['currentPageUserON']['page_num']=0;}
         $str = "$str ORDER BY username ASC LIMIT $offset,$limit";				
         $this->DB->setFieldTable(array('userid','username','nama','email','email','group_name','active','foto','kjur','logintime'));
 		$r = $this->DB->getRecord($str,$offset+1);	
@@ -87,7 +87,7 @@ class CUserManajemen extends MainPageSA {
         $username=$param->Value;		
         if ($username != '') {
             try {   
-                if ($this->hiddenid->Value!=$username) {                                                            
+                if ($this->hiddenusername->Value!=$username) {                                                            
                     if ($this->DB->checkRecordIsExist('username','user',$username)) {                                
                         throw new Exception ("Username ($username) sudah tidak tersedia silahkan ganti dengan yang lain.");		
                     }                               
@@ -122,13 +122,13 @@ class CUserManajemen extends MainPageSA {
             $data=$this->Pengguna->createHashPassword($this->txtAddPassword1->Text);
             $salt=$data['salt'];
             $password=$data['password'];           
-            $page='m';
+            $page='on';
             $group_id=$this->cmbAddGroup->Text;  
             $kjur=$this->cmbAddProdi->Text;
-            $str = "INSERT INTO user (userid,username,userpassword,salt,nama,email,page,group_id,kjur,active,theme,foto,date_added) VALUES (NULL,'$username','$password','$salt','$nama','$email','$page','$group_id','$kjur',1,'cube','resources/userimages/no_photo.png',NOW())";
+            $str = "INSERT INTO user (userid,username,userpassword,salt,nama,email,page,group_id,kjur,active,theme,foto,date_added) VALUES (NULL,'$username','$password','$salt','$nama','$email','$page','$group_id','$kjur',1,'limitless','resources/userimages/no_photo.png',NOW())";
             $this->DB->insertRecord($str);           
             
-			$this->redirect('settings.UserManajemen',true);
+			$this->redirect('settings.UserON',true);
         }
     }
     public function editRecord ($sender,$param) {
@@ -145,6 +145,7 @@ class CUserManajemen extends MainPageSA {
         $this->txtEditEmail->Text=$result['email'];
         $this->hiddenemail->Value=$result['email'];     
         $this->txtEditUsername->Text=$result['username'];    
+        $this->hiddenusername->Value=$result['username'];
         
         $this->cmbEditGroup->DataSource=$this->Pengguna->removeIdFromArray($this->Pengguna->getListGroup(),'none');
         $this->cmbEditGroup->Text=$result['group_id'];  
@@ -178,13 +179,13 @@ class CUserManajemen extends MainPageSA {
                 $str = "UPDATE user SET username='$username',userpassword='$password',salt='$salt',nama='$nama',email='$email',group_id='$group_id',kjur='$kjur',active='$status' WHERE userid=$id";               
             }
             $this->DB->updateRecord($str); 
-			$this->redirect('settings.UserManajemen',true);
+			$this->redirect('settings.UserON',true);
 		}
 	}
     public function deleteRecord ($sender,$param) {        
 		$id=$this->getDataKeyField($sender,$this->RepeaterS);        
         $this->DB->deleteRecord("user WHERE userid=$id");
-        $this->redirect('settings.UserManajemen',true);
+        $this->redirect('settings.UserON',true);
     }   
     
 }

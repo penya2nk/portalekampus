@@ -1,6 +1,6 @@
 <?php
-prado::using ('Application.MainPageM');
-class CUserDosen extends MainPageM {		    	
+prado::using ('Application.MainPageSA');
+class CUserDosen extends MainPageSA {		    	
 	public function onLoad($param) {
 		parent::onLoad($param);		     
         $this->showSubMenuSettingSistem=true;
@@ -65,7 +65,7 @@ class CUserDosen extends MainPageM {
 		$r = $this->DB->getRecord($str,$offset+1);	
         $result=array();
         while (list($k,$v)=each($r)) {
-            $v['logintime']=$v['logintime']=='0000-00-00 00:00:00'?'BELUM PERNAH':$this->Page->TGL->tanggal('d F Y',$this->DataItem['logintime']);            
+            $v['logintime']=$v['logintime']=='0000-00-00 00:00:00'?'BELUM PERNAH':$this->Page->TGL->tanggal('d F Y',$v['logintime']);            
             $result[$k]=$v;
         }
         $this->RepeaterS->DataSource=$result;

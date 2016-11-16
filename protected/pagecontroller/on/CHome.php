@@ -1,6 +1,6 @@
 <?php
-prado::using ('Application.MainPageSA');
-class CHome extends MainPageSA {
+prado::using ('Application.MainPageON');
+class CHome extends MainPageON {
 	public function onLoad($param) {		
 		parent::onLoad($param);		            
         $this->showDashboard=true;               

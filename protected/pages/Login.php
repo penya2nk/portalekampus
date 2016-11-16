@@ -21,7 +21,10 @@ class Login extends MainPage {
 			break;
 			case 'k' :
 				$page = 'Keuangan';
-			break;           
+			break;  
+            case 'on' :
+				$page = 'OperatorNilai';
+			break;
             case 'd' :
 				$page = 'Dosen';
 			break;
@@ -113,6 +116,20 @@ class Login extends MainPage {
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
                     $_SESSION['kjur']=1;
                     $_SESSION['ta']=$setup->getSettingValue('default_ta');             
+                break; 
+                case 'on' :
+                    $group_id=$pengguna->getDataUser('group_id');
+                    if ($group_id==3) {//prodi
+                        $kjur=$pengguna->getDataUser('group_id');
+                        $daftar_jurusan=$dmaster->getListProgramStudi(2);
+                        $_SESSION['daftar_jurusan']=array($kjur=>$daftar_jurusanp[$kjur]);
+                        $_SESSION['kjur']=$kjur;
+                        $_SESSION['ta']=$setup->getSettingValue('default_ta'); 
+                    }else{
+                        $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
+                        $_SESSION['kjur']=1;
+                        $_SESSION['ta']=$setup->getSettingValue('default_ta');
+                    }                                
                 break; 
                 case 'mb' :
                     $_SESSION['ta']=$pengguna->getDataUser('tahun_masuk');

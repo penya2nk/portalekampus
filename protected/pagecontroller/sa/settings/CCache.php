@@ -1,6 +1,6 @@
 <?php
-prado::using ('Application.MainPageM');
-class CCache extends MainPageM {    
+prado::using ('Application.MainPageSA');
+class CCache extends MainPageSA {    
 	public function onLoad($param) {		
 		parent::onLoad($param);				
         $this->showSubMenuSettingSistem=true;

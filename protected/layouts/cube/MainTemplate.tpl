@@ -215,6 +215,11 @@
                                                         User Dosen
                                                     </a>
                                                 </li>
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('settings.UserON',true)%>"<%=$this->Page->showUserON==true ? ' class="active" ':''%>>
+                                                        User Operator Nilai
+                                                    </a>
+                                                </li>
                                                 <li>                                                
                                                     <a href="<%=$this->Page->constructUrl('settings.Cache',true)%>"<%=$this->Page->showCache==true?' class="active"':''%>>                                                    
                                                         Cache											

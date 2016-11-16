@@ -35,15 +35,23 @@ class UserManager extends TAuthManager {
 	public function getDataUser () {				
 		$username=$this->username;
 		switch ($this->page) {
-            case 'SuperAdmin' :
+            case 'SuperAdmin' :            
             case 'Keuangan' :				
-				$str = "SELECT u.userid,u.idbank,u.username,u.nama,u.email,u.page,u.isdeleted,foto,theme FROM user u WHERE username='$username'";
-                $this->db->setFieldTable (array('userid','idbank','username','userpassword','salt','nama','email','page','isdeleted','foto','theme'));							
+				$str = "SELECT u.userid,u.username,u.nama,u.email,u.page,u.isdeleted,u.foto,u.theme FROM user u WHERE username='$username'";
+                $this->db->setFieldTable (array('userid','username','userpassword','salt','nama','email','page','isdeleted','foto','theme'));							
                 $r= $this->db->getRecord($str);	
 				$this->dataUser['data_user']=$r[1];	
                 $userid=$this->dataUser['data_user']['userid'];
                 $this->db->updateRecord("UPDATE user SET logintime=NOW() WHERE userid=$userid");
 			break;
+            case 'OperatorNilai' :
+                $str = "SELECT u.userid,u.username,u.nama,u.email,u.page,u.group_id,u.kjur,u.isdeleted,u.foto,u.theme FROM user u WHERE username='$username'";
+                $this->db->setFieldTable (array('userid','username','userpassword','salt','nama','email','page','group_id','kjur','isdeleted','foto','theme'));							
+                $r= $this->db->getRecord($str);	
+				$this->dataUser['data_user']=$r[1];	
+                $userid=$this->dataUser['data_user']['userid'];
+                $this->db->updateRecord("UPDATE user SET logintime=NOW() WHERE userid=$userid");
+            break;
 			case 'Manajemen' :				
 				$str = "SELECT su.userid,sg.groupname,su.active,su.kjur,su.theme FROM simak_user su,simak_group sg WHERE su.groupid=sg.groupid AND su.username='$username'";
 				$this->db->setFieldTable (array('userid','groupname','active','kjur','theme'));							
@@ -140,6 +148,7 @@ class UserManager extends TAuthManager {
         $username=$this->username;
 		switch ($this->page) {
             case 'SuperAdmin' :
+            case 'OperatorNilai' :
             case 'Keuangan' :
 				$str = "SELECT u.username,u.userpassword,u.salt,u.page FROM user u WHERE username='$username' AND active=1";
                 $this->db->setFieldTable (array('username','userpassword','salt','page'));							

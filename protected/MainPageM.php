@@ -43,15 +43,7 @@ class MainPageM extends MainPage {
     /**     
      * show sub menu akademik daftar ulang [akademik daftar ulang mahasiswa ekstension]
      */
-    public $showDulangMHSEkstension=false;
-    /**     
-     * show page variable [setting variable]
-     */
-    public $showVariable=false;
-    /**     
-     * show page konversi sementara [spmb]
-     */
-    public $showKonversiMatakuliah=false;
+    public $showDulangMHSEkstension=false; 
     /**     
      * show page PIN [spmb]
      */
@@ -97,6 +89,10 @@ class MainPageM extends MainPage {
      */
     public $showPesertaMatakuliah=false;
     /**     
+     * show page konversi sementara [akademik nilai]
+     */
+    public $showKonversiMatakuliah=false;
+    /**     
      * show page transkrip asli [akademik nilai]
      */
     public $showTranskripFinal=false;
@@ -108,26 +104,6 @@ class MainPageM extends MainPage {
      * show page rekapitulasi pembayaran semester ganjil[keuangan]
      */
     public $showReportRekapPembayaranGanjil=false;
-    /**     
-     * show sub menu setting akademik[setting]
-     */
-    public $showSubMenuSettingAkademik=false;       
-    /**     
-     * show sub menu setting sistem[setting]
-     */
-    public $showSubMenuSettingSistem=false;
-    /**     
-     * show page user Manajemen [setting sistem]
-     */
-    public $showUserManajemen=false;
-    /**     
-     * show page user dosen [setting sistem]
-     */
-    public $showUserDosen=false;
-    /**     
-     * show page cache [setting sistem]
-     */
-    public $showCache=false;    
 	public function onLoad ($param) {		
 		parent::onLoad($param);				
         if (!$this->IsPostBack&&!$this->IsCallBack) {	           

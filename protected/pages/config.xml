@@ -8,7 +8,7 @@
         <allow roles="SuperAdmin" pages="sa.*" />
 		<allow roles="Manajemen" pages="m.*" />
         <allow roles="Keuangan" pages="k.*" />
-        <allow roles="Bank" pages="b.*" />
+        <allow roles="OperatorNilai" pages="on.*" />
 		<allow roles="Mahasiswa" pages="mh.*" />		
 		<allow roles="Dosen" pages="d.*" />		
 		<allow roles="DosenWali" pages="dw.*" />		
@@ -19,6 +19,6 @@
 		<deny users="*" />		
 	</authorization>
 	<parameters>
-		<parameter id="NewUserRoles" value="SuperAdmin,Manajemen,Keuangan,Bank,Mahasiswa,Dosen,DosenWali,MahasiswaBaru,OrangtuaWali,Library" />
+		<parameter id="NewUserRoles" value="SuperAdmin,Manajemen,Keuangan,OperatorNilai,Mahasiswa,Dosen,DosenWali,MahasiswaBaru,OrangtuaWali,Library" />
 	</parameters>
 </configuration>

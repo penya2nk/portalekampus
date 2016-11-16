@@ -1,6 +1,6 @@
 <?php
-prado::using ('Application.MainPageM');
-class CVariables extends MainPageM {    
+prado::using ('Application.MainPageSA');
+class CVariables extends MainPageSA {    
 	public function onLoad($param) {		
 		parent::onLoad($param);				        
 		$this->showVariable=true;              

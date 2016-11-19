@@ -1645,6 +1645,7 @@ class Logic_ReportNilai extends Logic_Report {
      */
     public function printDPNA ($objNilai) {    
         $kmatkul=$this->dataReport['kmatkul'];
+        $kaprodi=$objNilai->getKetuaPRODI($this->dataReport['kjur']);
         switch ($this->getDriver()) {
             case 'excel2003' :               
             case 'excel2007' :                
@@ -1900,7 +1901,7 @@ class Logic_ReportNilai extends Logic_Report {
                     
                     $idpenyelenggaraan=$this->dataReport['idpenyelenggaraan'];                    
                     $itemcount=$this->db->getCountRowsOfTable("v_krsmhs vkm JOIN v_datamhs vdm ON(vdm.nim=vkm.nim) WHERE vkm.idpenyelenggaraan=$idpenyelenggaraan AND vkm.sah=1 AND vkm.batal=0",'vkm.nim');
-                    $pagesize=40;				
+                    $pagesize=39;				
                     $jumlahpage=ceil($itemcount/$pagesize);		
                     
                     $str ="SELECT vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.jk,n.n_kual FROM v_krsmhs vkm JOIN v_datamhs vdm ON(vdm.nim=vkm.nim) LEFT JOIN nilai_matakuliah n ON (n.idkrsmatkul=vkm.idkrsmatkul) WHERE vkm.idpenyelenggaraan=$idpenyelenggaraan AND vkm.sah=1 AND vkm.batal=0 ORDER BY vdm.nama_mhs ASC";
@@ -1968,7 +1969,7 @@ class Logic_ReportNilai extends Logic_Report {
                     
                     $idkelas=$this->dataReport['idkelas_mhs'];                    
                     $itemcount=$this->db->getCountRowsOfTable("kelas_mhs_detail kmd JOIN v_krsmhs vkm ON (vkm.idkrsmatkul=kmd.idkrsmatkul)  JOIN v_datamhs vdm ON (vkm.nim=vdm.nim) WHERE  kmd.idkelas_mhs=$idkelas AND vkm.sah=1 AND vkm.batal=0",'vkm.nim');
-                    $pagesize=40;				
+                    $pagesize=39;				
                     $jumlahpage=ceil($itemcount/$pagesize);		
                     
                     $str ="SELECT vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.jk,n.n_kual FROM kelas_mhs_detail kmd LEFT JOIN nilai_matakuliah n ON (n.idkrsmatkul=kmd.idkrsmatkul) JOIN v_krsmhs vkm ON (vkm.idkrsmatkul=kmd.idkrsmatkul)  JOIN v_datamhs vdm ON (vkm.nim=vdm.nim) WHERE  kmd.idkelas_mhs=$idkelas AND vkm.sah=1 AND vkm.batal=0 ORDER BY vdm.nama_mhs ASC";
@@ -2013,6 +2014,34 @@ class Logic_ReportNilai extends Logic_Report {
                         $rpt->Cell(30, 5, '', 1, 0, 'C');
                         $row+=5;
                     }
+                    $row+=5;
+                    $rpt->SetFont ('helvetica','B',8);
+                    $rpt->setXY(40,$row);													
+                    $tanggal=$this->tgl->tanggal('l, j F Y');				
+                    $rpt->Cell(250, 5, "Tanjungpinang, $tanggal",0,0,'C');		
+
+                    $row+=5;
+                    $rpt->setXY(40,$row);			
+                    $rpt->Cell(3, 5, 'A.n. Ketua STISIPOL Raja Haji',0,0,'C');			
+                    $rpt->Cell(115, 5, "Ketua Program Studi",0,0,'C');		
+                    $rpt->Cell(15, 5, "Dosen Pengampu",0,0,'C');		
+
+                    $row+=5;
+                    $rpt->setXY(40,$row);			
+                    $rpt->Cell(5, 5, $this->dataReport['nama_jabatan_dpna'],0,0,'C');												
+                    $rpt->Cell(110, 5, $this->dataReport['nama_ps'],0,0,'C');		
+                    $rpt->Cell(23, 5, 'Matakuliah',0,0,'C');	
+
+                    $row+=18;				
+                    $rpt->setXY(40,$row);			
+                    $rpt->Cell(6, 5,$this->dataReport['nama_penandatangan_dpna'],0,0,'C');
+                    $rpt->Cell(105, 5,$kaprodi['nama_dosen'],0,0,'C');
+                    $rpt->Cell(37, 5,$dosen_pengampu,0,0,'C');
+
+                    $row+=5;
+                    $rpt->setXY(40,$row);			
+                    $rpt->Cell(5, 5, $this->dataReport['jabfung_penandatangan_dpna']. ' NIPY '.$this->dataReport['nipy_penandatangan_dpna'],0,0,'C');
+                    $rpt->Cell(108, 5, $kaprodi['nama_jabatan']. ' NIPY '.$kaprodi['nipy'],0,0,'C');
                     if ($i < ($jumlahpage-1)) {
                         $rpt->AddPage('P','F4');
                         $row=5;
@@ -2032,37 +2061,9 @@ class Logic_ReportNilai extends Logic_Report {
                         $row+=4;				
                         $rpt->setXY(3,$row);	
                         $rpt->setFont ('helvetica','',8);                
-                    }                    
+                    } 
+                    
                 }
-                $row+=5;
-                $rpt->SetFont ('helvetica','B',8);
-                $rpt->setXY(40,$row);													
-                $tanggal=$this->tgl->tanggal('l, j F Y');				
-                $rpt->Cell(250, 5, "Tanjungpinang, $tanggal",0,0,'C');		
-
-                $row+=5;
-                $rpt->setXY(40,$row);			
-                $rpt->Cell(3, 5, 'A.n. Ketua STISIPOL Raja Haji',0,0,'C');			
-                $rpt->Cell(115, 5, "Ketua Program Studi",0,0,'C');		
-                $rpt->Cell(15, 5, "Dosen Pengampu",0,0,'C');		
-
-                $row+=5;
-                $rpt->setXY(40,$row);			
-                $rpt->Cell(5, 5, $this->dataReport['nama_jabatan_dpna'],0,0,'C');												
-                $rpt->Cell(110, 5, $this->dataReport['nama_ps'],0,0,'C');		
-                $rpt->Cell(23, 5, 'Matakuliah',0,0,'C');	
-
-                $row+=18;				
-                $rpt->setXY(40,$row);			
-                $rpt->Cell(6, 5,$this->dataReport['nama_penandatangan_dpna'],0,0,'C');				
-                $kaprodi=$objNilai->getKetuaPRODI($this->dataReport['kjur']);
-                $rpt->Cell(105, 5,$kaprodi['nama_dosen'],0,0,'C');
-                $rpt->Cell(37, 5,$dosen_pengampu,0,0,'C');
-
-                $row+=5;
-                $rpt->setXY(40,$row);			
-                $rpt->Cell(5, 5, $this->dataReport['jabfung_penandatangan_dpna']. ' NIPY '.$this->dataReport['nipy_penandatangan_dpna'],0,0,'C');
-                $rpt->Cell(108, 5, $kaprodi['nama_jabatan']. ' NIPY '.$kaprodi['nipy'],0,0,'C');
                 
                 $this->printOut("dpna_$kmatkul");
             break;

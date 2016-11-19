@@ -19,7 +19,7 @@
             <pages StatePersisterClass="System.Web.UI.TCachePageStatePersister" StatePersister.CacheModuleID="cache" StatePersister.CacheTimeout="7200" />
 		</service>
         <service id="soap" class="System.Web.Services.TSoapService">
-            <soap id="akademik" provider="Application.pages.ws.AkademikService" />
+            <soap id="PDPT" provider="Application.pages.ws.PDPTService" />
         </service>             
 	</services>        
     <parameters>

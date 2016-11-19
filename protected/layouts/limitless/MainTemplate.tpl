@@ -176,7 +176,7 @@
             <com:TLiteral Visible="<%=$this->Page->Pengguna->getTipeUser()=='on'%>">
             <li<%=$this->Page->showKonversiMatakuliah==true?' class="active"':''%>>
                 <a href="<%=$this->Page->constructUrl('KonversiMatakuliah',true)%>">
-                    <i class="icon-display4 position-left"></i> 
+                    <i class="icon-share3 position-left"></i> 
                     <span>Konversi Matakuliah</span>											
                 </a>                                        
             </li> 

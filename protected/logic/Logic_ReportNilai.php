@@ -2073,14 +2073,7 @@ class Logic_ReportNilai extends Logic_Report {
      * digunakan untuk memprint Konversi Matakuliah
      * @param type $objNilai object
      */
-    public function printKonversiMatakuliah ($objNilai) { 
-        $ta=$this->dataReport['ta'];
-        $tahun_masuk=$this->dataReport['tahun_masuk'];
-        $semester=$this->dataReport['semester'];
-        $kjur=$this->dataReport['kjur'];
-        $nama_tahun=$this->dataReport['nama_tahun'];
-        $nama_semester=$this->dataReport['nama_semester'];
-        $nama_ps = $this->dataReport['nama_ps'];
+    public function printKonversiMatakuliah ($objNilai) {         
         switch ($this->getDriver()) {
             case 'excel2003' :               
             case 'excel2007' :          

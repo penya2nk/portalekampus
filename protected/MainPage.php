@@ -173,7 +173,7 @@ class MainPage extends TPage {
         //instantiasi user
 		$this->Pengguna = $this->getLogic('Users');
         //setting templates dan theme yang aktif        
-        $theme=$_SESSION['theme'];
+        $theme=isset($_SESSION['theme'])?$_SESSION['theme']:'default';
         $this->Theme=$theme;
         $this->MasterClass="Application.layouts.$theme.MainTemplate";				
 	}

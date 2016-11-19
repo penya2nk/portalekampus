@@ -38,7 +38,7 @@ class UserManager extends TAuthManager {
             case 'SuperAdmin' :            
             case 'Keuangan' :				
 				$str = "SELECT u.userid,u.username,u.nama,u.email,u.page,u.isdeleted,u.foto,u.theme FROM user u WHERE username='$username'";
-                $this->db->setFieldTable (array('userid','username','userpassword','salt','nama','email','page','isdeleted','foto','theme'));							
+                $this->db->setFieldTable (array('userid','username','nama','email','page','isdeleted','foto','theme'));							
                 $r= $this->db->getRecord($str);	
 				$this->dataUser['data_user']=$r[1];	
                 $userid=$this->dataUser['data_user']['userid'];
@@ -46,7 +46,7 @@ class UserManager extends TAuthManager {
 			break;
             case 'OperatorNilai' :
                 $str = "SELECT u.userid,u.username,u.nama,u.email,u.page,u.group_id,u.kjur,u.isdeleted,u.foto,u.theme FROM user u WHERE username='$username'";
-                $this->db->setFieldTable (array('userid','username','userpassword','salt','nama','email','page','group_id','kjur','isdeleted','foto','theme'));							
+                $this->db->setFieldTable (array('userid','username','nama','email','page','group_id','kjur','isdeleted','foto','theme'));							
                 $r= $this->db->getRecord($str);	
 				$this->dataUser['data_user']=$r[1];	
                 $userid=$this->dataUser['data_user']['userid'];

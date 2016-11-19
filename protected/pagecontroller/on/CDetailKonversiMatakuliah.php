@@ -86,7 +86,7 @@ class CDetailKonversiMatakuliah extends MainPageM {
         $this->createObj('reportnilai');             
         $this->linkOutput->Text='';
         $this->linkOutput->NavigateUrl='#';
-        $dataReport=$_SESSION['currentPageDetailKonversiMatakuliah']['DataKonversi'];
+        $dataReport=$_SESSION['currentPageDetailKonversiMatakuliah']['DataKonversi'];                
         $dataReport['nama_ps']=$_SESSION['daftar_jurusan'][$dataReport['kjur']];
         switch ($_SESSION['outputreport']) {
             case  'summarypdf' :

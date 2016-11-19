@@ -7,8 +7,8 @@ class CKonversiMatakuliah extends MainPageM {
         $this->showSubMenuAkademikNilai=true;
         $this->createObj('Nilai');			
 		if (!$this->IsPostBack && !$this->IsCallBack) {
-            if (!isset($_SESSION['currentPageKonversiMatakuliah'])||$_SESSION['currentPageKonversiMatakuliah']['page_name']!='m.spmb.KonversiMatakuliah') {
-				$_SESSION['currentPageKonversiMatakuliah']=array('page_name'=>'m.spmb.KonversiMatakuliah','page_num'=>0,'offset'=>0,'limit'=>0,'search'=>false,'daftarmatkul'=>array(),'kjur'=>$_SESSION['kjur']);												
+            if (!isset($_SESSION['currentPageKonversiMatakuliah'])||$_SESSION['currentPageKonversiMatakuliah']['page_name']!='on.KonversiMatakuliah') {
+				$_SESSION['currentPageKonversiMatakuliah']=array('page_name'=>'on.KonversiMatakuliah','page_num'=>0,'offset'=>0,'limit'=>0,'search'=>false,'daftarmatkul'=>array(),'kjur'=>$_SESSION['kjur']);												
 			}
             $_SESSION['currentPageKonversiMatakuliah']['search']=false;
             
@@ -23,15 +23,6 @@ class CKonversiMatakuliah extends MainPageM {
 			$this->tbCmbTahunMasuk->DataSource=$tahun_masuk	;					
 			$this->tbCmbTahunMasuk->Text=$_SESSION['tahun_masuk'];						
 			$this->tbCmbTahunMasuk->dataBind();
-
-            
-            $this->tbCmbOutputReport->DataSource=$this->setup->getOutputFileType();
-            $this->tbCmbOutputReport->Text= $_SESSION['outputreport'];
-            $this->tbCmbOutputReport->DataBind();
-            
-            $this->tbCmbOutputCompress->DataSource=$this->setup->getOutputCompressType();
-            $this->tbCmbOutputCompress->Text= $_SESSION['outputcompress'];
-            $this->tbCmbOutputCompress->DataBind();
 
 			$this->lblModulHeader->Text=$this->getInfoToolbar();
 			$this->populateData();
@@ -167,7 +158,7 @@ class CKonversiMatakuliah extends MainPageM {
                         $i++;
                     }
                     $this->DB->query('COMMIT');
-                    $this->redirect('spmb.KonversiMatakuliah',true);
+                    $this->redirect('KonversiMatakuliah',true);
                 }else {
                     $this->DB->query('ROLLBACK');                
                 }       
@@ -263,7 +254,7 @@ class CKonversiMatakuliah extends MainPageM {
                 }else {
                     $this->DB->query('ROLLBACK');
                 }
-    			$this->redirect('spmb.KonversiMatakuliah',true);
+    			$this->redirect('KonversiMatakuliah',true);
             } catch (Exception $ex) {
                 $nmatkul=$_SESSION['currentPageKonversiMatakuliah']['daftarmatkul'][$i]['nmatkul'];
                 $this->lblContentMessageError->Text="Matakuliah $nmatkul dengan kode $kmatkul_before belum terdaftar di Kurikulum saat ini. Mohon untuk ditambahkan di Data Master -> Matakuliah";
@@ -280,7 +271,7 @@ class CKonversiMatakuliah extends MainPageM {
 	public function deleteRecord ($sender,$param) {			
 		$iddata_konversi=$this->getDataKeyField($sender,$this->RepeaterS);
 		$this->DB->deleteRecord("data_konversi2 WHERE iddata_konversi='$iddata_konversi'");
-		$this->redirect('spmb.KonversiMatakuliah',true);
+		$this->redirect('KonversiMatakuliah',true);
 	}	
     public function printOut ($sender,$param) {	
         $this->createObj('reportnilai');             

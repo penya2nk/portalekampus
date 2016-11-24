@@ -1,12 +1,12 @@
 <?php
-prado::using ('Application.MainPageM');
-class CKonversiMatakuliah extends MainPageM {	
+prado::using ('Application.MainPageON');
+class CKonversiMatakuliah extends MainPageON {	
 	public function onLoad($param) {
 		parent::onLoad($param);					
         $this->showKonversiMatakuliah=true;
-        $this->showSubMenuAkademikNilai=true;
         $this->createObj('Nilai');			
 		if (!$this->IsPostBack && !$this->IsCallBack) {
+            
             if (!isset($_SESSION['currentPageKonversiMatakuliah'])||$_SESSION['currentPageKonversiMatakuliah']['page_name']!='on.KonversiMatakuliah') {
 				$_SESSION['currentPageKonversiMatakuliah']=array('page_name'=>'on.KonversiMatakuliah','page_num'=>0,'offset'=>0,'limit'=>0,'search'=>false,'daftarmatkul'=>array(),'kjur'=>$_SESSION['kjur']);												
 			}

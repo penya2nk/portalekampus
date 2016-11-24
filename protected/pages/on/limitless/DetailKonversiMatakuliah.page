@@ -1,14 +1,14 @@
-<%@ Title="Detail Konversi Matakuliah (KonversiMatakuliah)" %>
-<com:TContent ID="moduleheader">    
+<%@ Title="Detail Konversi Matakuliah" %>
+<com:TContent ID="moduleheader">
     <i class="icon-share3 position-left"></i> <span class="text-semibold">Detail Konversi Matakuliah</span>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">
-    <li><a href="<%=$this->constructUrl('KonversiMatakuliah',true)%>">KONVERSI MATAKULIAH</a></li>    
+    <li><a href="<%=$this->constructUrl('KonversiMatakuliah',true)%>">KONVERSI MATAKULIAH</a></li>
     <li class="active"><span>DETAIL KONVERSI MATAKULIAH</span></li>
 </com:TContent>
 <com:TContent ID="sidebarcontent">
 <com:TPanel Visible="<%= $this->getDefaultProcess() %>" CssClass="sidebar sidebar-main sidebar-default sidebar-separate" Attributes.style="width:330px">
-    <div class="sidebar-content" style="margin-right:5px">                    
+    <div class="sidebar-content" style="margin-right:5px">
         <%include Application.layouts.limitless.OutputReportMode1%>
     </div>
 </com:TPanel>
@@ -17,11 +17,11 @@
 <link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/assets/css/libs/nifty-component.css"/>
 </com:TContent>
 <com:TContent ID="maincontent">
-<com:TPanel Visible="<%= $this->getViewProcess(false) %>" CssClass="row">                    
+<com:TPanel Visible="<%= $this->getViewProcess(false) %>" CssClass="row">
     <div class="col-lg-12">
-        <div class="main-box clearfix">               
+        <div class="main-box clearfix">
             <header class="main-box-header clearfix">
-                <div class="icon-box pull-right">                                       
+                <div class="icon-box pull-right">
                     <a class="btn pull-left" href="<%=$this->constructUrl('nilai.KonversiMatakuliah',true)%>">
                         <i class="fa fa-times"></i>
                     </a>
@@ -35,7 +35,7 @@
                     </strong>
                      <com:TLiteral ID="errorMessage" />
                 </div>
-            </div>            
+            </div>
         </div>
     </div>
 </com:TPanel>
@@ -54,44 +54,44 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <div class="row">                        
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-horizontal">
                                 <div class="form-group">
                                     <label class="col-md-3 control-label"><strong>NIM ASAL: </strong></label>
                                     <div class="col-md-9">
                                         <p class="form-control-static"><%= $this->getDataMHS('nim_asal')%></p>
-                                    </div>                            
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label"><strong>NAMA MHS: </strong></label>
                                     <div class="col-md-9">
                                         <p class="form-control-static"><%=$this->getDataMHS('nama')%></p>
-                                    </div>                            
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label"><strong>ALAMAT: </strong></label>
                                     <div class="col-md-9">
                                         <p class="form-control-static"><%= $this->getDataMHS('alamat')%></p>
-                                    </div>                            
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label"><strong>KODE P.T ASAL: </strong></label>
                                     <div class="col-md-9">
                                         <p class="form-control-static"><%= $this->getDataMHS('kode_pt_asal')%></p>
-                                    </div>                            
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label"><strong>NAMA P.T ASAL: </strong></label>
                                     <div class="col-md-9">
                                         <p class="form-control-static"><%= $this->getDataMHS('nama_pt_asal')%></p>
-                                    </div>                            
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-3 control-label"><strong>JENJANG: </strong></label>
                                     <div class="col-md-9">
                                         <p class="form-control-static"><%= $this->getDataMHS('njenjang')%></p>
-                                    </div>                            
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -101,44 +101,44 @@
                                     <label class="col-md-4 control-label"><strong>KODE P.S ASAL: </strong></label>
                                     <div class="col-md-8">
                                         <p class="form-control-static"><%= $this->getDataMHS('kode_ps_asal')%></p>
-                                    </div>                            
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-4 control-label"><strong>NAMA P.S ASAL: </strong></label>
                                     <div class="col-md-8">
                                         <p class="form-control-static"><%= $this->getDataMHS('nama_ps_asal')%></p>
-                                    </div>                            
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-4 control-label"><strong>NO. TELP: </strong></label>
                                     <div class="col-md-8">
                                         <p class="form-control-static"><%= $this->getDataMHS('no_telp')%></p>
-                                    </div>                            
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-4 control-label"><strong>TANGGAL KONVERSI: </strong></label>
                                     <div class="col-md-8">
                                         <p class="form-control-static"><%= $this->TGL->tanggal ('d F Y',$this->getDataMHS('date_added'))%></p>
-                                    </div>                            
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-4 control-label"><strong>JUMLAH MATAKULIAH: </strong></label>
                                     <div class="col-md-8">
                                         <p class="form-control-static"><%= $this->getDataMHS('jumlahmatkul')%></p>
-                                    </div>                            
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-4 control-label"><strong>JUMLAH SKS: </strong></label>
                                     <div class="col-md-8">
                                         <p class="form-control-static"><%= $this->getDataMHS('jumlahsks')%></p>
-                                    </div>                            
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -157,12 +157,21 @@
                     <div class="form-horizontal">
                         <div class="form-group" id="divAddNIM">
                             <label class="col-md-2 control-label"><strong>NIM TUJUAN: </strong></label>
-                            <div class="col-md-4">
+                            <div class="col-md-10">
                                 <com:TTextBox ID="txtAddNIM" MaxLength="8" CssClass="form-control" Width="100px" />
-                                <com:TRequiredFieldValidator ID="FieldAddNIMValidator" ControlToValidate="txtAddNIM" Display="Dynamic" ErrorMessage="Isi NIM Mahasiswa Baru" ValidationGroup="linkingtomhs" CssClass="has-error help-block" FocusOnError="true">
+                                <com:TRequiredFieldValidator ID="FieldAddNIMValidator" ControlToValidate="txtAddNIM" Display="Dynamic" ErrorMessage="Isi NIM Tujuan" ValidationGroup="linkingtomhs" CssClass="has-error help-block" FocusOnError="true">
                                     <prop:ClientSide.OnValidationError>
                                         $('divAddNIM').addClassName('has-error');
                                         jQuery('#<%=$this->FieldAddNIMValidator->ClientID%>').removeAttr('style');
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divAddNIM').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator>
+                                <com:TRequiredFieldValidator ID="FieldAddNIMValidator2" ControlToValidate="txtAddNIM" Display="Dynamic" ErrorMessage="Isi NIM Tujuan" ValidationGroup="linkingtomhs2" CssClass="has-error help-block" FocusOnError="true">
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divAddNIM').addClassName('has-error');
+                                        jQuery('#<%=$this->FieldAddNIMValidator2->ClientID%>').removeAttr('style');
                                     </prop:ClientSide.OnValidationError>
                                     <prop:ClientSide.OnValidationSuccess>
                                         $('divAddNIM').removeClassName('has-error');
@@ -176,41 +185,73 @@
                                     <prop:ClientSide.OnValidationSuccess>
                                         $('divAddNIM').removeClassName('has-error');
                                     </prop:ClientSide.OnValidationSuccess>
-                                </com:TActiveCustomValidator>                
-                            </div>                            
+                                </com:TActiveCustomValidator>
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="col-lg-offset-2 col-lg-10">
-                                <com:TActiveCustomButton ID="btnSave" ValidationGroup="linkingtomhs" OnClick="saveData" CssClass="btn btn-info btn-labeled btn-xs">
-                                    <prop:Text>                                        
-                                        <b><i class="icon-floppy-disk "></i></b> Simpan                                        
+                                <com:TActiveCustomButton ID="btnHubungkan" ValidationGroup="linkingtomhs" OnClick="linkingData" CssClass="btn btn-info btn-labeled btn-xs">
+                                    <prop:Text>
+                                        <b><i class="icon-link2"></i></b> Hubungkan
                                     </prop:Text>
-                                    <prop:ClientSide.OnPreDispatch>         
+                                    <prop:ClientSide.OnPreDispatch>
                                         Pace.stop();
                                         Pace.start();
-                                        $('<%=$this->btnSave->ClientId%>').disabled='disabled';         
+                                        $('<%=$this->btnHubungkan->ClientId%>').disabled='disabled';
                                     </prop:ClientSide.OnPreDispatch>
                                     <prop:ClientSide.OnLoading>
-                                        $('<%=$this->btnSave->ClientId%>').disabled='disabled';                     
+                                        $('<%=$this->btnHubungkan->ClientId%>').disabled='disabled';
                                     </prop:ClientSide.OnLoading>
-                                    <prop:ClientSide.OnComplete>                                                                    
-                                        $('<%=$this->btnSave->ClientId%>').disabled='';                                                                                                                 
+                                    <prop:ClientSide.OnComplete>
+                                        $('<%=$this->btnHubungkan->ClientId%>').disabled='';
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>
+                                <com:TActiveCustomButton ID="btnPutuskan" ValidationGroup="linkingtomhs2" OnClick="unlinkData" CssClass="btn btn-danger btn-labeled btn-xs">
+                                    <prop:Text>
+                                        <b><i class="icon-unlink2"></i></b> Putuskan
+                                    </prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>
+                                        Pace.stop();
+                                        Pace.start();
+                                        $('<%=$this->btnPutuskan->ClientId%>').disabled='disabled';
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnPutuskan->ClientId%>').disabled='disabled';
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>
+                                        $('<%=$this->btnPutuskan->ClientId%>').disabled='';
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>
+                                <com:TActiveCustomButton ID="btnINFO" ValidationGroup="linkingtomhs2" OnClick="getInfoMHS" CssClass="btn btn-info btn-labeled btn-xs">
+                                    <prop:Text>
+                                        <b><i class="icon-info3"></i></b> Info NIM
+                                    </prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>
+                                        Pace.stop();
+                                        Pace.start();
+                                        $('<%=$this->btnINFO->ClientId%>').disabled='disabled';
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnINFO->ClientId%>').disabled='disabled';
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>
+                                        $('<%=$this->btnINFO->ClientId%>').disabled='';
                                     </prop:ClientSide.OnComplete>
                                 </com:TActiveCustomButton>
                             </div>
-                        </div>   
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-flat">
                 <div class="panel-heading">
-                    <h5 class="panel-title"><i class="icon-share3 position-left"></i>  DAFTAR MATAKULIAH TERKONVERSI <com:TActiveLabel ID="lblModulHeader" /></h5>                
+                    <h5 class="panel-title"><i class="icon-share3 position-left"></i>  DAFTAR MATAKULIAH TERKONVERSI <com:TActiveLabel ID="lblModulHeader" /></h5>
                     <div class="heading-elements">
-                        <div class="heading-btn">                            
+                        <div class="heading-btn">
                             <com:TActiveLinkButton ID="btnPrintKonversiMatakuliah" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-info btn-icon" Attributes.Title="Print Out Konversi Matakuliah">
                                 <prop:Text>
                                     <i class="icon-printer position-left"></i>
@@ -221,20 +262,20 @@
                                     $('<%=$this->btnPrintKonversiMatakuliah->ClientId%>').disabled='disabled';
                                 </prop:ClientSide.OnPreDispatch>
                                 <prop:ClientSide.OnLoading>
-                                    $('<%=$this->btnPrintKonversiMatakuliah->ClientId%>').disabled='disabled';				
+                                    $('<%=$this->btnPrintKonversiMatakuliah->ClientId%>').disabled='disabled';
                                 </prop:ClientSide.OnLoading>
                                 <prop:ClientSide.OnComplete>
                                     $('<%=$this->btnPrintKonversiMatakuliah->ClientId%>').disabled='';
                                 </prop:ClientSide.OnComplete>
                             </com:TActiveLinkButton>
-                        </div>   
+                        </div>
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <com:TRepeater ID="RepeaterS" EnableViewState="false">	
+                    <com:TRepeater ID="RepeaterS" EnableViewState="false">
                         <prop:HeaderTemplate>
                         <table class="table table-striped table-hover">
-                        <thead>		
+                        <thead>
                             <tr class="bg-teal-700">
                                 <th width="20">NO</th>
                                 <th width="50">KODE</th>
@@ -244,10 +285,10 @@
                                 <th width="80">KODE <br />MATKUL. Asal</th>
                                 <th width="250">MATAKULIAH ASAL</th>
                                 <th width="70">SKS</th>
-                                <th width="70">NILAI</th>                                                                        
+                                <th width="70">NILAI</th>
                             </tr>
-                            </thead>                                
-                            <tbody>			
+                            </thead>
+                            <tbody>
                         </prop:HeaderTemplate>
                         <prop:ItemTemplate>
                             <tr>
@@ -259,33 +300,75 @@
                                 <td><%# $this->DataItem['kmatkul_asal']%></td>
                                 <td><%# $this->DataItem['matkul_asal']%></td>
                                 <td><%# $this->DataItem['sks_asal']%></td>
-                                <td><%# $this->DataItem['n_kual']%></td>                                                                       
+                                <td><%# $this->DataItem['n_kual']%></td>
                             </tr>
                         </prop:ItemTemplate>
                         <prop:FooterTemplate>
-                            </tbody>       
+                            </tbody>
                             <tfoot>
                                 <tr class="bg-orange-300" style="font-weight:bold">
                                     <td colspan="6">Jumlah  Matakuliah / SKS terkonversi</td>
-                                    <td><%#$this->Page->getDataMHS('jumlahmatkul')%></td>                                                                   
-                                    <td colspan="2"><%#$this->Page->getDataMHS('jumlahsks')%></td> 
+                                    <td><%#$this->Page->getDataMHS('jumlahmatkul')%></td>
+                                    <td colspan="2"><%#$this->Page->getDataMHS('jumlahsks')%></td>
                                 </tr>
                             </tfoot>
                             </table>
                         </prop:FooterTemplate>
-                        <prop:EmptyTemplate>                                                       
+                        <prop:EmptyTemplate>
                             <div class="panel-body">
                                 <div class="alert alert-info alert-styled-left alert-bordered">
                                     <span class="text-semibold">Info!</span>
                                     Belum ada data yang bisa ditampilkan.
-                                </div>                
-                            </div>  
+                                </div>
+                            </div>
                         </prop:EmptyTemplate>
                     </com:TRepeater>
                 </div>
             </div>
         </div>
-    </div>       
+    </div>
 </com:TPanel>
+<com:NModalPanel ID="modalInfoMHS" CssClass="md-modal md-effect-1 md-show">
+    <div class="md-content" style="background-color: #3a87ad;color:#fff">
+        <div class="modal-header">                
+            <h4 class="modal-title"><i class="icon-profile"></i> Biodata Mahasiswa</h4>
+        </div>
+        <div class="modal-body">
+             <div class="form-horizontal">                
+                <div class="form-group">
+                    <label class="col-md-4 control-label"><strong>NIM: </strong></label>
+                    <div class="col-md-8">
+                        <p class="form-control-static">
+                            <com:TActiveLabel ID="labelNIM" />
+                        </p>
+                    </div>                            
+                </div>                
+                <div class="form-group">
+                    <label class="col-md-4 control-label"><strong>NAMA MHS: </strong></label>
+                    <div class="col-md-8">
+                        <p  class="form-control-static"><com:TActiveLabel ID="labelNamaMHS" /></p>
+                    </div>                            
+                </div>       
+                <div class="form-group">
+                    <label class="col-md-4 control-label"><strong>STATUS: </strong></label>
+                    <div class="col-md-8">
+                        <p class="form-control-static"><com:TActiveLabel ID="labelStatusMSH" /></p>
+                    </div>                            
+                </div>
+            </div>            
+        </div>
+        <div class="modal-footer" style="background-color: #696969">
+            <div class="row">
+                <div class="col-md-10 text-left">
+                    
+                </div>
+                <div class="col-md-2">
+                    <br/>
+                    <button OnClick="new Modal.Box('<%=$this->modalInfoMHS->ClientID%>').hide();return false;" class="btn btn-primary"><i class='icon-exit'></i> Close</button>                              
+                </div>
+            </div>            
+        </div>     
+    </div>      
+</com:NModalPanel>
 <%include Application.layouts.limitless.ModalPrintOut%>
 </com:TContent>

@@ -1,13 +1,12 @@
 <?php
-prado::using ('Application.MainPageM');
-class CDetailKonversiMatakuliah extends MainPageM {	
+prado::using ('Application.MainPageON');
+class CDetailKonversiMatakuliah extends MainPageON {	
     public static $TotalSKS=0;
 	public static $TotalM=0;
     public $NilaiSemesterLalu;
     public $NilaiSemesterSekarang;
 	public function onLoad($param) {
-		parent::onLoad($param);							
-		$this->showSubMenuAkademikNilai=true;
+		parent::onLoad($param);				
         $this->showKonversiMatakuliah=true;    
         $this->createObj('Nilai');
         $this->createObj('Finance');
@@ -66,20 +65,47 @@ class CDetailKonversiMatakuliah extends MainPageM {
                 if ($r[1]['k_status']=='L') {
                     throw new Exception ("Tidak bisa dihubungkan, karena status ($nim) sudah lulus.");
                 }
-				if ($this->DB->checkRecordIsExist('nim','data_konversi',$nim))throw new Exception ("NIM ($nim) sudah terhubung dengan data konversi ini.");
+				if ($this->DB->checkRecordIsExist('nim','data_konversi',$nim)) {
+                    throw new Exception ("Data Konversi ini tidak bisa dihubungkan dengan NIM ($nim) karena NIM ini sudah terhubung dengan yang lain.");
+                }
             }catch (Exception $e) {
                 $param->IsValid=false;
                 $sender->ErrorMessage=$e->getMessage();
             }	
         }	
 	}
-    public function saveData ($sender,$param) {		
+    public function getInfoMHS ($sender,$param) {		
+		if ($this->IsValid) {
+			$nim=$this->txtAddNIM->Text;
+            $str = "SELECT vdm.nim,vdm.nama_mhs,sm.n_status AS status FROM v_datamhs vdm LEFT JOIN status_mhs sm ON (vdm.k_status=sm.k_status) WHERE vdm.nim='$nim'";
+            $this->DB->setFieldTable(array('nim','nama_mhs','status'));
+            $r=$this->DB->getRecord($str);
+            $datamhs=$r[1];
+            
+            $pindahan=$this->Nilai->isMhsPindahan($nim,true);
+            $ulr_profil=$this->constructUrl('kemahasiswaan.ProfilMahasiswa',true,array('id'=>$datamhs['nim']));
+            $url='<a href="'.$ulr_profil.'" style="color:#fff">'.$nim.'</a> ';
+            $str_pindahan = $pindahan == 0? '' :'<span class="label label-warning">Pindahan</span>';
+            $this->labelNIM->Text=$url.$str_pindahan;
+            $this->labelNamaMHS->Text=$datamhs['nama_mhs'];
+            $this->labelStatusMSH->Text=$datamhs['status'];            
+			$this->modalInfoMHS->show();
+        }
+    }
+    public function linkingData ($sender,$param) {		
 		if ($this->IsValid) {		
 			$iddata_konversi=$_SESSION['currentPageDetailKonversiMatakuliah']['DataKonversi']['iddata_konversi'];
-			$nim=$this->txtAddNim->Text;
+			$nim=$this->txtAddNIM->Text;
 			$str = "INSERT INTO data_konversi (idkonversi,iddata_konversi,nim) VALUES (NULL,$iddata_konversi,'$nim')";
 			$this->DB->insertRecord($str);
-			$this->konversi->redirect('a.m.Akademik.Konversi');
+			$this->redirect('DetailKonversiMatakuliah',true,array('id'=>$iddata_konversi));
+        }
+    }
+    public function unlinkData ($sender,$param) {		
+		if ($this->IsValid) {		
+			$iddata_konversi=$_SESSION['currentPageDetailKonversiMatakuliah']['DataKonversi']['iddata_konversi'];
+			$this->DB->deleteRecord("data_konversi WHERE iddata_konversi=$iddata_konversi");
+			$this->redirect('DetailKonversiMatakuliah',true,array('id'=>$iddata_konversi));
         }
     }
 	public function printOut ($sender,$param) {	

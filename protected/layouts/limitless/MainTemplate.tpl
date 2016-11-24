@@ -180,6 +180,19 @@
                     <span>Konversi Matakuliah</span>											
                 </a>                                        
             </li> 
+            <li class="dropdown<%=$this->Page->showSubMenuAkademikNilai==true?' active':''%> visible">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="icon-blog position-left"></i> Nilai <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu width-250">
+                    <li class="dropdown-header">INPUT</li>
+                    <li<%=$this->Page->showNilaiPerMahasiswa==true?' class="active"':''%>>
+                        <a href="<%=$this->Page->constructUrl('nilai.NilaiPerMahasiswa',true)%>">
+                            <i class="icon-blog"></i> Nilai Per Mahasiswa
+                        </a>
+                    </li>
+                </ul>
+            </li>
             </com:TLiteral>
         </ul>                
     </div>

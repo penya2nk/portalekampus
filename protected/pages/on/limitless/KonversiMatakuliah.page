@@ -607,11 +607,11 @@
                             <th width="15">NO</th>
                             <th width="250">NAMA</th>
                             <th width="300">ALAMAT</th>
-                            <th>NO. TELP</th>
-                            <th>JUMLAH <br />MATAKULIAH </th>
+                            <th width="150">NO. TELP</th>
+                            <th>JUMLAH <br />MATKUL </th>
                             <th>JUMLAH <br />SKS</th>	
                              <th>NIM</th>
-                            <th width="150">AKSI</th>
+                            <th width="110">AKSI</th>
                         </tr>
                         </thead>
                         <tbody>

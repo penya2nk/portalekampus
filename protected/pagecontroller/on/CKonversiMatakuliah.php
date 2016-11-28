@@ -60,13 +60,13 @@ class CKonversiMatakuliah extends MainPageON {
 		$kjur=$_SESSION['currentPageKonversiMatakuliah']['kjur'];
 		$tahun_masuk=$_SESSION['tahun_masuk'];		
         if ($search) {
-            $txtsearch=$this->txtKriteria->Text;
+            $txtsearch=addslashes($this->txtKriteria->Text);
             $str = "SELECT iddata_konversi,nama,alamat,no_telp FROM data_konversi2 WHERE perpanjangan=0";
             switch ($this->cmbKriteria->Text) {                                
                 case 'nama' :
-                    $cluasa="AND nama LIKE '%$txtsearch%'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("data_konversi2 WHERE perpanjangan=0 $cluasa",'iddata_konversi');
-                    $str = "$str $cluasa";
+                    $clausa="AND nama LIKE '%$txtsearch%'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("data_konversi2 WHERE perpanjangan=0 $clausa",'iddata_konversi');
+                    $str = "$str $clausa";
                 break;
             }            			
         }else{

@@ -191,6 +191,11 @@
                             <i class="icon-blog"></i> Nilai Per Mahasiswa
                         </a>
                     </li>
+                    <li<%=$this->Page->showNilaiPerMatakuliah==true?' class="active"':''%>>
+                        <a href="<%=$this->Page->constructUrl('nilai.NilaiPerMatakuliah',true)%>">
+                            <i class="icon-blog"></i> Nilai Per Matakuliah
+                        </a>
+                    </li>
                 </ul>
             </li>
             </com:TLiteral>

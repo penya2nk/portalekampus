@@ -259,6 +259,14 @@
                     </tfoot>
                     </table>
                 </prop:FooterTemplate>
+                <prop:EmptyTemplate>                                                       
+                    <div class="panel-body">
+                        <div class="alert alert-info alert-styled-left alert-bordered">
+                            <span class="text-semibold">Info!</span>
+                            Belum ada data yang bisa ditampilkan.
+                        </div>                
+                    </div>  
+                </prop:EmptyTemplate>
             </com:TRepeater>
         </div>
     </div>  
@@ -498,8 +506,7 @@
                                         </prop:Text>                                            
                                     </com:TLinkButton>
                                 </li>   
-                            </ul>
-                             
+                            </ul>                             
                         </td>
                     </tr>
                 </prop:ItemTemplate>
@@ -525,10 +532,19 @@
                                     </prop:ClientSide.OnComplete>
                                 </com:TActiveCustomButton>
                             </td>
+                            <td>&nbsp;</td>  
                         </tr>
                     </tfoot>
                     </table>
                 </prop:FooterTemplate>
+                <prop:EmptyTemplate>                                                       
+                    <div class="panel-body">
+                        <div class="alert alert-info alert-styled-left alert-bordered">
+                            <span class="text-semibold">Info!</span>
+                            Belum ada data yang bisa ditampilkan.
+                        </div>                
+                    </div>  
+                </prop:EmptyTemplate>
             </com:TRepeater>
         </div>
     </div

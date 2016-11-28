@@ -118,15 +118,15 @@ class Logic_Report extends Logic_Global {
                 
                 $rpt->SetFont ('helvetica','B',12);
 				$rpt->setXY(20,5);
-				$rpt->Cell (0,5,'SEKOLAH TINGGI ILMU SOSIAL DAN ILMU POLITIK');				
+				$rpt->Cell (0,5,$this->setup->getSettingValue('header_line_1'));				
 				$rpt->setXY(20,8.5);
-				$rpt->Cell (0,8.5,'RAJA HAJI TANJUNGPINANG');
+				$rpt->Cell (0,8.5,$this->setup->getSettingValue('header_line_2'));
 				
 				$rpt->SetFont ('helvetica','B',8);
 				$rpt->setXY(20,11.5);
-				$rpt->Cell (0,11.5,'JL. RAJA HAJI FISABILILLAH NO. 48 TANJUNGPINANG - KEPULAUAN RIAU');
+				$rpt->Cell (0,11.5,$this->setup->getSettingValue('header_line_3'));
 				$rpt->setXY(20,14.5);
-				$rpt->Cell (0,14.5,'TELP. (0771) 7000652 Website : http://www.stisipolrajahaji.ac.id Email : info@stisipolrajahaji.ac.id');
+				$rpt->Cell (0,14.5,$this->setup->getSettingValue('header_line_4'));
 				$this->currentRow=14.5;
             break;
 			case 'excel2003' :
@@ -149,21 +149,21 @@ class Logic_Report extends Logic_Global {
                 $sheet=$this->rpt->getActiveSheet();
 				$sheet->getRowDimension($row)->setRowHeight(18);
 				$sheet->mergeCells ($columnHeader.$row.':'.$endColumn.$row);
-				$sheet->setCellValue($columnHeader.$row,'SEKOLAH TINGGI ILMU SOSIAL DAN ILMU POLITIK');
+				$sheet->setCellValue($columnHeader.$row,$this->setup->getSettingValue('header_line_1'));
 				
 				$row+=1;
 				$sheet->getRowDimension($row)->setRowHeight(18);
 				$sheet->mergeCells ($columnHeader.$row.':'.$endColumn.$row);
-				$sheet->setCellValue($columnHeader.$row,'RAJA HAJI TANJUNGPINANG');
+				$sheet->setCellValue($columnHeader.$row,$this->setup->getSettingValue('header_line_2'));
 				
 				$row+=1;
 				$sheet->getRowDimension($row)->setRowHeight(18);
 				$sheet->mergeCells ($columnHeader.$row.':'.$endColumn.$row);
-				$sheet->setCellValue($columnHeader.$row,'JL. RAJA HAJI FISABILILLAH NO. 48 TANJUNGPINANG - KEPULAUAN RIAU');
+				$sheet->setCellValue($columnHeader.$row,$this->setup->getSettingValue('header_line_3'));
                 $row+=1;
 				$sheet->getRowDimension($row)->setRowHeight(18);
 				$sheet->mergeCells ($columnHeader.$row.':'.$endColumn.$row);
-				$sheet->setCellValue($columnHeader.$row,'TELP. (0771) 7000652 Website : http://www.stisipolrajahaji.ac.id Email : info@stisipolrajahaji.ac.id');
+				$sheet->setCellValue($columnHeader.$row,$this->setup->getSettingValue('header_line_4'));
 				
 				$row+=1;
 				$sheet->getRowDimension($row)->setRowHeight(18);

@@ -6,11 +6,11 @@
     <li class="active">NILAI PER MAHASISWA</li>
 </com:TContent>
 <com:TContent ID="sidebarcontent">
-<div class="sidebar sidebar-main sidebar-default sidebar-separate" style="width:330px">
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>" CssClass="sidebar sidebar-main sidebar-default sidebar-separate">
     <div class="sidebar-content" style="margin-right:5px">                    
-        <%include Application.layouts.limitless.FilterMode7%>
+        <%include Application.layouts.limitless.FilterMode2%>
     </div>
-</div>
+</com:TPanel>
 </com:TContent>
 <com:TContent ID="csscontent">
 <link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/assets/css/libs/nifty-component.css"/>
@@ -25,7 +25,7 @@
             <div class="panel-body">
                 <div class="form-horizontal">
                     <div class="form-group" id="divAddNIM">
-                        <label class="col-md-2 control-label"><strong>NIM: </strong></label>
+                        <label class="col-md-1 control-label"><strong>NIM: </strong></label>
                         <div class="col-md-7">
                             <com:TTextBox ID="txtAddNIM" MaxLength="8" CssClass="form-control" Width="100px" />
                             <com:TRequiredFieldValidator ID="FieldAddNIMValidator" ControlToValidate="txtAddNIM" Display="Dynamic" ErrorMessage="Isi NIM Mahasiswa Baru" ValidationGroup="inputnilai" CssClass="has-error help-block" FocusOnError="true">
@@ -49,7 +49,7 @@
                         </div>                            
                     </div>
                     <div class="form-group">
-                        <div class="col-lg-offset-2 col-lg-10">
+                        <div class="col-lg-offset-1 col-lg-11">
                             <com:TActiveCustomButton ID="btnGO" ValidationGroup="inputnilai" OnClick="GO" CssClass="btn btn-info btn-labeled btn-xs">
                                 <prop:Text>                                        
                                     <b><i class="icon-circle-right2"></i></b> Isi Nilai                                        
@@ -70,108 +70,106 @@
                     </div>  
                 </div>
             </div>
+            <com:TLabel ID="errormessage" />
         </div>
     </div>    
 </com:TPanel>
-<com:TPanel Visible="<%= $this->getDefaultProcess() %>" CssClass="row">
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>">
    <%include Application.layouts.limitless.DataMHS%>
+   <div class="row">
+       <div class="col-md-12">
+            <div class="panel panel-flat">
+                <div class="panel-heading">
+                    <h5 class="panel-title"><i class="icon-blog position-left"></i>  DAFTAR MATAKULIAH YANG DIKONTRAK PADA <com:TActiveLabel ID="lblModulHeader" /></h5>                
+                </div>
+                <div class="table-responsive">
+                   <com:TActiveRepeater ID="RepeaterS" OnItemDataBound="setData" DataKeyField="idkrsmatkul">	
+                        <prop:HeaderTemplate>														
+                            <table class="table table-striped table-hover">
+                                <thead>						
+                                <tr class="bg-teal-700">
+                                    <th width="10" scope="col">NO</th>
+                                    <th width="60" scope="col">KODE</th>
+                                    <th scope="col">NAMA</th>
+                                    <th scope="col">SKS</th>
+                                    <th scope="col">DOSEN</th>
+                                    <th scope="col">NILAI <br/>ANGKA</th> 
+                                    <th scope="col">NILAI <br/>HURUF</th>                                    
+                                    <th scope="col">TANGGAL <br />INPUT</th>                                    
+                                    <th scope="col">TANGGAL <br />MODIFIKASI</th>
+                                    <th scope="col"h width="120">KET</th>
+                                </tr>					
+                                </thead>
+                                <tbody>
+                        </prop:HeaderTemplate>
+                        <prop:ItemTemplate>
+                                <tr>
+                                    <td><%#$this->DataItem['no']%></td>
+                                    <td><%#$this->DataItem['kmatkul']%></td>
+                                    <td><%#$this->DataItem['nmatkul']%></td>
+                                    <td><%#$this->DataItem['sks']%></td>
+                                    <td><%#$this->DataItem['nama_dosen']%></td>
+                                    <td><com:TTextBox ID="txtNilaiAngka" CssClass="form-control" Width="70px" /></td>
+                                    <td>
+                                        <com:THiddenField ID="idkrsmatkul" Value="<%# $this->DataItem['idkrsmatkul']%>" />
+                                        <com:THiddenField ID="nilai_sebelumnya" />
+                                        <com:TDropDownList ID="cmbNilai" CssClass="form-control">	
+                                            <com:TListItem Value="none" Text=" " />
+                                            <com:TListItem Value="A" Text="A" />
+                                            <com:TListItem Value="B" Text="B" />
+                                            <com:TListItem Value="C" Text="C" />
+                                            <com:TListItem Value="D" Text="D" />
+                                            <com:TListItem Value="E" Text="E" />
+                                        </com:TDropDownList>
+                                    </td>                                   
+                                    <td><%#$this->DataItem['tanggal_input']%></td>                                    
+                                    <td><%#$this->DataItem['tanggal_modif']%></td>
+                                    <td><com:TLiteral ID="literalKet" /></td>
+                                </tr>
+                        </prop:ItemTemplate>                    
+                        <prop:FooterTemplate>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="10">                                            	
+                                            <com:TActiveCustomButton ID="btnSave" CssClass="btn btn-info btn-labeled btn-xs" OnClick="Page.saveData" ValidationGroup="editKonversi">
+                                                <prop:Text>                                        
+                                                    <b><i class="icon-floppy-disk "></i></b> Simpan                                        
+                                                </prop:Text>
+                                                <prop:ClientSide.OnPreDispatch>                                                                   
+                                                    Pace.stop();
+                                                    Pace.start(); 
+                                                    $('<%=$this->btnSave->ClientId%>').disabled='disabled';						
+                                                </prop:ClientSide.OnPreDispatch>
+                                                <prop:ClientSide.OnLoading>
+                                                    $('<%=$this->btnSave->ClientId%>').disabled='disabled';						
+                                                </prop:ClientSide.OnLoading>
+                                                <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                                    $('<%=$this->btnSave->ClientId%>').disabled='';
+                                                </prop:ClientSide.OnComplete>
+                                            </com:TActiveCustomButton>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>					
+                        </prop:FooterTemplate>
+                       <prop:EmptyTemplate>                                                       
+                            <div class="panel-body">
+                                <div class="alert alert-info alert-styled-left alert-bordered">
+                                    <span class="text-semibold">Info!</span>
+                                    Belum ada data yang bisa ditampilkan.
+                                </div>                
+                            </div>  
+                        </prop:EmptyTemplate>
+                    </com:TActiveRepeater>	
+                </div>
+            </div>            
+        </div>
+   </div>
     <div class="box">
         <p class="errormessages info"><em></em>Untuk menghapus nilai, silahkan kosongkan combo-boxnya.</em></p>
     </div>	
-    <com:TActiveRepeater ID="RepeaterS" OnItemDataBound="setData" DataKeyField="idkrsmatkul">	
-        <prop:HeaderTemplate>														
-            <table id="datagrid3" style="width:100%">
-                <thead>						
-                <tr>
-                    <th width="10" scope="col">No</th>
-                    <th width="60" scope="col">Kode</th>
-                    <th scope="col">Nama</th>
-                    <th scope="col">SKS</th>
-                    <th scope="col">Dosen <br />Pengampu</th>
-                    <th scope="col">Nilai</th>
-                    <th scope="col">Di Input <br />Oleh</th>
-                    <th scope="col">Tanggal <br />Input</th>
-                    <th scope="col">Di Modifikasi <br />Oleh</th>
-                    <th scope="col">Tanggal <br />Modifikasi <br /></th>
-                    <th scope="col">Ket</th>
-                </tr>					
-                </thead>
-                <tbody>
-        </prop:HeaderTemplate>
-        <prop:ItemTemplate>
-                <tr>
-                    <td><%#$this->DataItem['no']%></td>
-                    <td><%#$this->Page->nilai->Matkul->getKMatkul($this->DataItem['kmatkul']);%></td>
-                    <td><%#$this->DataItem['nmatkul']%></td>
-                    <td><%#$this->DataItem['sks']%></td>
-                    <td><%#$this->DataItem['nama_dosen']%></td>
-                    <td>
-                        <com:TActiveHiddenField ID="idkrsmatkul" Value="<%# $this->DataItem['idkrsmatkul']%>" />
-                        <com:TActiveHiddenField ID="nilai_sebelumnya" />
-                        <com:TActiveDropDownList ID="cmbNilai" AutoPostBack="false">	
-                            <com:TListItem Value="none" Text=" " />
-                            <com:TListItem Value="A" Text="A" />
-                            <com:TListItem Value="B" Text="B" />
-                            <com:TListItem Value="C" Text="C" />
-                            <com:TListItem Value="D" Text="D" />
-                            <com:TListItem Value="E" Text="E" />
-                        </com:TActiveDropDownList>
-                    </td>
-                    <td><%#$this->DataItem['userid_input']%></td>
-                    <td><%#$this->DataItem['tanggal_input']%></td>
-                    <td><%#$this->DataItem['userid_modif']%></td>
-                    <td><%#$this->DataItem['tanggal_modif']%></td>
-                    <td><%#$this->DataItem['ket']%></td>
-                </tr>
-        </prop:ItemTemplate>
-        <prop:AlternatingItemTemplate>
-                <tr>
-                    <td><%#$this->DataItem['no']%></td>
-                    <td><%#$this->Page->nilai->Matkul->getKMatkul($this->DataItem['kmatkul']);%></td>
-                    <td><%#$this->DataItem['nmatkul']%></td>
-                    <td><%#$this->DataItem['sks']%></td>
-                    <td><%#$this->DataItem['nama_dosen']%></td>
-                    <td>
-                        <com:TActiveHiddenField ID="idkrsmatkul" Value="<%# $this->DataItem['idkrsmatkul']%>" />
-                        <com:TActiveHiddenField ID="nilai_sebelumnya" />
-                        <com:TActiveDropDownList ID="cmbNilai" AutoPostBack="false">	
-                            <com:TListItem Value="none" Text=" " />
-                            <com:TListItem Value="A" Text="A" />
-                            <com:TListItem Value="B" Text="B" />
-                            <com:TListItem Value="C" Text="C" />
-                            <com:TListItem Value="D" Text="D" />
-                            <com:TListItem Value="E" Text="E" />
-                        </com:TActiveDropDownList>
-                    </td>
-                    <td><%#$this->DataItem['userid_input']%></td>
-                    <td><%#$this->DataItem['tanggal_input']%></td>
-                    <td><%#$this->DataItem['userid_modif']%></td>
-                    <td><%#$this->DataItem['tanggal_modif']%></td>
-                    <td><%#$this->DataItem['ket']%></td>
-                </tr>
-        </prop:AlternatingItemTemplate>
-        <prop:FooterTemplate>
-                </tbody>
-                <tfoot>
-                <tr>
-                    <td colspan="10" class="rounded-foot-left">
-                        <com:TActiveButton ID="btnSaveMahasiswa" Text="Save" OnClick="Page.saveNilai" CssClass="btnStyle2">
-                            <prop:ClientSide.OnPreDispatch>
-                                $('loading').show();
-                            </prop:ClientSide.OnPreDispatch>
-                            <prop:ClientSide.OnLoading>														
-                                $('<%=$this->btnSaveMahasiswa->ClientId%>').disabled='disabled';										
-                            </prop:ClientSide.OnLoading>
-                            <prop:ClientSide.OnComplete>																		
-                                $('loading').hide();
-                            </prop:ClientSide.OnComplete>
-                        </com:TActiveButton>								
-                    </td>						
-                    <td class="rounded-foot-right">&nbsp;</td>
-                </tr>
-                </tfoot>
-            </table>					
-        </prop:FooterTemplate>
-    </com:TActiveRepeater>	
+    
+    
 </com:TPanel>
 </com:TContent>

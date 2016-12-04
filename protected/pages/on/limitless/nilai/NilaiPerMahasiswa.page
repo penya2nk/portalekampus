@@ -97,7 +97,7 @@
                                     <th scope="col">NILAI <br/>HURUF</th>                                    
                                     <th scope="col">TANGGAL <br />INPUT</th>                                    
                                     <th scope="col">TANGGAL <br />MODIFIKASI</th>
-                                    <th scope="col"h width="120">KET</th>
+                                    <th scope="col" width="120">KET</th>
                                 </tr>					
                                 </thead>
                                 <tbody>

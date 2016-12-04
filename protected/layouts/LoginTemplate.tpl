@@ -12,7 +12,7 @@
     <script src="<%=$this->Page->Theme->baseUrl%>/plugins/pace/pace.min.js"></script>
     <style type="text/css">
 		.my-bg{
-			background-image : url("resources/bgstisipolrh.jpg");
+			background-image : url("resources/bg.jpg");
 		}
 	</style>    
 </com:THead>

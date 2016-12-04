@@ -1,19 +1,18 @@
 <?php
-prado::using ('Application.MainPageM');
-class CTranskripFinal extends MainPageM {	
+prado::using ('Application.MainPageON');
+class CNilaiFinal extends MainPageON {	
 	public function onLoad ($param) {
-		parent::onLoad($param);		
-        $this->Pengguna->moduleForbiden('akademik','transkrip_sementara');		
+		parent::onLoad($param);				
         $this->showSubMenuAkademikNilai=true;
-        $this->showTranskripFinal=true;    
+        $this->showNilaiFinal=true;    
 		$this->createObj('Nilai');
         
 		if (!$this->IsPostBack&&!$this->IsCallBack) {			
 
-            if (!isset($_SESSION['currentPageTranskripFinal'])||$_SESSION['currentPageTranskripFinal']['page_name']!='m.nilai.TranskripFinal') {					
-                $_SESSION['currentPageTranskripFinal']=array('page_name'=>'m.nilai.TranskripFinal','page_num'=>0,'search'=>false,'tanggal_terbit'=>'none');												
+            if (!isset($_SESSION['currentPageNilaiFinal'])||$_SESSION['currentPageNilaiFinal']['page_name']!='on.nilai.NilaiFinal') {					
+                $_SESSION['currentPageNilaiFinal']=array('page_name'=>'on.nilai.NilaiFinal','page_num'=>0,'search'=>false,'tanggal_terbit'=>'none');												
             }
-            $_SESSION['currentPageTranskripFinal']['search']=false;
+            $_SESSION['currentPageNilaiFinal']['search']=false;
             $this->RepeaterS->PageSize=$this->setup->getSettingValue('default_pagesize');
 
             $this->tbCmbPs->DataSource=$this->DMaster->removeIdFromArray($_SESSION['daftar_jurusan'],'none');
@@ -43,13 +42,13 @@ class CTranskripFinal extends MainPageM {
     public function changeTbTA ($sender,$param) {
 		$_SESSION['ta']=$this->tbCmbTA->Text;		
         $this->lblModulHeader->Text=$this->getInfoToolbar();
-		$this->populateData($_SESSION['currentPageTranskripFinal']['search']);
+		$this->populateData($_SESSION['currentPageNilaiFinal']['search']);
         
 	}	
 	public function changeTbSemester ($sender,$param) {
 		$_SESSION['semester']=$this->tbCmbSemester->Text;		
         $this->lblModulHeader->Text=$this->getInfoToolbar();
-		$this->populateData($_SESSION['currentPageTranskripFinal']['search']);
+		$this->populateData($_SESSION['currentPageNilaiFinal']['search']);
 	}	
     public function changeTbPs ($sender,$param) {		
         $_SESSION['kjur']=$this->tbCmbPs->Text;
@@ -68,12 +67,12 @@ class CTranskripFinal extends MainPageM {
 		$this->RepeaterS->render($param->NewWriter);	
 	}
 	public function Page_Changed ($sender,$param) {
-		$_SESSION['currentPageTranskripFinal']['page_num']=$param->NewPageIndex;
-		$this->populateData($_SESSION['currentPageTranskripFinal']['search']);
+		$_SESSION['currentPageNilaiFinal']['page_num']=$param->NewPageIndex;
+		$this->populateData($_SESSION['currentPageNilaiFinal']['search']);
 	}
     public function searchRecord ($sender,$param) {
-		$_SESSION['currentPageTranskripFinal']['search']=true;
-		$this->populateData($_SESSION['currentPageTranskripFinal']['search']);
+		$_SESSION['currentPageNilaiFinal']['search']=true;
+		$this->populateData($_SESSION['currentPageNilaiFinal']['search']);
 	}
 	public function populateData($search=false) {							
         $kjur=$_SESSION['kjur'];
@@ -103,14 +102,14 @@ class CTranskripFinal extends MainPageM {
             $str = "SELECT vdm.nim,vdm.nirm,vdm.nama_mhs,nomor_transkrip,predikat_kelulusan,tanggal_lulus,vdm.k_status FROM v_datamhs vdm,transkrip_asli ta WHERE ta.nim=vdm.nim AND vdm.kjur=$kjur AND ta.tahun=$ta AND ta.idsmt=$idsmt";
             $jumlah_baris=$this->DB->getCountRowsOfTable("v_datamhs vdm,transkrip_asli ta WHERE ta.nim=vdm.nim AND vdm.kjur=$kjur AND ta.tahun=$ta AND ta.idsmt=$idsmt",'ta.nim');				
         }        
-		$this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageTranskripFinal']['page_num'];		
+		$this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageNilaiFinal']['page_num'];		
 		$this->RepeaterS->VirtualItemCount=$jumlah_baris;
 		$offset=$this->RepeaterS->CurrentPageIndex*$this->RepeaterS->PageSize;
 		$limit=$this->RepeaterS->PageSize;
 		if ($offset+$limit>$this->RepeaterS->VirtualItemCount) {
 			$limit=$this->RepeaterS->VirtualItemCount-$offset;
 		}
-		if ($limit < 0) {$offset=0;$limit=10;$_SESSION['currentPageTranskripFinal']['page_num']=0;}
+		if ($limit < 0) {$offset=0;$limit=10;$_SESSION['currentPageNilaiFinal']['page_num']=0;}
         $str = "$str ORDER BY vdm.nama_mhs ASC LIMIT $offset,$limit";
 		$this->DB->setFieldTable(array('nim','nirm','nama_mhs','nomor_transkrip','predikat_kelulusan','tanggal_lulus','k_status'));
 		$result=$this->DB->getRecord($str,$offset+1);
@@ -136,7 +135,7 @@ class CTranskripFinal extends MainPageM {
 				$r = $this->Nilai->getList("register_mahasiswa WHERE nim='$nim'",array('nim','k_status','tahun','idsmt'));
 				$this->Nilai->dataMhs=$r[1];				
 				if (!$this->Nilai->isNimExist()) throw new AkademikException ($nim,2);	
-				if ($this->Application->getModule ('environment')->checkRequirementTranskripFinal) {
+				if ($this->Application->getModule ('environment')->checkRequirementNilaiFinal) {
 					if ($this->Nilai->dataMhs['k_status']!='L')throw new Exception ("Status ($nim) belum lulus.");
 					$awal=$r[1]['tahun'].$r[1]['semester'];
 					$akhir=$_SESSION['ta'].$_SESSION['semester'];
@@ -158,12 +157,12 @@ class CTranskripFinal extends MainPageM {
 			$this->Nilai->setNim($nim,true);
             $idkur=$this->Demik->Matkul->getIDKurikulum ($this->Nilai->dataMhs['tahun_masuk'],$this->Nilai->dataMhs['kjur']);
             $this->Nilai->dataMhs['idkur']=$idkur;
-			$_SESSION['currentPageTranskripFinal']['m_TranskripFinal']=$this->Nilai->dataMhs;
-			$this->redirect('nilai.TranskripFinal',true);
+			$_SESSION['currentPageNilaiFinal']['m_NilaiFinal']=$this->Nilai->dataMhs;
+			$this->redirect('nilai.NilaiFinal',true);
 		}
 	}
 	public function detailProcess () {				
-		$this->dataMhs=$_SESSION['currentPageTranskripFinal']['m_TranskripFinal'];		
+		$this->dataMhs=$_SESSION['currentPageNilaiFinal']['m_NilaiFinal'];		
 		$nim=$this->dataMhs['nim'];
 		$daftar_dosen=$this->getLogic('Dosen')->getListDosen(2);
 		$this->cmbAddDosenPembimbing->DataSource=$daftar_dosen;
@@ -181,7 +180,7 @@ class CTranskripFinal extends MainPageM {
 		$bool=true;
 		if (isset($r[1])) {
 			$bool=false;
-			$_SESSION['currentPageTranskripFinal']['m_TranskripFinal']['dataTranskrip']=$r[1];
+			$_SESSION['currentPageNilaiFinal']['m_NilaiFinal']['dataTranskrip']=$r[1];
 			$this->hiddennomortranskrip->Value=$r[1]['nomor_transkrip'];			
 			$this->txtAddNomorTranskrip->Text=$r[1]['nomor_transkrip'];			
 			$this->cmbAddPredikatKelulusan->Text=$r[1]['predikat_kelulusan'];			
@@ -215,8 +214,8 @@ class CTranskripFinal extends MainPageM {
 		$this->Nilai->setNim($nim,true);	
         $idkur=$this->Demik->Matkul->getIDKurikulum ($this->Nilai->dataMhs['tahun_masuk'],$this->Nilai->dataMhs['kjur']);
         $this->Nilai->dataMhs['idkur']=$idkur;
-		$_SESSION['currentPageTranskripFinal']['m_TranskripFinal']=$this->Nilai->dataMhs;	
-		$this->redirect('nilai.TranskripFinal',true);
+		$_SESSION['currentPageNilaiFinal']['m_NilaiFinal']=$this->Nilai->dataMhs;	
+		$this->redirect('nilai.NilaiFinal',true);
 	}
 	public function checkNoTranskrip ($sender,$param) {
 		try {
@@ -235,8 +234,8 @@ class CTranskripFinal extends MainPageM {
 		if ($this->IsValid) {
 			$log = $this->getLogic('Log');			
 			$log->getIdLogMaster();
-			$nim=$_SESSION['currentPageTranskripFinal']['m_TranskripFinal']['nim'];
-			$log->dataMhs['nim']=$_SESSION['currentPageTranskripFinal']['m_TranskripFinal']['nim'];
+			$nim=$_SESSION['currentPageNilaiFinal']['m_NilaiFinal']['nim'];
+			$log->dataMhs['nim']=$_SESSION['currentPageNilaiFinal']['m_NilaiFinal']['nim'];
 			$ta=$_SESSION['ta'];					
 			$semester=$_SESSION['semester'];
 			$no_transkrip=$this->no_transkrip->Value;			
@@ -264,7 +263,7 @@ class CTranskripFinal extends MainPageM {
 						$str2="$str('$nim','$kmatkul','$nmatkul','$sks','$semester','$n_kual')";						
 						$this->DB->insertRecord($str2);
 						if ($n_kual != '')
-							$log->insertLogIntoTranskripFinal($kmatkul,$nmatkul,'input',$n_kual);
+							$log->insertLogIntoNilaiFinal($kmatkul,$nmatkul,'input',$n_kual);
 					}
 					$this->DB->query('COMMIT');
 				}else {
@@ -285,9 +284,9 @@ class CTranskripFinal extends MainPageM {
 							$str="UPDATE transkrip_asli_detail SET n_kual='$n_kual' WHERE nim='$nim' AND kmatkul='$kmatkul'";						
 							$this->DB->updateRecord($str);
 							if ($n_kual_sebelumnya == '')
-								$log->insertLogIntoTranskripFinal($kmatkul,$nmatkul,'input',$n_kual);
+								$log->insertLogIntoNilaiFinal($kmatkul,$nmatkul,'input',$n_kual);
 							else
-								$log->insertLogIntoTranskripFinal($kmatkul,$nmatkul,'update',$n_kual_sebelumnya,$n_kual);
+								$log->insertLogIntoNilaiFinal($kmatkul,$nmatkul,'update',$n_kual_sebelumnya,$n_kual);
 						}
 					}
 					$this->DB->query('COMMIT');
@@ -295,7 +294,7 @@ class CTranskripFinal extends MainPageM {
 					$this->DB->query('ROLLBACK');
 				}	
 			}	
-			$this->redirect('nilai.TranskripFinal',true);
+			$this->redirect('nilai.NilaiFinal',true);
 		}
 	}
 	public function printTranskripperNim ($sender,$param) {
@@ -310,7 +309,7 @@ class CTranskripFinal extends MainPageM {
 			$this->Nilai->dataMhs['dataTranskrip']=$r[1];
 			$file="transkrip_asli_$nim";
 			$this->Nilai->dataMhs['tanggalterbit']=$this->TGL->tukarTanggal ($this->txtDefaultTanggalTerbit->Text);
-			$this->Nilai->printTranskripFinal('pdf');				
+			$this->Nilai->printNilaiFinal('pdf');				
 			$this->Nilai->Report->printOut($file);
 			$this->Nilai->Report->setLink($this->resultLink,"<br />$file");	
 		}
@@ -363,7 +362,7 @@ class CTranskripFinal extends MainPageM {
                             $dataReport['linkoutput']=$this->linkOutput; 
                             $this->report->setDataReport($dataReport); 
                             $this->report->setMode($_SESSION['outputreport']);
-                            $this->report->printTranskripFinal($this->Nilai,true);				
+                            $this->report->printNilaiFinal($this->Nilai,true);				
                         }else{
                             $bool=false;
                             $errormessage="Mahasiswa dengan NIM ($nim) statusnya belum lulus !!!.";
@@ -371,7 +370,7 @@ class CTranskripFinal extends MainPageM {
                     break;
                 }
 			break;			
-            case 'btnPrintTranskripFinalAll' :                 
+            case 'btnPrintNilaiFinalAll' :                 
                 switch ($_SESSION['outputreport']) {
                     case  'summarypdf' :
                         $messageprintout="Mohon maaf Print out pada mode summary pdf belum kami support.";                
@@ -398,8 +397,8 @@ class CTranskripFinal extends MainPageM {
         }
 	}   
 	public function closeTranskrip($sender,$param) {	
-		unset($_SESSION['currentPageTranskripFinal']['m_TranskripFinal']);
-		$this->redirect('nilai.TranskripFinal',true);
+		unset($_SESSION['currentPageNilaiFinal']['m_NilaiFinal']);
+		$this->redirect('nilai.NilaiFinal',true);
 	}
 }
 

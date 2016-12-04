@@ -56,14 +56,21 @@ class CDetailKonversiMatakuliah extends MainPageON {
 		$nim=$param->Value;		
         if ($nim != '') {
             try {   
-                $str = "SELECT nama_mhs,k_status FROM v_datamhs WHERE nim='$nim'";
-                $this->DB->setFieldTable(array('nama_mhs','k_status'));
+                $str = "SELECT nama_mhs,k_status,kjur FROM v_datamhs WHERE nim='$nim'";
+                $this->DB->setFieldTable(array('nama_mhs','k_status','kjur'));
                 $r = $this->DB->getRecord($str);
                 if (!isset($r[1])) {  
                     throw new Exception ("NIM ($nim) tidak terdaftar di Portal, silahkan ganti dengan yang lain.");		
                 }
                 if ($r[1]['k_status']=='L') {
                     throw new Exception ("Tidak bisa dihubungkan, karena status ($nim) sudah lulus.");
+                }
+                $kjur=$this->Pengguna->getDataUser('kjur');
+                if ($kjur > 0) {
+                    $kjur_mhs=$r[1]['kjur'];
+                    if ($kjur != $kjur_mhs){
+                        throw new Exception ("Anda tidak berhak mengakses data mahasiswa dengan NIM ($nim).");		
+                    } 
                 }
 				if ($this->DB->checkRecordIsExist('nim','data_konversi',$nim)) {
                     throw new Exception ("Data Konversi ini tidak bisa dihubungkan dengan NIM ($nim) karena NIM ini sudah terhubung dengan yang lain.");

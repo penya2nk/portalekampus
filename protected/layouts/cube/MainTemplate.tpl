@@ -206,8 +206,18 @@
                                             </a>
                                             <ul class="submenu">
                                                 <li>
+                                                    <a href="<%=$this->Page->constructUrl('settings.UserSA',true)%>"<%=$this->Page->showUserSA==true ? ' class="active" ':''%>>
+                                                        User Super Admin
+                                                    </a>
+                                                </li>
+                                                <li>
                                                     <a href="<%=$this->Page->constructUrl('settings.UserManajemen',true)%>"<%=$this->Page->showUserManajemen==true ? ' class="active" ':''%>>
                                                         User Manajemen
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('settings.UserKeuangan',true)%>"<%=$this->Page->showUserKeuangan==true ? ' class="active" ':''%>>
+                                                        User Keuangan
                                                     </a>
                                                 </li>
                                                 <li>

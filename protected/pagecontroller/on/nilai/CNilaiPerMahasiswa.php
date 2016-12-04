@@ -66,12 +66,19 @@ class CNilaiPerMahasiswa extends MainPageON {
         $nim=addslashes($param->Value);		
         if ($nim != '') {
             try {
-                $str = "SELECT nim FROM register_mahasiswa WHERE nim='$nim'";
-                $this->DB->setFieldTable(array('nim'));
+                $str = "SELECT nim,kjur FROM register_mahasiswa WHERE nim='$nim'";
+                $this->DB->setFieldTable(array('nim','kjur'));
                 $r=$this->DB->getRecord($str);
                 if (!isset($r[1])) {                                   
                     throw new Exception ("NIM ($nim) tidak terdaftar di Portal, silahkan ganti dengan yang lain.");		
-                }                
+                }   
+                $kjur=$this->Pengguna->getDataUser('kjur');
+                if ($kjur > 0) {
+                    $kjur_mhs=$r[1]['kjur'];
+                    if ($kjur != $kjur_mhs){
+                        throw new Exception ("Anda tidak berhak mengakses data mahasiswa dengan NIM ($nim).");		
+                    } 
+                }
             }catch (Exception $e) {
                 $param->IsValid=false;
                 $sender->ErrorMessage=$e->getMessage();
@@ -147,12 +154,12 @@ class CNilaiPerMahasiswa extends MainPageON {
             foreach ($repeater->Items as $inputan) {	
                 if ($inputan->cmbNilai->Enabled) {												
                     $idkrsmatkul=$inputan->idkrsmatkul->Value;		
-                    $n_kuan=$inputan->txtNilaiAngka->Text;
+                    $n_kuan=  addslashes($inputan->txtNilaiAngka->Text);
                     $n_kual=$inputan->cmbNilai->Text;				
                     $nilai_sebelumnya=$inputan->nilai_sebelumnya->Value;				
                     if ($nilai_sebelumnya==''&&$n_kual!='none') {//insert					
                         if (!$this->DB->checkRecordIsExist('idkrsmatkul','nilai_matakuliah',$idkrsmatkul)) {
-                            $str = "INSERT INTO nilai_matakuliah (idnilai,idkrsmatkul,n_kuan,n_kual,userid_input,tanggal_input,tangal_modif) VALUES (NULL,$idkrsmatkul,'$n_kuan','$n_kual',$userid,NOW(),NOW())";				
+                            $str = "INSERT INTO nilai_matakuliah (idnilai,idkrsmatkul,n_kuan,n_kual,userid_input,tanggal_input,tanggal_modif) VALUES (NULL,$idkrsmatkul,'$n_kuan','$n_kual',$userid,NOW(),NOW())";				
                             $this->DB->insertRecord($str);
                         }
                     }elseif($n_kual!='none'&&$n_kual!=$nilai_sebelumnya){//update										

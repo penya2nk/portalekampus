@@ -13,9 +13,17 @@ class MainPageSA extends MainPage {
      */
     public $showSubMenuSettingSistem=false;
     /**     
+     * show page user super admin [setting sistem]
+     */
+    public $showUserSA=false;
+    /**     
      * show page user Manajemen [setting sistem]
      */
-    public $showUserManajemen=false;   
+    public $showUserManajemen=false;
+    /**     
+     * show page user keuangan [setting sistem]
+     */
+    public $showUserKeuangan=false;
     /**     
      * show page user dosen [setting sistem]
      */

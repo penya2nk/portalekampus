@@ -196,6 +196,24 @@
                             <i class="icon-blog"></i> Nilai Per Matakuliah
                         </a>
                     </li>
+                    <li<%=$this->Page->showNilaiFinal==true?' class="active"':''%>>
+                        <a href="<%=$this->Page->constructUrl('nilai.NilaiFinal',true)%>">
+                            <i class="icon-blog"></i> Nilai Final
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown<%=$this->Page->showReport==true?' active':''%> visible">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="icon-files-empty position-left"></i> Laporan <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu width-250">
+                    <li class="dropdown-header">REKAPITULASI</li>
+                    <li<%=$this->Page->showTranskripKurikulum==true?' class="active"':''%>>
+                        <a href="<%=$this->Page->constructUrl('nilai.TranskripKurikulum',true)%>">
+                            <i class="icon-file-text"></i> Transkrip Kurikulum
+                        </a>
+                    </li>                                 
                 </ul>
             </li>
             </com:TLiteral>

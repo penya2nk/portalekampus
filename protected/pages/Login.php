@@ -87,25 +87,25 @@ class Login extends MainPage {
                 case 'sa' :
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
-                    $_SESSION['kjur']=1;
+                    $_SESSION['kjur']=$setup->getSettingValue('default_kjur');
                     $_SESSION['ta']=$setup->getSettingValue('default_ta');             
                 break; 
                 case 'dw' :
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
-                    $_SESSION['kjur']=1;           
+                    $_SESSION['kjur']=$setup->getSettingValue('default_kjur');           
                     $_SESSION['ta']=$setup->getSettingValue('default_ta'); 
                 break;
                 case 'd' :
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
-                    $_SESSION['kjur']=1;           
+                    $_SESSION['kjur']=$setup->getSettingValue('default_kjur');           
                     $_SESSION['ta']=$setup->getSettingValue('default_ta'); 
                 break;
                 case 'm' :                    
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
-                    $_SESSION['kjur']=1;           
+                    $_SESSION['kjur']=$setup->getSettingValue('default_kjur');           
                     $_SESSION['ta']=$setup->getSettingValue('default_ta');                 
                 break;                
                 case 'mh' :
@@ -114,7 +114,7 @@ class Login extends MainPage {
                 case 'k' :
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
-                    $_SESSION['kjur']=1;
+                    $_SESSION['kjur']=$setup->getSettingValue('default_kjur');
                     $_SESSION['ta']=$setup->getSettingValue('default_ta');             
                 break; 
                 case 'on' :
@@ -127,7 +127,7 @@ class Login extends MainPage {
                         $_SESSION['ta']=$setup->getSettingValue('default_ta'); 
                     }else{
                         $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
-                        $_SESSION['kjur']=1;
+                        $_SESSION['kjur']=$setup->getSettingValue('default_kjur');
                         $_SESSION['ta']=$setup->getSettingValue('default_ta');
                     }                                
                 break; 

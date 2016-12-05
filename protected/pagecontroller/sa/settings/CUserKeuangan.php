@@ -125,7 +125,7 @@ class CUserKeuangan extends MainPageSA {
             $page='k';
             $group_id=$this->cmbAddGroup->Text;  
             $kjur=$this->cmbAddProdi->Text;
-            $str = "INSERT INTO user (userid,username,userpassword,salt,nama,email,page,group_id,kjur,active,theme,foto,date_added) VALUES (NULL,'$username','$password','$salt','$nama','$email','$page','$group_id','$kjur',1,'cube','resources/userimages/no_photo.png',NOW())";
+            $str = "INSERT INTO user (userid,username,userpassword,salt,nama,email,page,group_id,kjur,active,theme,foto,date_added) VALUES (NULL,'$username','$password','$salt','$nama','$email','$page','$group_id','$kjur',1,'limitless','resources/userimages/no_photo.png',NOW())";
             $this->DB->insertRecord($str);           
             
 			$this->redirect('settings.UserKeuangan',true);

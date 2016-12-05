@@ -41,15 +41,13 @@ class Logic_Akademik extends Logic_Mahasiswa {
     * @version 1.0 beta
 	*/
 	public function getIDKurikulum ($kjur) {
-        switch ($kjur) {
-            case 1 :
-                return 22;            
-            case 2 :
-                return 23;            
-            case 3 :
-                return 24;            
-            case 4 : //s2
-                return 30;
+        $str = "SELECT idkur FROM program_studi WHERE kjur=$kjur";
+        $this->db->setFieldTable (array('idkur'));        
+        $r=$this->db->getRecord($str);
+        if (isset($r[1])) {
+            return $r[1]['idkur'];
+        }else{
+            return 0;
         }
     }
     /**
@@ -58,16 +56,7 @@ class Logic_Akademik extends Logic_Mahasiswa {
     * @version 1.0 beta
 	*/
 	public function getKurikulumName ($kjur) {
-        switch ($kjur) {
-            case 1 :
-                return '2014/2015';            
-            case 2 :
-                return '2014/2015';            
-            case 3 :
-                return 24;            
-            case 4 : //s2
-                return '2014/2015';
-        }
+        return '2014/2015';
     }
     /**
      * membersihkan kode matakuliah dari kurikulum

@@ -57,6 +57,14 @@ class Autorisasi extends TModule implements IUserManager {
                 $pass=hash('sha256', $result['salt'] . hash('sha256', $password));
                 $message="Gagal. Silahkan masukan username dan password dengan benar.";
             break;
+            case 'm' :
+                if ($result['salt']=='') {
+                    $pass=md5($password);
+                }else{
+                    $pass=hash('sha256', $result['salt'] . hash('sha256', $password));
+                }
+                $message="Gagal. Silahkan masukan username dan password dengan benar.";
+            break;
             default :
                 $message="Gagal. Silahkan masukan username dan password dengan benar.";
                 $pass=md5($password);

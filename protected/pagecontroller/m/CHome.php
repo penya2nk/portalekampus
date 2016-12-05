@@ -68,9 +68,9 @@ class CHome extends MainPageM {
         $mendaftartahunlalu=$datamendaftar[$_SESSION['ta']-1];
         $dulangtahunlalu=$datadulang[$_SESSION['ta']-1];
         
-        $persenmendaftartahunini=number_format(($mendaftartahunini/$mendaftartahunlalu)*100,2);
+        $persenmendaftartahunini=($mendaftartahunini > 0) ? number_format(($mendaftartahunini/$mendaftartahunlalu)*100,2):0;
         $this->PersentaseMendaftarTahunINI=$persenmendaftartahunini;
-        $persendulangtahunini=number_format(($dulangtahunini/$dulangtahunlalu)*100,2);
+        $persendulangtahunini=($dulangtahunini > 0) ? number_format(($dulangtahunini/$dulangtahunlalu)*100,2):0;
         $this->PersentaseDulangTahunINI=$persendulangtahunini;
         if ($persenmendaftartahunini <= 100){
             $downmendaftar=number_format(100-$persenmendaftartahunini,2);

@@ -35,9 +35,16 @@ class UserManager extends TAuthManager {
 	public function getDataUser () {				
 		$username=$this->username;
 		switch ($this->page) {
-            case 'SuperAdmin' :            
+            case 'SuperAdmin' :
+                $str = "SELECT u.userid,u.username,u.nama,u.email,u.page,u.isdeleted,u.foto,u.theme FROM user u WHERE username='$username' AND u.page='sa'";
+                $this->db->setFieldTable (array('userid','username','nama','email','page','isdeleted','foto','theme'));							
+                $r= $this->db->getRecord($str);	
+				$this->dataUser['data_user']=$r[1];	
+                $userid=$this->dataUser['data_user']['userid'];
+                $this->db->updateRecord("UPDATE user SET logintime=NOW() WHERE userid=$userid");
+            break;                
             case 'Keuangan' :				
-				$str = "SELECT u.userid,u.username,u.nama,u.email,u.page,u.isdeleted,u.foto,u.theme FROM user u WHERE username='$username'";
+				$str = "SELECT u.userid,u.username,u.nama,u.email,u.page,u.isdeleted,u.foto,u.theme FROM user u WHERE username='$username' AND u.page='k'";
                 $this->db->setFieldTable (array('userid','username','nama','email','page','isdeleted','foto','theme'));							
                 $r= $this->db->getRecord($str);	
 				$this->dataUser['data_user']=$r[1];	
@@ -45,17 +52,22 @@ class UserManager extends TAuthManager {
                 $this->db->updateRecord("UPDATE user SET logintime=NOW() WHERE userid=$userid");
 			break;
             case 'OperatorNilai' :
-                $str = "SELECT u.userid,u.username,u.nama,u.email,u.page,u.group_id,u.kjur,u.isdeleted,u.foto,u.theme FROM user u WHERE username='$username'";
+                $str = "SELECT u.userid,u.username,u.nama,u.email,u.page,u.group_id,u.kjur,u.isdeleted,u.foto,u.theme FROM user u WHERE username='$username' AND u.page='on'";
                 $this->db->setFieldTable (array('userid','username','nama','email','page','group_id','kjur','isdeleted','foto','theme'));							
                 $r= $this->db->getRecord($str);	
 				$this->dataUser['data_user']=$r[1];	
                 $userid=$this->dataUser['data_user']['userid'];
                 $this->db->updateRecord("UPDATE user SET logintime=NOW() WHERE userid=$userid");
             break;
-			case 'Manajemen' :				
-				$str = "SELECT su.userid,sg.groupname,su.active,su.kjur,su.theme FROM simak_user su,simak_group sg WHERE su.groupid=sg.groupid AND su.username='$username'";
-				$this->db->setFieldTable (array('userid','groupname','active','kjur','theme'));							
-				$result = $this->db->getRecord($str);
+			case 'Manajemen' :	
+                $str = "SELECT u.userid,u.username,u.nama,u.email,u.page,u.group_id,u.kjur,u.isdeleted,u.foto,u.theme FROM user u WHERE username='$username' AND u.page='m'";
+                $this->db->setFieldTable (array('userid','username','nama','email','page','group_id','kjur','isdeleted','foto','theme'));							
+                $result= $this->db->getRecord($str);	
+                if (!isset($result[1])) {
+                    $str = "SELECT su.userid,sg.groupname,su.active,su.kjur,su.theme FROM simak_user su,simak_group sg WHERE su.groupid=sg.groupid AND su.username='$username'";
+                    $this->db->setFieldTable (array('userid','groupname','active','kjur','theme'));							
+                    $result = $this->db->getRecord($str);
+                }				
 				$this->dataUser['data_user']=$result[1];							
 				$this->dataUser['data_user']['username']=$username;				
 				$this->dataUser['data_user']['page']='m';
@@ -148,20 +160,34 @@ class UserManager extends TAuthManager {
         $username=$this->username;
 		switch ($this->page) {
             case 'SuperAdmin' :
+                $str = "SELECT u.username,u.userpassword,u.salt,u.page FROM user u WHERE username='$username' AND active=1 AND page='sa'";
+                $this->db->setFieldTable (array('username','userpassword','salt','page'));							
+                $result = $this->db->getRecord($str);
+            break;
             case 'OperatorNilai' :
+                $str = "SELECT u.username,u.userpassword,u.salt,u.page FROM user u WHERE username='$username' AND active=1 AND page='on'";
+                $this->db->setFieldTable (array('username','userpassword','salt','page'));							
+                $result = $this->db->getRecord($str);
+            break;
             case 'Keuangan' :
-				$str = "SELECT u.username,u.userpassword,u.salt,u.page FROM user u WHERE username='$username' AND active=1";
+				$str = "SELECT u.username,u.userpassword,u.salt,u.page FROM user u WHERE username='$username' AND active=1 AND page='k'";
                 $this->db->setFieldTable (array('username','userpassword','salt','page'));							
                 $result = $this->db->getRecord($str);	                
 			break;	
 			case 'Manajemen' :
-				$str = "SELECT userid,username,userpassword,active FROM simak_user WHERE username='$username'";
-				$this->db->setFieldTable (array('userid','username','userpassword','active'));							
-				$result = $this->db->getRecord($str);				
-				if (!$result[1]['active'])$result=array();					
+                $str = "SELECT u.username,u.userpassword,u.salt,u.page FROM user u WHERE username='$username' AND active=1 AND page='m'";
+                $this->db->setFieldTable (array('username','userpassword','salt','page'));							
+                $r = $this->db->getRecord($str);
+                if (isset($r[1])) {
+                    $result=$r;
+                }else{
+                    $str = "SELECT userid,username,userpassword,active FROM simak_user WHERE username='$username' AND active=1";
+                    $this->db->setFieldTable (array('userid','username','userpassword','active'));							
+                    $result = $this->db->getRecord($str);	
+                }
 			break;
 			case 'Dosen' :
-                $str = "SELECT u.username,u.userpassword,u.salt,u.page FROM user u WHERE username='$username' AND active=1";
+                $str = "SELECT u.username,u.userpassword,u.salt,u.page FROM user u WHERE username='$username' AND active=1 AND page='d'";
                 $this->db->setFieldTable (array('username','userpassword','salt','page'));							
                 $r = $this->db->getRecord($str);
                 if (isset($r[1])) {

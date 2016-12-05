@@ -155,14 +155,22 @@ class Logic_DMaster extends Logic_Global {
 			break;
 			case 1 :
 				$dataprodi['none']='Daftar Program Studi';				
-				while (list($k,$v)=each($dataitem)) {			
-					$dataprodi[$v['kjur']]=$v['nama_ps'];					
+				while (list($k,$v)=each($dataitem)) {	
+                    if ($v['konsentrasi'] == '') {
+                        $dataprodi[$v['kjur']]=$v['nama_ps'];
+                    }else{
+                        $dataprodi[$v['kjur']]=$v['nama_ps'] . ' KONS. '.$v['konsentrasi'];
+                    }				
 				}				
 			break;
 			case 2 :
                 $dataprodi['none']='Daftar Program Studi';				
-				while (list($k,$v)=each($dataitem)) {					                    
-					$dataprodi[$v['kjur']]=$v['nama_ps'] . ' ('.$v['njenjang'].')';
+				while (list($k,$v)=each($dataitem)) {			
+                    if ($v['konsentrasi'] == '') {
+                        $dataprodi[$v['kjur']]=$v['nama_ps'] . ' ('.$v['njenjang'].')';
+                    }else{
+                        $dataprodi[$v['kjur']]=$v['nama_ps'] . ' KONS. '.$v['konsentrasi'].' ('.$v['njenjang'].')';
+                    }					
 				}				
 			break;
 		}

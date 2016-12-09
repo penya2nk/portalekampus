@@ -297,6 +297,55 @@ class Logic_Nilai extends Logic_Akademik {
         return $this->DataNilai;
     } 
     /**
+     * digunakan untuk mendapatkan nilai transkrip mahasiswa dari KRS dan konversi     
+     * @return array daftar nilai
+     * @param cek_isikuesioner bool
+     */
+    public function getTranskripFromKRSdanKonversi($cek_isikuesioner=false) {        
+		$nim=$this->DataMHS['nim'];	
+        $iddata_konversi=$this->DataMHS['iddata_konversi'];
+        $str = "SELECT vnk.kmatkul,vnk.nmatkul,vnk.sks,semester,IF(char_length(COALESCE(vnk2.n_kual,''))>0,vnk2.n_kual,'-') AS n_kual,telah_isi_kuesioner,vnk.tahun FROM v_nilai_khs vnk,(SELECT idkrsmatkul,MIN(n_kual) AS n_kual FROM `v_nilai_khs` WHERE nim='$nim' AND n_kual IS NOT NULL GROUP BY kmatkul ORDER BY (semester+0), kmatkul ASC) AS vnk2 WHERE vnk.idkrsmatkul=vnk2.idkrsmatkul";        
+		$this->db->setFieldTable(array('kmatkul','nmatkul','sks','semester','n_kual','telah_isi_kuesioner','tahun'));
+        
+		$r=$this->db->getRecord($str);        
+
+        $result=array();
+        while (list($k,$v)=each($r)) {	
+            if ($v['tahun']>=2015){                
+                if ($cek_isikuesioner) {
+                    if ($v['telah_isi_kuesioner']==0) {                    
+                        $v['sks']=0;           
+                        $v['n_kual']='-';
+                        $v['am']=0;
+                        $v['m']=0;  
+                        $v['keterangan']='ISI KUESIONER DI KHS';                                    
+                    }else{
+                        $am=$this->AngkaMutu[$v['n_kual']];
+                        $m=$am*$v['sks'];
+                        $v['am']=$am;
+                        $v['m']=$m;	                
+                        $v['keterangan']='-';                
+                    }
+                }else{
+                    $am=$this->AngkaMutu[$v['n_kual']];
+                    $m=$am*$v['sks'];
+                    $v['am']=$am;
+                    $v['m']=$m;	                
+                    $v['keterangan']='-';                
+                }
+            }else{
+                $am=$this->AngkaMutu[$v['n_kual']];
+                $m=$am*$v['sks'];
+                $v['am']=$am;
+                $v['m']=$m;	                
+                $v['keterangan']='-'; 
+            }            
+            $result[$k]=$v;
+        }
+        $this->DataNilai=$result;        
+        return $this->DataNilai;
+    }
+    /**
      * digunakan untuk mendapatkan nilai KHS
      * @param type $ta
      * @param type $idsmt

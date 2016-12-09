@@ -302,7 +302,13 @@
                                                     </a>
                                                 </li>                                                
                                             </ul>
-                                        </li>    
+                                        </li> 
+                                        <li<%=$this->Page->showSoalPMB==true ? ' class="active" ':''%>>                                            
+                                            <a href="<%=$this->Page->constructUrl('dmaster.SoalPMB',true)%>">
+                                                <i class="fa fa-list-ul"></i>
+                                                <span>Soal PMB</span>                                                
+                                            </a>
+                                        </li>
                                         <li class="nav-header nav-header-first hidden-sm hidden-xs">
                                             SPMB
                                         </li>  
@@ -407,6 +413,11 @@
                                                 <li>
                                                     <a href="<%=$this->Page->constructUrl('dulang.DulangMHSEkstension',true)%>"<%=$this->Page->showDulangMHSEkstension==true ? ' class="active" ':''%>>
                                                         Mahasiswa Ekstension
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('dulang.DulangMHSLulus',true)%>"<%=$this->Page->showDulangMHSLulus==true ? ' class="active" ':''%>>
+                                                        Mahasiswa Lulus
                                                     </a>
                                                 </li> 
                                             </ul>

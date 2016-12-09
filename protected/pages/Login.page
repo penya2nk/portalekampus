@@ -61,10 +61,6 @@
             <com:TActiveCustomValidator ControlToValidate="txtUsername" Display="Dynamic" OnServerValidate="checkUsernameFormat" CssClass="has-error help-block" ValidationGroup="userlogin" />
             <com:TActiveCustomValidator ControlToValidate="txtUsername" Display="Dynamic" OnServerValidate="checkUsernameAndPassword" CssClass="has-error help-block" ValidationGroup="userlogin" />            
         </div>
-    </div>    				     
-    <div class="mar-btm"><em>- atau -</em></div>
-    <a class="btn btn-primary btn-lg btn-block" href="http://oldportal.stisipolrajahaji.ac.id">
-        Login ke Portal E-Kampus Lama
-    </a>               
+    </div>    	
     <com:TJavascriptLogger ID="loggerlogin" />
 </com:TContent>

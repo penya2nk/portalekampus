@@ -6,11 +6,9 @@ class CNilaiFinal extends MainPageON {
         $this->showSubMenuAkademikNilai=true;
         $this->showNilaiFinal=true;    
 		$this->createObj('Nilai');
-        
-		if (!$this->IsPostBack&&!$this->IsCallBack) {			
-
+		if (!$this->IsPostBack&&!$this->IsCallBack) {	
             if (!isset($_SESSION['currentPageNilaiFinal'])||$_SESSION['currentPageNilaiFinal']['page_name']!='on.nilai.NilaiFinal') {					
-                $_SESSION['currentPageNilaiFinal']=array('page_name'=>'on.nilai.NilaiFinal','page_num'=>0,'search'=>false,'tanggal_terbit'=>'none');												
+                $_SESSION['currentPageNilaiFinal']=array('page_name'=>'on.nilai.NilaiFinal','page_num'=>0,'search'=>false,'tanggal_terbit'=>'none','DataMHS'=>array(),'DataNilai'=>array());												
             }
             $_SESSION['currentPageNilaiFinal']['search']=false;
             $this->RepeaterS->PageSize=$this->setup->getSettingValue('default_pagesize');
@@ -42,8 +40,7 @@ class CNilaiFinal extends MainPageON {
     public function changeTbTA ($sender,$param) {
 		$_SESSION['ta']=$this->tbCmbTA->Text;		
         $this->lblModulHeader->Text=$this->getInfoToolbar();
-		$this->populateData($_SESSION['currentPageNilaiFinal']['search']);
-        
+		$this->populateData($_SESSION['currentPageNilaiFinal']['search']);        
 	}	
 	public function changeTbSemester ($sender,$param) {
 		$_SESSION['semester']=$this->tbCmbSemester->Text;		
@@ -127,192 +124,49 @@ class CNilaiFinal extends MainPageON {
 			$item->lblIpk->Text=$this->Nilai->getIPKAdaNilai();
 		}	
 	}
-	public function checkNim ($sender,$param){		
-		$nim=$this->txtNim->Text;
-		if ($nim != '') {
-			try {				
-				$this->Nilai->setNim($nim);
-				$r = $this->Nilai->getList("register_mahasiswa WHERE nim='$nim'",array('nim','k_status','tahun','idsmt'));
-				$this->Nilai->dataMhs=$r[1];				
-				if (!$this->Nilai->isNimExist()) throw new AkademikException ($nim,2);	
-				if ($this->Application->getModule ('environment')->checkRequirementNilaiFinal) {
-					if ($this->Nilai->dataMhs['k_status']!='L')throw new Exception ("Status ($nim) belum lulus.");
-					$awal=$r[1]['tahun'].$r[1]['semester'];
-					$akhir=$_SESSION['ta'].$_SESSION['semester'];
-					$totalsks=$this->DB->getSumRowsOfTable('sks',"v_nilai WHERE (tasmt BETWEEN $awal AND $akhir) AND nim='$nim' AND n_kual !='E'");
-					if ($totalsks <144)throw new Exception ("Pada T.A dan semester ini total SKS ($nim) baru $totalsks harus lebih dari atau sama dengan 144");				
-				}
-			}catch (AkademikException $e) {
-				$sender->ErrorMessage=$e->pesanKesalahan();				
-				$param->IsValid=false;
-			}catch(Exception $e) {			
-				$sender->ErrorMessage=$e->getMessage();				
-				$param->IsValid=false;
-			}			
-		}
-	}
-	public function processKelulusan ($sender,$param) {
-		if ($this->IsValid) {
-			$nim=$this->txtNim->Text;
-			$this->Nilai->setNim($nim,true);
-            $idkur=$this->Demik->Matkul->getIDKurikulum ($this->Nilai->dataMhs['tahun_masuk'],$this->Nilai->dataMhs['kjur']);
-            $this->Nilai->dataMhs['idkur']=$idkur;
-			$_SESSION['currentPageNilaiFinal']['m_NilaiFinal']=$this->Nilai->dataMhs;
-			$this->redirect('nilai.NilaiFinal',true);
-		}
-	}
-	public function detailProcess () {				
-		$this->dataMhs=$_SESSION['currentPageNilaiFinal']['m_NilaiFinal'];		
-		$nim=$this->dataMhs['nim'];
-		$daftar_dosen=$this->getLogic('Dosen')->getListDosen(2);
-		$this->cmbAddDosenPembimbing->DataSource=$daftar_dosen;
-		$this->cmbAddDosenPembimbing->dataBind();
-		$this->cmbAddDosenPembimbing2->DataSource=$daftar_dosen;
-		$this->cmbAddDosenPembimbing2->dataBind();
-		$this->cmbAddKetuaInstitusi->DataSource=$daftar_dosen;
-		$this->cmbAddKetuaInstitusi->dataBind();
-		$this->cmbAddPemketI->DataSource=$daftar_dosen;
-		$this->cmbAddPemketI->dataBind();
-		
-		$str = "SELECT nomor_transkrip,predikat_kelulusan,tanggal_lulus,judul_skripsi,iddosen_pembimbing,iddosen_pembimbing2,iddosen_ketua,iddosen_pemket FROM transkrip_asli WHERE nim='$nim'";
-		$this->DB->setFieldTable(array('nomor_transkrip','predikat_kelulusan','tanggal_lulus','judul_skripsi','iddosen_pembimbing','iddosen_pembimbing2','iddosen_ketua','iddosen_pemket'));
-		$r=$this->DB->getRecord($str);
-		$bool=true;
-		if (isset($r[1])) {
-			$bool=false;
-			$_SESSION['currentPageNilaiFinal']['m_NilaiFinal']['dataTranskrip']=$r[1];
-			$this->hiddennomortranskrip->Value=$r[1]['nomor_transkrip'];			
-			$this->txtAddNomorTranskrip->Text=$r[1]['nomor_transkrip'];			
-			$this->cmbAddPredikatKelulusan->Text=$r[1]['predikat_kelulusan'];			
-			$this->txtAddTanggalLulus->Text=$this->TGL->tukarTanggal($r[1]['tanggal_lulus'],'entoid');
-			$this->cmbAddDosenPembimbing->Text=$r[1]['iddosen_pembimbing'];
-			$this->cmbAddDosenPembimbing2->Text=$r[1]['iddosen_pembimbing2'];												
-			$this->txtAddJuduluSkripsi->Text=$r[1]['judul_skripsi'];						
-			$this->cmbAddKetuaInstitusi->Text=$r[1]['iddosen_ketua'];												
-			$this->cmbAddPemketI->Text=$r[1]['iddosen_pemket'];				
-		}else{
-			$this->systemErrorMessage = 'Proses tidak bisa dilaksanakan karena belum ada data Transkrip Final.';
-			$this->btnToExcel2->Attributes->OnClick="Modalbox.show(systemErrorMessage, {title: this.title}); return false;";
-			$this->btnToExcel2->Enabled=false;
-			$this->btnToPdf2->Attributes->OnClick="Modalbox.show(systemErrorMessage, {title: this.title}); return false;";						
-			$this->btnToPdf2->Enabled=false;
-			$options=$this->getLogic('Options');			
-			$iddosen=$options->getOptions('ketua_stisipol');							
-			$this->cmbAddKetuaInstitusi->Text=$iddosen;
-			$iddosen=$options->getOptions('puket_1_bidang_akademik');
-			$this->cmbAddPemketI->Text=$iddosen;			
-		}		
-		$this->Nilai->setNim($nim);        
-		$this->Nilai->setParameterGlobal('','','',$this->dataMhs['idkur']);			
-		$daftar_nilai=$this->Nilai->getTranskrip($bool);	
-		$this->RepeaterTranskripS->DataSource=$daftar_nilai;
-		$this->RepeaterTranskripS->dataBind();
-	}
-	public function viewProcess ($sender,$param) {
-			
-		$nim = $this->getDataKeyField($sender,$this->RepeaterS);
-		$this->Nilai->setNim($nim,true);	
-        $idkur=$this->Demik->Matkul->getIDKurikulum ($this->Nilai->dataMhs['tahun_masuk'],$this->Nilai->dataMhs['kjur']);
-        $this->Nilai->dataMhs['idkur']=$idkur;
-		$_SESSION['currentPageNilaiFinal']['m_NilaiFinal']=$this->Nilai->dataMhs;	
-		$this->redirect('nilai.NilaiFinal',true);
-	}
-	public function checkNoTranskrip ($sender,$param) {
-		try {
-			$no_transkrip=$this->txtAddNomorTranskrip->Text;
-			if ($this->no_transkrip->Value!=$no_transkrip) {
-				if ($this->DB->checkRecordIsExist('nomor_transkrip','transkrip_asli',$no_transkrip)) {
-					throw new Exception ("Nomor Transkrip ($no_transkrip) telah ada, silahkan ganti dengan yang lain");
-				}
-			}
-		}catch (Exception $e) {
-			$sender->ErrorMessage = $e->getMessage();
-			$param->IsValid=false;
-		}
-	}
-	public function saveData ($sender,$param) {
-		if ($this->IsValid) {
-			$log = $this->getLogic('Log');			
-			$log->getIdLogMaster();
-			$nim=$_SESSION['currentPageNilaiFinal']['m_NilaiFinal']['nim'];
-			$log->dataMhs['nim']=$_SESSION['currentPageNilaiFinal']['m_NilaiFinal']['nim'];
-			$ta=$_SESSION['ta'];					
-			$semester=$_SESSION['semester'];
-			$no_transkrip=$this->no_transkrip->Value;			
-			$predikat=$this->cmbAddPredikatKelulusan->Text;
-			$tanggal_lulus=$this->TGL->tukarTanggal ($this->txtAddTanggalLulus->Text);						
-			$pembimbing=$this->cmbAddDosenPembimbing->Text;						
-			$pembimbing2=$this->cmbAddDosenPembimbing2->Text;						
-			$judul_skripsi=strtoupper(addslashes($this->txtAddJuduluSkripsi->Text));						
-			$ketua=$this->cmbAddKetuaInstitusi->Text;						
-			$pemket=$this->cmbAddPemketI->Text;						
-			$this->DB->query('BEGIN');
-			if ($no_transkrip == '') {                
-				$no_transkrip=$this->txtAddNomorTranskrip->Text;			
-				$str = 'INSERT INTO transkrip_asli (nim,nomor_transkrip,predikat_kelulusan,tanggal_lulus,judul_skripsi,iddosen_pembimbing,iddosen_pembimbing2,iddosen_ketua,iddosen_pemket,tahun,idsmt) VALUES ';
-				$str = $str."('$nim','$no_transkrip','$predikat','$tanggal_lulus','$judul_skripsi','$pembimbing','$pembimbing2','$ketua','$pemket',$ta,$semester)";				
-				if ($this->DB->insertRecord($str)) {					
-					$str = "INSERT INTO transkrip_asli_detail (nim,kmatkul,nmatkul,sks,semester,n_kual) VALUES ";
-					foreach($this->RepeaterTranskripS->Items as $inputan) {						
-						$item=$inputan->cmbNilai->getNamingContainer();
-						$kmatkul=$this->RepeaterTranskripS->DataKeys[$item->getItemIndex()]; 
-						$nmatkul=$inputan->txtMatkul->Value;
-						$sks=$inputan->txtSks->Value;
-						$semester=$inputan->txtSemester->Value;
-						$n_kual=$inputan->cmbNilai->Text=='none'?'':$inputan->cmbNilai->Text;						
-						$str2="$str('$nim','$kmatkul','$nmatkul','$sks','$semester','$n_kual')";						
-						$this->DB->insertRecord($str2);
-						if ($n_kual != '')
-							$log->insertLogIntoNilaiFinal($kmatkul,$nmatkul,'input',$n_kual);
-					}
-					$this->DB->query('COMMIT');
-				}else {
-					$this->DB->query('ROLLBACK');
-				}			
-			}else {				                
-				$no_transkrip=$this->txtAddNomorTranskrip->Text;
-				$str = "UPDATE transkrip_asli SET nim='$nim',nomor_transkrip='$no_transkrip',predikat_kelulusan='$predikat',tanggal_lulus='$tanggal_lulus',judul_skripsi='$judul_skripsi',iddosen_pembimbing='$pembimbing',iddosen_pembimbing2='$pembimbing2',iddosen_ketua='$ketua',iddosen_pemket='$pemket',tahun=$ta,idsmt=$semester WHERE nim='$nim'";
-				$this->DB->query('BEGIN');
-				if ($this->DB->updateRecord($str)) {				
-					foreach($this->RepeaterTranskripS->Items as $inputan) {						
-						$item=$inputan->cmbNilai->getNamingContainer();
-						$kmatkul=$this->RepeaterTranskripS->DataKeys[$item->getItemIndex()]; 						
-						$n_kual_sebelumnya=$inputan->txtNilaiSebelumnya->Value;						
-						$n_kual=$inputan->cmbNilai->Text=='none'?'':$inputan->cmbNilai->Text;		
-						if ($n_kual_sebelumnya != $n_kual) {				
-							$nmatkul=$inputan->txtMatkul->Value;
-							$str="UPDATE transkrip_asli_detail SET n_kual='$n_kual' WHERE nim='$nim' AND kmatkul='$kmatkul'";						
-							$this->DB->updateRecord($str);
-							if ($n_kual_sebelumnya == '')
-								$log->insertLogIntoNilaiFinal($kmatkul,$nmatkul,'input',$n_kual);
-							else
-								$log->insertLogIntoNilaiFinal($kmatkul,$nmatkul,'update',$n_kual_sebelumnya,$n_kual);
-						}
-					}
-					$this->DB->query('COMMIT');
-				}else {
-					$this->DB->query('ROLLBACK');
-				}	
-			}	
-			$this->redirect('nilai.NilaiFinal',true);
-		}
-	}
-	public function printTranskripperNim ($sender,$param) {
-		if ($this->isValid) {
-									
-			$nim=$this->txtNim->Text;					
-			$this->Nilai->setNim($nim,true);					
-			$this->Nilai->setParameterGlobal ($_SESSION['ta'],$_SESSION['semester'],'',$this->getKurikulumPS($this->Nilai->dataMhs['kjur']));			
-			$str = "SELECT nomor_transkrip,predikat_kelulusan,tanggal_lulus,judul_skripsi,iddosen_pembimbing,iddosen_pembimbing2,iddosen_ketua,iddosen_pemket FROM transkrip_asli WHERE nim='$nim'";
-			$this->DB->setFieldTable(array('nomor_transkrip','predikat_kelulusan','tanggal_lulus','judul_skripsi','iddosen_pembimbing','iddosen_pembimbing2','iddosen_ketua','iddosen_pemket'));
-			$r=$this->DB->getRecord($str);							
-			$this->Nilai->dataMhs['dataTranskrip']=$r[1];
-			$file="transkrip_asli_$nim";
-			$this->Nilai->dataMhs['tanggalterbit']=$this->TGL->tukarTanggal ($this->txtDefaultTanggalTerbit->Text);
-			$this->Nilai->printNilaiFinal('pdf');				
-			$this->Nilai->Report->printOut($file);
-			$this->Nilai->Report->setLink($this->resultLink,"<br />$file");	
-		}
+    public function cekNIM ($sender,$param) {		
+        $nim=addslashes($param->Value);		
+        if ($nim != '') {
+            try {
+                $str = "SELECT vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.jk,vdm.tempat_lahir,vdm.tanggal_lahir,vdm.kjur,vdm.nama_ps,vdm.idkonsentrasi,k.nama_konsentrasi,vdm.tahun_masuk,iddosen_wali,idkelas,k_status FROM v_datamhs vdm LEFT JOIN konsentrasi k ON (vdm.idkonsentrasi=k.idkonsentrasi) WHERE nim='$nim'";
+                $this->DB->setFieldTable(array('no_formulir','nim','nirm','nama_mhs','jk','tempat_lahir','tanggal_lahir','kjur','nama_ps','idkonsentrasi','nama_konsentrasi','tahun_masuk','iddosen_wali','idkelas','k_status'));
+                $r=$this->DB->getRecord($str);	   
+                $datamhs=$r[1];
+                if (!isset($r[1])) {                                   
+                    throw new Exception ("<br/><br/>NIM ($nim) tidak terdaftar di Portal, silahkan ganti dengan yang lain.");		
+                }
+                if ($r[1]['k_status'] != 'L') {
+                    throw new Exception ("<br/><br/>NIM ($nim) belum dinyatakan telah LULUS, silahkan nyatakan terlebih dahulu.");		
+                }
+                $str = "SELECT nim,tahun,idsmt FROM dulang WHERE nim='$nim' AND k_status='L' ORDER BY iddulang DESC LIMIT 1";			
+                $this->DB->setFieldTable(array('nim','tahun','idsmt'));
+                $r=$this->DB->getRecord($str);                
+                if (!isset($r[1])) {
+                    throw new Exception ("<br/><br/>Data salah, tidak menemukan status LULUS di tabel daftar ulang.");		
+                }
+                $datamhs['idsmt']=$r[1]['idsmt'];
+                $datamhs['ta']=$r[1]['tahun'];
+                
+                $datamhs['nama_dosen']=$this->DMaster->getNamaDosenWaliByID ($datamhs['iddosen_wali']);
+                $datamhs['nkelas']=$this->DMaster->getNamaKelasByID($datamhs['idkelas']);
+                $datamhs['nama_konsentrasi']=($datamhs['idkonsentrasi']==0) ? '-':$datamhs['nama_konsentrasi'];                    
+                $datamhs['status']=$this->DMaster->getNamaStatusMHSByID($datamhs['k_status']);
+                $datamhs['iddata_konversi']=$this->Nilai->isMhsPindahan($nim,true);
+                
+                $_SESSION['semester']=$datamhs['idsmt'];
+                $_SESSION['ta']=$datamhs['ta'];
+                
+                $_SESSION['currentPageNilaiFinal']['DataMHS']=$datamhs;
+            }catch (Exception $e) {
+                $param->IsValid=false;
+                $sender->ErrorMessage=$e->getMessage();
+            }	
+        }	
+    }
+    public function Go($param,$sender) {	
+        if ($this->IsValid) {
+            $this->redirect('nilai.DetailNilaiFinal',true);
+        }
 	}
 	public function printOut ($sender,$param) {		
         $this->createObj('reportnilai');
@@ -362,7 +216,7 @@ class CNilaiFinal extends MainPageON {
                             $dataReport['linkoutput']=$this->linkOutput; 
                             $this->report->setDataReport($dataReport); 
                             $this->report->setMode($_SESSION['outputreport']);
-                            $this->report->printNilaiFinal($this->Nilai,true);				
+                            $this->report->printTranskripFinal($this->Nilai,true);				
                         }else{
                             $bool=false;
                             $errormessage="Mahasiswa dengan NIM ($nim) statusnya belum lulus !!!.";
@@ -395,10 +249,6 @@ class CNilaiFinal extends MainPageON {
             $this->lblContentMessageError->Text=$errormessage;
             $this->modalMessageError->show();
         }
-	}   
-	public function closeTranskrip($sender,$param) {	
-		unset($_SESSION['currentPageNilaiFinal']['m_NilaiFinal']);
-		$this->redirect('nilai.NilaiFinal',true);
 	}
 }
 

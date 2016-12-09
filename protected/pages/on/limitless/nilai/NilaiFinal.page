@@ -14,114 +14,40 @@
 </div>
 </com:TContent>
 <com:TContent ID="csscontent">
-<link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/css/libs/nifty-component.css"/>
+<link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/assets/css/libs/nifty-component.css"/>
+</com:TContent>
+<com:TContent ID="moduleheaderelement">    
+<div class="heading-elements">
+    <div class="heading-form">
+        <div class="form-group">
+            <div class="input-group">                    
+                <com:TTextBox CssClass="form-control" ID="txtNIM" MaxLength="8" Attributes.PlaceHolder="NIM" />                    
+                <div class="input-group-btn">                        
+                    <com:TActiveCustomButton ID="btnGo" CssClass="btn bg-slate btn-icon" OnClick="Go" Attributes.Title="Go" ValidationGroup="addnewtranskrip" >
+                        <prop:Text>                                        
+                            <i class="icon-play"></i>
+                        </prop:Text>
+                        <prop:ClientSide.OnPreDispatch>         
+                            $('<%=$this->btnGo->ClientId%>').disabled='disabled';						
+                            Pace.stop();
+                            Pace.start();			                               
+                        </prop:ClientSide.OnPreDispatch>
+                        <prop:ClientSide.OnLoading>
+                            $('<%=$this->btnGo->ClientId%>').disabled='disabled';						
+                        </prop:ClientSide.OnLoading>
+                        <prop:ClientSide.OnComplete>																	
+                            $('<%=$this->btnGo->ClientId%>').disabled='';						                                                        
+                        </prop:ClientSide.OnComplete>
+                    </com:TActiveCustomButton>                        
+                </div>                    
+            </div>                
+        </div>
+        <com:TRequiredFieldValidator ValidationGroup="addnewtranskrip" Display="Dynamic" ControlToValidate="txtNIM" FocusOnError="true" CssClass="has-error help-block" />
+        <com:TActiveCustomValidator ControlToValidate="txtNIM" Display="Dynamic" OnServerValidate="cekNIM" ValidationGroup="addnewtranskrip" CssClass="has-error help-block" />
+    </div>
+</div>      
 </com:TContent>
 <com:TContent ID="maincontent">	
-	<com:TPanel Visible="<%= $this->getAddProcess() %>">						
-		<com:TActiveRepeater ID="RepeaterTranskripS" DataKeyField="kmatkul">
-			<prop:HeaderTemplate>			
-			<div class="box">
-				<table width="100%">
-					<tr>
-						<td width="200">Jumlah Matakuliah</td>
-						<td>: <%#$this->page->nilai->getTotalMatkul(true)%></td>
-					</tr>
-					<tr>
-						<td width="200">Jumlah SKS</td>
-						<td>: <%#$this->page->nilai->getTotalSKS(true)%></td>
-					</tr>
-					<tr>
-						<td width="200">IPK (Indeks Prestasi Kumulatif)</td>
-						<td>: <%#$this->page->nilai->getIpkTranskripFinal(true)%></td>
-					</tr>
-				</table>
-			</div>
-			<table id="datagrid3">
-				<thead>
-				<tr>
-					<th scope="col">NO</th>					
-					<th scope="col">Kode</th>
-					<th scope="col">Mata Kuliah</th>
-					<th scope="col">SKS</th>
-					<th scope="col">Semester</th>					
-					<th scope="col">NA</th>					
-                    <th scope="col"></th>					
-				</tr>			
-				</thead>
-				<tbody>
-			</prop:HeaderTemplate>
-			<prop:ItemTemplate>	
-				<tr>
-					<td><%# $this->Data['no']%></td>					
-					<td><%# $this->page->nilai->Matkul->getKMatkul($this->Data['kmatkul'])%></td>
-					<td><com:TActiveHiddenField ID="txtMatkul" Value="<%#$this->Data['nmatkul']%>" /><%# $this->Data['nmatkul']%></td>
-					<td><com:TActiveHiddenField ID="txtSks" Value="<%#$this->Data['sks']%>" /><%# $this->Data['sks']%></td>
-					<td><com:TActiveHiddenField ID="txtSemester" Value="<%#$this->Data['semester']%>" /><%# $this->Data['semester']%></td>
-					<td><com:TActiveHiddenField ID="txtNilaiSebelumnya" Value="<%#$this->Data['n_kual']%>" />
-						<com:TActiveDropDownList ID="cmbNilai" AutoPostBack="false" Text="<%# $this->Data['n_kual']%>">	
-							<com:TListItem Value="none" Text=" " />
-							<com:TListItem Value="A" Text="A" />
-							<com:TListItem Value="B" Text="B" />
-							<com:TListItem Value="C" Text="C" />
-							<com:TListItem Value="D" Text="D" />
-							<com:TListItem Value="E" Text="E" />
-						</com:TActiveDropDownList>
-					</td>
-                    <td align="center">
-                        <com:TActiveLinkButton ID="btnDelete" Text="Hapus" OnClick="Page.deleteRecord" CssClass="btnStyle2" Attributes.OnClick="if(!confirm('Anda Yakin mau menghapus matakuliah <%#$this->Data['nmatkul']%> ini.')) return false;"> 
-                            <prop:ClientSide.OnPreDispatch>
-                                $('loading').show();
-                            </prop:ClientSide.OnPreDispatch>
-                            <prop:ClientSide.OnLoading>
-                                $('<%=$this->btnDelete->ClientId%>').disabled='disabled';									
-                            </prop:ClientSide.OnLoading>
-                            <prop:ClientSide.OnComplete>
-                                $('<%=$this->btnDelete->ClientId%>').disabled='';												
-                                $('loading').hide();
-                            </prop:ClientSide.OnComplete>
-                        </com:TActiveLinkButton>
-                    </td>
-				</tr>	
-			</prop:ItemTemplate>	
-			<prop:AlternatingItemTemplate>
-				<tr>
-					<td><%# $this->Data['no']%></td>					
-					<td><%# $this->page->nilai->Matkul->getKMatkul($this->Data['kmatkul'])%></td>
-					<td><com:TActiveHiddenField ID="txtMatkul" Value="<%#$this->Data['nmatkul']%>" /><%# $this->Data['nmatkul']%></td>
-					<td><com:TActiveHiddenField ID="txtSks" Value="<%#$this->Data['sks']%>" /><%# $this->Data['sks']%></td>
-					<td><com:TActiveHiddenField ID="txtSemester" Value="<%#$this->Data['semester']%>" /><%# $this->Data['semester']%></td>
-					<td><com:TActiveHiddenField ID="txtNilaiSebelumnya" Value="<%#$this->Data['n_kual']%>" />
-						<com:TActiveDropDownList ID="cmbNilai" AutoPostBack="false" Text="<%# $this->Data['n_kual']%>">	
-							<com:TListItem Value="none" Text=" " />
-							<com:TListItem Value="A" Text="A" />
-							<com:TListItem Value="B" Text="B" />
-							<com:TListItem Value="C" Text="C" />
-							<com:TListItem Value="D" Text="D" />
-							<com:TListItem Value="E" Text="E" />
-						</com:TActiveDropDownList>
-					</td>
-                    <td align="center">
-                        <com:TActiveLinkButton ID="btnDelete" Text="Hapus" OnClick="Page.deleteRecord" CssClass="btnStyle2" Attributes.OnClick="if(!confirm('Anda Yakin mau menghapus matakuliah <%#$this->Data['nmatkul']%> ini.')) return false;"> 
-                            <prop:ClientSide.OnPreDispatch>
-                                $('loading').show();
-                            </prop:ClientSide.OnPreDispatch>
-                            <prop:ClientSide.OnLoading>
-                                $('<%=$this->btnDelete->ClientId%>').disabled='disabled';									
-                            </prop:ClientSide.OnLoading>
-                            <prop:ClientSide.OnComplete>
-                                $('<%=$this->btnDelete->ClientId%>').disabled='';												
-                                $('loading').hide();
-                            </prop:ClientSide.OnComplete>
-                        </com:TActiveLinkButton>
-                    </td>
-				</tr>	
-			</prop:AlternatingItemTemplate>
-			<prop:FooterTemplate>					
-				</tbody>
-			</table>
-			</prop:FooterTemplate>
-		</com:TActiveRepeater>
-	</com:TPanel>
 <com:TPanel Visible="<%= $this->getDefaultProcess() %>" CssClass="row">	
     <div class="col-md-12">
         <div class="panel panel-flat border-top-lg border-top-info border-bottom-info">
@@ -184,93 +110,82 @@
             <div class="panel-heading">
                 <h5 class="panel-title"><i class="icon-blog position-left"></i>  DAFTAR TRANSKRIP FINAL</h5>                
                 <div class="heading-elements">
-                    <div class="heading-btn">
-                        
-                    </div>   
+                                  
                 </div>
             </div> 
             <div class="table-responsive">
-            <com:TActiveRepeater ID="RepeaterS" OnItemDataBound="setDataBound" AllowPaging="true" PageSize="10" AllowCustomPaging="true" DataKeyField="nim">
-                <prop:HeaderTemplate>			
-                <table class="table table-striped table-hover">
-                    <thead>
-                    <tr class="bg-teal-700">
-                        <th scope="col">NO</th>					
-                        <th scope="col">NIM</th>
-                        <th scope="col">NIRM</th>
-                        <th scope="col">NAMA</th>
-                        <th scope="col">NOMOR <br />TRANSKRIP</th>
-                        <th scope="col">PREDIKAT<br/>KELULUSAN</th>					
-                        <th scope="col">TANGGAL<br />LULUS</th>
-                        <th scope="col">IPK</th>					
-                        <th scope="col">STATUS</th>
-                        <th scope="col" width="120">AKSI</th>					
-                    </tr>			
-                    </thead>
-                    <tbody>
-                </prop:HeaderTemplate>
-                <prop:ItemTemplate>	
-                    <tr>
-                        <td><%# $this->Data['no']%></td>					
-                        <td><a href="<%=$this->Page->constructUrl('kemahasiswaan.ProfilMahasiswa',true,array('id'=>$this->DataItem['nim']))%>"><%#$this->DataItem['nim']%></a></td>
-                        <td><%# $this->Data['nirm']%></td>
-                        <td><%# $this->Data['nama_mhs']%></td>
-                        <td><%# $this->Data['nomor_transkrip']%></td>
-                        <td><%# $this->Data['predikat_kelulusan']%></td>					
-                        <td><%# $this->page->TGL->tanggal('j F Y',$this->Data['tanggal_lulus'])%></td>					
-                        <td><com:TLiteral ID="lblIpk" /></td>
-                        <td><%#$this->Page->DMaster->getNamaStatusMHSByID($this->DataItem['k_status'])%></td>
-                        <td>
-                            <a href="<%#$this->Page->constructUrl('nilai.DetailTranskripFinal',true,array('id'=>$this->DataItem['nim']))%>" class="table-link" title="Detail Transkrip">                                        
-                                <span class="fa-stack">
-                                    <i class="fa fa-square fa-stack-2x"></i>
-                                    <i class="fa fa-eye fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                            <com:TActiveLinkButton ID="btnPrintOutR" CssClass="table-link" OnClick="Page.printOut" Attributes.Title="Print Transkrip Final" ClientSide.PostState="false">
-                                <prop:Text>
-                                    <span class="fa-stack">
-                                        <i class="fa fa-square fa-stack-2x"></i>
-                                        <i class="fa fa-print fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </prop:Text>
-                                <prop:ClientSide.OnPreDispatch>                                                                   
-                                    $('loading').show(); 
-                                    $('<%=$this->btnPrintOutR->ClientId%>').disabled='disabled';						
-                                </prop:ClientSide.OnPreDispatch>
-                                <prop:ClientSide.OnLoading>
-                                    $('<%=$this->btnPrintOutR->ClientId%>').disabled='disabled';						
-                                </prop:ClientSide.OnLoading>
-                                <prop:ClientSide.OnComplete>																	                                    						                                                                            
-                                    $('<%=$this->btnPrintOutR->ClientId%>').disabled='';
-                                    $('loading').hide(); 
-                                </prop:ClientSide.OnComplete>
-                            </com:TActiveLinkButton>						                                    
-                        </td>					
-                    </tr>	
-                </prop:ItemTemplate>				
-                <prop:FooterTemplate>	                            
-                    </tbody>
-                    </table>
-                </prop:FooterTemplate>
-                <prop:EmptyTemplate>                                                       
-                    <div class="row">
-                        <div class="main-box-body">
-                            <div class="alert alert-info">
-                                <i class="fa fa-info-circle fa-fw fa-lg"></i>
-                                <strong>
-                                    Info!
-                                </strong>
-                                 Tidak ada data yang bisa ditampilkan.
-                            </div>
-                        </div>
-                    </div>
-                </prop:EmptyTemplate>
-            </com:TActiveRepeater>
-            <%include Application.CustomPaging%>
+                <com:TActiveRepeater ID="RepeaterS" OnItemDataBound="setDataBound" AllowPaging="true" PageSize="10" AllowCustomPaging="true" DataKeyField="nim">
+                    <prop:HeaderTemplate>			
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr class="bg-teal-700">
+                            <th scope="col">NO</th>					
+                            <th scope="col">NIM</th>
+                            <th scope="col">NIRM</th>
+                            <th scope="col">NAMA</th>
+                            <th scope="col">NOMOR <br />TRANSKRIP</th>
+                            <th scope="col">PREDIKAT<br/>KELULUSAN</th>					
+                            <th scope="col">TANGGAL<br />LULUS</th>
+                            <th scope="col">IPK</th>					
+                            <th scope="col">STATUS</th>
+                            <th scope="col" width="90">AKSI</th>					
+                        </tr>			
+                        </thead>
+                        <tbody>
+                    </prop:HeaderTemplate>
+                    <prop:ItemTemplate>	
+                        <tr>
+                            <td><%# $this->Data['no']%></td>					
+                            <td><a href="<%=$this->Page->constructUrl('kemahasiswaan.ProfilMahasiswa',true,array('id'=>$this->DataItem['nim']))%>"><%#$this->DataItem['nim']%></a></td>
+                            <td><%# $this->Data['nirm']%></td>
+                            <td><%# $this->Data['nama_mhs']%></td>
+                            <td><%# $this->Data['nomor_transkrip']%></td>
+                            <td><%# $this->Data['predikat_kelulusan']%></td>					
+                            <td><%# $this->page->TGL->tanggal('j F Y',$this->Data['tanggal_lulus'])%></td>					
+                            <td><com:TLiteral ID="lblIpk" /></td>
+                            <td><%#$this->Page->DMaster->getNamaStatusMHSByID($this->DataItem['k_status'])%></td>
+                            <td>
+                                <ul class="icons-list">                                
+                                    <li class="text-primary-600">
+                                        <com:TActiveLinkButton ID="btnPrintOutR" OnClick="Page.printOut" Attributes.Title="Print Transkrip Final" ClientSide.PostState="false">
+                                            <prop:Text>
+                                                <i class="icon-printer"></i>
+                                            </prop:Text>
+                                            <prop:ClientSide.OnPreDispatch>                                                                   
+                                                Pace.stop();
+                                                Pace.start();
+                                                $('<%=$this->btnPrintOutR->ClientId%>').disabled='disabled';						
+                                            </prop:ClientSide.OnPreDispatch>
+                                            <prop:ClientSide.OnLoading>
+                                                $('<%=$this->btnPrintOutR->ClientId%>').disabled='disabled';						
+                                            </prop:ClientSide.OnLoading>
+                                            <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                                $('<%=$this->btnPrintOutR->ClientId%>').disabled='';                                             
+                                            </prop:ClientSide.OnComplete>
+                                        </com:TActiveLinkButton>
+                                    </li>
+                                </ul>					                                    
+                            </td>					
+                        </tr>	
+                    </prop:ItemTemplate>				
+                    <prop:FooterTemplate>	                            
+                        </tbody>
+                        </table>
+                    </prop:FooterTemplate>
+                    <prop:EmptyTemplate>                                                       
+                        <div class="panel-body">
+                            <div class="alert alert-info alert-styled-left alert-bordered">
+                                <span class="text-semibold">Info!</span>
+                                Belum ada data yang bisa ditampilkan.
+                            </div>                
+                        </div>    
+                    </prop:EmptyTemplate>
+                </com:TActiveRepeater>
+                <%include Application.layouts.limitless.CustomPaging%>
+            </div>
         </div>
     </div>
 </com:TPanel>
-<%include Application.layouts.cube.ModalPrintOut%>
-<%include Application.layouts.cube.ModalMessageError%>
+<%include Application.layouts.limitless.ModalPrintOut%>
+<%include Application.layouts.limitless.ModalMessageError%>
 </com:TContent>

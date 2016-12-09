@@ -37,18 +37,19 @@ class CProfilMahasiswa extends MainPageM {
                 throw new Exception ("Mahasiswa Dengan NIM ($nim) tidak terdaftar di Portal.");
             }
             $datamhs=$r[1];
-
+            $datamhs['iddata_konversi']=$this->Nilai->isMhsPindahan($nim,true);
             $datamhs['nama_konsentrasi']=($datamhs['idkonsentrasi']==0) ? '-':$datamhs['nama_konsentrasi'];
 
             $nama_dosen=$this->DMaster->getNamaDosenWaliByID($datamhs['iddosen_wali']);				                    
             $datamhs['nama_dosen']=$nama_dosen;
-
+            
             //nilai
             $this->Nilai->setDataMHS($datamhs);
             $this->Nilai->getTranskrip();
             $datamhs['ipk']=$this->Nilai->getIPKAdaNilai();
             $datamhs['totalmatkul']=$this->Nilai->getTotalMatkulAdaNilai();
-            $datamhs['totalsks']=$this->Nilai->getTotalSKSAdaNilai ();
+            $datamhs['totalsks']=$this->Nilai->getTotalSKSAdaNilai ();            
+            
             $this->DataMHS=$datamhs;
             $_SESSION['currentPageProfilMahasiswa']['DataMHS']=$this->DataMHS;
             $activeview = $_SESSION['currentPageProfilMahasiswa']['activeviewindex'];                
@@ -104,7 +105,6 @@ class CProfilMahasiswa extends MainPageM {
             $v['semester'] = $this->setup->getSemester($v['idsmt']);
             $v['kelas']=$v['nkelas'];
             $v['status']=$v['n_status'];
-            
             
             $v['isikrs']=$isikrs;
             $result[$k]=$v;

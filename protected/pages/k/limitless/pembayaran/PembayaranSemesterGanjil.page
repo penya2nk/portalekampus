@@ -29,7 +29,7 @@
                 </div>                
             </div>
             <com:TRequiredFieldValidator ValidationGroup="filterForm" Display="Dynamic" ControlToValidate="txtNIM" FocusOnError="true" CssClass="has-error help-block" />
-            <com:TActiveCustomValidator ControlToValidate="txtNIM" Display="Dynamic" OnServerValidate="cekNIM" ValidationGroup="filterForm" ErrorMessage="Nomor Formulir tidak terdaftar di Database, silahkan ganti dengan yang lain" CssClass="has-error help-block" />
+            <com:TActiveCustomValidator ControlToValidate="txtNIM" Display="Dynamic" OnServerValidate="cekNIM" ValidationGroup="filterForm" CssClass="has-error help-block" />
         </div>
     </div>
 </com:TContent>

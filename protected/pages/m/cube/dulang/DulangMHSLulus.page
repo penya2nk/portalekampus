@@ -1,18 +1,17 @@
-<%@ Title="Daftar Ulang - Mahasiswa Lama"%>
+<%@ Title="Daftar Ulang - Mahasiswa Lulus"%>
 <com:TContent ID="moduleheader">
-    <i class="fa fa-location-arrow"></i> Daftar Ulang Mahasiswa Lama <br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
+    <i class="fa fa-location-arrow"></i> Daftar Ulang Mahasiswa Lulus <br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
     <li><a href="#">DAFTAR ULANG</a></li>    
-    <li class="active"><span>MAHASISWA LAMA</span></li>
+    <li class="active"><span>MAHASISWA LULUS</span></li>
 </com:TContent>
 <com:TContent ID="configtools">    
     <%include Application.layouts.cube.FilterMode8%>
 </com:TContent>
 <com:TContent ID="maincontent">
 <com:TPanel Visible="<%= $this->getViewProcess(false) %>">
-    <com:THiddenField ID="hiddenta" />
-    <com:THiddenField ID="hiddenidsmt" />
+    <com:THiddenField ID="hiddeniddulang" />
     <%include Application.layouts.cube.DataMHS%>
     <div class="row">
         <div class="col-lg-12">
@@ -25,10 +24,8 @@
                 </header>
                 <div class="main-box-body clearfix">
                     <strong>Perhatian :</strong> Kami juga akan menghapus data-data berikut ini :					
-                    <ul type="1">						
-                        <li>KRS Untuk Semester Ini</li>
-                        <li>Nilai Untuk Semester Ini</li>
-                        <li>Nilai Transkrip Final bila ada</li>
+                    <ul type="1">
+                        <li>Nilai Transkrip Final</li>
                     </ul>
                     <com:TActiveCustomButton ID="btnHapusDulang" OnClick="deleteRecord" CommandParameter="<%=$this->Demik->getDataMHS('nim')%>" CssClass="btn btn-danger">		
                         <prop:Text><i class="fa fa-trash-o"></i> Hapus</prop:Text>
@@ -119,7 +116,7 @@
                             <label class="sr-only">NIM :</label>
                             <com:TTextBox CssClass="form-control" ID="txtNIM" MaxLength="8" Attributes.PlaceHolder="NIM" Width="150px" />                                                                                                        
                         </div>
-                        <com:TActiveCustomButton ID="btnGo" CssClass="btn btn-primary" OnClick="Go" ValidationGroup="dulangNIMMhsLama">
+                        <com:TActiveCustomButton ID="btnGo" CssClass="btn btn-primary" OnClick="Go" ValidationGroup="dulangNIMMhsLulus">
                             <prop:Text><i class="fa fa-location-arrow"></i> Go</prop:Text>
                             <prop:ClientSide.OnPreDispatch>                                                                   
                                 $('loading').show(); 
@@ -133,8 +130,8 @@
                                 $('loading').hide(); 
                             </prop:ClientSide.OnComplete>
                         </com:TActiveCustomButton>
-                        <com:TRequiredFieldValidator ValidationGroup="dulangNIMMhsLama" Display="Dynamic" ControlToValidate="txtNIM" ErrorMessage="Isi NIM Mahasiswa Lama" FocusOnError="true" CssClass="has-error help-block" />
-                        <com:TActiveCustomValidator ControlToValidate="txtNIM" Display="Dynamic" OnServerValidate="cekNIM" ValidationGroup="dulangNIMMhsLama" ErrorMessage="NIM tidak terdaftar di Database, silahkan ganti dengan yang lain" CssClass="has-error help-block" />
+                        <com:TRequiredFieldValidator ValidationGroup="dulangNIMMhsLulus" Display="Dynamic" ControlToValidate="txtNIM" ErrorMessage="Isi NIM Mahasiswa Lulus" FocusOnError="true" CssClass="has-error help-block" />
+                        <com:TActiveCustomValidator ControlToValidate="txtNIM" Display="Dynamic" OnServerValidate="cekNIM" ValidationGroup="dulangNIMMhsLulus" ErrorMessage="NIM tidak terdaftar di Database, silahkan ganti dengan yang lain" CssClass="has-error help-block" />
                     </div>
                 </div>
             </div>
@@ -174,7 +171,7 @@
                                     <th scope="col">NIRM</th>
                                     <th scope="col">NAMA MHS</th>																		
                                     <th scope="col">DOSEN WALI</th>
-                                    <th scope="col">TANGGAL <br/>DAFTAR ULANG</th>
+                                    <th scope="col">TANGGAL <br/>DAFTAR ULANG</th>	
                                     <th scope="col">T.A dan SMT <br/>DAFTAR ULANG</th>
                                     <th scope="col" width="80">AKSI</th>					
                                 </tr>			
@@ -188,7 +185,7 @@
                                     <td><a href="<%#$this->Page->constructUrl('kemahasiswaan.ProfilMahasiswa',true,array('id'=>$this->DataItem['nim']))%>"><%#$this->DataItem['nim']%></a></td>
                                     <td><%#$this->DataItem['nirm']%></td>												
                                     <td><%#$this->DataItem['nama_mhs']%></td>											
-                                    <td><%#$this->Page->DMaster->getNamaDosenWaliByID($this->DataItem['iddosen_wali'])%></td>
+                                    <td><%#$this->Page->DMaster->getNamaDosenWaliByID($this->DataItem['iddosen_wali'])%></td>                                    
                                     <td><%#$this->Page->TGL->tanggal('d/m/Y',$this->DataItem['tanggal'])%></td>
                                     <td><%#$this->DataItem['tahun'].$this->DataItem['idsmt']%></td>
                                     <td>

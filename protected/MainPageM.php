@@ -21,6 +21,10 @@ class MainPageM extends MainPage {
      */
     public $showDaftarPertanyaan=false;
     /**     
+     * show page soal PMB [datamaster]
+     */
+    public $showSoalPMB=false;
+    /**     
      * show page daftar mahasiswa [akademik kemahasiswaan]
      */
     public $showDaftarMahasiswa=false;   
@@ -44,6 +48,10 @@ class MainPageM extends MainPage {
      * show sub menu akademik daftar ulang [akademik daftar ulang mahasiswa ekstension]
      */
     public $showDulangMHSEkstension=false; 
+    /**     
+     * show sub menu akademik daftar ulang [akademik daftar ulang mahasiswa ekstension]
+     */
+    public $showDulangMHSLulus=false;
     /**     
      * show page PIN [spmb]
      */

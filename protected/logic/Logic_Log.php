@@ -8,6 +8,7 @@ class Logic_Log extends Logic_Users {
 		
 	public function __construct ($db) {
 		parent::__construct ($db);
+        $this->getIdLogMaster();
 	}
 	
 	/**
@@ -26,18 +27,23 @@ class Logic_Log extends Logic_Users {
 			$r=$this->db->getRecord("SELECT idlog_master FROM log_master WHERE userid=$userid");
 			$this->idlogmaster=$r[1]['idlog_master'];
 		}
-		$this->idlogmaster;
 		return $this->idlogmaster;
 	}
 	/**
 	* digunakan untuk masukan data log ke tabel transkrip asli
 	* @return void
 	*/
-	public function insertLogIntoTranskripAsli($nim,$kmatkul,$nmatkul,$aktivitas,$nilai_awal,$nilai_akhir='') {		
+	public function insertLogIntoTranskripFinal($nim,$kmatkul,$nmatkul,$aktivitas,$nilai_awal,$nilai_akhir='') {		
         $idlogmaster=$this->idlogmaster;		
 		$str = "INSERT INTO log_transkrip_asli (idlog_master,tanggal,nim,kmatkul,nmatkul,aktivitas,keterangan) VALUES ";
 		$ket='';
 		switch (strtolower($aktivitas)) {
+            case 'delete' :
+				$ket = "hapus nilai $nilai_awal";
+			break;
+            case 'deleteall' :
+				$ket = "hapus nilai keseluruhan";
+			break;
 			case 'input' :
 				$ket = "menginputkan nilai $nilai_awal";
 			break;

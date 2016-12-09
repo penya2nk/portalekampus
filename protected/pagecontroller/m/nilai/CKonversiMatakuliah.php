@@ -70,7 +70,7 @@ class CKonversiMatakuliah extends MainPageM {
 		$tahun_masuk=$_SESSION['tahun_masuk'];		
         if ($search) {
             $txtsearch=$this->txtKriteria->Text;
-            $str = "SELECT iddata_konversi,nama,alamat,no_telp FROM data_konversi2 WHERE perpanjangan=0";
+            $str = "SELECT dk2.iddata_konversi,dk2.nama,dk2.alamat,dk2.no_telp,dk.nim FROM data_konversi2 dk2 LEFT JOIN data_konversi dk ON (dk2.iddata_konversi=dk.iddata_konversi) WHERE dk2.perpanjangan=0";
             switch ($this->cmbKriteria->Text) {                                
                 case 'nama' :
                     $cluasa="AND nama LIKE '%$txtsearch%'";

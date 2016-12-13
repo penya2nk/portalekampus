@@ -44,10 +44,10 @@ class Autorisasi extends TModule implements IUserManager {
         switch ($result['page']) {
             case 'mh' :
                 $pass=md5($password);
-                if ($result['k_status']=='A' || $result['k_status']=='C') {                                        			
+                if ($result['k_status']=='A') {                                        			
                     $message="Gagal. Silahkan masukan username dan password dengan benar.";
                 }else{
-                    $message="Mohon maaf status Anda diluar aktif atau cuti. Hubungi Bagian Administrasi.";		
+                    $message="Mohon maaf status Anda diluar AKTIF. Hubungi Bagian Administrasi.";		
                 }
             break;
             case 'd' :
@@ -69,7 +69,7 @@ class Autorisasi extends TModule implements IUserManager {
                 $message="Gagal. Silahkan masukan username dan password dengan benar.";
                 $pass=md5($password);
         }    
-		if ($result['userpassword']==$pass) {
+		if ($result['userpassword']==$pass && $result['active']==1) {
 			return true;
         }else{
 			throw new Exception ($message);

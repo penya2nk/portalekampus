@@ -160,23 +160,23 @@ class UserManager extends TAuthManager {
         $username=$this->username;
 		switch ($this->page) {
             case 'SuperAdmin' :
-                $str = "SELECT u.username,u.userpassword,u.salt,u.page FROM user u WHERE username='$username' AND active=1 AND page='sa'";
-                $this->db->setFieldTable (array('username','userpassword','salt','page'));							
+                $str = "SELECT u.username,u.userpassword,u.salt,u.page,u.active FROM user u WHERE username='$username' AND active=1 AND page='sa'";
+                $this->db->setFieldTable (array('username','userpassword','salt','page','active'));							
                 $result = $this->db->getRecord($str);
             break;
             case 'OperatorNilai' :
-                $str = "SELECT u.username,u.userpassword,u.salt,u.page FROM user u WHERE username='$username' AND active=1 AND page='on'";
-                $this->db->setFieldTable (array('username','userpassword','salt','page'));							
+                $str = "SELECT u.username,u.userpassword,u.salt,u.page,u.active FROM user u WHERE username='$username' AND active=1 AND page='on'";
+                $this->db->setFieldTable (array('username','userpassword','salt','page','active'));							
                 $result = $this->db->getRecord($str);
             break;
             case 'Keuangan' :
-				$str = "SELECT u.username,u.userpassword,u.salt,u.page FROM user u WHERE username='$username' AND active=1 AND page='k'";
-                $this->db->setFieldTable (array('username','userpassword','salt','page'));							
+				$str = "SELECT u.username,u.userpassword,u.salt,u.page,u.active FROM user u WHERE username='$username' AND active=1 AND page='k'";
+                $this->db->setFieldTable (array('username','userpassword','salt','page','active'));							
                 $result = $this->db->getRecord($str);	                
 			break;	
 			case 'Manajemen' :
-                $str = "SELECT u.username,u.userpassword,u.salt,u.page FROM user u WHERE username='$username' AND active=1 AND page='m'";
-                $this->db->setFieldTable (array('username','userpassword','salt','page'));							
+                $str = "SELECT u.username,u.userpassword,u.salt,u.page,u.active FROM user u WHERE username='$username' AND active=1 AND page='m'";
+                $this->db->setFieldTable (array('username','userpassword','salt','page','active'));							
                 $r = $this->db->getRecord($str);
                 if (isset($r[1])) {
                     $result=$r;
@@ -187,20 +187,20 @@ class UserManager extends TAuthManager {
                 }
 			break;
 			case 'Dosen' :
-                $str = "SELECT u.username,u.userpassword,u.salt,u.page FROM user u WHERE username='$username' AND active=1 AND page='d'";
-                $this->db->setFieldTable (array('username','userpassword','salt','page'));							
+                $str = "SELECT u.username,u.userpassword,u.salt,u.page,u.active AS active  FROM user u WHERE username='$username' AND active=1 AND page='d'";
+                $this->db->setFieldTable (array('username','userpassword','salt','page','active'));							
                 $r = $this->db->getRecord($str);
                 if (isset($r[1])) {
                     $result=$r;
                 }else{
-                    $str = "SELECT d.username,d.userpassword FROM dosen d WHERE d.username='$username'";
-                    $this->db->setFieldTable (array('username','userpassword'));							
+                    $str = "SELECT d.username,d.userpassword,d.status AS active  FROM dosen d WHERE d.username='$username'";
+                    $this->db->setFieldTable (array('username','userpassword','active'));							
                     $result = $this->db->getRecord($str);
                 }
 			break;
 			case 'DosenWali' :				
-				$str = "SELECT dw.iddosen_wali,d.userpassword FROM dosen_wali dw,dosen d WHERE d.iddosen=dw.iddosen AND d.username='$username'";
-				$this->db->setFieldTable (array('iddosen_wali','userpassword'));							
+				$str = "SELECT dw.iddosen_wali,d.userpassword,d.status AS active FROM dosen_wali dw,dosen d WHERE d.iddosen=dw.iddosen AND d.username='$username'";
+				$this->db->setFieldTable (array('iddosen_wali','userpassword','active'));							
 				$result = $this->db->getRecord($str);
 			break;
 			case 'Mahasiswa' :
@@ -208,16 +208,22 @@ class UserManager extends TAuthManager {
 				$str = "SELECT nim,userpassword,k_status FROM v_datamhs WHERE nim='$nim'";
 				$this->db->setFieldTable (array('nim','userpassword','k_status'));					
 				$result = $this->db->getRecord($str);
+                $result[1]['active']=$result[1]['k_status']=='A' ? 1:0;
                 $result[1]['page']='mh';
 			break;			
 			case 'MahasiswaBaru' :
-				$this->db->setFieldTable (array('username','userpassword'));					
-                $str = "SELECT no_formulir AS username,userpassword FROM profiles_mahasiswa WHERE no_formulir='$username'";
+				$this->db->setFieldTable (array('username','nim','userpassword'));					
+                $str = "SELECT no_formulir AS username,nim,userpassword FROM profiles_mahasiswa WHERE no_formulir='$username'";
                 $result = $this->db->getRecord($str);			
-                if (!isset($result[1])) {
+                if (isset($result[1])) {
+                    $result[1]['active']=$result[1]['nim']==''?1:0;
+                }else{
                     $str = "SELECT no_formulir AS username,no_pin AS userpassword FROM pin WHERE no_formulir='$username'";				
                     $result = $this->db->getRecord($str);
-                    $result[1]['userpassword']=md5($result[1]['userpassword']);                    
+                    if (isset($result[1])) {
+                        $result[1]['userpassword']=md5($result[1]['userpassword']);
+                        $result[1]['active']=1;
+                    }                   
                 }				
 			break;
 			case 'OrangtuaWali' :

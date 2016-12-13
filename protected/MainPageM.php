@@ -53,6 +53,10 @@ class MainPageM extends MainPage {
      */
     public $showDulangMHSLulus=false;
     /**     
+     * show sub menu akademik daftar ulang [akademik daftar ulang mahasiswa ekstension]
+     */
+    public $showDulangMHSNonAktif=false;
+    /**     
      * show page PIN [spmb]
      */
     public $showPIN=false;

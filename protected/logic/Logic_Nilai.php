@@ -81,6 +81,52 @@ class Logic_Nilai extends Logic_Akademik {
 		}
 		return $sks;		
 	}
+    /**
+     * digunakan untuk mendapatkan nilai konversi
+     * @param type $idkur id kurikulum yang berlaku
+     * @return type
+     */
+	public function getNilaiKonversi($iddata_konversi,$idkur) {							
+		$str = "SELECT idnilai_konversi,kmatkul,kmatkul_asal,matkul_asal,sks_asal,n_kual FROM v_konversi2 WHERE iddata_konversi='$iddata_konversi'";
+		$this->db->setFieldTable(array('idnilai_konversi','kmatkul_asal','kmatkul','matkul_asal','sks_asal','n_kual'));
+		$result=$this->db->getRecord($str);
+        
+        $str = "SELECT kmatkul,nmatkul,sks,semester FROM matakuliah WHERE idkur=$idkur ORDER BY (semester+0),kmatkul ASC";
+		$this->db->setFieldTable (array('kmatkul','nmatkul','sks','semester'));
+		$listMatkul = $this->db->getRecord($str);		
+		$i=1;
+		$matkul_nilai=array();
+		while (list($k,$v)=each($listMatkul)) {			
+			$kmatkul=$v['kmatkul'];
+			$matkul_nilai[$i]['no']=$i;
+			$matkul_nilai[$i]['kmatkul']=$v['kmatkul'];
+			$matkul_nilai[$i]['nmatkul']=$v['nmatkul'];
+			$matkul_nilai[$i]['sks']=$v['sks'];			
+			$matkul_nilai[$i]['semester']=$v['semester'];
+			foreach ($result as $m=>$n) {	
+				if ($n['kmatkul']==$kmatkul) {		
+					$kmatkul_asal=$n['kmatkul_asal'];			
+					$matkul_asal=$n['matkul_asal'];
+					$sks_asal=$n['sks_asal'];
+					$n_kual=$n['n_kual'];
+					$idnilai_konversi=$n['idnilai_konversi'];
+					break;
+				}
+			}
+			$matkul_nilai[$i]['kmatkul_asal']=$kmatkul_asal;
+			$matkul_nilai[$i]['matkul_asal']=$matkul_asal;
+			$matkul_nilai[$i]['sks_asal']=$sks_asal;
+			$matkul_nilai[$i]['idnilai_konversi']=$idnilai_konversi;
+			$matkul_nilai[$i]['n_kual']=$n_kual;
+			$kmatkul_asal='';
+			$matkul_asal='';
+			$sks_asal='';
+			$n_kual='';
+			$idnilai_konversi='';
+			$i++;
+		}		
+		return $matkul_nilai;	
+	}
     /**	
 	* digunakan untuk mendapatkan nilai transkrip mahasiswa sesuai dengan kurikulum
 	* @param $temp boolean
@@ -301,7 +347,7 @@ class Logic_Nilai extends Logic_Akademik {
      * @return array daftar nilai
      * @param cek_isikuesioner bool
      */
-    public function getTranskripFromKRSdanKonversi($cek_isikuesioner=false) {        
+    public function getTranskripFromKonversidanKRS($cek_isikuesioner=false) {        
 		$nim=$this->DataMHS['nim'];	
         $iddata_konversi=$this->DataMHS['iddata_konversi'];
         $str = "SELECT vnk.kmatkul,vnk.nmatkul,vnk.sks,semester,IF(char_length(COALESCE(vnk2.n_kual,''))>0,vnk2.n_kual,'-') AS n_kual,telah_isi_kuesioner,vnk.tahun FROM v_nilai_khs vnk,(SELECT idkrsmatkul,MIN(n_kual) AS n_kual FROM `v_nilai_khs` WHERE nim='$nim' AND n_kual IS NOT NULL GROUP BY kmatkul ORDER BY (semester+0), kmatkul ASC) AS vnk2 WHERE vnk.idkrsmatkul=vnk2.idkrsmatkul";        
@@ -340,8 +386,35 @@ class Logic_Nilai extends Logic_Akademik {
                 $v['m']=$m;	                
                 $v['keterangan']='-'; 
             }            
-            $result[$k]=$v;
+            $result[$v['kmatkul']]=$v;
         }
+        if ($iddata_konversi > 0) {
+            $str_konversi = "SELECT kmatkul,nmatkul,sks,semester,n_kual,tahun FROM v_konversi2 WHERE iddata_konversi='$iddata_konversi'";
+            $r_nilai=$this->db->getRecord($str_konversi);
+            while (list($k,$v)=each($r_nilai)) {
+                if (isset($result[$v['kmatkul']])) {
+                    $hm_konversi=ord(strtoupper($v['n_kual']));						
+                    $hm_biasa=ord($result[$v['kmatkul']]['n_kual']);						
+                    if ($hm_konversi<$hm_biasa) {
+                        $v['n_kual']=chr($hm_konversi);
+                        $am=$this->AngkaMutu[$v['n_kual']];
+                        $m=$am*$v['sks'];
+                        $v['am']=$am;
+                        $v['m']=$m;	  
+                        $v['keterangan']='NILAI KONVERSI';
+                        $result[$v['kmatkul']]=$v;
+                    }
+                }else{
+                    $am=$this->AngkaMutu[$v['n_kual']];
+                    $m=$am*$v['sks'];
+                    $v['am']=$am;
+                    $v['m']=$m;	  
+                    $v['keterangan']='NILAI KONVERSI';
+                    $result[$v['kmatkul']]=$v;
+                }
+            }
+        }
+        
         $this->DataNilai=$result;        
         return $this->DataNilai;
     }
@@ -515,7 +588,7 @@ class Logic_Nilai extends Logic_Akademik {
 	public function getTotalMatkul ()  {		
 		$totalMatkul=0;
         $dn=$this->DataNilai;
-		if (isset($dn[1])) {								
+		if (count($dn) > 0) {								
 			while (list($a,$b)=each($dn)) {											
                 $totalMatkul+=1;					
 			}			
@@ -528,7 +601,7 @@ class Logic_Nilai extends Logic_Akademik {
 	public function getTotalMatkulAdaNilai ()  {		
 		$totalMatkul=0;
         $dn=$this->DataNilai;
-		if (isset($dn[1])) {								
+		if (count($dn) > 0) {								
 			while (list($a,$b)=each($dn)) {							
 				if ($b['n_kual']!='-' && $b['n_kual']!='') {					
 					$totalMatkul+=1;					
@@ -544,7 +617,7 @@ class Logic_Nilai extends Logic_Akademik {
 	public function getTotalSKS ()  {
 		$totalSks=0;		
         $dn=$this->DataNilai;
-		if (isset($dn[1])) {													
+		if (count($dn) > 0) {													
 			while (list($a,$b)=each($dn)) {						
                 $totalSks+=$b['sks'];												
 			}			
@@ -558,7 +631,7 @@ class Logic_Nilai extends Logic_Akademik {
 	public function getTotalSKSAdaNilai ()  {
 		$totalSks=0;		
         $dn=$this->DataNilai;
-		if (isset($dn[1])) {													
+		if (count($dn) > 0) {													
 			while (list($a,$b)=each($dn)) {		
 				if ($b['n_kual']!='-' && $b['n_kual']!='') {					
 					$totalSks+=$b['sks'];
@@ -575,7 +648,7 @@ class Logic_Nilai extends Logic_Akademik {
 	public function getTotalM () {
 		$countM=0;
 		$dn=$this->DataNilai;
-		if (isset($dn[1])) {
+		if (count($dn) > 0) {
 			while (list($a,$b)=each($dn)) {						
 				if ($b['n_kual'] != "" &&$b['n_kual'] != "-") {				             				
 					$m = (intval($b['sks'])) * $this->AngkaMutu[$b['n_kual']]; 
@@ -663,53 +736,7 @@ class Logic_Nilai extends Logic_Akademik {
 			$jumlahsks=$this->getSKSNextSemester($this->getIPS());				
 		}
         return $jumlahsks;
-	}
-    /**
-     * digunakan untuk mendapatkan nilai konversi
-     * @param type $idkur id kurikulum yang berlaku
-     * @return type
-     */
-	public function getNilaiKonversi($iddata_konversi,$idkur) {							
-		$str = "SELECT idnilai_konversi,kmatkul,kmatkul_asal,matkul_asal,sks_asal,n_kual FROM v_konversi2 WHERE iddata_konversi='$iddata_konversi'";
-		$this->db->setFieldTable(array('idnilai_konversi','kmatkul_asal','kmatkul','matkul_asal','sks_asal','n_kual'));
-		$result=$this->db->getRecord($str);
-        
-        $str = "SELECT kmatkul,nmatkul,sks,semester FROM matakuliah WHERE idkur=$idkur ORDER BY (semester+0),kmatkul ASC";
-		$this->db->setFieldTable (array('kmatkul','nmatkul','sks','semester'));
-		$listMatkul = $this->db->getRecord($str);		
-		$i=1;
-		$matkul_nilai=array();
-		while (list($k,$v)=each($listMatkul)) {			
-			$kmatkul=$v['kmatkul'];
-			$matkul_nilai[$i]['no']=$i;
-			$matkul_nilai[$i]['kmatkul']=$v['kmatkul'];
-			$matkul_nilai[$i]['nmatkul']=$v['nmatkul'];
-			$matkul_nilai[$i]['sks']=$v['sks'];			
-			$matkul_nilai[$i]['semester']=$v['semester'];
-			foreach ($result as $m=>$n) {	
-				if ($n['kmatkul']==$kmatkul) {		
-					$kmatkul_asal=$n['kmatkul_asal'];			
-					$matkul_asal=$n['matkul_asal'];
-					$sks_asal=$n['sks_asal'];
-					$n_kual=$n['n_kual'];
-					$idnilai_konversi=$n['idnilai_konversi'];
-					break;
-				}
-			}
-			$matkul_nilai[$i]['kmatkul_asal']=$kmatkul_asal;
-			$matkul_nilai[$i]['matkul_asal']=$matkul_asal;
-			$matkul_nilai[$i]['sks_asal']=$sks_asal;
-			$matkul_nilai[$i]['idnilai_konversi']=$idnilai_konversi;
-			$matkul_nilai[$i]['n_kual']=$n_kual;
-			$kmatkul_asal='';
-			$matkul_asal='';
-			$sks_asal='';
-			$n_kual='';
-			$idnilai_konversi='';
-			$i++;
-		}		
-		return $matkul_nilai;	
-	}
+	}    
 }
 ?>
 		

@@ -420,6 +420,11 @@
                                                         Mahasiswa Lulus
                                                     </a>
                                                 </li> 
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('dulang.DulangMHSNonAktif',true)%>"<%=$this->Page->showDulangMHSNonAktif==true ? ' class="active" ':''%>>
+                                                        Mahasiswa Non-Aktif
+                                                    </a>
+                                                </li> 
                                             </ul>
                                         </li>                                                                                                                       
                                         <li<%=$this->Page->showSubMenuAkademikPerkuliahan==true?' class="active"':''%>>
@@ -841,7 +846,7 @@
 					</div>					
 					<footer id="footer-bar" class="row">
 						<p id="footer-copyright" class="col-xs-12">                        
-                            <%=$this->Application->getID()%> licensed to STISIPOL Raja Haji Tanjungpinang Powered by <a href="https://www.yacanet.com">Yacanet.com</a>
+                            <%=$this->Application->getID()%> licensed to <%=$this->Page->setup->getSettingValue('nama_pt_alias')%> Powered by <a href="https://www.yacanet.com">Yacanet.com</a>
                             <com:TJavascriptLogger />
                         </p>
 					</footer>

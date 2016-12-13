@@ -86,7 +86,7 @@ class CProfilMahasiswa extends MainPageM {
     public function populateDulang() {
         $this->KRS->setDataMHS($_SESSION['currentPageProfilMahasiswa']['DataMHS']);
         $nim=$_SESSION['currentPageProfilMahasiswa']['DataMHS']['nim'];
-        $str = "SELECT d.iddulang,d.tahun,d.idsmt,d.tanggal,d.idkelas,k.nkelas,d.k_status,sm.n_status FROM dulang d LEFT JOIN kelas k ON (d.idkelas=k.idkelas) LEFT JOIN status_mhs sm ON (d.k_status=sm.k_status) WHERE nim='$nim' ORDER BY d.iddulang DESC";				        
+        $str = "SELECT d.iddulang,d.tahun,d.idsmt,d.tanggal,d.idkelas,k.nkelas,d.k_status,sm.n_status FROM dulang d LEFT JOIN kelas k ON (d.idkelas=k.idkelas) LEFT JOIN status_mhs sm ON (d.k_status=sm.k_status) WHERE nim='$nim' ORDER BY d.tahun DESC,d.idsmt DESC";				        
 		$this->DB->setFieldTable(array('iddulang','tahun','idsmt','tanggal','idkelas','nkelas','k_status','n_status'));
 		$r=$this->DB->getRecord($str);                
         $result=array();

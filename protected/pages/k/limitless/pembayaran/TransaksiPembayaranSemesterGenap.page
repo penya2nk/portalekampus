@@ -45,7 +45,6 @@
                                 $('<%=$this->btnCloseTransaction->ClientId%>').disabled='';                                                                                                                 
                             </prop:ClientSide.OnComplete>
                         </com:TActiveLinkButton>
-                        <a href="<%=$this->Page->constructUrl('pembayaran.DetailPembayaranSemesterGenap',true,array('id'=>$_SESSION['currentPagePembayaranSemesterGenap']['DataMHS']['no_formulir']));%>" data-action=""></a>
                     </li>
                 </ul>
             </div>

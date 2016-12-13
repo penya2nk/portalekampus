@@ -1,0 +1,134 @@
+<%@ Title="Daftar Ulang - Mahasiswa Non-Aktif"%>
+<com:TContent ID="moduleheader">
+    <i class="fa fa-location-arrow"></i> Daftar Ulang Mahasiswa Non-Aktif <br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li><a href="#">DAFTAR ULANG</a></li>    
+    <li class="active"><span>MAHASISWA NON-AKTIF</span></li>
+</com:TContent>
+<com:TContent ID="maincontent">
+<com:TPanel Visible="<%= $this->getViewProcess(false) %>" CssClass="row">                    
+    <div class="col-lg-12">
+        <div class="main-box clearfix">               
+            <header class="main-box-header clearfix">
+                <div class="icon-box pull-right">                                       
+                    <a class="btn pull-left" href="<%=$this->constructUrl('dulang.DulangMHSNonAktif',true)%>">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </header>
+            <div class="main-box-body">
+                <div class="alert alert-warning">
+                    <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                    <strong>
+                        Info!
+                    </strong>
+                     <com:TLiteral ID="errorMessage" />
+                </div>
+            </div>            
+        </div>
+    </div>
+</com:TPanel>
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>"> 
+    <%include Application.layouts.cube.DataMHS%>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left"><i class="fa fa-location-arrow"></i> Dinyatakan NonAktif dengan Data Berikut :</h2>                    
+                    <div class="filter-block pull-right">                                                   
+                        <com:TActiveLinkButton ID="btnClose" OnClick="closeDetailDulang" ClientSide.PostState="false" CssClass="btn btn-default pull-left" Attributes.Title="Keluar">
+                            <prop:Text><i class="fa fa-times fa-lg"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnClose->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnClose->ClientId%>').disabled='';				
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton>
+                    </div>
+                </header>
+                <div class="main-box-body clearfix">
+                    <div class="form-horizontal"> 
+                        <div class="form-group" id="divAddTANonAktif">
+                            <label class="col-lg-2 control-label">T.A / SMT NonAktif :</label>
+                            <div class="col-lg-10">
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                        <com:TDropDownList ID="cmbAddTANonAktif" CssClass="form-control" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <com:TDropDownList ID="cmbAddSMTNonAktif" CssClass="form-control" />
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+                        <div class="form-group" id="divAddTANonAktif">
+                            <label class="col-lg-2 control-label">Jumlah SKS :</label>
+                            <div class="col-lg-10">
+                                <p class="form-control-static"><com:TLiteral ID="literalJumlahSKS" /></p>
+                            </div>
+                        </div>
+                        <div class="form-group" id="divAddStatus">
+                            <label class="col-lg-2 control-label">Merubah Status Akhir ?</label>
+                            <div class="col-lg-4">
+                                <com:TDropDownList ID="cmbAddStatus" CssClass="form-control" Width="100px"> 
+                                    <com:TListItem Text=" " Value="none" />
+                                    <com:TListItem Text="TIDAK" Value="0" />
+                                    <com:TListItem Text="YA" Value="1" />                                                                      
+                                </com:TDropDownList>
+                                <com:TRequiredFieldValidator ID="FieldAddStatusValidator" InitialValue="none" ValidationGroup="addDulangMhsNonAktif" Display="Dynamic" ControlToValidate="cmbAddStatus" ErrorMessage="Pilih ?, Apakah akan merubah status akhirnya atau tidak" FocusOnError="true" CssClass="has-error help-block">	
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divAddStatus').addClassName('has-error');
+                                        jQuery('#<%=$this->FieldAddStatusValidator->ClientID%>').removeAttr('style');                                
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divAddStatus').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator>
+                            </div>
+                        </div>
+                        <div class="form-group" id="divAddDosenWali">
+                            <label class="col-lg-2 control-label">Dosen Wali :</label>
+                            <div class="col-lg-5">
+                                <com:TDropDownList ID="cmbAddDosenWali" CssClass="form-control" />
+                                <com:TRequiredFieldValidator ID="FieldAddDosenWaliValidator" ControlToValidate="cmbAddDosenWali" ErrorMessage="Pilih Dosen Wali untuk mahasiswa baru ini." InitialValue="none" Display="Dynamic" ValidationGroup="addDulangMhsNonAktif" CssClass="has-error help-block">
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divAddDosenWali').addClassName('has-error');
+                                        jQuery('#<%=$this->FieldAddDosenWaliValidator->ClientID%>').removeAttr('style');
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divAddDosenWali').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator>
+                            </div>
+                        </div>                                               
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <com:TActiveCustomButton ID="btnSave" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="addDulangMhsNonAktif">
+                                    <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->btnSave->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnSave->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                        $('<%=$this->btnSave->ClientId%>').disabled='';
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>
+                            </div>
+                        </div>   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</com:TPanel>
+</com:TContent>

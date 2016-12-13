@@ -1,0 +1,192 @@
+<%@ Title="Daftar Ulang - Mahasiswa Non-Aktif"%>
+<com:TContent ID="moduleheader">
+    <i class="fa fa-location-arrow"></i> Daftar Ulang Mahasiswa Non-Aktif Massal <br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li><a href="#">DAFTAR ULANG</a></li>
+    <li><a href="<%=$this->constructUrl('dulang.DulangMHSNoAktif',true)%>">MAHASISWA NON_AKTIF</a></li>
+    <li class="active"><span>MASSAL</span></li>
+</com:TContent>
+<com:TContent ID="configtools">    
+    <%include Application.layouts.cube.FilterMode8%>
+</com:TContent>
+<com:TContent ID="maincontent">
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2><i class="fa fa-search"></i> Pencarian Data</h2>                    
+                </header>
+                <div class="main-box-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Kriteria :</label>
+                            <div class="col-lg-3">
+                                <com:TDropDownList ID="cmbKriteria" CssClass="form-control">   
+                                    <com:TListItem Text="NO. FORMULIR" Value="no_formulir" />
+                                    <com:TListItem Text="NIM" Value="nim" />
+                                    <com:TListItem Text="NIRM" Value="nirm" />                                  
+                                </com:TDropDownList>
+                            </div>
+                        </div>
+                        <div class="form-group" id="divtxtKriteria">
+                            <label class="col-lg-2 control-label">Isi Kriteria :</label>
+                            <div class="col-lg-4">
+                                <com:TActiveTextBox ID="txtKriteria" CssClass="form-control" />                                                                            
+                                <com:TRequiredFieldValidator ID="spanKriteriaValidator2" ValidationGroup="filterForm" Display="Dynamic" ControlToValidate="txtKriteria" ErrorMessage="Input apa yang Anda cari, sesuai dengan kriteria yang Anda tentukan." FocusOnError="true" CssClass="has-error help-block">	
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divtxtKriteria').addClassName('has-error');
+                                        jQuery('#<%=$this->spanKriteriaValidator2->ClientID%>').removeAttr('style');                                
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divtxtKriteria').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator>                                         
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <com:TActiveCustomButton ID="btnSearch" CssClass="btn btn-info"  OnClick="Page.searchRecord" ValidationGroup="filterForm" Attributes.Title="Cari">
+                                    <prop:Text>                                        
+                                        <i class="fa fa-search"></i> Cari                                        
+                                    </prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>         
+                                        $('loading').show();
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnSearch->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	
+                                        $('<%=$this->btnSearch->ClientId%>').disabled='';						                               						                                        
+                                        $('loading').hide();
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>  
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="main-box">
+                <header class="main-box-header clearfix">
+                    <h2>Non Aktifkan Mahasiswa Angkatan <com:TActiveLabel ID="labelTahunNonAktif" /> di T.A dan Semester ini :</h2>
+                </header>
+                <div class="main-box-body clearfix">
+                    <div class="alert alert-info">
+                        <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                        <strong>
+                            Info!
+                        </strong>
+                        Proses ini akan menon-aktifkan seluruh Mahasiswa angkatan tersebut pada seluruh PRODI yang memiliki status AKTIF dan NON-AKTIF dan belum melakukan DAFTAR ULANG.
+                    </div>
+                    <div class="form-horizontal">  
+                        <com:TActiveHiddenField ID="hiddentamass" />
+                        <com:TActiveHiddenField ID="hiddenidsmtmass" />
+                        <com:TActiveHiddenField ID="hiddentahunmasukmass" />
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Merubah Status Akhir :</label>
+                            <div class="col-lg-4">
+                               <com:TDropDownList ID="cmbAddStatus" CssClass="form-control" Width="100px"> 
+                                    <com:TListItem Text=" " Value="none" />
+                                    <com:TListItem Text="TIDAK" Value="0" />
+                                    <com:TListItem Text="YA" Value="1" />                                                                      
+                                </com:TDropDownList>
+                                <com:TRequiredFieldValidator ID="FieldAddStatusValidator" InitialValue="none" ValidationGroup="dulangAngkatanMhsNonAktif" Display="Dynamic" ControlToValidate="cmbAddStatus" ErrorMessage="Pilih ?, Apakah akan merubah status akhirnya atau tidak" FocusOnError="true" CssClass="has-error help-block" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <com:TActiveCustomButton ID="btnGoMass" CssClass="btn btn-primary" OnClick="GoMass" ValidationGroup="dulangAngkatanMhsNonAktif">
+                                    <prop:Text><i class="fa fa-location-arrow"></i> Go</prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->btnGoMass->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnGoMass->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                        $('<%=$this->btnGoMass->ClientId%>').disabled='';
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left">DAFTAR MAHASIWA BELUM DAFTAR ULANG PER 10 RECORD</h2> 
+                    <div class="filter-block pull-right">                                                   
+                         									
+                    </div>
+                </header>
+                <div class="main-box-body clearfix">       
+                    <div class="table-responsive">
+                        <com:TActiveRepeater ID="RepeaterS" DataKeyField="nim">
+                            <prop:HeaderTemplate>			
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col" width="50">NO</th>
+                                    <th scope="col">NO. FORMULIR</th>
+                                    <th scope="col">NIM</th>
+                                    <th scope="col">NIRM</th>
+                                    <th scope="col">NAMA MHS</th>																		
+                                    <th scope="col">DOSEN WALI</th>
+                                    <th scope="col">STATUS <br />TERAKHIR</th>	
+                                    <th scope="col">TAHUN MASUK</th>					
+                                </tr>			
+                                </thead>
+                                <tbody>
+                            </prop:HeaderTemplate>
+                            <prop:ItemTemplate>	
+                                <tr>
+                                    <td><%#$this->DataItem['no']%></td>                                    
+                                    <td><%#$this->DataItem['no_formulir']%></td>
+                                    <td><a href="<%#$this->Page->constructUrl('kemahasiswaan.ProfilMahasiswa',true,array('id'=>$this->DataItem['nim']))%>"><%#$this->DataItem['nim']%></a></td>
+                                    <td><%#$this->DataItem['nirm']%></td>												
+                                    <td><%#$this->DataItem['nama_mhs']%></td>											
+                                    <td><%#$this->Page->DMaster->getNamaDosenWaliByID($this->DataItem['iddosen_wali'])%></td>                                    
+                                    <td><%#$this->DataItem['k_status']%></td>
+                                    <td>
+                                        <com:THiddenField ID="hiddenidkelas" Value="<%#$this->DataItem['idkelas']%>" />
+                                        <com:THiddenField ID="hiddenstatus" Value="<%#$this->DataItem['k_status']%>" />
+                                        <%#$this->DataItem['tahun_masuk']%>
+                                    </td>                                    
+                                </tr>	
+                            </prop:ItemTemplate>	       
+                            <prop:FooterTemplate>
+                                </tbody>				
+                                </table>
+                            </prop:FooterTemplate>
+                            <prop:EmptyTemplate>                                                       
+                                <div class="row">
+                                    <div class="main-box-body">
+                                        <div class="alert alert-info">
+                                            <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                            <strong>
+                                                Info!
+                                            </strong>
+                                             Tidak ada data yang bisa ditampilkan.
+                                        </div>
+                                    </div>
+                                </div>
+                            </prop:EmptyTemplate>
+                        </com:TActiveRepeater>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</com:TPanel>
+</com:TContent>

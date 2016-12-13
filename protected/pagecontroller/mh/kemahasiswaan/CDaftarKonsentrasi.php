@@ -11,7 +11,7 @@ class CDaftarKonsentrasi extends MainPageMHS {
 				$_SESSION['currentPageDaftarKonsentrasi']=array('page_name'=>'mh.akademik.DaftarKonsentrasi','page_num'=>0,'search'=>false);												
 			}    
             $this->Nilai->setDataMHS($this->Pengguna->getDataUser()); 
-            $this->Nilai->getTranskripNilaiKurikulum(true);
+            $this->Nilai->getTranskripFromKonversidanKRS();
             $this->hiddenJumlahSKS->Value=$this->Nilai->getTotalSKSAdaNilai();
             $this->cmbKonsentrasiProdi->DataSource=$this->DMaster->getListKonsentrasiProgramStudi($this->Pengguna->getDataUser('kjur'));
             $this->cmbKonsentrasiProdi->DataBind();

@@ -81,9 +81,8 @@ class CPendaftaranKonsentrasi extends MainPageM {
                 break;
                 case 1 :
                     $cssclass='label label-success';
-                    $item->btnRepeaterApproved->Enabled=false;
-                    $item->anchorDetailPendaftaranKonsentrasi->Enabled=false;                    
-                    //$item->btnRepeaterApproved->CssClass="disabled";
+                    $item->btnRepeaterApproved->Enabled=false;                                        
+                    $item->btnRepeaterApproved->CssClass="table-link default";
                 break;
             }
             $item->lblStatusPendaftaran->CssClass=$cssclass;

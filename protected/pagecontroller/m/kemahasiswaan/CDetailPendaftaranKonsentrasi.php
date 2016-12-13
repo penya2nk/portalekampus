@@ -30,14 +30,19 @@ class CDetailPendaftaranKonsentrasi Extends MainPageM {
                     throw new Exception ("Mahasiswa dengan NIM ($nim) belum memilih konsentrasi.");		
                 }
                 if ($r[1]['status_daftar']==1) {
-                    throw new Exception ("Mahasiswa dengan NIM ($nim) sudah terdaftar di konsentrasi ".$datamhs['nama_konsentrasi']);
+                    $this->cmbKonsentrasiProdi->Enabled=false;
+                    $this->btnApproved->Enabled=false;
+                    $this->btnApproved->CssClass='btn';
+                }else{
+                    $this->btnUnApproved->Enabled=false;
+                    $this->btnUnApproved->CssClass='btn';
                 }                
                 $this->cmbKonsentrasiProdi->DataSource=$this->DMaster->removeIdFromArray($this->DMaster->getListKonsentrasiProgramStudi($datamhs['kjur']),'none');
                 $this->cmbKonsentrasiProdi->Text=$r[1]['idkonsentrasi'];
                 $this->cmbKonsentrasiProdi->DataBind();
                 
                 $this->Nilai->setDataMHS($datamhs);
-                $this->Nilai->getTranskripNilaiKurikulum();
+                $this->Nilai->getTranskripFromKonversidanKRS();
                 $this->hiddenJumlahSKS->Value=$this->Nilai->getTotalSKSAdaNilai();
             } catch (Exception $ex) {
                 $this->idProcess='view';	
@@ -70,6 +75,21 @@ class CDetailPendaftaranKonsentrasi Extends MainPageM {
             $this->DB->updateRecord($str);
             $this->DB->query('COMMIT');
             $this->redirect('kemahasiswaan.PendaftaranKonsentrasi',true);
+        }else{
+            $this->DB->query('ROLLBACK');
+        }
+        
+    }
+    public function unApproved($sender,$param) {
+        $nim=$_SESSION['currentPagePendaftaranKonsentrasi']['DataMHS']['nim'];
+        $idkonsentrasi=$this->cmbKonsentrasiProdi->Text;
+        $this->DB->query('BEGIN');
+        $str = "UPDATE pendaftaran_konsentrasi SET status_daftar=0 WHERE nim='$nim'";        
+        if ($this->DB->updateRecord($str)) {            
+            $str = "UPDATE register_mahasiswa SET idkonsentrasi=0 WHERE nim='$nim'";        
+            $this->DB->updateRecord($str);
+            $this->DB->query('COMMIT');
+            $this->redirect('kemahasiswaan.DetailPendaftaranKonsentrasi',true,array('id'=>$nim));
         }else{
             $this->DB->query('ROLLBACK');
         }

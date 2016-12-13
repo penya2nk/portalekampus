@@ -69,21 +69,7 @@
                 <header class="main-box-header clearfix">
                     <h2 class="pull-left"><i class="fa fa-users"></i> Biodata Mahasiswa</h2> 
                     <div class="filter-block pull-right">                                           
-                        <com:TActiveCustomButton ID="btnChangeStatus" OnClick="changeStatus" CssClass="btn btn-link" Attributes.Title="Ubah Status" ClientSide.PostState="false" Attributes.OnClick="if(!confirm('Apakah Anda yakin ingin merubah status MHS ini ?')) return false;">
-                            <prop:Text>
-                                <i class="fa fa-forward fa-lg"></i> <strong>Ubah Status jadi Lulus</strong>
-                            </prop:Text>
-                            <prop:ClientSide.OnPreDispatch>
-                                $('loading').show();
-                            </prop:ClientSide.OnPreDispatch>
-                            <prop:ClientSide.OnLoading>
-                                $('<%=$this->btnChangeStatus->ClientId%>').disabled='disabled';				
-                            </prop:ClientSide.OnLoading>
-                            <prop:ClientSide.OnComplete>
-                                $('<%=$this->btnChangeStatus->ClientId%>').disabled='';				
-                                $('loading').hide();
-                            </prop:ClientSide.OnComplete>
-                        </com:TActiveCustomButton>
+                        
                     </div>
                 </header>
                 <div class="main-box-body clearfix">
@@ -302,25 +288,7 @@
                                     </prop:ClientSide.OnValidationSuccess>
                                 </com:TRequiredFieldValidator>
                             </div>
-                        </div>                        
-                        <div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-10">
-                                <com:TActiveCustomButton ID="btnUpdate" CssClass="btn btn-primary" OnClick="updateData" ValidationGroup="edittranskrip">
-                                    <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
-                                    <prop:ClientSide.OnPreDispatch>                                                                   
-                                        $('loading').show(); 
-                                        $('<%=$this->btnUpdate->ClientId%>').disabled='disabled';						
-                                    </prop:ClientSide.OnPreDispatch>
-                                    <prop:ClientSide.OnLoading>
-                                        $('<%=$this->btnUpdate->ClientId%>').disabled='disabled';						
-                                    </prop:ClientSide.OnLoading>
-                                    <prop:ClientSide.OnComplete>																	                                    						                                                                            
-                                        $('<%=$this->btnUpdate->ClientId%>').disabled='';
-                                        $('loading').hide(); 
-                                    </prop:ClientSide.OnComplete>
-                                </com:TActiveCustomButton>
-                            </div>
-                        </div>     
+                        </div>
                     </div>
                 </div>
             </div>
@@ -332,19 +300,7 @@
                 <header class="main-box-header clearfix">
                     <h2 class="pull-left"><i class="fa fa-book"></i> Daftar Nilai Transkrip Final</h2>                     
                     <div class="filter-block pull-right">                                                   
-                        <com:TActiveLinkButton ID="btnResetMatkul" OnClick="resetTranskrip" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Reset Transkrip Final" Attributes.OnClick="if(!confirm('Anda ingin mereset transkrip Mahasiswa ini menjadi ke semula?')) return false;">
-                            <prop:Text><i class="fa fa-undo fa-lg"></i></prop:Text>
-                            <prop:ClientSide.OnPreDispatch>
-                                $('loading').show();
-                            </prop:ClientSide.OnPreDispatch>
-                            <prop:ClientSide.OnLoading>
-                                $('<%=$this->btnResetMatkul->ClientId%>').disabled='disabled';				
-                            </prop:ClientSide.OnLoading>
-                            <prop:ClientSide.OnComplete>
-                                $('<%=$this->btnResetMatkul->ClientId%>').disabled='';				
-                                $('loading').hide();
-                            </prop:ClientSide.OnComplete>
-                        </com:TActiveLinkButton>  				
+                       			
                     </div>
                 </header>
                 <div class="main-box-body clearfix">
@@ -365,8 +321,7 @@
                                         <th width="250" scope="col">NAMA</th>						
                                         <th width="40" scope="col">SKS</th>						
                                         <th width="40" scope="col">SMT</th>				                                    
-                                        <th width="40" scope="col">NILAI</th>
-                                        <th width="40" scope="col">AKSI</th>				
+                                        <th width="40" scope="col">NILAI</th>				
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -381,37 +336,7 @@
                                         </td>
                                         <td><%# $this->DataItem['sks']%></td>
                                         <td><%# $this->DataItem['semester']%></td>								                                    
-                                        <td>
-                                            <com:THiddenField ID="hiddenNilaiSebelumnya" Value="<%#$this->Data['n_kual']%>" />
-                                            <com:TDropDownList ID="cmbNilai" Text="<%# $this->Data['n_kual']%>" CssClass="form-control">	
-                                                <com:TListItem Value="none" Text=" " />
-                                                <com:TListItem Value="A" Text="A" />
-                                                <com:TListItem Value="B" Text="B" />
-                                                <com:TListItem Value="C" Text="C" />
-                                                <com:TListItem Value="D" Text="D" />
-                                                <com:TListItem Value="E" Text="E" />
-                                            </com:TDropDownList>
-                                        </td>
-                                        <td>
-                                            <com:TActiveLinkButton ID="btnDelete" ClientSide.PostState="false" CssClass="table-link danger" OnClick="Page.deleteRecord" Attributes.Title="Hapus Matakuliah" Attributes.OnClick="if(!confirm('Anda ingin menghapus data Matakuliah ini ?')) return false;">
-                                                <prop:Text>
-                                                    <span class="fa-stack">
-                                                        <i class="fa fa-square fa-stack-2x"></i>
-                                                        <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                    </span>
-                                                </prop:Text>
-                                                <prop:ClientSide.OnPreDispatch>
-                                                    $('loading').show();                                             
-                                                    $('<%=$this->btnDelete->ClientId%>').disabled='disabled';						
-                                                </prop:ClientSide.OnPreDispatch>
-                                                <prop:ClientSide.OnLoading>
-                                                    $('<%=$this->btnDelete->ClientId%>').disabled='disabled';									                            
-                                                </prop:ClientSide.OnLoading>
-                                                <prop:ClientSide.onComplete>
-                                                    $('loading').hide();                                                
-                                                </prop:ClientSide.OnComplete>
-                                            </com:TActiveLinkButton>
-                                        </td>
+                                        <td><%# $this->Data['n_kual']%></td>
                                     </tr>
                             </prop:ItemTemplate>                        
                             <prop:FooterTemplate>

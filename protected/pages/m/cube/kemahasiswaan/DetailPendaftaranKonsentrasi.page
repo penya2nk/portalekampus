@@ -123,6 +123,20 @@
                                                 $('loading').hide(); 
                                             </prop:ClientSide.OnComplete>
                                         </com:TActiveCustomButton>
+                                        <com:TActiveCustomButton ID="btnUnApproved" CssClass="btn btn-primary" OnClick="unApproved" ValidationGroup="daftarkonsentrasivalidation">
+                                            <prop:Text><i class="fa fa-times"></i> Batalkan</span></prop:Text>
+                                            <prop:ClientSide.OnPreDispatch>                                                                   
+                                                $('loading').show(); 
+                                                $('<%=$this->btnUnApproved->ClientId%>').disabled='disabled';						
+                                            </prop:ClientSide.OnPreDispatch>
+                                            <prop:ClientSide.OnLoading>
+                                                $('<%=$this->btnUnApproved->ClientId%>').disabled='disabled';						
+                                            </prop:ClientSide.OnLoading>
+                                            <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                                $('<%=$this->btnUnApproved->ClientId%>').disabled='';
+                                                $('loading').hide(); 
+                                            </prop:ClientSide.OnComplete>
+                                        </com:TActiveCustomButton>
                                     </div>
                                 </div>
                             </div>

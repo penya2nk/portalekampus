@@ -74,108 +74,11 @@ class CDetailTranskripFinal extends MainPageM {
             $this->RepeaterS->DataSource=$transkrip;
             $this->RepeaterS->dataBind();		
             
-            $this->btnChangeStatus->Visible=$datamhs['k_status']=='L' ? false : true;
         } catch (Exception $ex) {
             $this->idProcess='view';	
 			$this->errorMessage->Text=$ex->getMessage();
         }        
 	}
-    public function changeStatus ($sender,$param) {	
-        $datamhs=$_SESSION['currentPageDetailTranskripFinal']['DataMHS'];
-        $datatranskrip=$_SESSION['currentPageDetailTranskripFinal']['DataTranskrip'];
-        $nim=$datamhs['nim'];
-        $this->Nilai->setDataMHS(array('nim'=>$nim));
-        $idsmt=$datatranskrip['idsmt'];
-        $tahun=$datatranskrip['tahun'];
-        $this->DB->query('BEGIN');
-        $datadulang=$this->Nilai->getDataDulang ($idsmt,$tahun);
-        $iddulang=$datadulang['iddulang'];
-        $k_status=$datamhs['k_status'];
-        if ($iddulang > 0) {
-            $str = "UPDATE dulang SET status_sebelumnya='$k_status',k_status='L' WHERE iddulang=$iddulang";
-            $this->DB->updateRecord($str);            
-        }else{
-            $idkelas=$datamhs['idkelas'];            
-            $str = "INSERT INTO dulang (iddulang,nim,tahun,idsmt,tanggal,idkelas,status_sebelumnya,k_status) VALUES (NULL,'$nim','$tahun','$idsmt',NOW(),'$idkelas','$k_status','L')";
-            $this->DB->insertRecord($str);            
-        } 
-        $this->Nilai->updateRegisterMHS('status','L');        
-        $this->DB->query('COMMIT');
-        $this->redirect('nilai.DetailTranskripFinal',true,array('id'=>$datamhs['nim']));
-    }
-    public function checkNoTranskrip ($sender,$param) {
-		try {
-			$no_transkrip=$this->txtEditNomorTranskrip->Text;
-			if ($this->hiddennomortranskrip->Value!=$no_transkrip) {
-				if ($this->DB->checkRecordIsExist('nomor_transkrip','transkrip_asli',$no_transkrip)) {
-					throw new Exception ("Nomor Transkrip ($no_transkrip) telah ada, silahkan ganti dengan yang lain");
-				}
-			}
-		}catch (Exception $e) {
-			$sender->ErrorMessage = $e->getMessage();
-			$param->IsValid=false;
-		}
-	}
-	public function updateData ($sender,$param) {
-		if ($this->IsValid) {						
-            $datamhs=$_SESSION['currentPageDetailTranskripFinal']['DataMHS'];
-            $nim=$datamhs['nim'];
-			$no_transkrip=$this->hiddennomortranskrip->Value;			
-			$predikat=$this->cmbEditPredikatKelulusan->Text;
-			$tanggal_lulus=date('Y-m-d',$this->txtEditTanggalLulus->TimeStamp);						
-			$pembimbing=$this->cmbEditDosenPembimbing->Text;						
-			$pembimbing2=$this->cmbEditDosenPembimbing2->Text;						
-			$judul_skripsi=strtoupper(addslashes($this->txtEditJuduluSkripsi->Text));						
-			$ketua=$this->setup->getSettingValue('id_penandatangan_transkrip');						
-			$pemket=$this->setup->getSettingValue('id_penandatangan_khs');						
-			$this->DB->query('BEGIN');
-			
-            $str = "UPDATE transkrip_asli SET nomor_transkrip='$no_transkrip',predikat_kelulusan='$predikat',tanggal_lulus='$tanggal_lulus',judul_skripsi='$judul_skripsi',iddosen_pembimbing='$pembimbing',iddosen_pembimbing2='$pembimbing2',iddosen_ketua='$ketua',iddosen_pemket='$pemket' WHERE nim='$nim'";
-            $this->DB->query('BEGIN');
-            if ($this->DB->updateRecord($str)) {				
-                $this->createObj('Log');
-                foreach($this->RepeaterS->Items as $inputan) {						
-                    $item=$inputan->cmbNilai->getNamingContainer();
-                    $kmatkul=$this->RepeaterS->DataKeys[$item->getItemIndex()]; 						
-                    $n_kual_sebelumnya=$inputan->hiddenNilaiSebelumnya->Value;						
-                    $n_kual=$inputan->cmbNilai->Text=='none'?'':$inputan->cmbNilai->Text;		
-                    if ($n_kual_sebelumnya != $n_kual) {				
-                        $nmatkul=$inputan->hiddenNMatkul->Value;
-                        $str="UPDATE transkrip_asli_detail SET n_kual='$n_kual' WHERE nim='$nim' AND kmatkul='$kmatkul'";						
-                        $this->DB->updateRecord($str);
-                        if ($n_kual_sebelumnya == '')
-                            $this->Log->insertLogIntoTranskripFinal($nim,$kmatkul,$nmatkul,'input',$n_kual);
-                        else
-                            $this->Log->insertLogIntoTranskripFinal($nim,$kmatkul,$nmatkul,'update',$n_kual_sebelumnya,$n_kual);
-                    }
-                }
-                $this->DB->query('COMMIT');
-            }else {
-                $this->DB->query('ROLLBACK');
-            }				
-			$this->redirect('nilai.DetailTranskripFinal',true,array('id'=>$nim));
-		}
-	}
-    public function deleteRecord($sender,$param) {	
-        $kmatkul = $this->getDataKeyField($sender,$this->RepeaterS);
-        $datamhs=$_SESSION['currentPageDetailTranskripFinal']['DataMHS'];
-        $nim=$datamhs['nim'];
-		$this->DB->deleteRecord("transkrip_asli_detail WHERE nim='$nim' AND kmatkul='$kmatkul'");
-        $this->redirect('nilai.DetailTranskripFinal',true,array('id'=>$nim));
-    }
-    public function resetTranskrip ($sender,$param) {
-        $datamhs=$_SESSION['currentPageDetailTranskripFinal']['DataMHS'];
-        $nim=$datamhs['nim'];        
-        $this->DB->query('BEGIN');
-        if ($this->DB->deleteRecord("transkrip_asli_detail WHERE nim='$nim'")) {
-            $str = "INSERT INTO transkrip_asli_detail (nim,kmatkul,nmatkul,sks,semester,n_kual)  SELECT '$nim',vnk.kmatkul,vnk.nmatkul,vnk.sks,semester,IF(char_length(COALESCE(vnk2.n_kual,''))>0,vnk2.n_kual,'-') AS n_kual FROM v_nilai_khs vnk,(SELECT idkrsmatkul,MIN(n_kual) AS n_kual FROM `v_nilai_khs` WHERE nim='$nim' GROUP BY kmatkul ORDER BY (semester+0), kmatkul ASC) AS vnk2 WHERE vnk.idkrsmatkul=vnk2.idkrsmatkul";        
-            $this->DB->insertRecord($str);
-            $this->DB->query('COMMIT');
-        }else{
-            $this->DB->query('ROLLBACK');
-        }
-        $this->redirect('nilai.DetailTranskripFinal',true,array('id'=>$nim));
-    }
 	public function printOut ($sender,$param) {	
         $this->createObj('reportnilai');          
         $this->linkOutput->Text='';

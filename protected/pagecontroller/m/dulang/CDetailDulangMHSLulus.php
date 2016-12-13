@@ -53,6 +53,11 @@ class CDetailDulangMHSLulus Extends MainPageM {
                     $this->cmbAddDosenWali->Text=$datamhs['iddosen_wali'];
                     $this->cmbAddDosenWali->dataBind();	           
                     
+                    $_SESSION['semester']=$datadulang[1]['idsmt'];
+                    $_SESSION['ta']=$datadulang[1]['tahun'];
+                    $_SESSION['kjur']= $datamhs['kjur'];
+
+                    $this->setInfoToolbar();
                 }else{
                     throw new Exception("No. Formulir belum ada di session.");
                 }
@@ -62,6 +67,14 @@ class CDetailDulangMHSLulus Extends MainPageM {
             }
 		}	
 	}
+    public function setInfoToolbar() {        
+        $kjur=$_SESSION['kjur'];        
+		$ps=$_SESSION['daftar_jurusan'][$kjur];
+        $ta=$this->DMaster->getNamaTA($_SESSION['ta']);		
+        $semester = $this->setup->getSemester($_SESSION['semester']);
+		$this->lblModulHeader->Text="Program Studi $ps T.A $ta Semester $semester";        
+	}
+    
     public function getDataMHS($idx) {		        
         return $this->Nilai->getDataMHS($idx);
     }    

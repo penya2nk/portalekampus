@@ -247,7 +247,7 @@
 </div>
 <!-- Footer -->
 <div class="footer text-muted">
-    <%=$this->Application->getID()%> Powered by <a href="https://www.yacanet.com">Yacanet.com</a>
+    <%=$this->Application->getID()%> licensed to <%=$this->Page->setup->getSettingValue('nama_pt_alias')%> Powered by <a href="https://www.yacanet.com">Yacanet.com</a>
 </div>
 <!-- /footer -->
 

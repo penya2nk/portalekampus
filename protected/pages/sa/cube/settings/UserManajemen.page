@@ -58,7 +58,7 @@
                                     $('divAddEmail').removeClassName('has-error');
                                 </prop:ClientSide.OnValidationSuccess>
                             </com:TEmailAddressValidator>
-                            <com:TActiveCustomValidator ID="addEmail" ControlToValidate="txtAddEmail" Display="Dynamic" OnServerValidate="checkEmail" ValidationGroup="addUser" ErrorMessage="Email Yang Anda Inputkan Sudah Ada" FocusOnError="true">
+                            <com:TActiveCustomValidator ID="addEmail" ControlToValidate="txtAddEmail" Display="Dynamic" OnServerValidate="checkEmail" ValidationGroup="addUser" ErrorMessage="Email Yang Anda Inputkan Sudah Ada" FocusOnError="true" CssClass="has-error help-block">
                                 <prop:ClientSide.OnValidationError>
                                     $('divAddEmail').addClassName('has-error');
                                     jQuery('#<%=$this->addEmail->ClientID%>').removeAttr('style');
@@ -75,7 +75,7 @@
                         <div class="col-lg-10">
                             <div class="row">
                                 <div class="col-lg-4">                                
-                                    <com:TTextBox ID="txtAddUsername" Columns="6" MaxLength="6" CssClass="form-control" />
+                                    <com:TTextBox ID="txtAddUsername" CssClass="form-control" />
                                 </div>
                                 <div class="col-lg-6">                                
                                     <com:TRequiredFieldValidator ID="FieldAddUsernameValidator" ControlToValidate="txtAddUsername" Display="Dynamic" ErrorMessage="Isi Kode Matakuliah" ValidationGroup="addUser" CssClass="has-error help-block" FocusOnError="true">
@@ -235,7 +235,7 @@
                         <div class="col-lg-10">
                             <div class="row">
                                 <div class="col-lg-4">                                
-                                    <com:TTextBox ID="txtEditUsername" Columns="6" MaxLength="6" CssClass="form-control" />
+                                    <com:TTextBox ID="txtEditUsername" CssClass="form-control" />
                                 </div>
                                 <div class="col-lg-6">                                
                                     <com:TRequiredFieldValidator ID="FieldEditUsernameValidator" ControlToValidate="txtEditUsername" Display="Dynamic" ErrorMessage="Isi Kode Matakuliah" ValidationGroup="editUser" CssClass="has-error help-block" FocusOnError="true">

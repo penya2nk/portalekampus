@@ -49,7 +49,7 @@
                     <div class="heading-elements">
                         <ul class="icons-list"> 
                             <li class="text-primary-600">
-                                <com:TActiveLinkButton ID="btnPrintOut" OnClick="Page.printOut" Attributes.Title="Print Transkrip Final" ClientSide.PostState="false">
+                                <com:TActiveLinkButton ID="btnPrintOut" OnClick="Page.printOut" Attributes.Title="Print Transkrip Final">
                                     <prop:Text>
                                         <i class="icon-printer"></i>
                                     </prop:Text>

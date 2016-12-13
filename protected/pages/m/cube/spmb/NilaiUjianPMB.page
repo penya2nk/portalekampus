@@ -104,7 +104,7 @@
                                 <div class="main-box infographic-box colored purple-bg">
                                     <i class="fa fa-ellipsis-v"></i>
                                     <span class="headline">Passing Grade Pil.1:</span>
-                                    <span class="value"><%=$_SESSION['currentPageNilaiUjian']['passinggrade'][$this->getDataMHS('kjur1')]%></span>
+                                    <span class="value"><%=$_SESSION['currentPageNilaiUjianPMB']['passinggrade'][$this->getDataMHS('kjur1')]%></span>
                                 </div>
                             </a>
                         </div> 
@@ -113,7 +113,7 @@
                                 <div class="main-box infographic-box colored purple-bg">
                                     <i class="fa fa-ellipsis-v"></i>
                                     <span class="headline">Passing Grade Pil.2:</span>
-                                    <span class="value"><%=$_SESSION['currentPageNilaiUjian']['passinggrade'][$this->getDataMHS('kjur2')]%></span>
+                                    <span class="value"><%=$_SESSION['currentPageNilaiUjianPMB']['passinggrade'][$this->getDataMHS('kjur2')]%></span>
                                 </div>
                             </a>
                         </div> 

@@ -33,8 +33,7 @@
     <div class="row" id="user-profile">
         <div class="col-lg-3 col-md-4 col-sm-4">
             <div class="main-box clearfix">                
-                <div class="main-box-body clearfix">                                   
-                    
+                <div class="main-box-body clearfix">  
                     <div class="profile-details">
                         <ul class="fa-ul">
                             <li><i class="fa-li fa fa-truck"></i>IPK: <span><%=$this->DataMHS['ipk']%></span></li>
@@ -57,6 +56,25 @@
                                 $('loading').hide(); 
                             </prop:ClientSide.OnComplete>
                         </com:TActiveCustomButton>
+                    </div>
+                    <div class="profile-details">
+                        <ul class="fa-ul">
+                            <li><i class="fa-li fa fa-th-list"></i>Theme :
+                                <com:TActiveDropDownList ID="cmbTheme" CssClass="form-control" OnCallback="changeTheme">
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->cmbTheme->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->cmbTheme->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                        $('<%=$this->cmbTheme->ClientId%>').disabled='';
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveDropDownList>
+                            </li>                            
+                        </ul>
                     </div>
                 </div>
 

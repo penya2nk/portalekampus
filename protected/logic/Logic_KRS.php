@@ -31,7 +31,7 @@ class Logic_KRS extends Logic_Akademik {
             $str_krs = "SELECT kmatkul FROM v_krsmhs WHERE batal=0 AND sah=1 AND nim='$nim' AND kmatkul ";
 			$str_nilai = "SELECT MIN(n_kual) AS n_kual FROM v_nilai WHERE nim='$nim' AND kmatkul ";
 			while (list($k,$v)=each($matkul_syarat)) {
-				$kmatkul=$this->getKMatkul($kmatkul);
+				$kmatkul=$this->getKMatkul($v['kmatkul']);
 				$nmatkul=$v['nmatkul'];
 				$semester=$v['semester'];
 				$minimal_nilai=$v['minimal_nilai'];
@@ -41,8 +41,11 @@ class Logic_KRS extends Logic_Akademik {
 					$this->db->setFieldTable (array('kmatkul'));
 					$r=$this->db->getRecord($str);                    
 					if (!isset($r[1])) {
-                        //cek di Konversian
-                        if (!$this->db->checkRecordIsExist('n_kual','v_konversi2',$iddata_konversi," AND kmatkul LIKE '%$kmatkul%'")) {                            
+                        //cek di Konversian                        
+                        $str = "SELECT iddata_konversi FROM v_konversi2 WHERE iddata_konversi=$iddata_konversi  AND kmatkul LIKE '%$kmatkul%'";
+                        $this->db->setFieldTable(array('iddata_konversi'));
+                        $re=$this->db->getRecord($str);
+                        if (!isset($re[1])) {                            
                             throw new Exception ("Matakuliah prasyarat ($kmatkul - $nmatkul di semester $semester ) belum di ambil. <br />Harap di Kontrak terlebih dahulu ");
                             break;
                         }                        

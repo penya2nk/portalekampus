@@ -549,8 +549,8 @@ class Logic_ReportNilai extends Logic_Report {
             break;
             case 'pdf' :
                 $rpt=$this->rpt;
-                $rpt->setTitle('Transkkrip Nilai Kurikulum');
-				$rpt->setSubject('Transkkrip Nilai Kurikulum');
+                $rpt->setTitle('Transkriprip Nilai Kurikulum');
+				$rpt->setSubject('Transkrip Nilai Kurikulum');
                 $rpt->AddPage();
 				$this->setHeaderPT();
                 
@@ -818,8 +818,8 @@ class Logic_ReportNilai extends Logic_Report {
             break;
             case 'pdf' :
                 $rpt=$this->rpt;
-                $rpt->setTitle('Transkkrip Nilai Kurikulum');
-				$rpt->setSubject('Transkkrip Nilai Kurikulum');
+                $rpt->setTitle('Transkriprip Nilai Kurikulum');
+				$rpt->setSubject('Transkriprip Nilai Kurikulum');
                 $rpt->AddPage();
 				$this->setHeaderPT();
                 
@@ -1087,8 +1087,8 @@ class Logic_ReportNilai extends Logic_Report {
             break;
             case 'pdf' :
                 $rpt=$this->rpt;
-                $rpt->setTitle('Transkkrip Nilai KRS');
-				$rpt->setSubject('Transkkrip Nilai KRS');
+                $rpt->setTitle('Transkriprip Nilai KRS');
+				$rpt->setSubject('Transkriprip Nilai KRS');
                 $rpt->AddPage();
 				$this->setHeaderPT();
                 
@@ -1408,8 +1408,8 @@ class Logic_ReportNilai extends Logic_Report {
             break;
             case 'pdf' :
                 $rpt=$this->rpt;
-                $rpt->setTitle('Transkkrip Nilai KRS');
-				$rpt->setSubject('Transkkrip Nilai KRS');
+                $rpt->setTitle('Transkriprip Nilai KRS');
+				$rpt->setSubject('Transkriprip Nilai KRS');
                 $rpt->AddPage('P','F4');
 				$row=48;				
                 $rpt->SetFont ('helvetica','BU',12);	
@@ -1444,7 +1444,12 @@ class Logic_ReportNilai extends Logic_Report {
 				$rpt->setXY(3,$row);			
 				$rpt->Cell(44,5,'PROGRAM STUDI');
 				$rpt->Cell(1.5,5,':');									
-				$rpt->Cell(150,5,$biodata['nama_ps']);		
+				$rpt->Cell(150,5,$biodata['nama_ps']);	
+                $row+=4;
+				$rpt->setXY(3,$row);			
+				$rpt->Cell(44,5,'KONSENTRASI');
+				$rpt->Cell(1.5,5,':');									
+				$rpt->Cell(150,5, strtoupper($biodata['nama_konsentrasi']));
 				$row+=4;
 				$rpt->setXY(3,$row);			
 				$rpt->Cell(44,5,'INDEKS PRESTASI KUMULATIF');			
@@ -1633,7 +1638,7 @@ class Logic_ReportNilai extends Logic_Report {
 				$rpt->Cell(65,4,$biodata['jabfung_penandatangan_transkrip']. ' NIDN '.$biodata['nidn_penandatangan_transkrip'],0,0,'C');
 				$rpt->Cell(90,4,$biodata['jabfung_penandatangan_khs']. ' NIDN '.$biodata['nidn_penandatangan_khs'],0,0,'C');
                 
-                $this->printOut("transkripasli_$nim");
+                $this->printOut("transkripfinal_$nim");
             break;
         }
         $this->setLink($this->dataReport['linkoutput'],"Transkrip Final");

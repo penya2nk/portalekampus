@@ -182,7 +182,8 @@
                             <table class="table table-striped table-hover">
                                 <thead>
                                 <tr>
-                                    <th scope="col">NO</th>					
+                                    <th scope="col">NO</th>
+                                    <th scope="col">ID KRS</th>
                                     <th scope="col">NIM</th>					
                                     <th scope="col">NAMA</th>					
                                     <th scope="col">ANGK.</th>
@@ -196,7 +197,8 @@
                             </prop:HeaderTemplate>
                             <prop:ItemTemplate>	
                                 <tr<com:TLiteral ID="literalTRStyle" />>
-                                    <td><%# $this->Data['no']%></td>					
+                                    <td><%# $this->Data['no']%></td>
+                                    <td><%# $this->Data['idkrs']%></td>
                                     <td><a href="<%=$this->Page->constructUrl('kemahasiswaan.ProfilMahasiswa',true,array('id'=>$this->DataItem['nim']))%>"><%#$this->DataItem['nim']%></a></td>					
                                     <td><%# $this->Data['nama_mhs']%></td>
                                     <td><%# $this->Data['tahun_masuk']%></td>

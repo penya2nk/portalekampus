@@ -101,6 +101,7 @@
                                 <thead>
                                 <tr>
                                     <th scope="col" width="50">NO</th>					
+                                    <th scope="col">ID KRS</th>
                                     <th scope="col">NIM</th>
                                     <th scope="col">NIRM</th>
                                     <th scope="col">NAMA</th>
@@ -118,7 +119,8 @@
                             </prop:HeaderTemplate>
                             <prop:ItemTemplate>	
                                 <tr<com:TLiteral ID="literalTRStyle" />>
-                                    <td><%# $this->Data['no']%></td>					
+                                    <td><%# $this->Data['no']%></td>
+                                    <td><%# $this->Data['idkrs']%></td>
                                     <td><a href="<%#$this->Page->constructUrl('kemahasiswaan.ProfilMahasiswa',true,array('id'=>$this->DataItem['nim']))%>"><%#$this->DataItem['nim']%></a></td>
                                     <td><%# $this->Data['nirm']%></td>
                                     <td><%# $this->Data['nama_mhs']%></td>

@@ -13,7 +13,7 @@ class CDetailDulangMHSLulus Extends MainPageM {
                     $nim=$datamhs['nim'];
                     $this->Nilai->setDataMHS($datamhs);
                     
-                    $str = "SELECT tahun,idsmt FROM dulang d, (SELECT MAX(iddulang) AS iddulang FROM dulang WHERE nim='$nim' GROUP BY tahun ORDER BY iddulang DESC LIMIT 1) AS temp  WHERE temp.iddulang=d.iddulang";
+                    $str = "SELECT MAX(tahun) AS tahun,MAX(idsmt) AS idsmt FROM dulang WHERE nim='$nim' GROUP BY tahun,idsmt ORDER BY tahun DESC,idsmt DESC LIMIT 1";
                     $this->DB->setFieldTable(array('tahun','idsmt'));
                     $datadulang=$this->DB->getRecord($str);	    
                     

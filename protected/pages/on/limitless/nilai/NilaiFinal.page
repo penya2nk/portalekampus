@@ -128,6 +128,7 @@
                             <th scope="col">TANGGAL<br />LULUS</th>
                             <th scope="col">IPK</th>					
                             <th scope="col">STATUS</th>
+                            <th scope="col">T.A/SMT<br/>LULUS</th>
                             <th scope="col" width="90">AKSI</th>					
                         </tr>			
                         </thead>
@@ -144,6 +145,7 @@
                             <td><%# $this->page->TGL->tanggal('j F Y',$this->Data['tanggal_lulus'])%></td>					
                             <td><com:TLiteral ID="lblIpk" /></td>
                             <td><%#$this->Page->DMaster->getNamaStatusMHSByID($this->DataItem['k_status'])%></td>
+                             <td><%# $this->Data['tasmt']%></td>
                             <td>
                                 <ul class="icons-list">                                
                                     <li class="text-primary-600">

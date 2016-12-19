@@ -84,6 +84,9 @@ class CDetailNilaiFinal extends MainPageON {
 		if ($this->IsValid) {						
             $datamhs=$_SESSION['currentPageNilaiFinal']['DataMHS'];
             $nim=$datamhs['nim'];
+            $ta=$datamhs['ta'];
+            $idsmt=$datamhs['idsmt'];
+            
 			$no_transkrip=$this->txtEditNomorTranskrip->Text;			
 			$predikat=$this->cmbEditPredikatKelulusan->Text;
 			$tanggal_lulus=date('Y-m-d',$this->txtEditTanggalLulus->TimeStamp);						
@@ -94,7 +97,7 @@ class CDetailNilaiFinal extends MainPageON {
 			$pemket=$this->setup->getSettingValue('id_penandatangan_khs');	
             
             if ($this->DB->checkRecordIsExist('nim','transkrip_asli',$nim)){
-                $str = "UPDATE transkrip_asli SET nomor_transkrip='$no_transkrip',predikat_kelulusan='$predikat',tanggal_lulus='$tanggal_lulus',judul_skripsi='$judul_skripsi',iddosen_pembimbing='$pembimbing',iddosen_pembimbing2='$pembimbing2',iddosen_ketua='$ketua',iddosen_pemket='$pemket' WHERE nim='$nim'";
+                $str = "UPDATE transkrip_asli SET nomor_transkrip='$no_transkrip',predikat_kelulusan='$predikat',tanggal_lulus='$tanggal_lulus',judul_skripsi='$judul_skripsi',iddosen_pembimbing='$pembimbing',iddosen_pembimbing2='$pembimbing2',iddosen_ketua='$ketua',iddosen_pemket='$pemket',tahun='$ta',idsmt='$idsmt' WHERE nim='$nim'";
                 $this->DB->updateRecord($str);
                 
                 foreach($this->RepeaterS->Items as $inputan) {						
@@ -108,7 +111,7 @@ class CDetailNilaiFinal extends MainPageON {
                     }
                 }
             }else{
-                $str = "INSERT transkrip_asli SET  nim='$nim',nomor_transkrip='$no_transkrip',predikat_kelulusan='$predikat',tanggal_lulus='$tanggal_lulus',judul_skripsi='$judul_skripsi',iddosen_pembimbing='$pembimbing',iddosen_pembimbing2='$pembimbing2',iddosen_ketua='$ketua',iddosen_pemket='$pemket'";
+                $str = "INSERT transkrip_asli SET  nim='$nim',nomor_transkrip='$no_transkrip',predikat_kelulusan='$predikat',tanggal_lulus='$tanggal_lulus',judul_skripsi='$judul_skripsi',iddosen_pembimbing='$pembimbing',iddosen_pembimbing2='$pembimbing2',iddosen_ketua='$ketua',iddosen_pemket='$pemket',tahun='$ta',idsmt='$idsmt'";
                 $this->DB->insertRecord($str);
             }
 			$this->redirect('nilai.DetailNilaiFinal',true);

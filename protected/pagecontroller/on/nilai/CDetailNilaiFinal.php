@@ -102,16 +102,18 @@ class CDetailNilaiFinal extends MainPageON {
                 
                 foreach($this->RepeaterS->Items as $inputan) {						
                     $item=$inputan->cmbNilai->getNamingContainer();
-                    $kmatkul=$this->RepeaterS->DataKeys[$item->getItemIndex()]; 						
+                    $idtranskrip_detail=$this->RepeaterS->DataKeys[$item->getItemIndex()]; 						
                     $n_kual_sebelumnya=$inputan->hiddenNilaiSebelumnya->Value;						
-                    $n_kual=$inputan->cmbNilai->Text=='none'?'':$inputan->cmbNilai->Text;		
-                    if ($n_kual_sebelumnya != $n_kual) {		
-                        $str="UPDATE transkrip_asli_detail SET n_kual='$n_kual' WHERE nim='$nim' AND kmatkul='$kmatkul'";						
+                    $n_kual=$inputan->cmbNilai->Text=='none'?'':$inputan->cmbNilai->Text;
+                    if ($n_kual == '' || $n_kual == '-') {						
+                        $this->DB->deleteRecord("transkrip_asli_detail WHERE idtranskrip_detail=$idtranskrip_detail");
+                    }elseif ($n_kual_sebelumnya != $n_kual) {		
+                        $str="UPDATE transkrip_asli_detail SET n_kual='$n_kual' WHERE idtranskrip_detail=$idtranskrip_detail";						
                         $this->DB->updateRecord($str);   
                     }
                 }
             }else{
-                $str = "INSERT transkrip_asli SET  nim='$nim',nomor_transkrip='$no_transkrip',predikat_kelulusan='$predikat',tanggal_lulus='$tanggal_lulus',judul_skripsi='$judul_skripsi',iddosen_pembimbing='$pembimbing',iddosen_pembimbing2='$pembimbing2',iddosen_ketua='$ketua',iddosen_pemket='$pemket',tahun='$ta',idsmt='$idsmt'";
+                $str = "INSERT transkrip_asli SET nim='$nim',nomor_transkrip='$no_transkrip',predikat_kelulusan='$predikat',tanggal_lulus='$tanggal_lulus',judul_skripsi='$judul_skripsi',iddosen_pembimbing='$pembimbing',iddosen_pembimbing2='$pembimbing2',iddosen_ketua='$ketua',iddosen_pemket='$pemket',tahun='$ta',idsmt='$idsmt'";
                 $this->DB->insertRecord($str);
             }
 			$this->redirect('nilai.DetailNilaiFinal',true);
@@ -125,7 +127,7 @@ class CDetailNilaiFinal extends MainPageON {
             $datasource=$this->cmbDataSource->Text;
             switch ($datasource) {
                 case 'transkrip_krs' :
-                    $str = "SELECT vnk.kmatkul,vnk.nmatkul,vnk.sks,semester,IF(char_length(COALESCE(vnk2.n_kual,''))>0,vnk2.n_kual,'') AS n_kual FROM v_nilai_khs vnk,(SELECT idkrsmatkul,MIN(n_kual) AS n_kual FROM `v_nilai_khs` WHERE nim='$nim' GROUP BY kmatkul ORDER BY (semester+0), kmatkul ASC) AS vnk2 WHERE vnk.idkrsmatkul=vnk2.idkrsmatkul";
+                    $str = "SELECT vnk.kmatkul,vnk.nmatkul,vnk.sks,semester,IF(char_length(COALESCE(vnk2.n_kual,'-'))>0,vnk2.n_kual,'') AS n_kual FROM v_nilai_khs vnk,(SELECT idkrsmatkul,MIN(n_kual) AS n_kual FROM `v_nilai_khs` WHERE nim='$nim' GROUP BY kmatkul ORDER BY (semester+0), kmatkul ASC) AS vnk2 WHERE vnk.idkrsmatkul=vnk2.idkrsmatkul";
                     $this->DB->setFieldTable(array('kmatkul','nmatkul','sks','semester','n_kual'));
                     $r=$this->DB->getRecord($str);
                     if (isset($r[1])) {
@@ -176,7 +178,7 @@ class CDetailNilaiFinal extends MainPageON {
                     $r=$this->DB->getRecord($str);
                     $this->DB->deleteRecord("transkrip_asli_detail WHERE nim='$nim'");
                     if (isset($r[1])) {                        
-                        $str = "SELECT vnk.kmatkul,vnk.nmatkul,vnk.sks,semester,IF(char_length(COALESCE(vnk2.n_kual,''))>0,vnk2.n_kual,'') AS n_kual FROM v_nilai_khs vnk,(SELECT idkrsmatkul,MIN(n_kual) AS n_kual FROM `v_nilai_khs` WHERE nim='$nim' GROUP BY kmatkul ORDER BY (semester+0), kmatkul ASC) AS vnk2 WHERE vnk.idkrsmatkul=vnk2.idkrsmatkul";
+                        $str = "SELECT vnk.kmatkul,vnk.nmatkul,vnk.sks,semester,IF(char_length(COALESCE(vnk2.n_kual,'-'))>0,vnk2.n_kual,'') AS n_kual FROM v_nilai_khs vnk,(SELECT idkrsmatkul,MIN(n_kual) AS n_kual FROM `v_nilai_khs` WHERE nim='$nim' GROUP BY kmatkul ORDER BY (semester+0), kmatkul ASC) AS vnk2 WHERE vnk.idkrsmatkul=vnk2.idkrsmatkul";
                         $this->DB->setFieldTable(array('kmatkul','nmatkul','sks','semester','n_kual'));
                         $r2=$this->DB->getRecord($str);
                         while (list($k,$v)=each($r)) {
@@ -210,10 +212,8 @@ class CDetailNilaiFinal extends MainPageON {
         }
     }
     public function deleteRecord($sender,$param) {	
-        $kmatkul = $this->getDataKeyField($sender,$this->RepeaterS);
-        $datamhs=$_SESSION['currentPageNilaiFinal']['DataMHS'];
-        $nim=$datamhs['nim'];
-		$this->DB->deleteRecord("transkrip_asli_detail WHERE nim='$nim' AND kmatkul='$kmatkul'");
+        $idtranskrip_detail = $this->getDataKeyField($sender,$this->RepeaterS);
+		$this->DB->deleteRecord("transkrip_asli_detail WHERE idtranskrip_detail=$idtranskrip_detail");
         $this->redirect('nilai.DetailNilaiFinal',true,array('id'=>$nim));
     }
     public function resetTranskrip ($sender,$param) {

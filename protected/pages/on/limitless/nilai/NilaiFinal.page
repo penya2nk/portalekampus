@@ -145,7 +145,7 @@
                             <td><%# $this->page->TGL->tanggal('j F Y',$this->Data['tanggal_lulus'])%></td>					
                             <td><com:TLiteral ID="lblIpk" /></td>
                             <td><%#$this->Page->DMaster->getNamaStatusMHSByID($this->DataItem['k_status'])%></td>
-                             <td><%# $this->Data['tasmt']%></td>
+                            <td><%# $this->Data['tasmt']%></td>
                             <td>
                                 <ul class="icons-list">                                
                                     <li class="text-primary-600">

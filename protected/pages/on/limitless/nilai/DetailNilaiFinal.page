@@ -286,7 +286,7 @@
                 </div>
             </div>  
             <div class="table-responsive">
-                <com:TActiveRepeater ID="RepeaterS" DataKeyField="kmatkul">
+                <com:TActiveRepeater ID="RepeaterS" DataKeyField="idtranskrip_detail">
                     <prop:HeaderTemplate>		
                         <table class="table table-striped table-hover">	
                             <thead>
@@ -315,6 +315,7 @@
                                 <td>
                                     <com:THiddenField ID="hiddenNilaiSebelumnya" Value="<%#$this->Data['n_kual']%>" />
                                     <com:TDropDownList ID="cmbNilai" Text="<%# $this->Data['n_kual']%>" CssClass="form-control">
+                                        <com:TListItem Value="-" Text=" " />
                                         <com:TListItem Value="A" Text="A" />
                                         <com:TListItem Value="B" Text="B" />
                                         <com:TListItem Value="C" Text="C" />

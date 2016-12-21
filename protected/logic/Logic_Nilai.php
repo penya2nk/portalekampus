@@ -204,8 +204,8 @@ class Logic_Nilai extends Logic_Akademik {
                 }
 			}			
 		}else{
-			$str = "SELECT kmatkul,nmatkul,sks,semester,n_kual FROM transkrip_asli_detail WHERE nim='$nim' ORDER BY (semester+0),kmatkul ASC";
-			$this->db->setFieldTable(array('kmatkul','nmatkul','sks','semester','n_kual'));
+			$str = "SELECT idtranskrip_detail,kmatkul,nmatkul,sks,semester,n_kual FROM transkrip_asli_detail WHERE nim='$nim' ORDER BY (semester+0),kmatkul ASC";
+			$this->db->setFieldTable(array('idtranskrip_detail','kmatkul','nmatkul','sks','semester','n_kual'));
 			$result=$this->db->getRecord($str);						
 		}
 		$this->DataNilai=$result;

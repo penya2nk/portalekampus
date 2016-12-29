@@ -83,30 +83,30 @@ class CKUM extends MainPageK {
 		$semester=$_SESSION['semester'];
 		$kjur=$_SESSION['kjur'];
 		$tahun_masuk=$_SESSION['tahun_masuk'];
-        $str_tahun_masuk=" AND fp.ta=$tahun_masuk";
+        $str_tahun_masuk=" AND vdm.tahun_masuk=$tahun_masuk";
         if ($search) {
-            $str = "SELECT k.idkrs,k.nim,fp.nama_mhs,fp.jk,d.idkelas,kelas.nkelas,fp.idsmt AS semester_masuk FROM krs k,dulang d,formulir_pendaftaran fp,register_mahasiswa rm,kelas WHERE fp.no_formulir=rm.no_formulir AND k.nim=rm.nim AND d.nim=k.nim AND kelas.idkelas=d.idkelas AND k.sah=1 AND k.tahun=$ta AND k.idsmt=$semester ";
+            $str = "SELECT k.idkrs,k.nim,vdm.nama_mhs,tahun_masuk,semester_masuk FROM krs k,v_datamhs vdm WHERE vdm.nim=k.nim AND k.sah=1 AND k.tahun=$ta AND k.idsmt=$semester";
             $txtsearch=$this->txtKriteria->Text;
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
-                    $clausa="AND rm.nim='$txtsearch'";
+                    $clausa="AND vdm.nim='$txtsearch'";
                     $jumlah_baris=$this->DB->getCountRowsOfTable("krs k,formulir_pendaftaran fp,register_mahasiswa rm WHERE fp.no_formulir=rm.no_formulir AND k.nim=rm.nim AND k.tahun=$ta AND k.idsmt=$semester $clausa",'k.nim');		
                     $str = "$str $clausa";
                 break;
                 case 'nirm' :
-                    $clausa="AND rm.nirm='$txtsearch'";
+                    $clausa="AND vdm.nirm='$txtsearch'";
                     $jumlah_baris=$this->DB->getCountRowsOfTable("krs k,formulir_pendaftaran fp,register_mahasiswa rm WHERE fp.no_formulir=rm.no_formulir AND k.nim=rm.nim AND k.tahun=$ta AND k.idsmt=$semester $clausa",'k.nim');		
                     $str = "$str $clausa";
                 break;
                 case 'nama' :
-                    $clausa="AND fp.nama_mhs LIKE '%$txtsearch%'";
+                    $clausa="AND vdm.nama_mhs LIKE '%$txtsearch%'";
                     $jumlah_baris=$this->DB->getCountRowsOfTable("krs k,formulir_pendaftaran fp,register_mahasiswa rm WHERE fp.no_formulir=rm.no_formulir AND k.nim=rm.nim AND k.tahun=$ta AND k.idsmt=$semester $clausa",'k.nim');		
                     $str = "$str $clausa";
                 break;
             }
         }else{
-            $str = "SELECT k.idkrs,k.nim,fp.nama_mhs,fp.jk,d.idkelas,kelas.nkelas,fp.idsmt AS semester_masuk FROM krs k,dulang d,formulir_pendaftaran fp,register_mahasiswa rm,kelas WHERE fp.no_formulir=rm.no_formulir AND k.nim=rm.nim AND d.nim=k.nim AND kelas.idkelas=d.idkelas AND k.sah=1 AND k.tahun=$ta AND k.idsmt=$semester AND rm.kjur=$kjur $str_tahun_masuk";            
-            $jumlah_baris=$this->DB->getCountRowsOfTable("krs k,formulir_pendaftaran fp,register_mahasiswa rm WHERE fp.no_formulir=rm.no_formulir AND k.nim=rm.nim AND k.tahun=$ta AND k.idsmt=$semester AND rm.kjur=$kjur $str_tahun_masuk",'k.nim');		
+            $str = "SELECT k.idkrs,k.nim,vdm.nama_mhs,tahun_masuk,semester_masuk FROM krs k,v_datamhs vdm WHERE vdm.nim=k.nim AND k.sah=1 AND k.tahun=$ta AND k.idsmt=$semester AND vdm.kjur=$kjur $str_tahun_masuk";
+            $jumlah_baris=$this->DB->getCountRowsOfTable("krs k,v_datamhs vdm WHERE vdm.nim=k.nim AND k.sah=1 AND k.tahun=$ta AND k.idsmt=$semester AND vdm.kjur=$kjur $str_tahun_masuk",'k.nim');		
             
         }
         $this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageKUM']['page_num'];
@@ -119,7 +119,7 @@ class CKUM extends MainPageK {
 			$limit=$itemcount-$offset;
 		}
 		if ($limit < 0) {$offset=0;$limit=$this->setup->getSettingValue('default_pagesize');$_SESSION['currentPageKUM']['page_num']=0;}
-        $str = "$str ORDER BY d.idkelas ASC,fp.nama_mhs ASC LIMIT $offset,$limit";	
+        $str = "$str LIMIT $offset,$limit";	
         $this->DB->setFieldTable(array('idkrs','nim','nama_mhs','jk','idkelas','nkelas','semester_masuk'));
         $r = $this->DB->getRecord($str,$offset+1);	        
         
@@ -159,7 +159,11 @@ class CKUM extends MainPageK {
             $v['jumlah_matkul']=$r2[1]['jumlah_matkul'] > 0 ?$r2[1]['jumlah_matkul']:0;
             $v['jumlah_sks']=$r2[1]['jumlah_sks'] > 0 ?$r2[1]['jumlah_sks']:0;
             
-            $idkelas=$v['idkelas'];
+            $str = "SELECT d.idkelas,k.nkelas FROM dulang d,kelas k WHERE d.idkelas=k.idkelas AND tahun=$ta AND idsmt=$semester AND k_status='A' AND nim=$nim ORDER BY iddulang DESC LIMIT 1";
+            $this->DB->setFieldTable (array('idkelas','nkelas'));
+			$r2=$this->DB->getRecord($str);
+            $idkelas=$r2[1]['idkelas'];
+            $v['nkelas']=$r2[1]['nkelas'];
             if ($semester == 3) {
                 
             }else{

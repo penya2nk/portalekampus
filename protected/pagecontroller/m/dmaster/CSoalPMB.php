@@ -41,11 +41,12 @@ class CSoalPMB extends MainPageM {
 		$str = "SELECT s.idsoal,nama_soal,date_added,date_modified FROM soal s ORDER BY date_modified DESC LIMIT $offset,$limit";
 		$this->DB->setFieldTable(array('idsoal','nama_soal','date_added','date_modified')); 
 		$r=$this->DB->getRecord($str,$offset+1);			
-        $result=array();
-        $str = "SELECT j.jawaban FROM jawaban j WHERE status=1 AND idsoal=";
+        $result=array();       
 		$this->DB->setFieldTable(array('jawaban')); 		
-        while (list($k,$v)=each($r)){            
-            $re=$this->DB->getRecord($str.$v['idsoal']);			
+        while (list($k,$v)=each($r)){           
+            $idsoal=$v['idsoal'];
+            $str = "SELECT j.jawaban FROM jawaban j WHERE status=1 AND idsoal=$idsoal";
+            $re=$this->DB->getRecord($str);
             $v['jawaban']=isset($re[1])?$re[1]['jawaban']:'-';
             $result[$k]=$v;
         }
@@ -87,7 +88,7 @@ class CSoalPMB extends MainPageM {
                     }else {
                         $values=$values."(NULL,$idsoal,'$jawaban',$checked)";                            
                     }
-                    $i++;      
+                    $i=$i+1;      
 
                 }
                 $str = "INSERT INTO jawaban (idjawaban,idsoal,jawaban,status) VALUES $values";
@@ -133,7 +134,7 @@ class CSoalPMB extends MainPageM {
                     }else {
                         $values=$values."(NULL,$id,'$jawaban',$checked)";                            
                     }
-                    $i++;      
+                    $i=$i+1;      
 
                 }
                 $str = "INSERT INTO jawaban (idjawaban,idsoal,jawaban,status) VALUES $values";

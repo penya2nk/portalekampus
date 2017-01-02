@@ -54,8 +54,8 @@
                                     <prop:ItemTemplate>	
                                         <tr>
                                             <td><%# $this->Data['no']%></td>
-                                            <td><com:TTextBox ID="txtJawaban" TextMode="MultiLine" Columns="90" CssClass="form-control" Text="<%#$this->DataItem['jawaban']%>" /></td>
-                                            <td><com:TRadioButton ID="rdJawaban" Checked="<%#$this->DataItem['status']=='1'?true:false%>" /></td>					
+                                            <td><com:TActiveTextBox ID="txtJawaban" TextMode="MultiLine" Columns="90" CssClass="form-control" Text="<%#$this->DataItem['jawaban']%>" /></td>
+                                            <td><com:TActiveRadioButton ID="rdJawaban" Checked="<%#$this->DataItem['status']=='1'?true:false%>" /></td>					
                                         </tr>	
                                     </prop:ItemTemplate>				
                                     <prop:FooterTemplate>				
@@ -170,8 +170,8 @@
                                         <prop:ItemTemplate>	
                                             <tr>
                                                 <td><%# $this->Data['no']%></td>
-                                                <td><com:TTextBox ID="txtJawaban" TextMode="MultiLine" Columns="90" CssClass="form-control" /></td>
-                                                <td><com:TRadioButton ID="rdJawaban" /></td>					
+                                                <td><com:TActiveTextBox ID="txtJawaban" TextMode="MultiLine" Columns="90" CssClass="form-control" /></td>
+                                                <td><com:TActiveRadioButton ID="rdJawaban" /></td>					
                                             </tr>	
                                         </prop:ItemTemplate>				
                                         <prop:FooterTemplate>				

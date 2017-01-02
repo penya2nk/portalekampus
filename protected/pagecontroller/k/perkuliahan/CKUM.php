@@ -30,6 +30,10 @@ class CKUM extends MainPageK {
 			$this->tbCmbTahunMasuk->Text=$_SESSION['tahun_masuk'];						
 			$this->tbCmbTahunMasuk->dataBind(); 
             
+            $this->tbCmbOutputReport->DataSource=$this->setup->getOutputFileType();
+            $this->tbCmbOutputReport->Text= $_SESSION['outputreport'];
+            $this->tbCmbOutputReport->DataBind();
+            
             $this->populateData();
             $this->setInfoToolbar();
 		}                
@@ -90,17 +94,17 @@ class CKUM extends MainPageK {
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
                     $clausa="AND vdm.nim='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable("krs k,formulir_pendaftaran fp,register_mahasiswa rm WHERE fp.no_formulir=rm.no_formulir AND k.nim=rm.nim AND k.tahun=$ta AND k.idsmt=$semester $clausa",'k.nim');		
+                    $jumlah_baris=$this->DB->getCountRowsOfTable(" krs k,v_datamhs vdm WHERE vdm.nim=k.nim AND k.sah=1 AND k.tahun=$ta AND k.idsmt=$semester $clausa",'k.nim');		
                     $str = "$str $clausa";
                 break;
                 case 'nirm' :
                     $clausa="AND vdm.nirm='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable("krs k,formulir_pendaftaran fp,register_mahasiswa rm WHERE fp.no_formulir=rm.no_formulir AND k.nim=rm.nim AND k.tahun=$ta AND k.idsmt=$semester $clausa",'k.nim');		
+                    $jumlah_baris=$this->DB->getCountRowsOfTable(" krs k,v_datamhs vdm WHERE vdm.nim=k.nim AND k.sah=1 AND k.tahun=$ta AND k.idsmt=$semester $clausa",'k.nim');		
                     $str = "$str $clausa";
                 break;
                 case 'nama' :
                     $clausa="AND vdm.nama_mhs LIKE '%$txtsearch%'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable("krs k,formulir_pendaftaran fp,register_mahasiswa rm WHERE fp.no_formulir=rm.no_formulir AND k.nim=rm.nim AND k.tahun=$ta AND k.idsmt=$semester $clausa",'k.nim');		
+                    $jumlah_baris=$this->DB->getCountRowsOfTable(" krs k,v_datamhs vdm WHERE vdm.nim=k.nim AND k.sah=1 AND k.tahun=$ta AND k.idsmt=$semester $clausa",'k.nim');		
                     $str = "$str $clausa";
                 break;
             }
@@ -186,26 +190,64 @@ class CKUM extends MainPageK {
     public function setDataBound ($sender,$param) {
 		$item=$param->Item;
 		if ($item->ItemType==='Item' || $item->ItemType==='AlternatingItem') {
-            $bool=false;
+            $bool=0;
             if ($item->DataItem['sisa'] > 0 ) {
                 $half_payment=$item->DataItem['kewajiban']/2;                     
                 if ($item->DataItem['sisa']<=$half_payment) {
-                    $bool=true;
+                    $bool=1;
                     $keterangan="SISA ".number_format($item->DataItem['sisa'],0,0,'.');
                     $btnstyle=' class="text-primary-600"';
                 }
             }else{
-                $bool=true;
+                $bool=1;
                 $keterangan='LUNAS';
                 $btnstyle=' class="text-primary-600"';
             }
+            $item->hiddentoglelunas->Value=$bool;
             $item->btnPrintOutR->Enabled=$bool;
             $item->literalBTNStyle->Text=$btnstyle;
             $item->literalKet->Text=$keterangan;
         }
     }
+    public function printOut ($sender,$param) {
+        $this->createObj('reportkrs');
+        $this->linkOutput->Text='';
+        $this->linkOutput->NavigateUrl='#';
+        switch ($_SESSION['outputreport']) {
+            case  'summarypdf' :
+                $messageprintout=""; 
+                foreach($this->RepeaterS->Items as $inputan) {						
+                    $item=$inputan->hiddentoglelunas->getNamingContainer();
+                    $idkrs=$this->RepeaterS->DataKeys[$item->getItemIndex()];
+                    $islunas=$item->hiddentoglelunas->Value;
+                    if ($islunas > 0) {
+                       $dataidkrs[$idkrs]=$idkrs;
+                    }
+                }    
+                
+                $dataReport['linkoutput']=$this->linkOutput;
+                $this->report->setDataReport($dataReport); 
+                $this->report->setMode($_SESSION['outputreport']);
+
+                $this->report->printKUM($_SESSION['currentPageKUM']['jenisujian'],$dataidkrs,$this->KRS,$this->DMaster);                
+            break;
+            case  'summaryexcel' :
+                $messageprintout="Mohon maaf Print out pada mode summary excel tidak kami support.";                
+            break;
+            case  'excel2007' :
+                $messageprintout="Mohon maaf Print out pada mode excel belum kami support.";                 
+            break;
+            case  'pdf' :
+                $messageprintout="Mohon maaf Print out pada mode pdf belum kami support.";
+            break;
+        }
+        $this->lblMessagePrintout->Text=$messageprintout;
+        $this->lblPrintout->Text='Kartu Ujian Mahasiswa';
+        $this->modalPrintOut->show();
+    }
     public function printOutR ($sender,$param) {
         $idkrs=$this->getDataKeyField($sender, $this->RepeaterS);
+        $dataidkrs[$idkrs]=$idkrs;
         $this->createObj('reportkrs');
         $this->linkOutput->Text='';
         $this->linkOutput->NavigateUrl='#';
@@ -237,7 +279,6 @@ class CKUM extends MainPageK {
                 $dataReport['nama_dosen']=$nama_dosen;
                 
                 $kaprodi=$this->KRS->getKetuaPRODI($dataReport['kjur']);
-                print_R($kaprodi);
                 $dataReport['nama_kaprodi']=$kaprodi['nama_dosen'];
                 $dataReport['jabfung_kaprodi']=$kaprodi['nama_jabatan'];
                 $dataReport['nidn_kaprodi']=$kaprodi['nidn'];
@@ -246,7 +287,7 @@ class CKUM extends MainPageK {
                 $this->report->setDataReport($dataReport); 
                 $this->report->setMode($_SESSION['outputreport']);
                 
-                $this->report->printKUM($_SESSION['currentPageKUM']['jenisujian'],$this->KRS);                
+                $this->report->printKUM($_SESSION['currentPageKUM']['jenisujian'],$dataidkrs,$this->KRS,$this->DMaster);                
             break;
         }
         $this->lblMessagePrintout->Text=$messageprintout;

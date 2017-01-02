@@ -118,7 +118,20 @@
                 <h5 class="panel-title"><i class="icon-width position-left"></i>  DAFTAR PESERTA <com:TActiveLabel ID="lblModulHeader" /></h5>                
                 <div class="heading-elements">
                     <div class="heading-btn">       
-                        
+                        <com:TActiveLinkButton ID="btnPrintOut" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-info btn-icon" Attributes.Title="Print Out">
+                            <prop:Text><i class="icon-printer"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('<%=$this->btnPrintOut->ClientId%>').disabled='disabled';				
+                                Pace.stop();
+                                Pace.start();                                                                                                             
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnPrintOut->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnPrintOut->ClientId%>').disabled='';				                                
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton>
                     </div>   
                 </div>
             </div>                
@@ -152,7 +165,10 @@
                             <td><%# $this->Data['jumlah_matkul']%></td>
                             <td><%# $this->Data['jumlah_sks']%></td>
                             <td><%# number_format($this->Data['kewajiban'],0,0,'.')%></td>
-                            <td><com:TLiteral ID="literalKet" /></td>                            
+                            <td>
+                                <com:THiddenField ID="hiddentoglelunas" />
+                                <com:TLiteral ID="literalKet" />
+                            </td>                            
                             <td>
                                 <ul class="icons-list">                                       
                                     <li<com:TLiteral ID="literalBTNStyle" />>                                        

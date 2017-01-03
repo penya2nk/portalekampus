@@ -63,7 +63,117 @@
     </div>
 </com:TPanel>
 <com:TPanel Visible="<%= $this->getDefaultProcess() %>">
-    <%include Application.layouts.cube.InfoKelas%>    
+    <%include Application.layouts.cube.InfoKelas%>  
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left"><i class="fa fa-pencil"></i> Persentase Komponen Nilai</h2>
+                    <div class="icon-box pull-right">                                       
+                        
+                    </div>
+                </header> 
+                <div class="main-box-body clearfix">
+                    <div class="form-horizontal">
+                        <div class="form-group" id="divPersenQuiz">
+                            <label class="col-lg-2 control-label">Persentase Quiz :</label>
+                            <div class="col-lg-3">
+                                <com:TTextBox ID="txtPersenQuiz" CssClass="form-control" Width="70px" />
+                                <com:TRequiredFieldValidator ID="FieldPersenQuizValidator" ControlToValidate="txtPersenQuiz" Display="Dynamic" ErrorMessage="Isi nilai persentase Quiz" ValidationGroup="editpersentasenilai" CssClass="has-error help-block">
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divPersenQuiz').addClassName('has-error');
+                                        jQuery('#<%=$this->FieldPersenQuizValidator->ClientID%>').removeAttr('style');
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divPersenQuiz').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator>
+                            </div>
+                        </div>
+                        <div class="form-group" id="divPersenTugas">
+                            <label class="col-lg-2 control-label">Persentase Tugas :</label>
+                            <div class="col-lg-3">
+                                <com:TTextBox ID="txtPersenTugas" CssClass="form-control" Width="70px" />
+                                <com:TRequiredFieldValidator ID="FieldPersenTugasValidator" ControlToValidate="txtPersenTugas" Display="Dynamic" ErrorMessage="Isi nilai persentase Tugas" ValidationGroup="editpersentasenilai" CssClass="has-error help-block">
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divPersenTugas').addClassName('has-error');
+                                        jQuery('#<%=$this->FieldPersenTugasValidator->ClientID%>').removeAttr('style');
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divPersenTugas').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator>
+                            </div>
+                        </div>
+                        <div class="form-group" id="divPersenUTS">
+                            <label class="col-lg-2 control-label">Persentase UTS :</label>
+                            <div class="col-lg-3">
+                                <com:TTextBox ID="txtPersenUTS" CssClass="form-control" Width="70px" />
+                                <com:TRequiredFieldValidator ID="FieldPersenUTSValidator" ControlToValidate="txtPersenUTS" Display="Dynamic" ErrorMessage="Isi nilai persentase UTS" ValidationGroup="editpersentasenilai" CssClass="has-error help-block">
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divPersenUTS').addClassName('has-error');
+                                        jQuery('#<%=$this->FieldPersenUTSValidator->ClientID%>').removeAttr('style');
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divPersenUTS').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator>
+                            </div>
+                        </div>
+                        <div class="form-group" id="divPersenUAS">
+                            <label class="col-lg-2 control-label">Persentase UAS :</label>
+                            <div class="col-lg-3">
+                                <com:TTextBox ID="txtPersenUAS" CssClass="form-control" Width="70px" />
+                                <com:TRequiredFieldValidator ID="FieldPersenUASValidator" ControlToValidate="txtPersenUAS" Display="Dynamic" ErrorMessage="Isi nilai persentase UAS" ValidationGroup="editpersentasenilai" CssClass="has-error help-block">
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divPersenUAS').addClassName('has-error');
+                                        jQuery('#<%=$this->FieldPersenUASValidator->ClientID%>').removeAttr('style');
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divPersenUTS').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator>
+                            </div>
+                        </div>
+                        <div class="form-group" id="divPersenAbsen">
+                            <label class="col-lg-2 control-label">Persentase Absen :</label>
+                            <div class="col-lg-3">
+                                <com:TTextBox ID="txtPersenAbsen" CssClass="form-control" Width="70px" />
+                                <com:TRequiredFieldValidator ID="FieldPersenAbsenValidator" ControlToValidate="txtPersenAbsen" Display="Dynamic" ErrorMessage="Isi nilai persentase Absen" ValidationGroup="editpersentasenilai" CssClass="has-error help-block">
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divPersenAbsen').addClassName('has-error');
+                                        jQuery('#<%=$this->FieldPersenAbsenValidator->ClientID%>').removeAttr('style');
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divPersenUTS').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <com:TActiveCustomButton ID="btnUpdate" CssClass="btn btn-primary" OnClick="updateDataPersentase" ValidationGroup="editpersentasenilai">
+                                    <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->btnUpdate->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnUpdate->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                        $('<%=$this->btnUpdate->ClientId%>').disabled='';
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>
+                            </div>
+                        </div>     
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="main-box clearfix">
@@ -118,6 +228,13 @@
                     <div class="table-responsive">
                         <com:TActiveRepeater ID="RepeaterS" DataKeyField="idkrsmatkul">
                             <prop:HeaderTemplate>
+                                <div class="alert alert-info">
+                                    <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                    <strong>
+                                       Perhatian !!!
+                                    </strong>
+                                    Centang dulu checkbox-nya, isi nilai semua mahasiswa atau sebagian, kemudian tekan tombol simpan.
+                                </div>
                                 <table class="table table-striped table-hover">	
                                     <thead>
                                     <tr>    
@@ -125,11 +242,11 @@
                                         <th scope="col">NO</th>
                                         <th scope="col">NAMA</th>
                                         <th scope="col">NIM</th>
-                                        <th scope="col">PR/QUIZ<br/>(15%)</th>                                        
-                                        <th scope="col">TUGAS<br/>(15%)</th>
-                                        <th scope="col">UTS<br/>(30%)</th>
-                                        <th scope="col">UAS<br/>(30%)</th>
-                                        <th scope="col">ABSEN<br/>(10%)</th>
+                                        <th scope="col">PR/QUIZ<br/>(<%#$_SESSION['currentPageDetailEditNilai']['DataEditNilai']['persen_quiz']%>%)</th>                                        
+                                        <th scope="col">TUGAS<br/>(<%#$_SESSION['currentPageDetailEditNilai']['DataEditNilai']['persen_tugas']%>%)</th>
+                                        <th scope="col">UTS<br/>(<%#$_SESSION['currentPageDetailEditNilai']['DataEditNilai']['persen_uts']%>%)</th>
+                                        <th scope="col">UAS<br/>(<%#$_SESSION['currentPageDetailEditNilai']['DataEditNilai']['persen_uas']%>%)</th>
+                                        <th scope="col">ABSEN<br/>(<%#$_SESSION['currentPageDetailEditNilai']['DataEditNilai']['persen_absen']%>%)</th>
                                         <th scope="col">NILAI AKHIR</th>
                                         <th scope="col">AM</th>
                                         <th scope="col">HM</th>                                       
@@ -142,7 +259,7 @@
                                     <td>
                                         <com:TCheckBox ID="chkProcess" />
                                     </td>
-                                    <td><%# $this->DataItem['no']%></td>
+                                    <td><%# $this->DataItem['idkrsmatkul']%></td>
                                     <td><%# $this->DataItem['nama_mhs']%></td>                                    
                                     <td><%#$this->DataItem['nim']%></td>
                                     <td>

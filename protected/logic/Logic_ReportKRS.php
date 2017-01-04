@@ -209,7 +209,7 @@ class Logic_ReportKRS extends Logic_Report {
                     $rpt->Cell(0,$row,'NIM');
                     $rpt->SetFont ('helvetica','',8);
                     $rpt->setXY(130,$row);			
-                    $rpt->Cell(0,$row,': '.$dataReport);
+                    $rpt->Cell(0,$row,': '.$dataReport['nim']);
                     $row+=3;
                     $rpt->setXY(3,$row);			
                     $rpt->SetFont ('helvetica','B',8);	

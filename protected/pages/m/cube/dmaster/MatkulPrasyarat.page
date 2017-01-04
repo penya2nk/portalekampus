@@ -1,6 +1,6 @@
 <%@ Title="Data Master - Matakuliah Parsyarat" %>
 <com:TContent ID="moduleheader">
-    <i class="fa fa-spoon"></i> Matakuliah Parsyarat <small><com:TActiveLabel ID="lblMatkul" /></small>
+    <i class="fa fa-spoon"></i> Matakuliah Prasyarat <small><com:TActiveLabel ID="lblMatkul" /></small>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
     <li><a href="#">DATA MASTER</a></li>

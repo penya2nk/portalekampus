@@ -42,7 +42,7 @@ class Logic_KRS extends Logic_Akademik {
 					$r=$this->db->getRecord($str);                    
 					if (!isset($r[1])) {
                         //cek di Konversian                        
-                        $str = "SELECT iddata_konversi FROM v_konversi2 WHERE iddata_konversi=$iddata_konversi  AND kmatkul LIKE '%$kmatkul%'";
+                        $str = "SELECT iddata_konversi FROM v_konversi2 WHERE iddata_konversi='$iddata_konversi' AND kmatkul LIKE '%$kmatkul%'";
                         $this->db->setFieldTable(array('iddata_konversi'));
                         $re=$this->db->getRecord($str);
                         if (!isset($re[1])) {                            

@@ -89,7 +89,7 @@ class CKUM extends MainPageK {
 		$tahun_masuk=$_SESSION['tahun_masuk'];
         $str_tahun_masuk=" AND vdm.tahun_masuk=$tahun_masuk";
         if ($search) {
-            $str = "SELECT k.idkrs,k.nim,vdm.nama_mhs,tahun_masuk,semester_masuk FROM krs k,v_datamhs vdm WHERE vdm.nim=k.nim AND k.sah=1 AND k.tahun=$ta AND k.idsmt=$semester";
+            $str = "SELECT vdm.no_formulir,k.idkrs,k.nim,vdm.nama_mhs,tahun_masuk,semester_masuk FROM krs k,v_datamhs vdm WHERE vdm.nim=k.nim AND k.sah=1 AND k.tahun=$ta AND k.idsmt=$semester";
             $txtsearch=$this->txtKriteria->Text;
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
@@ -109,7 +109,7 @@ class CKUM extends MainPageK {
                 break;
             }
         }else{
-            $str = "SELECT k.idkrs,k.nim,vdm.nama_mhs,tahun_masuk,semester_masuk FROM krs k,v_datamhs vdm WHERE vdm.nim=k.nim AND k.sah=1 AND k.tahun=$ta AND k.idsmt=$semester AND vdm.kjur=$kjur $str_tahun_masuk";
+            $str = "SELECT vdm.no_formulir,k.idkrs,k.nim,vdm.nama_mhs,tahun_masuk,semester_masuk FROM krs k,v_datamhs vdm WHERE vdm.nim=k.nim AND k.sah=1 AND k.tahun=$ta AND k.idsmt=$semester AND vdm.kjur=$kjur $str_tahun_masuk";
             $jumlah_baris=$this->DB->getCountRowsOfTable("krs k,v_datamhs vdm WHERE vdm.nim=k.nim AND k.sah=1 AND k.tahun=$ta AND k.idsmt=$semester AND vdm.kjur=$kjur $str_tahun_masuk",'k.nim');		
             
         }
@@ -124,7 +124,7 @@ class CKUM extends MainPageK {
 		}
 		if ($limit < 0) {$offset=0;$limit=$this->setup->getSettingValue('default_pagesize');$_SESSION['currentPageKUM']['page_num']=0;}
         $str = "$str LIMIT $offset,$limit";	
-        $this->DB->setFieldTable(array('idkrs','nim','nama_mhs','jk','idkelas','nkelas','semester_masuk'));
+        $this->DB->setFieldTable(array('no_formulir','idkrs','nim','nama_mhs','jk','idkelas','nkelas','semester_masuk'));
         $r = $this->DB->getRecord($str,$offset+1);	        
         
         $komponen_biaya=array();
@@ -156,6 +156,7 @@ class CKUM extends MainPageK {
         $result=array ();
         while (list($k,$v)=each($r)) {
             $idkrs=$v['idkrs'];
+            $no_formulir=$v['no_formulir'];
             $nim=$v['nim'];
             $str = "SELECT COUNT(idkrsmatkul) AS jumlah_matkul,SUM(sks) AS jumlah_sks FROM v_krsmhs WHERE idkrs='$idkrs'";						
             $this->DB->setFieldTable (array('jumlah_matkul','jumlah_sks'));
@@ -171,7 +172,7 @@ class CKUM extends MainPageK {
             if ($semester == 3) {
                 
             }else{
-                $str2 = "SELECT SUM(dibayarkan) AS dibayarkan FROM transaksi t,transaksi_detail td WHERE td.no_transaksi=t.no_transaksi AND t.nim=$nim AND t.idsmt=$semester AND t.tahun=$ta AND t.commited=1";			
+                $str2 = "SELECT SUM(dibayarkan) AS dibayarkan FROM transaksi t,transaksi_detail td WHERE td.no_transaksi=t.no_transaksi AND t.no_formulir=$no_formulir AND t.idsmt=$semester AND t.tahun=$ta AND t.commited=1";			
                 $this->DB->setFieldTable(array('dibayarkan'));
                 $r3=$this->DB->getRecord($str2);				
                 $dibayarkan=$r3[1]['dibayarkan'];
@@ -190,13 +191,15 @@ class CKUM extends MainPageK {
     public function setDataBound ($sender,$param) {
 		$item=$param->Item;
 		if ($item->ItemType==='Item' || $item->ItemType==='AlternatingItem') {
-            $bool=0;
+            $bool=0;            
             if ($item->DataItem['sisa'] > 0 ) {
-                $half_payment=$item->DataItem['kewajiban']/2;                     
+                $half_payment=$item->DataItem['kewajiban']/2;  
                 if ($item->DataItem['sisa']<=$half_payment) {
                     $bool=1;
                     $keterangan="SISA ".number_format($item->DataItem['sisa'],0,0,'.');
                     $btnstyle=' class="text-primary-600"';
+                }else{
+                    $keterangan="SISA ".number_format($item->DataItem['sisa'],0,0,'.');
                 }
             }else{
                 $bool=1;

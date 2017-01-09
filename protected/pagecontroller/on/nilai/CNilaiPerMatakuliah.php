@@ -4,7 +4,7 @@ class CNilaiPerMatakuliah extends MainPageON {
 	public function onLoad($param) {		
 		parent::onLoad($param);				
         $this->showSubMenuAkademikNilai=true;
-        $this->showNilaiPerMahasiswa=true;
+        $this->showNilaiPerMatakuliah=true;
         
         $this->createObj('Akademik');
 		if (!$this->IsPostBack&&!$this->IsCallBack) {

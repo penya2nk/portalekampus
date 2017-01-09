@@ -296,16 +296,17 @@ class Logic_ReportKRS extends Logic_Report {
                 $this->printOut("kum");
             break;
             case 'pdf' :
-                $this->setHeaderPT();
                 $rpt=$this->rpt;
-                
+                $rpt->AddPage();
+                $this->setHeaderPT();
+                 
                 $nim=$this->dataReport['nim'];
                 $nama_tahun=$this->dataReport['nama_tahun'];
                 $nama_semester=$this->dataReport['nama_semester'];
         
                 $rpt->setTitle('Kartu Ujian Mahasiswa');
 				$rpt->setSubject('Kartu Ujian Mahasiswa');
-                $rpt->AddPage();
+                
                 
                 $row=$this->currentRow;
 				$row+=6;

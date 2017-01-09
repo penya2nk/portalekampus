@@ -169,6 +169,7 @@
 <com:TPanel Visible="<%= $this->getEditProcess(false) %>" CssClass="row">   
     <com:THiddenField ID="hiddenid" /> 
     <com:THiddenField ID="hiddenemail" />
+    <com:THiddenField ID="hiddenusername" />
     <div class="col-lg-12">
         <div class="main-box">
             <header class="main-box-header clearfix">

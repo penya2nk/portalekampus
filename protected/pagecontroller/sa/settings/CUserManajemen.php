@@ -87,7 +87,7 @@ class CUserManajemen extends MainPageSA {
         $username=$param->Value;		
         if ($username != '') {
             try {   
-                if ($this->hiddenid->Value!=$username) {                                                            
+                if ($this->hiddenusername->Value!=$username) {                                                            
                     if ($this->DB->checkRecordIsExist('username','user',$username)) {                                
                         throw new Exception ("Username ($username) sudah tidak tersedia silahkan ganti dengan yang lain.");		
                     }                               
@@ -145,6 +145,7 @@ class CUserManajemen extends MainPageSA {
         $this->txtEditEmail->Text=$result['email'];
         $this->hiddenemail->Value=$result['email'];     
         $this->txtEditUsername->Text=$result['username'];    
+        $this->hiddenusername->Value=$result['username'];    
         
         $this->cmbEditGroup->DataSource=$this->Pengguna->removeIdFromArray($this->Pengguna->getListGroup(),'none');
         $this->cmbEditGroup->Text=$result['group_id'];  

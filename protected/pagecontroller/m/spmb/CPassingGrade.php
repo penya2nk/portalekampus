@@ -36,11 +36,16 @@ class CPassingGrade extends MainPageM {
 	}		
 	public function populateData () {	
         $tahun_masuk=$_SESSION['tahun_masuk'];
-        $str = "SELECT pg.takjur,ps.nama_ps,js.njenjang,pg.nilai FROM passinggrade pg,program_studi ps,jenjang_studi js WHERE ps.kjur=pg.kjur AND js.kjenjang=ps.kjenjang AND pg.tahun_masuk=$tahun_masuk ORDER BY pg.kjur ASC";
-        $this->DB->setFieldTable(array('takjur','nama_ps','njenjang','nilai'));				
+        $str = "SELECT pg.takjur,ps.kjur,ps.nama_ps,ps.konsentrasi,js.njenjang,pg.nilai FROM passinggrade pg,program_studi ps,jenjang_studi js WHERE ps.kjur=pg.kjur AND js.kjenjang=ps.kjenjang AND pg.tahun_masuk=$tahun_masuk ORDER BY pg.kjur ASC";
+        $this->DB->setFieldTable(array('takjur','kjur','nama_ps','konsentrasi','njenjang','nilai'));				
 		$r = $this->DB->getRecord($str);
         
-		$this->gridPassingGrade->DataSource=$r;
+        $result=array();
+        while (list($k,$v)=each($r)){
+            $v['nama_ps']=$v['konsentrasi']==''?$v['nama_ps']:$v['nama_ps'].' KONS. '.$v['konsentrasi'];
+            $result[$k]=$v;    
+        }
+		$this->gridPassingGrade->DataSource=$result;
 		$this->gridPassingGrade->dataBind();	        
 	}
 	

@@ -64,6 +64,13 @@
                                 HeaderStyle.CssClass="text-left"
                                 ItemStyle.CssClass="text-left"
                                 DataField="no"                                    
+                                /> 
+                            <com:TActiveLiteralColumn                
+                                HeaderText="KODE"            
+                                HeaderStyle.Width="30px"
+                                HeaderStyle.CssClass="text-left"
+                                ItemStyle.CssClass="text-left"
+                                DataField="kjur"                                    
                                 />  
                             <com:TActiveLiteralColumn                
                                 HeaderText="NAMA PROGRAM STUDI"            

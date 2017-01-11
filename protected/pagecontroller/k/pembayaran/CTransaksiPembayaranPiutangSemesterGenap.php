@@ -13,8 +13,7 @@ class CTransaksiPembayaranPiutangSemesterGenap Extends MainPageK {
             try {                
                 $datamhs=$_SESSION['currentPagePembayaranPiutangSemesterGenap']['DataMHS'];                                
                 if (!isset($datamhs['no_transaksi']) || $datamhs['no_transaksi'] == 'none') {              
-                    $url=$this->constructUrl('pembayaran.PembayaranPiutangSemesterGenap',true);
-                    throw new Exception ("Mohon kembali ke halam <a href='$url'>ini</a>");		
+                    throw new Exception ("Tidak ada data No. Transaksi di Sesi ini");		
                 }  
                 $this->Finance->setDataMHS($datamhs);
                 $no_transaksi=$datamhs['no_transaksi'];

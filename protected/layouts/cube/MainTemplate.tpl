@@ -688,6 +688,11 @@
                                                         Edit Nilai
                                                     </a>
                                                 </li>
+                                                <li>
+                                                    <a href="#" <%=$this->Page->showImportNilai==true ? ' class="active" ':''%>>
+                                                        Import Nilai
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </li> 
                                     </com:TLiteral>	

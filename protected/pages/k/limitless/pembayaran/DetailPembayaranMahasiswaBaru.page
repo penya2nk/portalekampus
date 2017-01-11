@@ -18,7 +18,15 @@
 </com:TContent>
 <com:TContent ID="maincontent">
 <com:TPanel Visible="<%= $this->getViewProcess(false) %>" CssClass="panel panel-flat">        
-    <div class="panel-heading">&nbsp;</div>
+    <div class="panel-heading">
+        <div class="heading-elements">
+            <ul class="icons-list">                
+                <li>
+                    <a href="<%=$this->Page->constructUrl('pembayaran.PembayaranMahasiswaBaru',true);%>" data-action="closeredirect"></a>
+                </li>
+            </ul>
+        </div>        
+    </div>
     <div class="panel-body">
         <div class="alert bg-warning">
             <button type="button" class="close" data-dismiss="alert"><span>&times;</span><span class="sr-only">Close</span></button>

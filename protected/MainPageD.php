@@ -1,5 +1,9 @@
 <?php
-class MainPageD extends MainPage {     
+class MainPageD extends MainPage {    
+    /**     
+     * show page import nilai [akademik nilai]
+    */
+    public $showImportNilai=false; 
     /**     
      * show page edit nilai [akademik nilai]
     */

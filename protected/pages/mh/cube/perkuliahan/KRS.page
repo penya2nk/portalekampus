@@ -113,7 +113,7 @@
                                             <th width="15" scope="col">SKS</th>
                                             <th width="15" scope="col">SMT</th>
                                             <th scope="col">DOSEN PENGAMPU UTAMA</th>
-                                            <th scope="col" width="270">PILIH KELAS</th>
+                                            <th scope="col" width="270">KELAS</th>
                                             <th scope="col">&nbsp;</th>					
                                         </tr>						
                                     </thead>

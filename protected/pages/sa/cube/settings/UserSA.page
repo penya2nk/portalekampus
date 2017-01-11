@@ -75,7 +75,7 @@
                         <div class="col-lg-10">
                             <div class="row">
                                 <div class="col-lg-4">                                
-                                    <com:TTextBox ID="txtAddUsername" Columns="6" MaxLength="6" CssClass="form-control" />
+                                    <com:TTextBox ID="txtAddUsername" CssClass="form-control" />
                                 </div>
                                 <div class="col-lg-6">                                
                                     <com:TRequiredFieldValidator ID="FieldAddUsernameValidator" ControlToValidate="txtAddUsername" Display="Dynamic" ErrorMessage="Isi Kode Matakuliah" ValidationGroup="addUser" CssClass="has-error help-block" FocusOnError="true">
@@ -236,7 +236,7 @@
                         <div class="col-lg-10">
                             <div class="row">
                                 <div class="col-lg-4">                                
-                                    <com:TTextBox ID="txtEditUsername" Columns="6" MaxLength="6" CssClass="form-control" />
+                                    <com:TTextBox ID="txtEditUsername" CssClass="form-control" />
                                 </div>
                                 <div class="col-lg-6">                                
                                     <com:TRequiredFieldValidator ID="FieldEditUsernameValidator" ControlToValidate="txtEditUsername" Display="Dynamic" ErrorMessage="Isi Kode Matakuliah" ValidationGroup="editUser" CssClass="has-error help-block" FocusOnError="true">

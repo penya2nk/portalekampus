@@ -113,7 +113,7 @@ class CPembayaranMahasiswaBaru Extends MainPageK {
                 $this->DB->setFieldTable(array('no_formulir'));
                 $r=$this->DB->getRecord($str);
                 if (!isset($r[1])) {                                
-                    throw new Exception ("<br/><br/>Nomor Formulir ($noformulir) tidak terdaftar di Portal, silahkan ganti dengan yang lain.");		
+                    throw new Exception ("Nomor Formulir ($noformulir) tidak terdaftar di Portal, silahkan ganti dengan yang lain.");		
                 }
             }catch (Exception $e) {
                 $param->IsValid=false;

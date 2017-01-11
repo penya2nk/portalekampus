@@ -37,7 +37,7 @@
                                     <th scope="col">JAM</th> 
                                     <th scope="col">RUANG</th>
                                     <th scope="col">JUMLAH<br/>PESERTA</th>
-                                    <th scope="col">AKSI</th>
+                                    <th scope="col" width="90">AKSI</th>
                                 </tr>			
                                 </thead>
                                 <tbody>
@@ -59,7 +59,13 @@
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-eye fa-stack-1x fa-inverse"></i>                                        
                                             </span>                                        
-                                        </com:THyperLink>                                    
+                                        </com:THyperLink>  
+                                        <com:THyperLink ID="anchorImportImportNilai" NavigateUrl="<%#$this->Page->constructUrl('nilai.ImportNilai',true,array('id'=>$this->DataItem['idkelas_mhs']))%>" CssClass="table-link" Attributes.title="Import Nilai">                                                                                
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-download fa-stack-1x fa-inverse"></i>                                        
+                                            </span>                                        
+                                        </com:THyperLink>   
                                     </td>
                                 </tr>	
                             </prop:ItemTemplate>	                        

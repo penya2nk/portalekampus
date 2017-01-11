@@ -2238,5 +2238,67 @@ class Logic_ReportNilai extends Logic_Report {
         $this->setLink($this->dataReport['linkoutput'],"<br/>Konversi Matakuliah");
         
     }
+    /**
+     * digunakan untuk mencetak daftar peserta kelas mahasiswa untuk mengimport nilai
+     * @return type void
+     */
+    public function printPesertaImportNilai () {
+        switch ($this->getDriver()) {
+            case 'excel2003' :               
+            case 'excel2007' :  
+                $sheet=$this->rpt->getActiveSheet();
+                $idkelas_mhs=$this->dataReport['idkelas_mhs'];
+                $sheet->setCellValue('A1','ID');
+                $sheet->setCellValue('B1','NAMA MHS');
+                $sheet->setCellValue('C1','NIM');
+                $sheet->setCellValue('D1','PR/QUIZ');
+                $sheet->setCellValue('E1','TUGAS');
+                $sheet->setCellValue('F1','UTS');
+                $sheet->setCellValue('G1','UAS');
+                $sheet->setCellValue('H1','ABSEN');
+                
+                $styleArray=array(
+                                'font' => array('bold' => true),
+								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+												   'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+								'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+							);
+                $sheet->getStyle("A1:H1")->applyFromArray($styleArray);
+                $sheet->getStyle("A1:H1")->getAlignment()->setWrapText(true);
+                
+                $str = "SELECT kmd.idkrsmatkul,vdm.nim,vdm.nama_mhs FROM kelas_mhs_detail kmd,krsmatkul km,krs k,v_datamhs vdm WHERE kmd.idkrsmatkul=km.idkrsmatkul AND km.idkrs=k.idkrs AND k.nim=vdm.nim AND kmd.idkelas_mhs=$idkelas_mhs AND km.batal=0 ORDER BY vdm.nama_mhs ASC";
+                
+                $this->db->setFieldTable(array('idkrsmatkul','nim','nirm','nama_mhs'));	
+                $r=$this->db->getRecord($str);       
+                $row_awal=2;
+                $row=2;
+                $sheet->getColumnDimension('A')->setWidth(10);
+                $sheet->getColumnDimension('B')->setWidth(40);
+                $sheet->getColumnDimension('C')->setWidth(15);
+                while (list($k,$v)=each($r)) {
+                    $sheet->setCellValue("A$row",$v['idkrsmatkul']);
+                    $sheet->setCellValue("B$row",$v['nama_mhs']);
+                    $sheet->setCellValueExplicit("C$row",$v['nim'],PHPExcel_Cell_DataType::TYPE_STRING);
+                    $row+=1;
+                }
+                $row=$row-1;
+                $styleArray=array(
+								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+												   'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+								'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+							);
+                $sheet->getStyle("A$row_awal:H$row")->applyFromArray($styleArray);
+                $sheet->getStyle("A$row_awal:H$row")->getAlignment()->setWrapText(true);
+                
+                $styleArray=array(								
+                                    'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_LEFT)
+                                );
+                $sheet->getStyle("B$row_awal:B$row")->applyFromArray($styleArray);
+                $sheet->getStyle("B$row_awal:B$row")->getAlignment()->setWrapText(true);
+                $this->printOut('daftarhadirmahasiswa');
+            break;
+        }
+        $this->setLink($this->dataReport['linkoutput'],"Daftar Hadir Mahasiswa");
+    }
 }
 ?>

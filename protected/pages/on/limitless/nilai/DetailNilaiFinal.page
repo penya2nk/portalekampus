@@ -17,27 +17,22 @@
 <link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/assets/css/libs/nifty-component.css"/>
 </com:TContent>
 <com:TContent ID="maincontent">
-<com:TPanel Visible="<%= $this->getViewProcess(false) %>" CssClass="row">                    
-    <div class="col-md-12">
-        <div class="main-box clearfix">               
-            <header class="main-box-header clearfix">
-                <div class="icon-box pull-right">                                       
-                    <a class="btn pull-left" href="<%=$this->constructUrl('nilai.TranskripFinal',true)%>">
-                        <i class="fa fa-times"></i>
-                    </a>
-                </div>
-            </header>
-            <div class="main-box-body">
-                <div class="alert alert-warning">
-                    <i class="fa fa-info-circle fa-fw fa-lg"></i>
-                    <strong>
-                        Info!
-                    </strong>
-                     <com:TLiteral ID="errorMessage" />
-                </div>
-            </div>            
-        </div>
+<com:TPanel Visible="<%= $this->getViewProcess(false) %>" CssClass="panel panel-flat">        
+    <div class="panel-heading">
+        <div class="heading-elements">
+            <ul class="icons-list">                
+                <li>
+                    <a href="<%=$this->Page->constructUrl('nilai.TranskripFinal',true);%>" data-action="closeredirect"></a>
+                </li>
+            </ul>
+        </div>        
     </div>
+    <div class="panel-body">
+        <div class="alert bg-warning">
+            <button type="button" class="close" data-dismiss="alert"><span>&times;</span><span class="sr-only">Close</span></button>
+            <span class="text-semibold">Error!</span> <com:TLiteral ID="errorMessage" />
+        </div>
+    </div>    
 </com:TPanel>
 <com:TPanel Visible="<%= $this->getDefaultProcess() %>">
     <%include Application.layouts.limitless.DataMHS%>

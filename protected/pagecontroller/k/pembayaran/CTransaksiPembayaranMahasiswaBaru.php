@@ -12,9 +12,8 @@ class CTransaksiPembayaranMahasiswaBaru Extends MainPageK {
 		if (!$this->IsPostBack&&!$this->IsCallBack) {            
             try {                
                 $datamhs=$_SESSION['currentPagePembayaranMahasiswaBaru']['DataMHS'];                                
-                if (!isset($datamhs['no_transaksi']) || $datamhs['no_transaksi'] == 'none') {              
-                    $url=$this->constructUrl('pembayaran.PembayaranMahasiswaBaru',true);
-                    throw new Exception ("Mohon kembali ke halam <a href='$url'>ini</a>");		
+                if (!isset($datamhs['no_transaksi']) || $datamhs['no_transaksi'] == 'none') {
+                    throw new Exception ("Tidak ada data No. Transaksi di Sesi ini");		
                 }  
                 $this->Finance->setDataMHS($datamhs);
                 $no_transaksi=$datamhs['no_transaksi'];

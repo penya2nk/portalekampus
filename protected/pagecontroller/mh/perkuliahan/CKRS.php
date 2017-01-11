@@ -55,7 +55,8 @@ class CKRS extends MainPageMHS {
 	}	
     public function itemBound ($sender,$param) {
         $item=$param->Item;
-        if ($item->ItemType === 'Item' || $item->ItemType === 'AlternatingItem') {     
+        if ($item->ItemType === 'Item' || $item->ItemType === 'AlternatingItem') {    
+            $idkrsmatkul=$item->DataItem['idkrsmatkul'];
             $idpenyelenggaraan=$item->DataItem['idpenyelenggaraan'];
             $idkelas=$this->Pengguna->getDataUser('idkelas');
             $str = "SELECT km.idkelas_mhs,km.nama_kelas,vpp.nama_dosen,vpp.nidn FROM kelas_mhs km JOIN v_pengampu_penyelenggaraan vpp ON (km.idpengampu_penyelenggaraan=vpp.idpengampu_penyelenggaraan) WHERE vpp.idpenyelenggaraan=$idpenyelenggaraan AND km.idkelas='$idkelas'  ORDER BY hari ASC,idkelas ASC,nama_dosen ASC";            
@@ -65,13 +66,14 @@ class CKRS extends MainPageMHS {
             while (list($k,$v)=each($r)) {                   
                 $result[$v['idkelas_mhs']]=$this->DMaster->getNamaKelasByID($idkelas).'-'.chr($v['nama_kelas']+64) . ' ['.$v['nidn'].']';   
             }
-            $idkrsmatkul=$item->DataItem['idkrsmatkul'];
+            
             $str = "SELECT idkelas_mhs  FROM kelas_mhs_detail WHERE idkrsmatkul=$idkrsmatkul";            
             $this->DB->setFieldTable(array('idkelas_mhs'));
             $r = $this->DB->getRecord($str);
             $idkelas_mhs=isset($r[1]) ? $r[1]['idkelas_mhs'] : 'none';
             $item->cmbKelas->DataSOurce=$result;            
             $item->cmbKelas->DataBind();        
+            $item->cmbKelas->Enabled=!$this->DB->checkRecordIsExist('idkrsmatkul','nilai_matakuliah',$idkrsmatkul);
             $item->cmbKelas->Text=$idkelas_mhs;
             
             CKRS::$totalSKS+=$item->DataItem['sks'];

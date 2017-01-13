@@ -2265,9 +2265,8 @@ class Logic_ReportNilai extends Logic_Report {
 							);
                 $sheet->getStyle("A1:H1")->applyFromArray($styleArray);
                 $sheet->getStyle("A1:H1")->getAlignment()->setWrapText(true);
-                
-                $str = "SELECT kmd.idkrsmatkul,vdm.nim,vdm.nama_mhs FROM kelas_mhs_detail kmd,krsmatkul km,krs k,v_datamhs vdm WHERE kmd.idkrsmatkul=km.idkrsmatkul AND km.idkrs=k.idkrs AND k.nim=vdm.nim AND kmd.idkelas_mhs=$idkelas_mhs AND km.batal=0 ORDER BY vdm.nama_mhs ASC";
-                
+                  
+                $str = "SELECT kmd.idkrsmatkul,vdm.nim,vdm.nama_mhs,nm.idkrsmatkul FROM kelas_mhs_detail kmd JOIN krsmatkul km ON (kmd.idkrsmatkul=km.idkrsmatkul) JOIN krs k ON (km.idkrs=k.idkrs) JOIN v_datamhs vdm ON (k.nim=vdm.nim) LEFT JOIN nilai_matakuliah nm ON (km.idkrsmatkul=nm.idkrsmatkul) WHERE kmd.idkelas_mhs=$idkelas_mhs AND km.batal=0 AND km.idkrsmatkul IS NULL ORDER BY vdm.nama_mhs ASC";
                 $this->db->setFieldTable(array('idkrsmatkul','nim','nirm','nama_mhs'));	
                 $r=$this->db->getRecord($str);       
                 $row_awal=2;
@@ -2295,10 +2294,10 @@ class Logic_ReportNilai extends Logic_Report {
                                 );
                 $sheet->getStyle("B$row_awal:B$row")->applyFromArray($styleArray);
                 $sheet->getStyle("B$row_awal:B$row")->getAlignment()->setWrapText(true);
-                $this->printOut('daftarhadirmahasiswa');
+                $this->printOut('daftarisiannilai');
             break;
         }
-        $this->setLink($this->dataReport['linkoutput'],"Daftar Hadir Mahasiswa");
+        $this->setLink($this->dataReport['linkoutput'],"Daftar Isian Nilai Mahasiswa");
     }
 }
 ?>

@@ -1,18 +1,16 @@
 <?php
 prado::using ('Application.MainPageD');
-class CDPNA extends MainPageD {
+class CKuesioner extends MainPageD {
 	public function onLoad($param) {		
 		parent::onLoad($param);				
-		$this->showSubMenuAkademikNilai=true;
-        $this->showDPNA=true;
-        
-        $this->createObj('Nilai');
+		$this->showSubMenuAkademikPerkuliahan=true;
+        $this->showKuesioner=true;        
+        $this->createObj('Kuesioner');
 		if (!$this->IsPostBack&&!$this->IsCallBack) {
-            if (!isset($_SESSION['currentPageDPNA'])||$_SESSION['currentPageDPNA']['page_name']!='d.nilai.DPNA') {
-				$_SESSION['currentPageDPNA']=array('page_name'=>'d.nilai.DPNA','page_num'=>0,'search'=>false);
+            if (!isset($_SESSION['currentPageKuesioner'])||$_SESSION['currentPageKuesioner']['page_name']!='d.perkuliahan.Kuesioner') {
+				$_SESSION['currentPageKuesioner']=array('page_name'=>'d.perkuliahan.Kuesioner','page_num'=>0,'search'=>false);
 			}  
-            $_SESSION['currentPageDPNA']['search']=false;
-            $_SESSION['currentPageDetailDPNA']=array();
+            $_SESSION['currentPageKuesioner']['search']=false;
             $this->RepeaterS->PageSize=$this->setup->getSettingValue('default_pagesize');
 
 			$this->tbCmbPs->DataSource=$this->DMaster->removeIdFromArray($_SESSION['daftar_jurusan'],'none');
@@ -70,18 +68,32 @@ class CDPNA extends MainPageD {
 		$idsmt=$_SESSION['semester'];
 		$kjur=$_SESSION['kjur'];		
 
-        $str = "SELECT vpp.idpengampu_penyelenggaraan,km.idkelas_mhs,km.idkelas,km.nama_kelas,km.hari,km.jam_masuk,km.jam_keluar,vpp.kmatkul,vpp.nmatkul,vpp.sks,rk.namaruang,rk.kapasitas FROM kelas_mhs km JOIN v_pengampu_penyelenggaraan vpp ON (km.idpengampu_penyelenggaraan=vpp.idpengampu_penyelenggaraan) LEFT JOIN ruangkelas rk ON (rk.idruangkelas=km.idruangkelas) WHERE idsmt='$idsmt' AND tahun='$ta' AND kjur='$kjur' AND vpp.iddosen=$iddosen ORDER BY hari ASC,idkelas ASC";
-       			
-		$this->DB->setFieldTable(array('idpengampu_penyelenggaraan','idkelas_mhs','kmatkul','nmatkul','sks','idkelas','nama_kelas','hari','jam_masuk','jam_keluar','namaruang','kapasitas'));			
+        $str="SELECT vpp.idpengampu_penyelenggaraan,kmatkul,nmatkul,sks,semester,iddosen,nidn,nama_dosen FROM v_pengampu_penyelenggaraan vpp WHERE EXISTS (SELECT 1 FROM kuesioner_jawaban WHERE idpengampu_penyelenggaraan=vpp.idpengampu_penyelenggaraan) AND vpp.idsmt='$idsmt' AND vpp.tahun='$ta' AND vpp.kjur='$kjur' AND vpp.iddosen=$iddosen ORDER BY nmatkul ASC";
+		$this->DB->setFieldTable (array('idpengampu_penyelenggaraan','idpenyelenggaraan','kmatkul','nmatkul','sks','semester','iddosen','nidn','nama_dosen','jumlahmhs'));			
 		$r=$this->DB->getRecord($str);	
-        $result=array();
-        while (list($k,$v)=each($r)) {            
-            $v['namakelas']=$this->DMaster->getNamaKelasByID($v['idkelas']).'-'.chr($v['nama_kelas']+64);
-            $v['jumlah_peserta_kelas']=$this->DB->getCountRowsOfTable('kelas_mhs_detail WHERE idkelas_mhs='.$v['idkelas_mhs'],'idkelas_mhs');
+        $r=$this->DB->getRecord($str);	
+        $result=array();        
+        while (list($k,$v)=each($r)) {
+            $idpengampu_penyelenggaraan=$v['idpengampu_penyelenggaraan'];                                    
+            $str="SELECT n_kual FROM kuesioner_hasil WHERE idpengampu_penyelenggaraan=$idpengampu_penyelenggaraan";				
+            $this->DB->setFieldTable (array('n_kual'));			
+            $r2=$this->DB->getRecord($str);	
+            if (isset($r2[1])) {
+                $v['hasil']=$r2[1]['n_kual'];
+                $v['commandparameter']='update';
+            }else{
+                $v['hasil']='N.A';
+                $v['commandparameter']='insert';
+            }             
             $result[$k]=$v;
         }      
 		$this->RepeaterS->DataSource=$result;
 		$this->RepeaterS->dataBind();
         
 	}
+    public function hitungKuesioner ($sender,$param) {
+        $idpengampu_penyelenggaraan = $this->getDataKeyField($sender,$this->RepeaterS); 
+        $this->Kuesioner->hitungKuesioner($idpengampu_penyelenggaraan,$sender->CommandParameter);
+        $this->redirect('perkuliahan.Kuesioner', true);
+    }
 }

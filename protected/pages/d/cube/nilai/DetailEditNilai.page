@@ -171,7 +171,6 @@
                     </div>
                 </div>
             </div>
-            
         </div>
     </div>
     <div class="row">
@@ -193,19 +192,9 @@
                                 $('loading').hide();
                             </prop:ClientSide.OnComplete>
                         </com:TActiveLinkButton> 
-                        <com:TActiveLinkButton ID="btnReset" OnClick="resetData" CssClass="btn btn-danger pull-left" Attributes.Title="Reset Nilai" Attributes.OnClick="if(!confirm('Anda ingin mereset nilai Matakuliah ini ?')) return false;">
-                            <prop:Text><i class="fa fa-undo fa-lg"></i></prop:Text>
-                            <prop:ClientSide.OnPreDispatch>
-                                $('loading').show();
-                            </prop:ClientSide.OnPreDispatch>
-                            <prop:ClientSide.OnLoading>
-                                $('<%=$this->btnReset->ClientId%>').disabled='disabled';				
-                            </prop:ClientSide.OnLoading>
-                            <prop:ClientSide.OnComplete>
-                                $('<%=$this->btnReset->ClientId%>').disabled='';				
-                                $('loading').hide();
-                            </prop:ClientSide.OnComplete>
-                        </com:TActiveLinkButton>
+                        <a class="btn btn-primary pull-left" href="<%=$this->constructUrl('nilai.ImportNilai',true,array('id'=>$_SESSION['currentPageDetailEditNilai']['DataNilai']['idkelas_mhs']))%>" title="Import Nilai">                        
+                            <i class='fa  fa-download fa-lg'></i>
+                        </a>
                         <com:TActiveLinkButton ID="btnPrintEditNilai" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out Evaluasi Hasil Belajar">
                             <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
                             <prop:ClientSide.OnPreDispatch>
@@ -242,11 +231,11 @@
                                         <th scope="col">NO</th>
                                         <th scope="col">NAMA</th>
                                         <th scope="col">NIM</th>
-                                        <th scope="col">PR/QUIZ<br/>(<%#$_SESSION['currentPageDetailEditNilai']['DataEditNilai']['persen_quiz']%>%)</th>                                        
-                                        <th scope="col">TUGAS<br/>(<%#$_SESSION['currentPageDetailEditNilai']['DataEditNilai']['persen_tugas']%>%)</th>
-                                        <th scope="col">UTS<br/>(<%#$_SESSION['currentPageDetailEditNilai']['DataEditNilai']['persen_uts']%>%)</th>
-                                        <th scope="col">UAS<br/>(<%#$_SESSION['currentPageDetailEditNilai']['DataEditNilai']['persen_uas']%>%)</th>
-                                        <th scope="col">ABSEN<br/>(<%#$_SESSION['currentPageDetailEditNilai']['DataEditNilai']['persen_absen']%>%)</th>
+                                        <th scope="col">PR/QUIZ<br/>(<%#$_SESSION['currentPageDetailEditNilai']['DataNilai']['persen_quiz']%>%)</th>                                        
+                                        <th scope="col">TUGAS<br/>(<%#$_SESSION['currentPageDetailEditNilai']['DataNilai']['persen_tugas']%>%)</th>
+                                        <th scope="col">UTS<br/>(<%#$_SESSION['currentPageDetailEditNilai']['DataNilai']['persen_uts']%>%)</th>
+                                        <th scope="col">UAS<br/>(<%#$_SESSION['currentPageDetailEditNilai']['DataNilai']['persen_uas']%>%)</th>
+                                        <th scope="col">ABSEN<br/>(<%#$_SESSION['currentPageDetailEditNilai']['DataNilai']['persen_absen']%>%)</th>
                                         <th scope="col">NILAI AKHIR</th>
                                         <th scope="col">AM</th>
                                         <th scope="col">HM</th>                                       

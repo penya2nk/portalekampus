@@ -46,7 +46,7 @@
                                 <tr>
                                     <td><%# $this->DataItem['no']%></td>
                                     <td><%# $this->Page->Nilai->getKMatkul($this->DataItem['kmatkul'])%></td>
-                                    <td align="left"><%# $this->DataItem['nmatkul']%></td>
+                                    <td><%# $this->DataItem['nmatkul']%></td>
                                     <td><%# $this->DataItem['sks']%></td>                                  
                                     <td><%#$this->DataItem['namakelas']%></td>
                                     <td><%#$this->Page->TGL->getNamaHari($this->DataItem['hari'])%></td>

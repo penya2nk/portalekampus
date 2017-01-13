@@ -671,6 +671,20 @@
                                         <li class="nav-header nav-header-first hidden-sm hidden-xs">
                                             AKADEMIK
                                         </li>
+                                        <li<%=$this->Page->showSubMenuAkademikPerkuliahan==true?' class="active"':''%>>
+                                            <a href="#" class="dropdown-toggle">
+                                                <i class="fa fa-truck"></i>
+                                                <span>Perkuliahan</span>
+                                                <i class="fa fa-angle-right drop-icon"></i>
+                                            </a>
+                                            <ul class="submenu">
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('perkuliahan.Kuesioner',true)%>"<%=$this->Page->showKuesioner==true ? ' class="active" ':''%>>
+                                                        Kuesioner
+                                                    </a>
+                                                </li> 
+                                            </ul>
+                                        </li>
                                         <li<%=$this->Page->showSubMenuAkademikNilai==true?' class="active"':''%>>
                                             <a href="#" class="dropdown-toggle">
                                                 <i class="fa fa-file-excel-o"></i>

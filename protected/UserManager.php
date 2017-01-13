@@ -104,7 +104,8 @@ class UserManager extends TAuthManager {
 				$this->dataUser['data_user']=$r[1];
                 $this->dataUser['data_user']['userid']=$username;
 				$this->dataUser['data_user']['username']=$username;
-				$this->dataUser['data_user']['page']='d';				
+				$this->dataUser['data_user']['page']='d';	
+                $this->db->updateRecord("UPDATE user SET logintime=NOW() WHERE username='$username'");
 			break;
 			case 'DosenWali' :					
 				$str = "SELECT d.iddosen,dw.iddosen_wali,d.nidn,d.nipy,d.nama_dosen,theme FROM dosen d,dosen_wali dw WHERE d.iddosen=dw.iddosen AND d.username='$username'";
@@ -113,7 +114,8 @@ class UserManager extends TAuthManager {
 				$this->dataUser['data_user']=$r[1];
                 $this->dataUser['data_user']['userid']=$username;
 				$this->dataUser['data_user']['username']=$username;
-				$this->dataUser['data_user']['page']='dw';				
+				$this->dataUser['data_user']['page']='dw';		
+                $this->db->updateRecord("UPDATE user SET logintime=NOW() WHERE username='$username'");
 			break;
 			case 'MahasiswaBaru' :				
                 $str = "SELECT pm.no_formulir,fp.ta AS tahun_masuk,pm.theme FROM formulir_pendaftaran fp,profiles_mahasiswa pm WHERE pm.no_formulir=fp.no_formulir AND fp.no_formulir='$username'";						

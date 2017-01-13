@@ -2266,15 +2266,16 @@ class Logic_ReportNilai extends Logic_Report {
                 $sheet->getStyle("A1:H1")->applyFromArray($styleArray);
                 $sheet->getStyle("A1:H1")->getAlignment()->setWrapText(true);
                   
-                $str = "SELECT kmd.idkrsmatkul,vdm.nim,vdm.nama_mhs,nm.idkrsmatkul FROM kelas_mhs_detail kmd JOIN krsmatkul km ON (kmd.idkrsmatkul=km.idkrsmatkul) JOIN krs k ON (km.idkrs=k.idkrs) JOIN v_datamhs vdm ON (k.nim=vdm.nim) LEFT JOIN nilai_matakuliah nm ON (km.idkrsmatkul=nm.idkrsmatkul) WHERE kmd.idkelas_mhs=$idkelas_mhs AND km.batal=0 AND km.idkrsmatkul IS NULL ORDER BY vdm.nama_mhs ASC";
-                $this->db->setFieldTable(array('idkrsmatkul','nim','nirm','nama_mhs'));	
-                $r=$this->db->getRecord($str);       
+                $str = "SELECT kmd.idkrsmatkul,vdm.nim,vdm.nama_mhs FROM kelas_mhs_detail kmd JOIN krsmatkul km ON (kmd.idkrsmatkul=km.idkrsmatkul) JOIN krs k ON (km.idkrs=k.idkrs) JOIN v_datamhs vdm ON (k.nim=vdm.nim) LEFT JOIN nilai_matakuliah nm ON (km.idkrsmatkul=nm.idkrsmatkul) WHERE kmd.idkelas_mhs=$idkelas_mhs AND km.batal=0 AND nm.idkrsmatkul IS NULL ORDER BY vdm.nama_mhs ASC";
+                $this->db->setFieldTable(array('idkrsmatkul','nim','nama_mhs'));	
+                $r=$this->db->getRecord($str);    
                 $row_awal=2;
                 $row=2;
                 $sheet->getColumnDimension('A')->setWidth(10);
                 $sheet->getColumnDimension('B')->setWidth(40);
                 $sheet->getColumnDimension('C')->setWidth(15);
                 while (list($k,$v)=each($r)) {
+                    echo $v['idkrsmatkul'];
                     $sheet->setCellValue("A$row",$v['idkrsmatkul']);
                     $sheet->setCellValue("B$row",$v['nama_mhs']);
                     $sheet->setCellValueExplicit("C$row",$v['nim'],PHPExcel_Cell_DataType::TYPE_STRING);

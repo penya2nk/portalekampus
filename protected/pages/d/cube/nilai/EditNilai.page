@@ -46,7 +46,7 @@
                                 <tr>
                                     <td><%# $this->DataItem['no']%></td>
                                     <td><%# $this->Page->Nilai->getKMatkul($this->DataItem['kmatkul'])%></td>
-                                    <td align="left"><%# $this->DataItem['nmatkul']%></td>
+                                    <td><%# $this->DataItem['nmatkul']%></td>
                                     <td><%# $this->DataItem['sks']%></td>                                  
                                     <td><%#$this->DataItem['namakelas']%></td>
                                     <td><%#$this->Page->TGL->getNamaHari($this->DataItem['hari'])%></td>
@@ -60,7 +60,7 @@
                                                 <i class="fa fa-eye fa-stack-1x fa-inverse"></i>                                        
                                             </span>                                        
                                         </com:THyperLink>  
-                                        <com:THyperLink ID="anchorImportImportNilai" NavigateUrl="<%#$this->Page->constructUrl('nilai.ImportNilai',true,array('id'=>$this->DataItem['idkelas_mhs']))%>" CssClass="table-link" Attributes.title="Import Nilai">                                                                                
+                                        <com:THyperLink ID="anchorImportNilai" NavigateUrl="<%#$this->Page->constructUrl('nilai.ImportNilai',true,array('id'=>$this->DataItem['idkelas_mhs']))%>" CssClass="table-link" Attributes.title="Import Nilai">                                                                                
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-download fa-stack-1x fa-inverse"></i>                                        

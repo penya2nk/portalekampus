@@ -1,9 +1,6 @@
 <?php
 prado::using ('Application.MainPageD');
 class CEditNilai extends MainPageD {
-	public $pnlDaftarKelas=false;
-	public $plnViewKelas=false;
-	public $data_kelas;
 	public function onLoad($param) {		
 		parent::onLoad($param);				
 		$this->showSubMenuAkademikNilai=true;

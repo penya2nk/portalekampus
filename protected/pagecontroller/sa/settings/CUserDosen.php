@@ -129,12 +129,12 @@ class CUserDosen extends MainPageSA {
             $username=addslashes($this->txtEditUsername->Text);
             $status=$this->cmbEditStatus->Text;
             if ($this->txtEditPassword1->Text == '') {
-                $str = "UPDATE user SET username='$username',nama='$nama',email='$email',group_id='$group_id',kjur='$kjur',active='$status' WHERE userid=$id";               
+                $str = "UPDATE user SET username='$username',nama='$nama',email='$email',active='$status' WHERE userid=$id";               
             }else {
                 $data=$this->Pengguna->createHashPassword($this->txtEditPassword1->Text);
                 $salt=$data['salt'];
                 $password=$data['password'];
-                $str = "UPDATE user SET username='$username',userpassword='$password',salt='$salt',nama='$nama',email='$email',group_id='$group_id',kjur='$kjur',active='$status' WHERE userid=$id";               
+                $str = "UPDATE user SET username='$username',userpassword='$password',salt='$salt',nama='$nama',email='$email',active='$status' WHERE userid=$id";               
             }
             $this->DB->updateRecord($str); 
 			$this->redirect('settings.UserDosen',true);

@@ -103,31 +103,20 @@ class CImportNilai extends MainPageD {
     
     public function saveData ($sender,$param) {
         if ($this->IsValid) {
-//            $idkelas_mhs=$_SESSION['currentPageImportNilai']['DataNilai']['idkelas_mhs'];
-//            $userid=$this->Pengguna->getDataUser('iddosen');
-//            foreach ($this->RepeaterS->Items As $inputan) {
-//                if ($inputan->chkProcess->Checked) {
-//                    $item=$inputan->txtNilaiQuiz->getNamingContainer();
-//                    $idkrsmatkul=$this->RepeaterS->DataKeys[$item->getItemIndex()];
-//                    $persentase_quiz=$inputan->hiddenpersenquiz->Value;
-//                    $persentase_tugas=$inputan->hiddenpersentugas->Value;
-//                    $persentase_uts=$inputan->hiddenpersenuts->Value;
-//                    $persentase_uas=$inputan->hiddenpersenuas->Value;
-//                    $persentase_absen=$inputan->hiddenpersenabsen->Value;
-//
-//                    $nilai_quiz=addslashes($inputan->txtNilaiQuiz->Text);
-//                    $nilai_tugas=addslashes($inputan->txtNilaiTugas->Text);
-//                    $nilai_uts=addslashes($inputan->txtNilaiUTS->Text);
-//                    $nilai_uas=addslashes($inputan->txtNilaiUAS->Text);
-//                    $nilai_absen=addslashes($inputan->txtNilaiAbsen->Text);                    
-//                    $n_kuan=($persentase_quiz*$nilai_quiz)+($persentase_tugas*$nilai_tugas)+($persentase_uts*$nilai_uts)+($persentase_uas*$nilai_uas)+($persentase_absen*$nilai_absen);
-//                    $n_kual=$this->Nilai->getRentangNilaiNKuan($n_kuan);
-//                    
-//                    $str = "REPLACE INTO nilai_matakuliah (idkrsmatkul,persentase_quiz, persentase_tugas, persentase_uts, persentase_uas, persentase_absen, nilai_quiz, nilai_tugas, nilai_uts, nilai_uas, nilai_absen, n_kuan,n_kual,userid_input,tanggal_input,bydosen) VALUES ($idkrsmatkul,'$persentase_quiz','$persentase_tugas','$persentase_uts','$persentase_uas','$persentase_absen','$nilai_quiz','$nilai_tugas','$nilai_uts','$nilai_uas','$nilai_absen','$n_kuan','$n_kual',$userid,NOW(),1)";																				
-//                    $this->DB->insertRecord($str);
-//                }
-//            }
-//            $this->redirect("nilai.ImportNilai", true,array('id'=>$idkelas_mhs));
+            $idkelas_mhs=$_SESSION['currentPageImportNilai']['DataNilai']['idkelas_mhs'];
+            $userid=$this->Pengguna->getDataUser('iddosen');
+            foreach ($this->RepeaterS->Items As $inputan) {
+                if ($inputan->chkProcess->Checked) {
+                    $item=$inputan->chkProcess->getNamingContainer();
+                    $idkrsmatkul=$this->RepeaterS->DataKeys[$item->getItemIndex()];
+                    
+                    $str = "REPLACE INTO nilai_matakuliah (idkrsmatkul,persentase_quiz, persentase_tugas, persentase_uts, persentase_uas, persentase_absen, nilai_quiz, nilai_tugas, nilai_uts, nilai_uas, nilai_absen, n_kuan,n_kual,userid_input,tanggal_input,bydosen)SELECT idkrsmatkul,persentase_quiz,persentase_tugas,persentase_uts,persentase_uas,persentase_absen,nilai_quiz,nilai_tugas,nilai_uts,nilai_uas,nilai_absen,n_kuan,n_kual,$userid,NOW(),1 FROM nilai_imported WHERE idkrsmatkul=$idkrsmatkul";																				
+                    $this->DB->insertRecord($str);
+                    
+                    $this->DB->deleteRecord("nilai_imported WHERE idkrsmatkul=$idkrsmatkul");
+                }
+            }
+            $this->redirect("nilai.ImportNilai", true,array('id'=>$idkelas_mhs));
         }
         
     }

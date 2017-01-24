@@ -47,40 +47,7 @@
         </div>
     </div>	
 </com:TPanel>	
-<com:TPanel Visible="<%= $this->getDefaultProcess() %>">            
-    <div class="row">
-        <div class="col-md-12">
-            <div class="main-box">
-                <header class="main-box-header clearfix">
-                    <h2>Setting NIM Mahasiswa Baru</h2>
-                </header>
-                <div class="main-box-body clearfix">
-                    <div class="form-inline">                        
-                        <div class="form-group">
-                            <label class="sr-only">No. Formulir :</label>
-                            <com:TTextBox CssClass="form-control" ID="txtNoFormulir" MaxLength="8" Attributes.PlaceHolder="No. Formulir" Width="150px" />                                                                                                        
-                        </div>
-                        <com:TActiveCustomButton ID="btnGo" CssClass="btn btn-primary" OnClick="Go" ValidationGroup="settingNIMMhsBaru">
-                            <prop:Text><i class="fa fa-location-arrow"></i> Go</prop:Text>
-                            <prop:ClientSide.OnPreDispatch>                                                                   
-                                $('loading').show(); 
-                                $('<%=$this->btnGo->ClientId%>').disabled='disabled';						
-                            </prop:ClientSide.OnPreDispatch>
-                            <prop:ClientSide.OnLoading>
-                                $('<%=$this->btnGo->ClientId%>').disabled='disabled';						
-                            </prop:ClientSide.OnLoading>
-                            <prop:ClientSide.OnComplete>																	                                    						                                                                            
-                                $('<%=$this->btnGo->ClientId%>').disabled='';
-                                $('loading').hide(); 
-                            </prop:ClientSide.OnComplete>
-                        </com:TActiveCustomButton>
-                        <com:TRequiredFieldValidator ValidationGroup="settingNIMMhsBaru" Display="Dynamic" ControlToValidate="txtNoFormulir" ErrorMessage="Isi No. Formulir Mahasiswa Baru" FocusOnError="true" CssClass="has-error help-block" />
-                        <com:TActiveCustomValidator ControlToValidate="txtNoFormulir" Display="Dynamic" OnServerValidate="cekNomorFormulir" ValidationGroup="settingNIMMhsBaru" ErrorMessage="Nomor Formulir tidak terdaftar di Database, silahkan ganti dengan yang lain" CssClass="has-error help-block" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>  
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>"> 
     <div class="row">
         <div class="col-lg-12">
             <div class="main-box clearfix">
@@ -139,6 +106,39 @@
             </div>
         </div>
     </div>	
+    <div class="row">
+        <div class="col-md-12">
+            <div class="main-box">
+                <header class="main-box-header clearfix">
+                    <h2>Setting NIM Mahasiswa Baru</h2>
+                </header>
+                <div class="main-box-body clearfix">
+                    <div class="form-inline">                        
+                        <div class="form-group">
+                            <label class="sr-only">No. Formulir :</label>
+                            <com:TTextBox CssClass="form-control" ID="txtNoFormulir" MaxLength="8" Attributes.PlaceHolder="No. Formulir" Width="150px" />                                                                                                        
+                        </div>
+                        <com:TActiveCustomButton ID="btnGo" CssClass="btn btn-primary" OnClick="Go" ValidationGroup="settingNIMMhsBaru">
+                            <prop:Text><i class="fa fa-location-arrow"></i> Go</prop:Text>
+                            <prop:ClientSide.OnPreDispatch>                                                                   
+                                $('loading').show(); 
+                                $('<%=$this->btnGo->ClientId%>').disabled='disabled';						
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnGo->ClientId%>').disabled='disabled';						
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                $('<%=$this->btnGo->ClientId%>').disabled='';
+                                $('loading').hide(); 
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveCustomButton>
+                        <com:TRequiredFieldValidator ValidationGroup="settingNIMMhsBaru" Display="Dynamic" ControlToValidate="txtNoFormulir" ErrorMessage="Isi No. Formulir Mahasiswa Baru" FocusOnError="true" CssClass="has-error help-block" />
+                        <com:TActiveCustomValidator ControlToValidate="txtNoFormulir" Display="Dynamic" OnServerValidate="cekNomorFormulir" ValidationGroup="settingNIMMhsBaru" ErrorMessage="Nomor Formulir tidak terdaftar di Database, silahkan ganti dengan yang lain" CssClass="has-error help-block" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
     <div class="row">
         <div class="col-lg-12">
             <div class="main-box clearfix">

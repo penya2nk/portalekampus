@@ -12,10 +12,14 @@ class MainPageON extends MainPage {
      * show page nilai per matakuliah [nilai]
      */
     public $showNilaiPerMatakuliah=false;
-     /**     
+    /**     
      * show page nilai final yang akan lulus [nilai]
      */
     public $showNilaiFinal=false;
+    /**     
+     * show page stop input nilai oleh dosen [nilai]
+     */
+    public $showStopInputNilai=false;
 	public function onLoad ($param) {		
 		parent::onLoad($param);				
         if (!$this->IsPostBack&&!$this->IsCallBack) {	           

@@ -7,7 +7,11 @@ class MainPageSA extends MainPage {
     /**     
      * show sub menu setting akademik[setting]
      */
-    public $showSubMenuSettingAkademik=false;       
+    public $showSubMenuSettingAkademik=false;    
+    /**     
+     * show page ketua prodi [setting sistem]
+     */
+    public $showKaprodi=false;
     /**     
      * show sub menu setting sistem[setting]
      */

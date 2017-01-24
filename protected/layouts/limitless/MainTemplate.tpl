@@ -185,7 +185,7 @@
                     <i class="icon-blog position-left"></i> Nilai <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu width-250">
-                    <li class="dropdown-header">INPUT</li>
+                    <li class="dropdown-header">INPUT OLEH SEKRETARIS PRODI</li>
                     <li<%=$this->Page->showNilaiPerMahasiswa==true?' class="active"':''%>>
                         <a href="<%=$this->Page->constructUrl('nilai.NilaiPerMahasiswa',true)%>">
                             <i class="icon-blog"></i> Nilai Per Mahasiswa
@@ -199,6 +199,12 @@
                     <li<%=$this->Page->showNilaiFinal==true?' class="active"':''%>>
                         <a href="<%=$this->Page->constructUrl('nilai.NilaiFinal',true)%>">
                             <i class="icon-blog"></i> Nilai Final
+                        </a>
+                    </li>
+                    <li class="dropdown-header">INPUT OLEH DOSEN</li>
+                    <li<%=$this->Page->showStopInputNilai==true?' class="active"':''%>>
+                        <a href="<%=$this->Page->constructUrl('nilai.StopInputNilai',true)%>">
+                            <i class="icon-blog"></i> Stop Input Nilai
                         </a>
                     </li>
                 </ul>

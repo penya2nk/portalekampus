@@ -195,7 +195,11 @@
                                                 <i class="fa fa-angle-right drop-icon"></i>
                                             </a>
                                             <ul class="submenu">
-
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('settings.Kaprodi',true)%>"<%=$this->Page->showKaprodi==true ? ' class="active" ':''%>>
+                                                        Ketua Prodi
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </li>
                                         <li<%=$this->Page->showSubMenuSettingSistem==true?' class="active"':''%>>
@@ -385,7 +389,12 @@
                                                     <a href="<%=$this->Page->constructUrl('kemahasiswaan.RekapStatusMahasiswa',true)%>"<%=$this->Page->showRekapStatusMahasiswa==true ? ' class="active" ':''%>>
                                                         Rekap. Status Mahasiswa
                                                     </a>
-                                                </li>  
+                                                </li> 
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('kemahasiswaan.PindahKelas',true)%>"<%=$this->Page->showPindahKelas==true ? ' class="active" ':''%>>
+                                                        Pindah Kelas
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </li>                                                                                                                       
                                         <li<%=$this->Page->showSubMenuAkademikDulang==true?' class="active"':''%>>

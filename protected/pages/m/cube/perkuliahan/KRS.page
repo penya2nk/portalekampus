@@ -127,7 +127,7 @@
                     <h2 class="pull-left"><i class="fa fa-columns"></i> Daftar Mahasiswa yang "<com:TActiveLabel ID="lblModeKRS" Text="<%=$_SESSION['currentPageKRS']['mode_krs']=='sudah'?'Sudah Isi KRS':'Belum Isi KRS, Tetapi Sudah Daftar Ulang (status aktif)'%>" />"</h2> 
                     <div class="filter-block pull-right">   
                         <div class="form-group pull-left" id="divAddNIMKRS">
-                           <com:TTextBox ID="txtAddNim" Attributes.PlaceHolder="NIM" CssClass="form-control" />                                                       
+                           <com:TTextBox ID="txtAddNim" Attributes.PlaceHolder="NIM" CssClass="form-control" Width="150px" />                                                       
                            <com:TRequiredFieldValidator ID="fieldValidatorFieldNIM" ControlToValidate="txtAddNim" Display="Dynamic" ErrorMessage="Isikan NIM" ValidationGroup="nimKRS" CssClass="has-error help-block" FocusOnError="true"> 										
                                 <prop:ClientSide.OnValidationError>
                                     $('divAddNIMKRS').addClassName('has-error');

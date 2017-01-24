@@ -55,7 +55,7 @@
                                 $('loading').hide();
                             </prop:ClientSide.OnComplete>
                         </com:TActiveLinkButton> 
-                        <a class="btn btn-primary pull-left" href="<%=$this->constructUrl('nilai.DetailEditNilai',true,array('id'=>$_SESSION['currentPageImportNilai']['DataNilai']['idkelas_mhs']))%>" title="Import Nilai">                        
+                        <a class="btn btn-primary pull-left" href="<%=$this->constructUrl('nilai.DetailEditNilai',true,array('id'=>$_SESSION['currentPageImportNilai']['DataNilai']['idkelas_mhs']))%>" title="Detail Edit Nilai">                        
                             <i class='fa  fa-eye fa-lg'></i>
                         </a>
                         <com:TActiveLinkButton ID="btnReset" OnClick="resetData" CssClass="btn btn-danger pull-left" Attributes.Title="Reset Nilai" Attributes.OnClick="if(!confirm('Anda ingin mereset nilai Matakuliah ini ?')) return false;">
@@ -99,7 +99,9 @@
                                 <table class="table table-striped table-hover">	
                                     <thead>
                                     <tr>    
-                                        <th scope="col"></th>
+                                        <th scope="col">
+                                            <input type="checkbox" class="select-all" title="Select all items" data-class="dummyclass">
+                                        </th>
                                         <th scope="col">NO</th>
                                         <th scope="col">ID</th>
                                         <th scope="col">NAMA</th>
@@ -119,7 +121,7 @@
                             <prop:ItemTemplate>
                                 <tr>                     
                                     <td>
-                                        <com:TCheckBox ID="chkProcess" />
+                                        <com:TCheckBox ID="chkProcess" CssClass="dummyclass" />
                                     </td>
                                     <td><%# $this->DataItem['no']%></td>
                                     <td><%# $this->DataItem['idkrsmatkul']%></td>

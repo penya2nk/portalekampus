@@ -2275,7 +2275,6 @@ class Logic_ReportNilai extends Logic_Report {
                 $sheet->getColumnDimension('B')->setWidth(40);
                 $sheet->getColumnDimension('C')->setWidth(15);
                 while (list($k,$v)=each($r)) {
-                    echo $v['idkrsmatkul'];
                     $sheet->setCellValue("A$row",$v['idkrsmatkul']);
                     $sheet->setCellValue("B$row",$v['nama_mhs']);
                     $sheet->setCellValueExplicit("C$row",$v['nim'],PHPExcel_Cell_DataType::TYPE_STRING);
@@ -2295,7 +2294,7 @@ class Logic_ReportNilai extends Logic_Report {
                                 );
                 $sheet->getStyle("B$row_awal:B$row")->applyFromArray($styleArray);
                 $sheet->getStyle("B$row_awal:B$row")->getAlignment()->setWrapText(true);
-                $this->printOut('daftarisiannilai');
+                $this->printOut('daftarisiannilai_'.$this->dataReport['kmatkul'].'_'.$this->dataReport['nama_kelas']);
             break;
         }
         $this->setLink($this->dataReport['linkoutput'],"Daftar Isian Nilai Mahasiswa");

@@ -227,7 +227,9 @@
                                 <table class="table table-striped table-hover">	
                                     <thead>
                                     <tr>    
-                                        <th scope="col"></th>
+                                        <th scope="col">
+                                            <input type="checkbox" class="select-all" title="Select all items" data-class="dummyclass">
+                                        </th>
                                         <th scope="col">NO</th>
                                         <th scope="col">NAMA</th>
                                         <th scope="col">NIM</th>
@@ -246,8 +248,8 @@
                             <prop:ItemTemplate>
                                 <tr>                      
                                     <td>
-                                        <com:TCheckBox ID="chkProcess" />
-                                    </td>
+                                        <com:TCheckBox ID="chkProcess" CssClass="dummyclass" />
+                                    </td> 
                                     <td><%# $this->DataItem['idkrsmatkul']%></td>
                                     <td><%# $this->DataItem['nama_mhs']%></td>                                    
                                     <td><%#$this->DataItem['nim']%></td>

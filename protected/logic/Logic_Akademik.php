@@ -140,8 +140,8 @@ class Logic_Akademik extends Logic_Mahasiswa {
      * @return array
      */
 	public function getInfoKelas($id) {
-        $str = "SELECT km.idkelas_mhs,km.idkelas,km.nama_kelas,km.hari,km.jam_masuk,km.jam_keluar,vpp.iddosen,vpp.nama_dosen,vpp.nidn,vpp.kmatkul,vpp.nmatkul,vpp.sks,vpp.semester,vpp.idpenyelenggaraan,rk.namaruang,rk.kapasitas,vpp.idsmt,vpp.tahun,vpp.kjur,km.persen_quiz,km.persen_tugas,km.persen_uts,km.persen_uas,km.persen_absen FROM kelas_mhs km JOIN v_pengampu_penyelenggaraan vpp ON (km.idpengampu_penyelenggaraan=vpp.idpengampu_penyelenggaraan) LEFT JOIN ruangkelas rk ON (rk.idruangkelas=km.idruangkelas) WHERE idkelas_mhs='$id'";
-        $this->db->setFieldTable(array('idkelas_mhs','iddosen','iddosen','nama_dosen','nidn','kmatkul','nmatkul','sks','semester','idpenyelenggaraan','idkelas','nama_kelas','hari','jam_masuk','jam_keluar','namaruang','kapasitas','idsmt','tahun','kjur','persen_quiz','persen_tugas','persen_uts','persen_uas','persen_absen'));
+        $str = "SELECT km.idkelas_mhs,km.idkelas,km.nama_kelas,km.hari,km.jam_masuk,km.jam_keluar,vpp.iddosen,vpp.nama_dosen,vpp.nidn,vpp.kmatkul,vpp.nmatkul,vpp.sks,vpp.semester,vpp.idpenyelenggaraan,rk.namaruang,rk.kapasitas,vpp.idsmt,vpp.tahun,vpp.kjur,km.persen_quiz,km.persen_tugas,km.persen_uts,km.persen_uas,km.persen_absen,km.isi_nilai FROM kelas_mhs km JOIN v_pengampu_penyelenggaraan vpp ON (km.idpengampu_penyelenggaraan=vpp.idpengampu_penyelenggaraan) LEFT JOIN ruangkelas rk ON (rk.idruangkelas=km.idruangkelas) WHERE idkelas_mhs='$id'";
+        $this->db->setFieldTable(array('idkelas_mhs','iddosen','iddosen','nama_dosen','nidn','kmatkul','nmatkul','sks','semester','idpenyelenggaraan','idkelas','nama_kelas','hari','jam_masuk','jam_keluar','namaruang','kapasitas','idsmt','tahun','kjur','persen_quiz','persen_tugas','persen_uts','persen_uas','persen_absen','isi_nilai'));
         $r = $this->db->getRecord($str);
         if (isset($r[1])) {
             $r[1]['kmatkul']=$this->getKmatkul($r[1]['kmatkul']);            

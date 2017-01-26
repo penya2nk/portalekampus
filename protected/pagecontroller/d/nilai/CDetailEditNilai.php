@@ -21,6 +21,9 @@ class CDetailEditNilai extends MainPageD {
                 if (!isset($this->Demik->InfoKelas['idkelas_mhs'])) {                                                
                     throw new Exception ("Kelas Mahasiswa dengan id ($idkelas_mhs) tidak terdaftar.");		
                 }     
+                if (!$this->Demik->InfoKelas['isi_nilai']) {
+                    throw new Exception ("Masa pengisian nilai dari sisi Dosen telah berakhir, silahkan hubungi Operator Nilai di Prodi.");
+                }
                 $infokelas=$this->Demik->InfoKelas;
                 $this->Demik->InfoKelas['namakelas']=$this->DMaster->getNamaKelasByID($infokelas['idkelas']).'-'.chr($infokelas['nama_kelas']+64);
                 $this->Demik->InfoKelas['hari']=$this->TGL->getNamaHari($infokelas['hari']);

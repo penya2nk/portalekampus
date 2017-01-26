@@ -204,7 +204,7 @@
                     <li class="dropdown-header">INPUT OLEH DOSEN</li>
                     <li<%=$this->Page->showStopInputNilai==true?' class="active"':''%>>
                         <a href="<%=$this->Page->constructUrl('nilai.StopInputNilai',true)%>">
-                            <i class="icon-blog"></i> Stop Input Nilai
+                            <i class="icon-blog"></i> Stop Dosen Input Nilai
                         </a>
                     </li>
                 </ul>

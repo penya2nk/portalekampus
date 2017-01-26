@@ -1,9 +1,9 @@
-<%@ Title="Stop Input Nilai" %>
+<%@ Title="Stop Dosen Input Nilai" %>
 <com:TContent ID="moduleheader">    
-    <i class="icon-blog position-left"></i> <span class="text-semibold">Stop Input Nilai <com:TActiveLabel ID="lblModulHeader" /></span>
+    <i class="icon-blog position-left"></i> <span class="text-semibold">Stop Dosen Input Nilai </span>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
-    <li class="active">NILAI FINAL</li>
+    <li class="active">STOP DOSEN INPUT NILAI</li>
 </com:TContent>
 <com:TContent ID="sidebarcontent">
 <div class="sidebar sidebar-main sidebar-default sidebar-separate" style="width:330px">
@@ -23,17 +23,18 @@
                 <div class="form-horizontal">
                     <div class="form-group">
                         <label class="col-md-2 control-label">Kriteria :</label>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <com:TDropDownList ID="cmbKriteria" CssClass="form-control">
                                 <com:TListItem Value="kmatkul" Text="Kode Matakuliah"/>
                                 <com:TListItem Value="nmatkul" Text="Nama Matakuliah" />
-                                <com:TListItem Value="dosen" Text="Nama Dosen" />
+                                <com:TListItem Value="nidn" Text="NIDN" />
+                                <com:TListItem Value="nama_dosen" Text="Nama Dosen" />
                             </com:TDropDownList>
                         </div>
                     </div>
                     <div class="form-group" id="divtxtKriteria">
                         <label class="col-md-2 control-label">Isi Kriteria :</label>
-                        <div class="col-md-3">
+                        <div class="col-md-5">
                             <com:TActiveTextBox ID="txtKriteria" CssClass="form-control" />                                                                            
                             <com:TRequiredFieldValidator ID="spanKriteriaValidator" ValidationGroup="filterForm" Display="Dynamic" ControlToValidate="txtKriteria" ErrorMessage="Input apa yang Anda cari, sesuai dengan kriteria yang Anda tentukan." FocusOnError="true" CssClass="has-error help-block">	
                                 <prop:ClientSide.OnValidationError>
@@ -73,42 +74,50 @@
     <div class="col-md-12">
         <div class="panel panel-flat">
             <div class="panel-heading">
-                <h5 class="panel-title"><i class="icon-blog position-left"></i>  DAFTAR DOSEN PENGAJAR</h5>                
+                <h5 class="panel-title"><i class="icon-blog position-left"></i>  DAFTAR DOSEN PENGAJAR <com:TActiveLabel ID="lblModulHeader" /></h5>                
                 <div class="heading-elements">
                                   
                 </div>
             </div> 
             <div class="table-responsive">
-                <com:TActiveRepeater ID="RepeaterS" DataKeyField="idpengampu_penyelenggaraan" AllowPaging="true" PageSize="10" AllowCustomPaging="true">
+                <com:TActiveRepeater ID="RepeaterS" DataKeyField="idkelas_mhs" AllowPaging="true" PageSize="10" AllowCustomPaging="true">
                     <prop:HeaderTemplate>					
                     <table class="table table-striped table-hover">
                         <thead>
                         <tr class="bg-teal-700">
-                            <th>NO</th>
-                            <th>NAMA DOSEN</th>
-                            <th>KODE</th>
-                            <th>NAMA MATAKULIAH</th>
-                            <th>SKS</th>
-                            <th>SMT</th>										
-                            <th>JUMLAH <br />KELAS</th>					
-                            <th width="170">AKSI</th>
+                            <th width="15" scope="col">NO</th>
+                            <th width="15" scope="col">KODE</th>
+                            <th width="210" scope="col">NAMA MATAKULIAH</th>                                    
+                            <th width="250" scope="col">NAMA DOSEN</th>
+                            <th scope="col">NAMA KELAS</th>
+                            <th scope="col">HARI</th>
+                            <th scope="col">JAM</th> 
+                            <th scope="col">RUANG</th>
+                            <th width="90" scope="col">JUMLAH PESERTA</th>
+                            <th scope="col" width="100">AKSI</th>
                         </tr>
                         </thead>
                         <tbody>
                     </prop:HeaderTemplate>
                     <prop:ItemTemplate>
                         <tr>
-                            <td><%# $this->DataItem['no']%></td>
-                            <td><%# $this->DataItem['nama_dosen']%></td>
-                            <td><%# $this->DataItem['kmatkul']%></td>
-                            <td><%# $this->DataItem['nmatkul']%></td>
-                            <td><%# $this->DataItem['sks']%></td>
-                            <td><%# $this->DataItem['semester']%></td>										
-                            <td><%# $this->DataItem['jumlahKelas']%></td>	
+                            <td><%# $this->Data['no']%></td>
+                            <td><%# $this->Data['kode_matkul']%></td>
+                            <td><%# $this->Data['nmatkul']%></td>   
+                            <td><%# $this->Data['nama_dosen']%></td>
+                            <td><%#$this->DataItem['namakelas']%></td>
+                            <td><%#$this->Page->TGL->getNamaHari($this->DataItem['hari'])%></td>
+                            <td><%#$this->DataItem['jam_masuk'].'-'.$this->DataItem['jam_keluar']%></td>
+                            <td><%#$this->DataItem['namaruang'].' ['.$this->DataItem['kapasitas'].']'%></td>
+                            <td>
+                                <a href="<%#$this->Page->constructUrl('nilai.DetailNilaiDosen',true,array('id'=>$this->DataItem['idkelas_mhs']))%>" class="table-link" title="Daftar Peserta Kelas">                                        
+                                    <%#$this->DataItem['jumlah_peserta_kelas']%>
+                                </a>
+                            </td>
                             <td>
                                 <ul class="nav nav-pills nav-pills-toolbar nav-justified">
-                                    <li<%# ($this->DataItem['verified']==0)?' class="active"':''%>>
-                                        <com:TActiveLinkButton ID="btnUnVerified" CommandParameter="<%# ($this->DataItem['verified']==true)?0:1%>" OnClick="Page.doVerified" Attributes.Title="Boleh Input" ClientSide.PostState="false" Enabled="<%#$this->DataItem['verified']==1%>">
+                                    <li<%# ($this->DataItem['isi_nilai']==1)?' class="active"':''%>>
+                                        <com:TActiveLinkButton ID="btnUnVerified" CommandParameter="<%# ($this->DataItem['isi_nilai']==true)?0:1%>" OnClick="Page.doVerified" Attributes.Title="Boleh Input" ClientSide.PostState="false" Enabled="<%#$this->DataItem['isi_nilai']==0%>">
                                             <prop:Text>                                        
                                                 ACTIVE
                                             </prop:Text>
@@ -125,8 +134,8 @@
                                             </prop:ClientSide.OnComplete>
                                         </com:TActiveLinkButton>  
                                     </li>
-                                    <li<%# ($this->DataItem['verified']==1)?' class="active"':''%>>
-                                         <com:TActiveLinkButton ID="btnVerified" CommandParameter="<%# ($this->DataItem['verified']==true)?0:1%>" OnClick="Page.doVerified" Attributes.Title="TIdak Boleh Input" ClientSide.PostState="false" Enabled="<%#$this->DataItem['verified']==0%>">
+                                    <li<%# ($this->DataItem['isi_nilai']==0)?' class="active"':''%>>
+                                         <com:TActiveLinkButton ID="btnVerified" CommandParameter="<%# ($this->DataItem['isi_nilai']==true)?0:1%>" OnClick="Page.doVerified" Attributes.Title="TIdak Boleh Input" ClientSide.PostState="false" Enabled="<%#$this->DataItem['isi_nilai']==1%>">
                                             <prop:Text>                                        
                                                 INACTIVE
                                             </prop:Text>

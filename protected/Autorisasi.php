@@ -50,6 +50,7 @@ class Autorisasi extends TModule implements IUserManager {
                     $message="Mohon maaf status Anda diluar AKTIF. Hubungi Bagian Administrasi.";		
                 }
             break;
+            case 'dw' :
             case 'd' :
             case 'k' :
             case 'on' :

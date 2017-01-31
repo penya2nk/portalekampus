@@ -177,6 +177,7 @@ class CPKRS extends MainPageDW {
             $krs=$_SESSION['currentPagePKRS']['DataKRS']['krs'];          
             $krs['tahun_masuk']=$_SESSION['currentPagePKRS']['DataMHS']['tahun_masuk'];
             $krs['semester_masuk']=$_SESSION['currentPagePKRS']['DataMHS']['semester_masuk'];
+            $krs['kjur']=$_SESSION['currentPagePKRS']['DataMHS']['kjur'];
             $this->Finance->setDataMHS($krs);
             $this->Nilai->setDataMHS($krs);            
             $idkrs=$krs['idkrs'];

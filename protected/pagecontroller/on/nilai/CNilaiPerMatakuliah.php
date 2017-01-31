@@ -185,12 +185,20 @@ class CNilaiPerMatakuliah extends MainPageON {
 		$r=$this->DB->getRecord($str,$offset+1);
         $result=array();
         while (list($k,$v)=each($r)) {
+            $idkrsmatkul=$v['idkrsmatkul'];
             if ($v['userid_input']==0) {
                 $v['tanggal_input']='-';
                 $v['tanggal_modif']='-';
             }else{
                 $v['tanggal_input']=$this->TGL->tanggal ('j F Y',$v['tanggal_input']);
                 $v['tanggal_modif']=$this->TGL->tanggal ('j F Y',$v['tanggal_modif']);
+            }
+            $str = "SELECT km.idkelas,km.nama_kelas FROM kelas_mhs km,kelas_mhs_detail kmd WHERE km.idkelas_mhs=kmd.idkelas_mhs AND kmd.idkrsmatkul=$idkrsmatkul LIMIT 1";
+            $this->DB->setFieldTable(array('idkelas','nama_kelas'));				
+            $datakelas=$this->DB->getRecord($str,$offset+1);
+            $v['namakelas']='N.A';
+            if (isset($datakelas[1])) {
+                $v['namakelas']=$this->DMaster->getNamaKelasByID($datakelas[1]['idkelas']).'-'.chr($datakelas[1]['nama_kelas']+64);
             }
             $result[$k]=$v;
         }

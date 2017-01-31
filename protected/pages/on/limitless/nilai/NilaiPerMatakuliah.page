@@ -224,6 +224,7 @@
                                 <th width="80" scope="col">NIM</th>					
                                 <th scope="col">NAMA</th>
                                 <th scope="col">JK</th>
+                                <th scope="col">KELAS</th>
                                 <th scope="col">NILAI <br/>ANGKA</th> 
                                 <th scope="col">NILAI <br/>HURUF</th>                                    
                                 <th scope="col">TANGGAL <br />INPUT</th>                                    
@@ -239,6 +240,7 @@
                                 <td><a href="<%=$this->Page->constructUrl('kemahasiswaan.ProfilMahasiswa',true,array('id'=>$this->DataItem['nim']))%>"><%#$this->DataItem['nim']%></a></td>					
                                 <td><%# $this->DataItem['nama_mhs']%></td>
                                 <td><%# $this->DataItem['jk']%></td>
+                                <td><%# $this->DataItem['namakelas']%></td>
                                 <td><com:TTextBox ID="txtNilaiAngka" CssClass="form-control" Width="70px" /></td>
                                     <td>
                                         <com:THiddenField ID="idkrsmatkul" Value="<%# $this->DataItem['idkrsmatkul']%>" />

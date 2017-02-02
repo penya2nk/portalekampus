@@ -1,0 +1,327 @@
+<%@ Title="Forum Diskusi" %>
+<com:TContent ID="moduleheader">
+    <i class="fa fa-comment"></i> Forum Diskusi
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li class="active"><span>FORUM DISKUSI</span></li>
+</com:TContent> 
+<com:TContent ID="maincontent">
+<com:TPanel Visible="<%=$this->getDefaultProcess() %>" CssClass="row">
+    <div class="col-lg-12">
+        <div class="main-box clearfix">
+            <div class="tabs-wrapper profile-tabs">
+                <com:TActiveMultiView  ID="MVMenuForum" OnActiveViewChanged="changeView">
+                    <com:TView ID="viewnewsfeed">
+                        <ul class="nav nav-tabs">
+                            <li class="active">                                
+                                <a href="#tab-newsfeed" data-toggle="tab">Diskusi</a>
+                            </li>
+                            <li>
+                                <com:TActiveLinkButton ID="btnViewDiskusiBaruHome" Text="Diskusi Baru" CommandName="SwitchViewIndex" CommandParameter="1" ClientSide.PostState="false">
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->btnViewDiskusiBaruHome->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnViewDiskusiBaruHome->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>                                        
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveLinkButton>                                    
+                            </li>                                                
+                            <li>
+                                <com:TActiveLinkButton ID="btnViewBelumDibacaHome" Text="Belum Dibaca" CommandName="SwitchViewIndex" CommandParameter="2" ClientSide.PostState="false">
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->btnViewBelumDibacaHome->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnViewBelumDibacaHome->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>                                        
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveLinkButton>                                    
+                            </li>                                                
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="tab-newsfeed">
+                                <div id="newsfeed">
+                                    <com:TActiveRepeater ID="RepeaterS" DataKeyField="idpost" AllowPaging="true" AllowCustomPaging="true">                                
+                                        <prop:ItemTemplate>	
+                                           <div class="story">
+                                                <div class="story-user">
+                                                    <a href="<%#$this->DataItem['urlprofiluser']%>">
+                                                        <img src="resources/userimages/no_photo.png" alt=""/>
+                                                    </a>
+                                                </div>
+                                                <div class="story-content">
+                                                    <header class="story-header">
+                                                        <div class="story-author">                                                    
+                                                            <%#$this->DataItem['nama_user']%>                                                    
+                                                            <em>menulis di</em> <span class="label label-success"><%#$this->DataItem['nama_kategori']%></span>
+                                                        </div>
+                                                        <div class="story-time">
+                                                            <i class="fa fa-clock-o"></i> <%#$this->DataItem['tanggal_post']%>
+                                                        </div>
+                                                    </header>
+                                                    <div class="story-inner-content">
+                                                        <a href="<%#$this->Page->constructUrl('forum.DetailDiskusi',true,array('id'=>$this->DataItem['idpost']))%>" class="story-author-link">
+                                                            <%#$this->DataItem['title']%>
+                                                        </a>                                                        
+                                                    </div>
+                                                    <footer class="story-footer">
+                                                        <a href="#" class="story-comments-link">
+                                                            <i class="fa fa-comment fa-lg"></i> <%#$this->DataItem['jumlahcomment']%> Comments
+                                                        </a>
+                                                        <a href="#" class="story-likes-link">
+                                                            <i class="fa fa-heart fa-lg"></i> 0 Likes
+                                                        </a>
+                                                    </footer>
+                                                </div>
+                                            </div>
+                                        </prop:ItemTemplate>	                                                                                    
+                                        <prop:EmptyTemplate>                                                       
+                                            <div class="row">
+                                                <div class="main-box-body">
+                                                    <div class="alert alert-info">
+                                                        <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                                        <strong>
+                                                            Info!
+                                                        </strong>
+                                                         Tidak ada data yang bisa ditampilkan.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </prop:EmptyTemplate>
+                                    </com:TActiveRepeater>
+                                    <%include Application.CustomPaging%>                                                        
+                                </div>
+                            </div>                            
+                        </div>
+                    </com:TView>
+                    <com:TView ID="viewdiskusibaru">
+                        <ul class="nav nav-tabs">
+                            <li>                                
+                                <com:TActiveLinkButton ID="btnViewDiskusiHomeDiskusiBaru" Text="Diskusi" CommandName="SwitchViewIndex" CommandParameter="0" ClientSide.PostState="false">
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->btnViewDiskusiHomeDiskusiBaru->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnViewDiskusiHomeDiskusiBaru->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>                                        
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveLinkButton>  
+                            </li>
+                            <li class="active">
+                                <a href="#tab-new-discussion" data-toggle="tab">Diskusi Baru</a>
+                            </li>         
+                            <li>
+                                <com:TActiveLinkButton ID="btnViewBelumDibacaBaru" Text="Belum Dibaca" CommandName="SwitchViewIndex" CommandParameter="2" ClientSide.PostState="false">
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->btnViewBelumDibacaBaru->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnViewBelumDibacaBaru->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>                                        
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveLinkButton>                                    
+                            </li>  
+                        </ul>
+                        <div class="tab-content">                            
+                            <div class="tab-pane fade in active" id="tab-new-discussion">                                
+                                <div class="form-horizontal">
+                                    <div class="form-group" id="divAddKategori">
+                                        <label class="col-lg-2 control-label">Kategori :</label>
+                                        <div class="col-lg-2">
+                                            <com:TDropDownList ID="cmbAddKategori" CssClass="form-control" />
+                                            <com:TRequiredFieldValidator ID="FieldAddKategori" InitialValue="none" ControlToValidate="cmbAddKategori" ValidationGroup="adddiskusi" ErrorMessage="Pilih Kategori" Display="Dynamic" CssClass="has-error help-block" FocusOnError="true">	
+                                                <prop:ClientSide.OnValidationError>
+                                                    $('divAddKategori').addClassName('has-error');
+                                                    jQuery('#<%=$this->FieldAddKategori->ClientID%>').removeAttr('style');
+                                                </prop:ClientSide.OnValidationError>
+                                                <prop:ClientSide.OnValidationSuccess>
+                                                    $('divAddKategori').removeClassName('has-error');
+                                                </prop:ClientSide.OnValidationSuccess>
+                                            </com:TRequiredFieldValidator>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" id="divAddTitle">
+                                        <label class="col-lg-2 control-label">Judul :</label>
+                                        <div class="col-lg-5">
+                                            <com:TTextBox ID="txtAddTitle" CssClass="form-control" />
+                                            <com:TRequiredFieldValidator ID="FieldAddTitle" ControlToValidate="txtAddTitle" ValidationGroup="adddiskusi" ErrorMessage="Isi judul" Display="Dynamic" CssClass="has-error help-block" FocusOnError="true">	
+                                                <prop:ClientSide.OnValidationError>
+                                                    $('divAddTitle').addClassName('has-error');
+                                                    jQuery('#<%=$this->FieldAddTitle->ClientID%>').removeAttr('style');
+                                                </prop:ClientSide.OnValidationError>
+                                                <prop:ClientSide.OnValidationSuccess>
+                                                    $('divAddTitle').removeClassName('has-error');
+                                                </prop:ClientSide.OnValidationSuccess>
+                                            </com:TRequiredFieldValidator>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" id="divAddIsi">
+                                        <label class="col-lg-2 control-label">Isi :</label>
+                                        <div class="col-lg-5">
+                                            <com:TTextBox ID="txtAddContent" CssClass="form-control" TextMode="MultiLine" />
+                                            Anda dapat menggunakan <a href="http://en.wikipedia.org/wiki/Markdown">markdown</a> di isi diskusinya, dan belajar sintaknya di <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">sini</a>.
+                                            <com:TRequiredFieldValidator ID="FieldAddIsi" ControlToValidate="txtAddContent" ValidationGroup="adddiskusi" ErrorMessage="Isi Konten diskusi" Display="Dynamic" CssClass="has-error help-block" FocusOnError="true">	
+                                                <prop:ClientSide.OnValidationError>
+                                                    $('divAddIsi').addClassName('has-error');
+                                                    jQuery('#<%=$this->FieldAddIsi->ClientID%>').removeAttr('style');
+                                                </prop:ClientSide.OnValidationError>
+                                                <prop:ClientSide.OnValidationSuccess>
+                                                    $('divAddIsi').removeClassName('has-error');
+                                                </prop:ClientSide.OnValidationSuccess>
+                                            </com:TRequiredFieldValidator>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <com:TActiveCustomButton ID="btnKirim" CssClass="btn btn-primary" OnClick="kirimKonten" ValidationGroup="adddiskusi">
+                                                <prop:Text><i class="fa fa-send-o"></i> Kirim</prop:Text>
+                                                <prop:ClientSide.OnPreDispatch>                                                                   
+                                                    $('loading').show(); 
+                                                    $('<%=$this->btnKirim->ClientId%>').disabled='disabled';						
+                                                </prop:ClientSide.OnPreDispatch>
+                                                <prop:ClientSide.OnLoading>
+                                                    $('<%=$this->btnKirim->ClientId%>').disabled='disabled';						
+                                                </prop:ClientSide.OnLoading>
+                                                <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                                    $('<%=$this->btnKirim->ClientId%>').disabled='';
+                                                    $('loading').hide(); 
+                                                </prop:ClientSide.OnComplete>
+                                            </com:TActiveCustomButton>
+                                        </div>                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </com:TView>
+                    <com:TView ID="viewunread">
+                        <ul class="nav nav-tabs">
+                            <li>                                
+                                <com:TActiveLinkButton ID="btnViewUnreadDiskusiHome" Text="Diskusi" CommandName="SwitchViewIndex" CommandParameter="0" ClientSide.PostState="false">
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->btnViewUnreadDiskusiHome->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnViewUnreadDiskusiHome->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>                                        
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveLinkButton>  
+                            </li>
+                            <li>                                
+                                <com:TActiveLinkButton ID="btnViewUnreadDiskusiBaru" Text="Diskusi Baru" CommandName="SwitchViewIndex" CommandParameter="1" ClientSide.PostState="false">
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->btnViewUnreadDiskusiBaru->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnViewUnreadDiskusiBaru->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>                                        
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveLinkButton>  
+                            </li>
+                            <li class="active">
+                                <a href="#tab-unread-discussion" data-toggle="tab">Belum Dibaca</a>
+                            </li>             
+                        </ul>
+                        <div class="tab-content">                            
+                            <div class="tab-pane fade in active" id="tab-unread-discussion"> 
+                                <div id="newsfeed">
+                                    <com:TActiveRepeater ID="RepeaterUnread" DataKeyField="idpost" AllowPaging="true" AllowCustomPaging="true">                                
+                                        <prop:ItemTemplate>	
+                                           <div class="story">
+                                                <div class="story-user">
+                                                    <a href="#">
+                                                        <img src="resources/userimages/no_photo.png" alt=""/>
+                                                    </a>
+                                                </div>
+                                                <div class="story-content">
+                                                    <header class="story-header">
+                                                        <div class="story-author">                                                    
+                                                            <%#$this->DataItem['nama_user']%>                                                    
+                                                            <em>menulis di</em> <span class="label label-success"><%#$this->DataItem['nama_kategori']%></span>
+                                                        </div>
+                                                        <div class="story-time">
+                                                            <i class="fa fa-clock-o"></i> <%#$this->DataItem['tanggal_post']%>
+                                                        </div>
+                                                    </header>
+                                                    <div class="story-inner-content">
+                                                        <com:TActiveLinkButton ID="btnUnreadDiskusi" Text="<%#$this->DataItem['title']%>" ClientSide.PostState="false" OnClick="Page.setUnreadFalse">
+                                                            <prop:ClientSide.OnPreDispatch>                                                                   
+                                                                $('loading').show(); 
+                                                                $('<%=$this->btnUnreadDiskusi->ClientId%>').disabled='disabled';						
+                                                            </prop:ClientSide.OnPreDispatch>
+                                                            <prop:ClientSide.OnLoading>
+                                                                $('<%=$this->btnUnreadDiskusi->ClientId%>').disabled='disabled';						
+                                                            </prop:ClientSide.OnLoading>
+                                                            <prop:ClientSide.OnComplete>                                        
+                                                                $('loading').hide(); 
+                                                            </prop:ClientSide.OnComplete>
+                                                        </com:TActiveLinkButton>                                                                                                            
+                                                    </div>
+                                                    <footer class="story-footer">
+                                                        <a href="#" class="story-comments-link">
+                                                            <i class="fa fa-comment fa-lg"></i> <%#$this->DataItem['jumlahcomment']%> Comments
+                                                        </a>
+                                                        <a href="#" class="story-likes-link">
+                                                            <i class="fa fa-heart fa-lg"></i> 0 Likes
+                                                        </a>
+                                                    </footer>
+                                                </div>
+                                            </div>
+                                        </prop:ItemTemplate>	                                                                                    
+                                        <prop:EmptyTemplate>                                                       
+                                            <div class="row">
+                                                <div class="main-box-body">
+                                                    <div class="alert alert-info">
+                                                        <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                                        <strong>
+                                                            Info!
+                                                        </strong>
+                                                         Semua diskusi telah Anda baca.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </prop:EmptyTemplate>
+                                    </com:TActiveRepeater>
+                                    <div class="box-footer clearfix">    
+                                        <div class="pull-left">
+                                            <com:TActiveLabel ID="paginationInfo2"/>        
+                                        </div>
+                                        <div class="pull-right">        
+                                            <com:TActiveCustomPager ID="pager2" OnCallBack="Page.renderCallback" ControlToPaginate="RepeaterUnread" Mode="Numeric" OnPageIndexChanged="Page.Page_Changed" PrevPageText="&laquo; Previous" NextPageText="Next &raquo;" PageButtonCount="10" FirstPageText="First" LastPageText="Last" CssClass="custompaging" ButtonCssClass="page">	
+                                                <prop:ClientSide.OnPreDispatch>
+                                                    $('loading').show();                                                                                                                 
+                                                </prop:ClientSide.OnPreDispatch>                    
+                                                <prop:ClientSide.onComplete>                                            
+                                                    $('loading').hide();
+                                                </prop:ClientSide.OnComplete>
+                                            </com:TActiveCustomPager>            
+                                        </div>    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </com:TView>
+                </com:TActiveMultiView>
+            </div>
+        </div>
+    </div>
+</com:TPanel>
+</com:TContent>

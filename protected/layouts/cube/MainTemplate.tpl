@@ -677,6 +677,12 @@
                                                 <span>Dashboard</span>											
                                             </a>                                        
                                         </li>  
+                                        <li<%=$this->Page->showForumDiskusi==true?' class="active"':''%>>
+                                            <a href="<%=$this->Page->constructUrl('forum.Diskusi',true)%>">
+                                                <i class="fa fa-comment"></i>
+                                                <span>Forum Diskusi</span>											
+                                            </a>                                        
+                                        </li> 
                                         <li class="nav-header nav-header-first hidden-sm hidden-xs">
                                             AKADEMIK
                                         </li>

@@ -10,7 +10,7 @@ class CDetailEditNilai extends MainPageD {
         
 		if (!$this->IsPostback&&!$this->IsCallback) {
             if (!isset($_SESSION['currentPageDetailEditNilai'])||$_SESSION['currentPageDetailEditNilai']['page_name']!='d.nilai.DetailEditNilai') {
-				$_SESSION['currentPageDetailEditNilai']=array('page_name'=>'d.nilai.DetailEditNilai','page_num'=>0,'search'=>false,'DataNilai'=>array());
+				$_SESSION['currentPageDetailEditNilai']=array('page_name'=>'d.nilai.DetailEditNilai','page_num'=>0,'search'=>false,'DataNilai'=>array(),'jumlahrecord'=>50);
 			}  
             $this->tbCmbOutputReport->DataSource=$this->setup->getOutputFileType();
             $this->tbCmbOutputReport->Text= $_SESSION['outputreport'];
@@ -34,6 +34,8 @@ class CDetailEditNilai extends MainPageD {
                 $this->txtPersenUAS->Text=$infokelas['persen_uas'];
                 $this->txtPersenAbsen->Text=$infokelas['persen_absen'];
                 
+                $this->cmbJumlahRecord->Text=$_SESSION['currentPageDetailEditNilai']['jumlahrecord'];
+                $this->RepeaterS->PageSize=$_SESSION['currentPageDetailEditNilai']['jumlahrecord'];
                 $_SESSION['currentPageDetailEditNilai']['DataNilai']=$this->Demik->InfoKelas;
                 $this->populateData();	             
             } catch (Exception $ex) {
@@ -42,15 +44,34 @@ class CDetailEditNilai extends MainPageD {
             }
 		}
 	}    
-    public function filterRecord ($sender,$param) {
-		$_SESSION['currentPageDetailEditNilai']['idkelas_mhs']=$this->cmbDaftarKelas->Text;
-		$this->populateData($_SESSION['currentPageDetailEditNilai']['search']);        
-        $this->InfoKelasPanel->render($param->NewWriter);
+    public function changeJumlahRecord ($sender,$param) {
+		$_SESSION['currentPageDetailEditNilai']['jumlahrecord']=$this->cmbJumlahRecord->Text;
+        $this->RepeaterS->PageSize=$_SESSION['currentPageDetailEditNilai']['jumlahrecord'];
+		$this->populateData();        
+	}
+    public function Page_Changed ($sender,$param) {
+		$_SESSION['currentPageDetailEditNilai']['page_num']=$param->NewPageIndex;
+		$this->populateData($_SESSION['currentPageDetailEditNilai']['search']);
+	}
+	public function renderCallback ($sender,$param) {
+		$this->RepeaterS->render($param->NewWriter);	
 	}
 	protected function populateData() {	
         $datakelas=$_SESSION['currentPageDetailEditNilai']['DataNilai'];
         $idkelas_mhs=$datakelas['idkelas_mhs'];
-        $str = "SELECT vkm.idkrsmatkul,vdm.nim,vdm.nama_mhs,n.persentase_quiz, n.persentase_tugas, n.persentase_uts, n.persentase_uas, n.persentase_absen, n.nilai_quiz, n.nilai_tugas, n.nilai_uts, n.nilai_uas, n.nilai_absen, n.n_kuan,n.n_kual FROM kelas_mhs_detail kmd LEFT JOIN nilai_matakuliah n ON (n.idkrsmatkul=kmd.idkrsmatkul) JOIN v_krsmhs vkm ON (vkm.idkrsmatkul=kmd.idkrsmatkul) JOIN v_datamhs vdm ON (vkm.nim=vdm.nim) WHERE kmd.idkelas_mhs=$idkelas_mhs AND vkm.sah=1 AND vkm.batal=0 ORDER BY vdm.nama_mhs ASC";        
+        $str = "SELECT vkm.idkrsmatkul,vdm.nim,vdm.nama_mhs,n.persentase_quiz, n.persentase_tugas, n.persentase_uts, n.persentase_uas, n.persentase_absen, n.nilai_quiz, n.nilai_tugas, n.nilai_uts, n.nilai_uas, n.nilai_absen, n.n_kuan,n.n_kual FROM kelas_mhs_detail kmd LEFT JOIN nilai_matakuliah n ON (n.idkrsmatkul=kmd.idkrsmatkul) JOIN v_krsmhs vkm ON (vkm.idkrsmatkul=kmd.idkrsmatkul) JOIN v_datamhs vdm ON (vkm.nim=vdm.nim) WHERE kmd.idkelas_mhs=$idkelas_mhs AND vkm.sah=1 AND vkm.batal=0";        
+        
+        $jumlah_baris=$this->DB->getCountRowsOfTable(" kelas_mhs_detail kmd LEFT JOIN nilai_matakuliah n ON (n.idkrsmatkul=kmd.idkrsmatkul) JOIN v_krsmhs vkm ON (vkm.idkrsmatkul=kmd.idkrsmatkul) JOIN v_datamhs vdm ON (vkm.nim=vdm.nim) WHERE kmd.idkelas_mhs=$idkelas_mhs AND vkm.sah=1 AND vkm.batal=0",'vkm.idkrsmatkul');
+        
+        $this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageDetailEditNilai']['page_num'];
+		$this->RepeaterS->VirtualItemCount=$jumlah_baris;
+		$offset=$this->RepeaterS->CurrentPageIndex*$this->RepeaterS->PageSize;
+		$limit=$this->RepeaterS->PageSize;
+		if ($offset+$limit>$this->RepeaterS->VirtualItemCount) {
+			$limit=$this->RepeaterS->VirtualItemCount-$offset;
+		}
+		if ($limit < 0) {$offset=0;$limit=10;$_SESSION['currentPageDetailEditNilai']['page_num']=0;}
+		$str = "$str ORDER BY vdm.nama_mhs ASC LIMIT $offset,$limit";				     
         $this->DB->setFieldTable(array('idkrsmatkul','nim','nama_mhs','persentase_quiz', 'persentase_tugas', 'persentase_uts', 'persentase_uas', 'persentase_absen', 'nilai_quiz', 'nilai_tugas', 'nilai_uts', 'nilai_uas', 'nilai_absen','n_kuan','n_kual'));
         $r=$this->DB->getRecord($str);	           
         $result=array();
@@ -71,7 +92,9 @@ class CDetailEditNilai extends MainPageD {
             $result[$k]=$v;
         }
         $this->RepeaterS->DataSource=$result;
-        $this->RepeaterS->dataBind();	                
+        $this->RepeaterS->dataBind();	  
+        
+        $this->paginationInfo->Text=$this->getInfoPaging($this->RepeaterS);
 	}	
      public function updateDataPersentase ($sender,$param) {
         if ($this->IsValid) {

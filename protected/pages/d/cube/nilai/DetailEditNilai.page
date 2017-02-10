@@ -177,7 +177,29 @@
         <div class="col-lg-12">
             <div class="main-box clearfix">
                 <header class="main-box-header clearfix">
-                    <h2 class="pull-left"></h2>                     
+                    <div class="filter-block pull-left">
+                        <com:TActiveDropDownList ID="cmbJumlahRecord" OnCallback="Page.changeJumlahRecord" CssClass="form-control">				
+                            <com:TListItem Value="10" Text="10" />
+                            <com:TListItem Value="20" Text="20" />
+                            <com:TListItem Value="30" Text="30" />
+                            <com:TListItem Value="40" Text="40" />
+                            <com:TListItem Value="50" Text="50" />
+                            <com:TListItem Value="60" Text="60" />
+                            <com:TListItem Value="70" Text="70" />
+                            <com:TListItem Value="80" Text="80" />
+                            <com:TListItem Value="90" Text="90" />
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->cmbJumlahRecord->ClientId%>').disabled='disabled';
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.onComplete>
+                                $('loading').hide();
+                                $('<%=$this->cmbJumlahRecord->ClientId%>').disabled='';
+                            </prop:ClientSide.OnComplete>	
+                        </com:TActiveDropDownList>
+                    </div>
                     <div class="filter-block pull-right">       
                         <com:TActiveLinkButton ID="btnSave" OnClick="Page.saveData" CssClass="btn btn-primary pull-left" Attributes.Title="Simpan Nilai">
                             <prop:Text><i class="fa fa-save fa-lg"></i></prop:Text>
@@ -215,7 +237,7 @@
                 </header>
                 <div class="main-box-body clearfix"> 
                     <div class="table-responsive">
-                        <com:TActiveRepeater ID="RepeaterS" DataKeyField="idkrsmatkul">
+                        <com:TActiveRepeater ID="RepeaterS" DataKeyField="idkrsmatkul" AllowPaging="true" AllowCustomPaging="true" >
                             <prop:HeaderTemplate>
                                 <div class="alert alert-info">
                                     <i class="fa fa-info-circle fa-fw fa-lg"></i>
@@ -295,7 +317,8 @@
                                     </div>
                                 </div>
                             </prop:EmptyTemplate>
-                        </com:TActiveRepeater>   
+                        </com:TActiveRepeater>
+                        <%include Application.CustomPaging%>
                     </div>
                 </div>
             </div>

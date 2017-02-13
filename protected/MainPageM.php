@@ -93,10 +93,6 @@ class MainPageM extends MainPage {
      */
     public $showPenyelenggaraan=false;
     /**     
-     * show page pembagian kelas [perkuliahan]
-     */
-    public $showPembagianKelas=false;      
-    /**     
      * show page KRS Kelas Ekstension [perkuliahan]
      */
     public $showKRSEkstension=false;

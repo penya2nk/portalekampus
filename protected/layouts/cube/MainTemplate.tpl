@@ -694,6 +694,11 @@
                                             </a>
                                             <ul class="submenu">
                                                 <li>
+                                                    <a href="<%=$this->Page->constructUrl('perkuliahan.PembagianKelas',true)%>"<%=$this->Page->showPembagianKelas==true ? ' class="active" ':''%>>
+                                                        Pembagian Kelas
+                                                    </a>
+                                                </li>
+                                                <li>
                                                     <a href="<%=$this->Page->constructUrl('perkuliahan.Kuesioner',true)%>"<%=$this->Page->showKuesioner==true ? ' class="active" ':''%>>
                                                         Kuesioner
                                                     </a>

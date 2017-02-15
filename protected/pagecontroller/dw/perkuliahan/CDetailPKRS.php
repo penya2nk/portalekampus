@@ -5,10 +5,18 @@ class CDetailPKRS extends MainPageDW {
 	* total SKS
 	*/
 	public static $totalSKS=0;	
+    /**
+	* total SKS Batal
+	*/
+	public static $totalSKSBatal=0;	
 	/**
 	* total Matakuliah
 	*/
-	public static $jumlahMatkul=0;		
+	public static $jumlahMatkul=0;	
+    /**
+	* total Matakuliah Batal
+	*/
+	public static $jumlahMatkulBatal=0;	
 	public function onLoad($param) {
 		parent::onLoad($param);	
         $this->showSubMenuAkademikPerkuliahan=true;
@@ -51,10 +59,10 @@ class CDetailPKRS extends MainPageDW {
 	}
     public function itemCreated ($sender,$param) {
         $item=$param->Item;
-        if ($item->ItemType === 'Item' || $item->ItemType === 'AlternatingItem') {                
-            CDetailPKRS::$totalSKS+=$item->DataItem['sks'];
-            CDetailPKRS::$jumlahMatkul+=1;
+        if ($item->ItemType === 'Item' || $item->ItemType === 'AlternatingItem') { 
             if ($item->DataItem['batal']) {
+                CDetailPKRS::$totalSKSBatal+=$item->DataItem['sks'];
+                CDetailPKRS::$jumlahMatkulBatal+=1;
 				$item->btnToggleStatusMatkul->Text='Sahkan';
 				$item->btnToggleStatusMatkul->Attributes->onclick="if(!confirm('Anda ingin mensahkan Matakuliah mahasiswa ini ?')) return false;";					
                 $item->btnToggleStatusMatkul->CssClass='table-link'; 
@@ -64,6 +72,8 @@ class CDetailPKRS extends MainPageDW {
                                                         <i class="fa fa-check fa-stack-1x fa-inverse"></i>
                                                     </span>';
             }else {
+                CDetailPKRS::$totalSKS+=$item->DataItem['sks'];
+                CDetailPKRS::$jumlahMatkul+=1;
 				$item->btnToggleStatusMatkul->Attributes->onclick="if(!confirm('Anda ingin membatalkan Matakuliah mahasiswa ini ?')) return false;";						
                 $item->btnToggleStatusMatkul->CssClass='table-link danger';
                 $item->btnToggleStatusMatkul->Attributes->Title='Batalkan Matakuliah';

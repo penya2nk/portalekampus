@@ -119,13 +119,23 @@
                                     </tbody>
                                     <tfoot>
                                     <tr>
-                                        <td colspan="3"><strong>Jumlah SKS</strong></td>
-                                        <td><%# TambahPKRS::$totalSKS%></td>
-                                        <td colspan="3">&nbsp;</td>
+                                        <td colspan="3"><strong>Jumlah SKS Dikontrak</strong></td>
+                                        <td><%# CTambahPKRS::$totalSKS%> </td>
+                                        <td colspan="5">&nbsp;</td>
+                                    </tr                                   
+                                    <tr>
+                                        <td colspan="3"><strong>Jumlah Matakuliah Dikontrak</strong></td>
+                                        <td><%# CTambahPKRS::$jumlahMatkul%></td>
+                                        <td colspan="5">&nbsp;</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="3"><strong>Jumlah Matakuliah</strong></td>
-                                        <td><%# TambahPKRS::$jumlahMatkul%></td>
+                                        <td colspan="3"><strong>Jumlah SKS Batal</strong></td>
+                                        <td><%# CTambahPKRS::$totalSKSBatal%> </td>
+                                        <td colspan="5">&nbsp;</td>
+                                    </tr                                   
+                                    <tr>
+                                        <td colspan="3"><strong>Jumlah Matakuliah Batal</strong></td>
+                                        <td><%# CTambahPKRS::$jumlahMatkulBatal%></td>
                                         <td colspan="5">&nbsp;</td>
                                     </tr>
                                     </tfoot>

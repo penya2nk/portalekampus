@@ -90,13 +90,13 @@
                                     <a href="#tab-aktivitasmahasiswa" data-toggle="tab">Aktivitas Mahasiswa</a>
                                 </li>
                                 <li>
-                                    <com:TActiveLinkButton ID="btnViewAMDulang" Text="Daftar Ulang" CommandName="SwitchViewIndex" CommandParameter="1" ClientSide.PostState="false">
+                                    <com:TActiveLinkButton ID="btnViewDulang" Text="Daftar Ulang" CommandName="SwitchViewIndex" CommandParameter="1" ClientSide.PostState="false">
                                         <prop:ClientSide.OnPreDispatch>                                                                   
                                             $('loading').show(); 
-                                            $('<%=$this->btnViewAMDulang->ClientId%>').disabled='disabled';						
+                                            $('<%=$this->btnViewDulang->ClientId%>').disabled='disabled';						
                                         </prop:ClientSide.OnPreDispatch>
                                         <prop:ClientSide.OnLoading>
-                                            $('<%=$this->btnViewAMDulang->ClientId%>').disabled='disabled';						
+                                            $('<%=$this->btnViewDulang->ClientId%>').disabled='disabled';						
                                         </prop:ClientSide.OnLoading>
                                         <prop:ClientSide.OnComplete>                                        
                                             $('loading').hide(); 
@@ -104,13 +104,27 @@
                                     </com:TActiveLinkButton>                                    
                                 </li>
                                 <li>
-                                    <com:TActiveLinkButton ID="btnViewAMKRS" Text="KRS" CommandName="SwitchViewIndex" CommandParameter="2" ClientSide.PostState="false">
+                                    <com:TActiveLinkButton ID="btnViewDulangKRS" Text="KRS" CommandName="SwitchViewIndex" CommandParameter="2" ClientSide.PostState="false">
                                         <prop:ClientSide.OnPreDispatch>                                                                   
                                             $('loading').show(); 
-                                            $('<%=$this->btnViewAMKRS->ClientId%>').disabled='disabled';						
+                                            $('<%=$this->btnViewDulangKRS->ClientId%>').disabled='disabled';						
                                         </prop:ClientSide.OnPreDispatch>
                                         <prop:ClientSide.OnLoading>
-                                            $('<%=$this->btnViewAMKRS->ClientId%>').disabled='disabled';						
+                                            $('<%=$this->btnViewDulangKRS->ClientId%>').disabled='disabled';						
+                                        </prop:ClientSide.OnLoading>
+                                        <prop:ClientSide.OnComplete>                                        
+                                            $('loading').hide(); 
+                                        </prop:ClientSide.OnComplete>
+                                    </com:TActiveLinkButton>                                    
+                                </li>
+                                <li>
+                                    <com:TActiveLinkButton ID="btnViewDulangNIMDanNRIM" Text="Ganti NIM & NIRM" CommandName="SwitchViewIndex" CommandParameter="3" ClientSide.PostState="false">
+                                        <prop:ClientSide.OnPreDispatch>                                                                   
+                                            $('loading').show(); 
+                                            $('<%=$this->btnViewDulangNIMDanNRIM->ClientId%>').disabled='disabled';						
+                                        </prop:ClientSide.OnPreDispatch>
+                                        <prop:ClientSide.OnLoading>
+                                            $('<%=$this->btnViewDulangNIMDanNRIM->ClientId%>').disabled='disabled';						
                                         </prop:ClientSide.OnLoading>
                                         <prop:ClientSide.OnComplete>                                        
                                             $('loading').hide(); 
@@ -124,6 +138,7 @@
                                 </div>
                             </div>
                         </com:TView>
+                        
                         <com:TView ID="dulangmahasiswa">
                             <ul class="nav nav-tabs">
                                 <li>
@@ -151,6 +166,20 @@
                                         </prop:ClientSide.OnPreDispatch>
                                         <prop:ClientSide.OnLoading>
                                             $('<%=$this->btnViewDMKRS->ClientId%>').disabled='disabled';						
+                                        </prop:ClientSide.OnLoading>
+                                        <prop:ClientSide.OnComplete>                                        
+                                            $('loading').hide(); 
+                                        </prop:ClientSide.OnComplete>
+                                    </com:TActiveLinkButton>                                    
+                                </li>
+                                <li>
+                                    <com:TActiveLinkButton ID="btnViewBGantiNIMDanNRIM" Text="Ganti NIM & NIRM" CommandName="SwitchViewIndex" CommandParameter="3" ClientSide.PostState="false">
+                                        <prop:ClientSide.OnPreDispatch>                                                                   
+                                            $('loading').show(); 
+                                            $('<%=$this->btnViewBGantiNIMDanNRIM->ClientId%>').disabled='disabled';						
+                                        </prop:ClientSide.OnPreDispatch>
+                                        <prop:ClientSide.OnLoading>
+                                            $('<%=$this->btnViewBGantiNIMDanNRIM->ClientId%>').disabled='disabled';						
                                         </prop:ClientSide.OnLoading>
                                         <prop:ClientSide.OnComplete>                                        
                                             $('loading').hide(); 
@@ -210,6 +239,7 @@
                                 </div>
                             </div>
                         </com:TView>
+                        
                         <com:TView ID="krsmahasiswa">
                             <ul class="nav nav-tabs">
                                 <li>
@@ -242,7 +272,21 @@
                                 </li>
                                 <li class="active">                                
                                     <a href="#tab-dulangmahasiswa" data-toggle="tab">KRS</a>
-                                </li>                                
+                                </li>   
+                                <li>
+                                    <com:TActiveLinkButton ID="btnViewKRSNIMDanNRIM" Text="Ganti NIM & NIRM" CommandName="SwitchViewIndex" CommandParameter="3" ClientSide.PostState="false">
+                                        <prop:ClientSide.OnPreDispatch>                                                                   
+                                            $('loading').show(); 
+                                            $('<%=$this->btnViewKRSNIMDanNRIM->ClientId%>').disabled='disabled';						
+                                        </prop:ClientSide.OnPreDispatch>
+                                        <prop:ClientSide.OnLoading>
+                                            $('<%=$this->btnViewKRSNIMDanNRIM->ClientId%>').disabled='disabled';						
+                                        </prop:ClientSide.OnLoading>
+                                        <prop:ClientSide.OnComplete>                                        
+                                            $('loading').hide(); 
+                                        </prop:ClientSide.OnComplete>
+                                    </com:TActiveLinkButton>                                    
+                                </li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane fade in active" id="tab-krsmahasiswa">
@@ -315,8 +359,169 @@
                                 </div>
                             </div>
                         </com:TView>
+                        <com:TView ID="gantinimnirm">
+                            <ul class="nav nav-tabs">
+                                <li>
+                                    <com:TActiveLinkButton ID="btnViewGantiNIMNIRMAktivitasMahasiswa" Text="Aktivitas Mahasiswa" CommandName="SwitchViewIndex" CommandParameter="0" ClientSide.PostState="false">
+                                        <prop:ClientSide.OnPreDispatch>                                                                   
+                                            $('loading').show(); 
+                                            $('<%=$this->btnViewGantiNIMNIRMAktivitasMahasiswa->ClientId%>').disabled='disabled';						
+                                        </prop:ClientSide.OnPreDispatch>
+                                        <prop:ClientSide.OnLoading>
+                                            $('<%=$this->btnViewGantiNIMNIRMAktivitasMahasiswa->ClientId%>').disabled='disabled';						
+                                        </prop:ClientSide.OnLoading>
+                                        <prop:ClientSide.OnComplete>                                        
+                                            $('loading').hide(); 
+                                        </prop:ClientSide.OnComplete>
+                                    </com:TActiveLinkButton>                                    
+                                </li> 
+                                <li>
+                                    <com:TActiveLinkButton ID="btnViewGantiNIMNIRMDulang" Text="Daftar Ulang" CommandName="SwitchViewIndex" CommandParameter="1" ClientSide.PostState="false">
+                                        <prop:ClientSide.OnPreDispatch>                                                                   
+                                            $('loading').show(); 
+                                            $('<%=$this->btnViewGantiNIMNIRMDulang->ClientId%>').disabled='disabled';						
+                                        </prop:ClientSide.OnPreDispatch>
+                                        <prop:ClientSide.OnLoading>
+                                            $('<%=$this->btnViewGantiNIMNIRMDulang->ClientId%>').disabled='disabled';						
+                                        </prop:ClientSide.OnLoading>
+                                        <prop:ClientSide.OnComplete>                                        
+                                            $('loading').hide(); 
+                                        </prop:ClientSide.OnComplete>
+                                    </com:TActiveLinkButton>                                    
+                                </li>
+                                <li>
+                                    <com:TActiveLinkButton ID="btnViewGantiNIMNIRMKRS" Text="KRS" CommandName="SwitchViewIndex" CommandParameter="2" ClientSide.PostState="false">
+                                        <prop:ClientSide.OnPreDispatch>                                                                   
+                                            $('loading').show(); 
+                                            $('<%=$this->btnViewGantiNIMNIRMKRS->ClientId%>').disabled='disabled';						
+                                        </prop:ClientSide.OnPreDispatch>
+                                        <prop:ClientSide.OnLoading>
+                                            $('<%=$this->btnViewGantiNIMNIRMKRS->ClientId%>').disabled='disabled';						
+                                        </prop:ClientSide.OnLoading>
+                                        <prop:ClientSide.OnComplete>                                        
+                                            $('loading').hide(); 
+                                        </prop:ClientSide.OnComplete>
+                                    </com:TActiveLinkButton>                                    
+                                </li>
+                                <li class="active">
+                                    <com:TActiveLinkButton ID="btnViewGantiNIMDanNRIM" OnClick="Page.editRecord" Text="Ganti NIM & NIRM" CommandName="SwitchViewIndex" CommandParameter="3" ClientSide.PostState="false">
+                                        <prop:ClientSide.OnPreDispatch>                                                                   
+                                            $('loading').show(); 
+                                            $('<%=$this->btnViewGantiNIMDanNRIM->ClientId%>').disabled='disabled';						
+                                        </prop:ClientSide.OnPreDispatch>
+                                        <prop:ClientSide.OnLoading>
+                                            $('<%=$this->btnViewGantiNIMDanNRIM->ClientId%>').disabled='disabled';						
+                                        </prop:ClientSide.OnLoading>
+                                        <prop:ClientSide.OnComplete>                                        
+                                            $('loading').hide(); 
+                                        </prop:ClientSide.OnComplete>
+                                    </com:TActiveLinkButton>                                    
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane fade in active" id="tab-krsmahasiswa">
+                                    <div class="form-horizontal">
+                                         <div class="form-group">
+                                            <label class="col-lg-2 control-label"><strong>NIM Lama: </strong></label>
+                                            <div class="col-sm-9">
+                                                <p class="form-control-static">
+                                                    <%= $this->getDataMHS('nim')%>
+                                                </p>
+                                            </div>                            
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><strong>NIRM Lama: </strong></label>
+                                            <div class="col-sm-9">
+                                                <p class="form-control-static">
+                                                    <%= $this->getDataMHS('nirm')%>
+                                                </p>
+                                            </div>                            
+                                        </div>
+                                        <div class="form-group" id="divEditNIM">
+                                            <label class="col-lg-2 control-label">NIM Baru:</label>
+                                            <div class="col-lg-10">
+                                                <div class="row">
+                                                    <div class="col-lg-6">                                
+                                                        <com:TTextBox ID="txtEditNIM" MaxLength="20" CssClass="form-control" Width="100px" Text="<%= $this->getDataMHS('nim')%>" />
+                                                    </div>
+                                                    <div class="col-lg-10">                                
+                                                        <com:TRequiredFieldValidator ID="FieldEditNIMValidator" ControlToValidate="txtEditNIM" Display="Dynamic" ErrorMessage="NIM tidak boleh kosong!" ValidationGroup="editNIM" CssClass="has-error help-block">
+                                                            <prop:ClientSide.OnValidationError>
+                                                                $('divEditNIM').addClassName('has-error');
+                                                                jQuery('#<%=$this->FieldEditNIMValidator->ClientID%>').removeAttr('style');
+                                                            </prop:ClientSide.OnValidationError>
+                                                            <prop:ClientSide.OnValidationSuccess>
+                                                                $('divEditNIM').removeClassName('has-error');
+                                                            </prop:ClientSide.OnValidationSuccess>
+                                                        </com:TRequiredFieldValidator>
+                                                        <com:TActiveCustomValidator ID="editNIM" ControlToValidate="txtEditNIM" Display="Dynamic" OnServerValidate="checkNIM" ValidationGroup="editNIM" CssClass="has-error help-block">
+                                                            <prop:ClientSide.OnValidationError>
+                                                                $('divEditNIM').addClassName('has-error');
+                                                                jQuery('#<%=$this->editNIM->ClientID%>').removeAttr('style');
+                                                            </prop:ClientSide.OnValidationError>
+                                                            <prop:ClientSide.OnValidationSuccess>
+                                                                $('divEditNIM').removeClassName('has-error');
+                                                            </prop:ClientSide.OnValidationSuccess>
+                                                        </com:TActiveCustomValidator>              
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="divEditNIRM">
+                                            <label class="col-lg-2 control-label">NIRM :</label>
+                                            <div class="col-lg-10">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <com:TTextBox ID="txtEditNIRM" Text="<%= $this->getDataMHS('nirm')%>" MaxLength="20" CssClass="form-control" Width="150px" />
+                                                    </div>
+                                                    <div class="col-lg-10">
+                                                        <com:TRequiredFieldValidator ID="FieldEditNIRMValidator" ControlToValidate="txtEditNIRM" Display="Dynamic" ErrorMessage="NIRM tidak boleh kosong!" ValidationGroup="editNIM" CssClass="has-error help-block">
+                                                            <prop:ClientSide.OnValidationError>
+                                                                $('divEditNIRM').addClassName('has-error');
+                                                                jQuery('#<%=$this->FieldEditNIRMValidator->ClientID%>').removeAttr('style');
+                                                            </prop:ClientSide.OnValidationError>
+                                                            <prop:ClientSide.OnValidationSuccess>
+                                                                $('divEditNIRM').removeClassName('has-error');
+                                                            </prop:ClientSide.OnValidationSuccess>
+                                                        </com:TRequiredFieldValidator>
+                                                        <com:TActiveCustomValidator ID="editNIRM" ControlToValidate="txtEditNIRM" Display="Dynamic" OnServerValidate="checkNIRM" ValidationGroup="editNIM" CssClass="has-error help-block">
+                                                            <prop:ClientSide.OnValidationError>
+                                                                $('divEditNIRM').addClassName('has-error');
+                                                                jQuery('#<%=$this->editNIRM->ClientID%>').removeAttr('style');
+                                                            </prop:ClientSide.OnValidationError>
+                                                            <prop:ClientSide.OnValidationSuccess>
+                                                                $('divEditNIRM').removeClassName('has-error');
+                                                            </prop:ClientSide.OnValidationSuccess>
+                                                        </com:TActiveCustomValidator>      
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-lg-offset-2 col-lg-10">
+                                                <com:TActiveCustomButton ID="btnUpdateGantiNIMNIRM" CssClass="btn btn-primary" OnClick="updateDataNIMNIRM" ValidationGroup="editNIM"  >
+                                                    <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
+                                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                                        $('loading').show(); 
+                                                        $('<%=$this->btnUpdateGantiNIMNIRM->ClientId%>').disabled='disabled';						
+                                                    </prop:ClientSide.OnPreDispatch>
+                                                    <prop:ClientSide.OnLoading>
+                                                        $('<%=$this->btnUpdateGantiNIMNIRM->ClientId%>').disabled='disabled';						
+                                                    </prop:ClientSide.OnLoading>
+                                                    <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                                        $('<%=$this->btnUpdateGantiNIMNIRM->ClientId%>').disabled='';
+                                                        $('loading').hide(); 
+                                                    </prop:ClientSide.OnComplete>
+                                                </com:TActiveCustomButton>
+                                            </div>
+                                        </div>     
+                                    </div>
+                                </div>
+                            </div>
+                        </com:TView>
+                        
                     </com:TActiveMultiView>                                        
-                    
                 </div>
             </div>
         </div>

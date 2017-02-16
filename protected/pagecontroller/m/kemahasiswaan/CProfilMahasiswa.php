@@ -71,9 +71,8 @@ class CProfilMahasiswa extends MainPageM {
                         $this->createObj('KRS');                    
                         $this->populateKRS();
                     break;
-                    case 3 : //Keuangan mahasiswa
-                        $this->createObj('Finance');                    
-                        $this->populateKeuangan();
+                    case 3 : //Ganti NIM dan NIRM
+                        
                     break;
                 }
             }else{
@@ -177,5 +176,59 @@ class CProfilMahasiswa extends MainPageM {
             $this->redirect('kemahasiswaan.ProfilMahasiswa',true,array('id'=>$nim));
         }
     }
+    public function checkNIM ($sender,$param) {					
+		$nim=$param->Value;		
+        if ($nim != '') {
+            try {   
+                if ($nim != $_SESSION['currentPageProfilMahasiswa']['DataMHS']['nim']) {
+                    $str = "SELECT nama_mhs,tahun_masuk,nama_ps FROM v_datamhs WHERE nim='$nim'";
+                    $this->DB->setFieldTable(array('nama_mhs','tahun_masuk','nama_ps'));
+                    $r = $this->DB->getRecord($str);
+                    if (isset($r[1])) {  
+                        $nama_mhs=$r[1]['nama_mhs'];
+                        $tahun_masuk=$r[1]['tahun_masuk'];
+                        $nama_ps=$r[1]['nama_ps'];
+                        throw new Exception ("NIM ($nim) sudah terdaftar atas nama $nama_mhs P.S $nama_ps registrasi pada tahun $tahun_masuk");                                                   
+                    }                
+                }
+            }catch (Exception $e) {
+                $param->IsValid=false;
+                $sender->ErrorMessage=$e->getMessage();
+            }	
+        }	
+	}
+	
+	public function checkNIRM ($sender,$param) {
+        $nirm=$param->Value;		
+        if ($nirm != '') {
+            try {   
+                if ($nirm != $_SESSION['currentPageProfilMahasiswa']['DataMHS']['nirm']) {
+                    $str = "SELECT nama_mhs,tahun_masuk,nama_ps FROM v_datamhs WHERE nirm='$nirm'";
+                    $this->DB->setFieldTable(array('nama_mhs','tahun_masuk','nama_ps'));
+                    $r = $this->DB->getRecord($str);
+                    if (isset($r[1])) {  
+                        $nama_mhs=$r[1]['nama_mhs'];
+                        $tahun_masuk=$r[1]['tahun_masuk'];
+                        $nama_ps=$r[1]['nama_ps'];
+                        throw new Exception ("NIRM ($nirm) sudah terdaftar atas nama $nama_mhs P.S $nama_ps registrasi pada tahun $tahun_masuk");                                                   
+                    }          
+                }
+            }catch (Exception $e) {
+                $param->IsValid=false;
+                $sender->ErrorMessage=$e->getMessage();
+            }	
+        }
+	}
+    public function updateDataNIMNIRM ($sender,$param) {
+		if ($this->Page->isValid) {	
+            $nimasal=$_SESSION['currentPageProfilMahasiswa']['DataMHS']['nim'];
+            $nim=addslashes($this->txtEditNIM->Text);
+			$nirm=addslashes($this->txtEditNIRM->Text);		
+			$str = "UPDATE register_mahasiswa SET nim='$nim',nirm='$nirm' WHERE nim='$nimasal'";
+			$this->DB->updateRecord($str);	
+            
+            $this->redirect('kemahasiswaan.ProfilMahasiswa',true,array('id'=>$nim));
+		}
+	}
 }
 ?>

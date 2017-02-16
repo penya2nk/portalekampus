@@ -96,25 +96,8 @@
                                     </prop:ClientSide.OnComplete>
                                   </com:TActiveDropDownList>
                             </div>
-                        </div>    
-                        <div class="form-group">
-                            <label class="col-lg-3 control-label">Dosen Wali :</label>
-                            <div class="col-lg-9">
-                                <com:TActiveDropDownList ID="cmbDosenWali" OnCallback="changeDW" CssClass="form-control">
-                                    <prop:ClientSide.OnPreDispatch>
-                                        $('loading').show();
-                                    </prop:ClientSide.OnPreDispatch>
-                                    <prop:ClientSide.OnLoading>
-                                        $('<%=$this->cmbDosenWali->ClientId%>').disabled='disabled';							
-                                    </prop:ClientSide.OnLoading>
-                                    <prop:ClientSide.OnComplete>										
-                                        $('<%=$this->cmbDosenWali->ClientId%>').disabled='';							
-                                        $('loading').hide();
-                                    </prop:ClientSide.OnComplete>
-                                </com:TActiveDropDownList>
-                            </div>
-                        </div>                            
-                        <br /><br /><br />
+                        </div>                
+                        <br /><br /><br /><br /><br />
                     </div>
                 </div>
             </div>

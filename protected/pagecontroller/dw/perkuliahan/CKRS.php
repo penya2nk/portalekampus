@@ -53,12 +53,6 @@ class CKRS Extends MainPageDW {
             $this->tbCmbOutputCompress->DataSource=$this->setup->getOutputCompressType();
             $this->tbCmbOutputCompress->Text= $_SESSION['outputcompress'];
             $this->tbCmbOutputCompress->DataBind();
-
-            $dosen_wali=$this->DMaster->getListDosenWali();				            
-            $this->cmbDosenWali->DataSource=$dosen_wali;
-            $this->cmbDosenWali->Text=$_SESSION['currentPageKRS']['iddosen_wali'];
-            $this->cmbDosenWali->dataBind();
-
             $this->cmbModeKRS->Text=$_SESSION['currentPageKRS']['mode_krs'];
 
             $this->setInfoToolbar();
@@ -104,11 +98,6 @@ class CKRS Extends MainPageDW {
 	public function Page_Changed ($sender,$param) {
 		$_SESSION['currentPageKRS']['page_num']=$param->NewPageIndex;
 		$this->populateData($_SESSION['currentPageKRS']['search']);
-	}
-    public function changeDW($sender,$param){
-		$_SESSION['currentPageKRS']['iddosen_wali']=$this->cmbDosenWali->Text;
-		$_SESSION['currentPageKRS']['page_num']=0;		
-		$this->populateData();
 	}
 	public function changeModeKRS ($sender,$param) {
 		$_SESSION['currentPageKRS']['mode_krs']=$this->cmbModeKRS->Text;

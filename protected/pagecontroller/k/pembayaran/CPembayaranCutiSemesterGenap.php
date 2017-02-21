@@ -79,7 +79,7 @@ class CPembayaranCutiSemesterGenap Extends MainPageK {
                     throw new Exception ("<br /><br />NIM ($nim) tidak terdaftar di Portal, silahkan ganti dengan yang lain.");		
                 }
                 $this->Finance->setDataMHS(array('nim'=>$nim));
-                $datadulang=$this->Finance->getDataDulang(1,$_SESSION['currentPagePembayaranCutiSemesterGenap']['ta']);
+                $datadulang=$this->Finance->getDataDulang(2,$_SESSION['currentPagePembayaranCutiSemesterGenap']['ta']);
                 
                 if (isset($datadulang['iddulang'])) {
                     if ($datadulang['k_status']!='C') {

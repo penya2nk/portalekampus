@@ -13,20 +13,31 @@ class CDetailPembayaranCutiSemesterGenap Extends MainPageK {
 				$_SESSION['currentPagePembayaranCutiSemesterGenap']=array('page_name'=>'k.pembayaran.PembayaranCutiSemesterGenap','page_num'=>0,'search'=>false,'DataMHS'=>array(),'ta'=>$_SESSION['ta']);												
 			}
              try {
-                $nim=addslashes($this->request['id']);                           				
+                $nim=addslashes($this->request['id']);
+                
                 $str = "SELECT vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.jk,vdm.tempat_lahir,vdm.tanggal_lahir,vdm.kjur,vdm.nama_ps,vdm.idkonsentrasi,k.nama_konsentrasi,vdm.tahun_masuk,vdm.semester_masuk,vdm.iddosen_wali,vdm.idkelas,vdm.k_status,sm.n_status AS status FROM v_datamhs vdm LEFT JOIN konsentrasi k ON (vdm.idkonsentrasi=k.idkonsentrasi) LEFT JOIN status_mhs sm ON (vdm.k_status=sm.k_status) WHERE vdm.nim='$nim'";
                 $this->DB->setFieldTable(array('no_formulir','nim','nirm','nama_mhs','jk','tempat_lahir','tanggal_lahir','kjur','nama_ps','idkonsentrasi','nama_konsentrasi','tahun_masuk','semester_masuk','iddosen_wali','idkelas','k_status','status'));
                 $r=$this->DB->getRecord($str);	           
                 $datamhs=$r[1];
                 
+                if (!isset($r[1])) {
+                    throw new Exception ("NIM ($nim) tidak terdaftar di Portal, silahkan ganti dengan yang lain.");
+                } 
+                
                 $datamhs['idsmt']=2;
                 $datamhs['ta']=$_SESSION['currentPagePembayaranCutiSemesterGenap']['ta'];
                 
-                if (!isset($r[1])) {
-                    throw new Exception ("NIM ($nim) tidak terdaftar di Portal, silahkan ganti dengan yang lain.");
-                }      
-                
                 $this->Finance->setDataMHS($datamhs);
+                $datadulang=$this->Finance->getDataDulang(2,$datamhs['ta']);
+                
+                if (isset($datadulang['iddulang'])) {
+                    if ($datadulang['k_status']!='C') {
+                        $status=$this->DMaster->getNamaStatusMHSByID ($datadulang['k_status']);
+                        $ta=$datadulang['tahun'];
+                        throw new Exception ("NIM ($nim) sudah daftar ulang di semester Genap T.A $ta dengan status $status.");		
+                    }
+                }
+                
                 $datamhs['iddata_konversi']=$this->Finance->isMhsPindahan($datamhs['nim'],true);            
                 
                 $kelas=$this->Finance->getKelasMhs();                

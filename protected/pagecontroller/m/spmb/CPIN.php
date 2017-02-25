@@ -124,7 +124,7 @@ class CPIN extends MainPageM {
         }
     }
     
-     public function printOut($sender,$param) {
+    public function printOut($sender,$param) {
         $this->createObj('reportspmb');
         $this->linkOutput->Text='';
         $this->linkOutput->NavigateUrl='#';
@@ -151,7 +151,7 @@ class CPIN extends MainPageM {
         $this->lblMessagePrintout->Text=$messageprintout;
         $this->lblPrintout->Text='Daftar PIN '.strtoupper($_SESSION['currentPagePIN']['display_record']);
         $this->modalPrintOut->show();
-     }
+    }
 }
 
 ?>

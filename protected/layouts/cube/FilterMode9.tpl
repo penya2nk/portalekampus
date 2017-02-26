@@ -21,7 +21,7 @@
                     </prop:ClientSide.OnComplete>	
                 </com:TActiveDropDownList>          
             </li>            
-        </ul>        
+        </ul>  
         <br/>
         <h4 style="font-size:12px"><strong>Output Report / Compress:</strong></h4>
         <ul id="skin-colors" class="clearfix">

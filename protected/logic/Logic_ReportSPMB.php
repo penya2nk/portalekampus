@@ -434,7 +434,9 @@ class Logic_ReportSPMB extends Logic_Report {
         }
         $this->setLink($this->dataReport['linkoutput'],"Hasil Ujian PMB Tahun Masuk $tahun_masuk $nama_ps_label");
     }
-    
+    /**
+     * digunakan untuk mencetak penggunaan PIN
+     */
     public function printPIN() {
         $pilihan=$this->dataReport['pilihan'];
         $tahun_masuk=$this->dataReport['tahun_masuk'];

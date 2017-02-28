@@ -694,8 +694,8 @@ class Logic_ReportAkademik extends Logic_Report {
                 //$sheet->getRowDimension(9)->setRowHeight(25); 
                 $sheet->getColumnDimension('A')->setWidth(10);
                 $sheet->getColumnDimension('B')->setWidth(20);
-                $sheet->getColumnDimension('C')->setWidth(30);
-                $sheet->getColumnDimension('D')->setWidth(35);
+                $sheet->getColumnDimension('C')->setWidth(35);
+                $sheet->getColumnDimension('D')->setWidth(30);
                 $sheet->getColumnDimension('E')->setWidth(20);
                 $sheet->getColumnDimension('F')->setWidth(20);
                 $sheet->setCellValue('A14','NO');

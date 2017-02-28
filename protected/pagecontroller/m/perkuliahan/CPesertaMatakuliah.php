@@ -230,10 +230,12 @@ class CPesertaMatakuliah extends MainPageM {
                 $messageprintout="Mohon maaf Print out pada mode pdf belum kami support.";                
             break;
         }
+        $idkelas=$_SESSION['currentPagePesertaMatakuliah']['idkelas'];
+        $str_kelas=($idkelas=='' || $idkelas=='none') ? '' : " AND vdm.idkelas='$idkelas'";
+        //$label="Daftar Kelas";
         $this->lblMessagePrintout->Text=$messageprintout;
-        $this->lblPrintout->Text='Daftar Peserta '. $this->DMaster->getNamaKelasByID($_SESSION['currentPagePesertaMatakuliah']['idkelas']);
+        $this->lblPrintout->Text='Daftar Peserta '. $label=($idkelas=="none") ? 'Semua Kelas' : $this->DMaster->getNamaKelasByID($idkelas) ;
         $this->modalPrintOut->show();
      }
-
 }
 ?>

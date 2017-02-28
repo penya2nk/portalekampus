@@ -123,7 +123,6 @@ class CPIN extends MainPageM {
             $this->redirect('spmb.PIN',true);
         }
     }
-    
     public function printOut($sender,$param) {
         $this->createObj('reportspmb');
         $this->linkOutput->Text='';
@@ -153,5 +152,4 @@ class CPIN extends MainPageM {
         $this->modalPrintOut->show();
     }
 }
-
 ?>

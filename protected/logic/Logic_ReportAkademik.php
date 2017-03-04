@@ -691,7 +691,6 @@ class Logic_ReportAkademik extends Logic_Report {
 								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
 							);
                 $sheet->getStyle("A7:A7")->applyFromArray($styleArray);
-                //$sheet->getRowDimension(9)->setRowHeight(25); 
                 $sheet->getColumnDimension('A')->setWidth(10);
                 $sheet->getColumnDimension('B')->setWidth(20);
                 $sheet->getColumnDimension('C')->setWidth(35);
@@ -713,28 +712,26 @@ class Logic_ReportAkademik extends Logic_Report {
                 $sheet->getStyle("A14:F14")->applyFromArray($styleArray);
                 $sheet->getStyle("A14:F14")->getAlignment()->setWrapText(true);
                     
-                $str_display='';
                 $id=$this->dataReport['idpenyelenggaraan'];
                 if($idkelas=='none')
                 {
-                    $str_display="SELECT vkm.nim,vdm.nama_mhs,vdm.idkelas,vdm.jk,vdm.tahun_masuk,vkm.batal,vkm.sah FROM v_krsmhs vkm,v_datamhs vdm WHERE vkm.nim=vdm.nim AND idpenyelenggaraan='$id'";
+                    $str="SELECT vkm.nim,vdm.nama_mhs,vdm.idkelas,vdm.jk,vdm.tahun_masuk,vkm.batal,vkm.sah FROM v_krsmhs vkm,v_datamhs vdm WHERE vkm.nim=vdm.nim AND idpenyelenggaraan='$id'";
                 }
                 else
                 {
-                    $str_display="SELECT vkm.nim,vdm.nama_mhs,vdm.idkelas,vdm.jk,vdm.tahun_masuk,vkm.batal,vkm.sah FROM v_krsmhs vkm,v_datamhs vdm WHERE vkm.nim=vdm.nim AND idpenyelenggaraan='$id' AND vdm.idkelas='$idkelas'";
+                    $str="SELECT vkm.nim,vdm.nama_mhs,vdm.idkelas,vdm.jk,vdm.tahun_masuk,vkm.batal,vkm.sah FROM v_krsmhs vkm,v_datamhs vdm WHERE vkm.nim=vdm.nim AND idpenyelenggaraan='$id' AND vdm.idkelas='$idkelas'";
                 }
-               // $str = "SELECT vkm.nim,vdm.nama_mhs,vdm.idkelas,vdm.jk,vdm.tahun_masuk,vkm.batal,vkm.sah FROM v_krsmhs vkm,v_datamhs vdm WHERE vkm.nim=vdm.nim AND idpenyelenggaraan='$id' AND vdm.idkelas='$idkelas'";
+               
                 $this->db->setFieldTable(array('nim','nama_mhs','idkelas','jk','tahun_masuk','batal','sah'));	
-                $r = $this->db->getRecord($str_display);
+                $r = $this->db->getRecord($str);
                 $result=array();
                 
                 $row=15;
                 
                 while (list($k,$v)=each ($r)) {            
                     $sheet->setCellValue("A$row",$v['no']);
-                    $sheet->setCellValue("B$row",$v['nim']);
+                    $sheet->setCellValueExplicit("B$row",$v['nim'],PHPExcel_Cell_DataType::TYPE_STRING);
                     $sheet->setCellValue("C$row",$v['nama_mhs']);
-                    //$sheet->setCellValue("E$row",$v['idkelas']);
                     $sheet->setCellValue("D$row",$objDMaster->getNamaKelasByID($v['idkelas']));
                     $sheet->setCellValue("E$row",$v['tahun_masuk']);
                     $status='belum disahkan';
@@ -764,7 +761,7 @@ class Logic_ReportAkademik extends Logic_Report {
                 $this->printOut("daftarpeserta$tahun_masuk");
             break;
         }
-        $this->setLink($this->dataReport['linkoutput'],"Daftar Peserta");
+        $this->setLink($this->dataReport['linkoutput'],"Daftar Peserta Matakuliah");
     }
 }
 ?>

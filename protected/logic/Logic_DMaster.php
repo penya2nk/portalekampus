@@ -100,6 +100,21 @@ class Logic_DMaster extends Logic_Global {
         return $dataitem;     		
 	}
     /**
+     * digunakan untuk mendapatkan nama kelas
+     * @param type $idkelas
+     * @return type
+     */
+    public function getNamaKelasByID ($idkelas) {	
+        if ($this->Application->Cache) {            
+            $dataitem=$this->getListKelas();
+            $nama_item=$dataitem[$idkelas];
+        }else {
+            $dataitem=$this->getList("kelas WHERE idkelas=$idkelas",array('nkelas'),'nkelas');
+            $nama_item=$dataitem[1]['nkelas'];                               
+        }
+        return $nama_item;
+    }
+    /**
      * digunakan untuk mendapatkan daftar ruang kelas
      */
 	public function getRuangKelas () {
@@ -117,20 +132,24 @@ class Logic_DMaster extends Logic_Global {
         return $dataitem;     		
 	}
     /**
-     * digunakan untuk mendapatkan nama kelas
-     * @param type $idkelas
-     * @return type
+     * digunakan untuk mendapatkan kapasitas ruang kelas
      */
-    public function getNamaKelasByID ($idkelas) {	
+	public function getKapasitasRuangKelas ($idruangkelas) {
         if ($this->Application->Cache) {            
-            $dataitem=$this->getListKelas();
-            $nama_item=$dataitem[$idkelas];
-        }else {
-            $dataitem=$this->getList("kelas WHERE idkelas=$idkelas",array('nkelas'),'nkelas');
-            $nama_item=$dataitem[1]['nkelas'];                               
+            $ruangkelas=$this->Application->Cache->get('listruangkelas');            
+            if (!isset($ruangkelas['none'])) {                
+                $ruangkelas=$this->getRuangKelas();
+            }
+            $result=  explode('-', $ruangkelas[$idruangkelas]);
+            $dataitem=$result[1];
+        }else {                        
+            $str = "SELECT kapasitas FROM ruangkelas WHERE idruangkelas=$idruangkelas";
+            $this->db->setFieldTable(array('kapasitas'));
+            $result=$this->db->getRecord($str);
+            $dataitem=isset($result[1])?$result[1]['kapasitas']:0;  
         }
-        return $nama_item;
-    }
+        return $dataitem;     		
+	}
     /**
      * digunakan untuk mendapatkan daftar program studi
      */

@@ -6,11 +6,21 @@ class CTambahPKRS extends MainPageDW {
 	*/
 	static $totalSKS=0;
 	
+    /**
+	* total SKS Batal
+	*/
+	public static $totalSKSBatal=0;	
+    
 	/**
 	* jumlah matakuliah
 	*/
 	static $jumlahMatkul=0;
 	
+    /**
+	* total Matakuliah Batal
+	*/
+	public static $jumlahMatkulBatal=0;	
+    
 	/**
 	* tahun dan semester sebelum
 	*/
@@ -80,7 +90,7 @@ class CTambahPKRS extends MainPageDW {
             $this->KRS->setDataMHS($datakrs);
             $nim=$datakrs['nim'];
 			$idkrs=$datakrs['idkrs'];
-			$str = "SELECT SUM(sks) AS jumlah FROM v_krsmhs WHERE idkrs='$idkrs'";
+			$str = "SELECT SUM(sks) AS jumlah FROM v_krsmhs WHERE idkrs='$idkrs' AND batal=0";
 			$this->DB->setFieldTable(array('jumlah'));
 			$r=$this->DB->getRecord($str);
 			$jumlah=$r[1]['jumlah']+$sender->CommandParameter;
@@ -119,8 +129,14 @@ class CTambahPKRS extends MainPageDW {
 	public function hitung ($sender,$param) {
 		$item=$param->Item;		
 		if ($item->ItemType==='Item' || $item->ItemType==='AlternatingItem') {
-			TambahPKRS::$totalSKS+=$item->DataItem['sks'];	
-			TambahPKRS::$jumlahMatkul+=1;	
+            if ($item->DataItem['batal']) {
+                CTambahPKRS::$totalSKSBatal+=$item->DataItem['sks'];
+                CTambahPKRS::$jumlahMatkulBatal+=1;
+            }else {
+                CTambahPKRS::$totalSKS+=$item->DataItem['sks'];	
+                CTambahPKRS::$jumlahMatkul+=1;
+            }
+                
 		}
 	}	
 	public function closeTambahPKRS ($sender,$param) {

@@ -197,7 +197,6 @@ class Logic_ReportNilai extends Logic_Report {
 //                $this->printOut("khs_$nim");
             break;
             case 'pdf' :
-                
                 $rpt=$this->rpt;
                 $rpt->setTitle('KHS Mahasiswa');
 				$rpt->setSubject('KHS Mahasiswa');

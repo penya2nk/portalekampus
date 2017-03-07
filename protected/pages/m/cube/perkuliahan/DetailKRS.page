@@ -124,22 +124,27 @@
                                         <div class="form-group">
                                             <label class="col-sm-4 control-label"><strong>NO. KRS: </strong></label>
                                             <div class="col-sm-8">
-                                                <p class="form-control-static"><%# $this->Page->KRS->DataKRS['krs']['no_krs']%></p>
+                                                <p class="form-control-static"><%# $_SESSION['currentPageKRS']['DataKRS']['krs']['no_krs']%></p>
                                             </div>                            
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-4 control-label"><strong>TANGGAL KRS: </strong></label>
                                             <div class="col-sm-8">
-                                                <p class="form-control-static"><%# $this->Page->TGL->tanggal('l,j F Y',$this->Page->KRS->DataKRS['krs']['tgl_krs'])%></p>
+                                                <p class="form-control-static"><%# $this->Page->TGL->tanggal('l,j F Y',$_SESSION['currentPageKRS']['DataKRS']['krs']['tgl_krs'])%></p>
+                                            </div>                            
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label"><strong>KELAS SAAT KRS: </strong></label>
+                                            <div class="col-sm-8">
+                                                <p class="form-control-static"><%# $this->Page->DMaster->getNamaKelasByID($_SESSION['currentPageKRS']['DataMHS']['kelas_dulang'])%></p>
                                             </div>                            
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-4 control-label"><strong>KETERANGAN: </strong></label>
                                             <div class="col-sm-8">
-                                                <p class="form-control-static"><b><%# $this->Page->KRS->DataKRS['krs']['sah']==1?'Sah ('.$this->Page->TGL->tanggal('l,j F Y',$this->Page->KRS->DataKRS['tgl_disahkan']).')':'Belum di sahkan oleh dosen wali.'%></b></p>
+                                                <p class="form-control-static"><b><%# $_SESSION['currentPageKRS']['DataKRS']['krs']['sah']==1?'Sah ('.$this->Page->TGL->tanggal('l,j F Y',$_SESSION['currentPageKRS']['DataKRS']['tgl_disahkan']).')':'Belum di sahkan oleh dosen wali Anda.'%></b></p>
                                             </div>                            
-                                        </div>                            
-                                    </div>
+                                        </div>                                                                </div>
                                 </div>          
                             </div>          
                         </div>          
@@ -163,7 +168,7 @@
                                             <th scope="col" width="15">SKS</th>
                                             <th scope="col" width="15">SMT</th>
                                             <th scope="col">DOSEN</th>
-                                            <th scope="col" width="270">KELAS</th>
+                                            <th scope="col" width="290">KELAS</th>
                                             <th scope="col">KET.</th>					
                                         </tr>						
                                     </thead>
@@ -248,4 +253,5 @@
     </com:TActiveRepeater>	                                    
 </com:TPanel>	
 <%include Application.layouts.cube.ModalPrintOut%>
+<%include Application.layouts.cube.ModalMessageError%>
 </com:TContent>

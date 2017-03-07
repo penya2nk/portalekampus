@@ -1,0 +1,259 @@
+<%@ Title="Data Master - Ruang Kelas" %>
+<com:TContent ID="moduleheader">
+    <i class="fa fa-dropbox"></i> Ruang Kelas
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">
+    <li><a href="#">DATA MASTER</a></li>
+    <li><a href="#">PERKULIAHAN</a></li>
+    <li class="active"><span>RUANG KELAS</span></li>
+</com:TContent>
+<com:TContent ID="csscontent">
+<link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/css/libs/nifty-component.css"/>
+</com:TContent>
+<com:TContent ID="maincontent">
+<com:TPanel Visible="<%= $this->getAddProcess(false) %>" CssClass="row">
+    <div class="col-lg-12">
+        <div class="main-box">
+            <header class="main-box-header clearfix">
+                <h2 class="pull-left"><i class="fa fa-plus"></i> Tambah Ruang Kelas</h2>
+                <div class="icon-box pull-right">
+                    <a class="btn pull-left" href="<%=$this->constructUrl('dmaster.RuangKelas',true)%>">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </header>
+            <div class="main-box-body clearfix">
+                <div class="form-horizontal">
+                    <div class="form-horizontal">
+                        <div class="form-group" id="divAddNamaRuang">
+                            <label class="col-lg-2 control-label">Nama Ruang :</label>
+                            <div class="col-lg-4">
+                                <com:TTextBox ID="txtAddNamaRuang" CssClass="form-control" MaxLength="10" Width="120px" />
+                                <com:TRequiredFieldValidator ID="FieldAddNamaRuangValidator" ControlToValidate="txtAddNamaRuang" Display="Dynamic" ErrorMessage="Isi Nama Ruang" ValidationGroup="addruangkelas" CssClass="has-error help-block">
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divAddNamaRuang').addClassName('has-error');
+                                        jQuery('#<%=$this->FieldAddNamaRuangValidator->ClientID%>').removeAttr('style');
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divAddNamaRuang').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator>
+                                <com:TActiveCustomValidator ID="addNamaRuang" ControlToValidate="txtAddNamaRuang" Display="Dynamic" OnServerValidate="checkRuangKelas" ValidationGroup="addruangkelas" ErrorMessage="Nama Ruang Yang Anda Inputkan Sudah Ada" FocusOnError="true" CssClass="has-error help-block">
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divAddNamaRuang').addClassName('has-error');
+                                        jQuery('#<%=$this->addNamaRuang->ClientID%>').removeAttr('style');
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divAddNamaRuang').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TActiveCustomValidator>
+                            </div>
+                        </div>
+                        <div class="form-group" id="divAddKapasitas">
+                            <label class="col-lg-2 control-label">Kapasitas :</label>
+                            <div class="col-lg-4">
+                                <com:TTextBox ID="txtAddKapasitas" CssClass="form-control" MaxLength="5" Attributes.OnKeyUp="formatangka(this)" Width="70px" />
+                                <com:TRequiredFieldValidator ID="FieldAddKapasitasValidator" ControlToValidate="txtAddKapasitas" Display="Dynamic" ErrorMessage="Isi Kapasitas Ruang Kelas" ValidationGroup="addruangkelas" CssClass="has-error help-block">
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divAddKapasitas').addClassName('has-error');
+                                        jQuery('#<%=$this->FieldAddKapasitasValidator->ClientID%>').removeAttr('style');
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divAddKapasitas').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <com:TActiveCustomButton ID="btnSave" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="addruangkelas">
+                                    <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->btnSave->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnSave->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                        $('<%=$this->btnSave->ClientId%>').disabled='';
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</com:TPanel>
+<com:TPanel Visible="<%= $this->getEditProcess(false) %>" CssClass="box">
+    <h3>Ubah Ruang Kelas</h3>
+    <com:THiddenField ID="hiddenid" />
+    <com:THiddenField ID="hiddennamaruang" />
+    <div class="col-lg-12">
+        <div class="main-box">
+            <header class="main-box-header clearfix">
+                <h2 class="pull-left"><i class="fa fa-plus"></i> Ubah Ruang Kelas</h2>
+                <div class="icon-box pull-right">
+                    <a class="btn pull-left" href="<%=$this->constructUrl('dmaster.RuangKelas',true)%>">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </header>
+            <div class="main-box-body clearfix">
+                <div class="form-horizontal">
+                    <div class="form-horizontal">
+                        <div class="form-group" id="divEditNamaRuang">
+                            <label class="col-lg-2 control-label">Nama Ruang :</label>
+                            <div class="col-lg-4">
+                                <com:TTextBox ID="txtEditNamaRuang" CssClass="form-control" MaxLength="10" Width="120px" />
+                                <com:TRequiredFieldValidator ID="FieldEditNamaRuangValidator" ControlToValidate="txtEditNamaRuang" Display="Dynamic" ErrorMessage="Isi Nama Ruang" ValidationGroup="editruangkelas" CssClass="has-error help-block">
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divEditNamaRuang').addClassName('has-error');
+                                        jQuery('#<%=$this->FieldEditNamaRuangValidator->ClientID%>').removeAttr('style');
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divEditNamaRuang').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator>
+                                <com:TActiveCustomValidator ID="editNamaRuang" ControlToValidate="txtEditNamaRuang" Display="Dynamic" OnServerValidate="checkRuangKelas" ValidationGroup="editruangkelas" ErrorMessage="Nama Ruang Yang Anda Inputkan Sudah Ada" FocusOnError="true" CssClass="has-error help-block">
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divEditNamaRuang').addClassName('has-error');
+                                        jQuery('#<%=$this->editNamaRuang->ClientID%>').removeAttr('style');
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divEditNamaRuang').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TActiveCustomValidator>
+                            </div>
+                        </div>
+                        <div class="form-group" id="divEditKapasitas">
+                            <label class="col-lg-2 control-label">Kapasitas :</label>
+                            <div class="col-lg-4">
+                                <com:TTextBox ID="txtEditKapasitas" CssClass="form-control" MaxLength="5" Attributes.OnKeyUp="formatangka(this)" Width="70px" />
+                                <com:TRequiredFieldValidator ID="FieldEditKapasitasValidator" ControlToValidate="txtEditKapasitas" Display="Dynamic" ErrorMessage="Isi Kapasitas Ruang Kelas" ValidationGroup="editruangkelas" CssClass="has-error help-block">
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divEditKapasitas').addClassName('has-error');
+                                        jQuery('#<%=$this->FieldEditKapasitasValidator->ClientID%>').removeAttr('style');
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divEditKapasitas').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <com:TActiveCustomButton ID="btnUpdate" CssClass="btn btn-primary" OnClick="updateData" ValidationGroup="editruangkelas">
+                                    <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->btnUpdate->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnUpdate->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                        $('<%=$this->btnUpdate->ClientId%>').disabled='';
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</com:TPanel>
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left"><i class="fa fa-dropbox"></i>  Daftar Ruang Kelas</h2>
+                    <div class="filter-block pull-right">
+                        <com:TLinkButton ID="add" CssClass="btn btn-primary pull-right" Text="<i class='fa  fa-plus-circle fa-lg'></i>" Attributes.Title="Tambah Ruan Kelas" OnClick="setIdProcess" CausesValidation="false" />
+                    </div>
+                </header>
+                <div class="main-box-body clearfix">
+                    <div class="table-responsive">
+                        <com:TActiveRepeater ID="RepeaterS" DataKeyField="idruangkelas" AllowPaging="true" PageSize="10" AllowCustomPaging="true">
+                            <prop:HeaderTemplate>
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">NO</th>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">NAMA RUANG</th>
+                                        <th scope="col">KAPASITAS</th>
+                                        <th scope="col" width="100">AKSI</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                            </prop:HeaderTemplate>
+                            <prop:ItemTemplate>
+                                    <tr>
+                                        <td><%#$this->DataItem['no']%></td>
+                                        <td><%#$this->DataItem['idruangkelas']%></td>
+                                        <td><%=$this->DataItem['namaruang']%> </td>
+                                        <td><%=$this->DataItem['kapasitas']%> </td>
+                                        <td>
+                                            <com:TLinkButton CssClass="table-link" OnClick="Page.editRecord" Attributes.Title="Ubah Ruang Kelas">
+                                                <prop:Text>
+                                                    <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                        <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                    </span>
+                                                </prop:Text>
+                                            </com:TLinkButton>
+                                            <com:TActiveLinkButton ID="btnDelete" ClientSide.PostState="false" CssClass="table-link danger" OnClick="Page.deleteRecord" Attributes.Title="Hapus Ruang Kelas" Attributes.OnClick="if(!confirm('Anda ingin menghapus data Ruang Kelas ini ?')) return false;)">
+                                                <prop:Text>
+                                                    <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                        <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                    </span>
+                                                </prop:Text>
+                                                <prop:ClientSide.OnPreDispatch>
+                                                    $('loading').show();
+                                                    $('<%=$this->btnDelete->ClientId%>').disabled='disabled';
+                                                </prop:ClientSide.OnPreDispatch>
+                                                <prop:ClientSide.OnLoading>
+                                                    $('<%=$this->btnDelete->ClientId%>').disabled='disabled';
+                                                </prop:ClientSide.OnLoading>
+                                                <prop:ClientSide.onComplete>
+                                                    $('loading').hide();
+                                                </prop:ClientSide.OnComplete>
+                                            </com:TActiveLinkButton>
+                                        </td>
+                                    </tr>
+                            </prop:ItemTemplate>
+                            <prop:FooterTemplate>
+                                </tbody>
+                                </table>
+                            </prop:FooterTemplate>
+                            <prop:EmptyTemplate>
+                                <div class="row">
+                                    <div class="main-box-body">
+                                        <div class="alert alert-info">
+                                            <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                            <strong>
+                                                Info!
+                                            </strong>
+                                             Tidak ada data yang bisa ditampilkan.
+                                        </div>
+                                    </div>
+                                </div>
+                            </prop:EmptyTemplate>
+                        </com:TActiveRepeater>
+                        <%include Application.CustomPaging%>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</com:TPanel>
+<%include Application.layouts.cube.ModalMessageError%>
+</com:TContent>

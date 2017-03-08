@@ -112,7 +112,7 @@ class CKonversiMatakuliah extends MainPageON {
         $this->cmbAddJenjang->Text='E';
         $this->cmbAddJenjang->dataBind();
 
-        $idkur=$this->Nilai->getIDKurikulum($_SESSION['kjur']);
+        $idkur=$this->Nilai->getIDKurikulum($_SESSION['currentPageKonversiMatakuliah']['kjur']);
         $this->hiddenidkur->Value=$idkur;
         $str = "SELECT kmatkul,nmatkul,sks,semester FROM matakuliah WHERE idkur=$idkur ORDER BY (semester+0),kmatkul ASC";
 		$this->DB->setFieldTable (array('kmatkul','nmatkul','sks','semester'));

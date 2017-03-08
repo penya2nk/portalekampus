@@ -149,7 +149,7 @@ class CPesertaMatakuliah extends MainPageM {
     public function populateData ($search=false) {      
         $id=$_SESSION['currentPagePesertaMatakuliah']['InfoMatkul']['idpenyelenggaraan'];        
         if ($search) {            
-            $str = "SELECT vkm.nim,vdm.nama_mhs,vdm.idkelas,vdm.jk,vdm.tahun_masuk,vkm.batal,vkm.sah FROM v_krsmhs vkm,v_datamhs vdm WHERE vkm.nim=vdm.nim AND idpenyelenggaraan='$id'";
+            $str = "SELECT vkm.nim,vdm.nirm,vdm.nama_mhs,vdm.idkelas,vdm.jk,vdm.tahun_masuk,vkm.batal,vkm.sah FROM v_krsmhs vkm,v_datamhs vdm WHERE vkm.nim=vdm.nim AND idpenyelenggaraan='$id'";
             $txtsearch=$this->txtKriteria->Text;
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
@@ -171,7 +171,7 @@ class CPesertaMatakuliah extends MainPageM {
         }else{ 
             $idkelas=$_SESSION['currentPagePesertaMatakuliah']['idkelas'];
             $str_kelas=($idkelas=='' || $idkelas=='none') ? '' : " AND vdm.idkelas='$idkelas'";
-            $str = "SELECT vkm.nim,vdm.nama_mhs,vdm.idkelas,vdm.jk,vdm.tahun_masuk,vkm.batal,vkm.sah FROM v_krsmhs vkm,v_datamhs vdm WHERE vkm.nim=vdm.nim AND idpenyelenggaraan='$id'$str_kelas";            
+            $str = "SELECT vkm.nim,vdm.nirm,vdm.nama_mhs,vdm.idkelas,vdm.jk,vdm.tahun_masuk,vkm.batal,vkm.sah FROM v_krsmhs vkm,v_datamhs vdm WHERE vkm.nim=vdm.nim AND idpenyelenggaraan='$id'$str_kelas";            
             
             $jumlah_baris=$this->DB->getCountRowsOfTable("v_krsmhs vkm,v_datamhs vdm WHERE vkm.nim=vdm.nim AND idpenyelenggaraan='$id'$str_kelas",'vdm.nim');
         }		
@@ -184,7 +184,7 @@ class CPesertaMatakuliah extends MainPageM {
 		}
 		if ($limit < 0) {$offset=0;$limit=$this->setup->getSettingValue('default_pagesize');$_SESSION['currentPagePesertaMatakuliah']['page_num']=0;}		
         $str = "$str ORDER BY vdm.nama_mhs ASC LIMIT $offset,$limit";
-		$this->DB->setFieldTable(array('nim','nama_mhs','idkelas','jk','tahun_masuk','batal','sah'));	
+		$this->DB->setFieldTable(array('nim','nirm','nama_mhs','idkelas','jk','tahun_masuk','batal','sah'));	
 		$r=$this->DB->getRecord($str,$offset+1);
         $result=array();
         while (list($k,$v)=each($r)) {
@@ -219,7 +219,7 @@ class CPesertaMatakuliah extends MainPageM {
                 $dataReport['nama_tahun'] = $this->DMaster->getNamaTA($dataReport['tahun']);
                 $dataReport['nama_semester'] = $this->setup->getSemester($dataReport['idsmt']);               
                 $dataReport['idkelas']=$_SESSION['currentPagePesertaMatakuliah']['idkelas'];
-                $dataReport['nama_kelas']=  $this->DMaster->getNamaKelasByID($dataReport['idkelas']);
+                $dataReport['nama_kelas']= $this->DMaster->getNamaKelasByID($dataReport['idkelas']);
                 $dataReport['linkoutput']=$this->linkOutput; 
                 $this->report->setDataReport($dataReport); 
                 $this->report->setMode($_SESSION['outputreport']);
@@ -232,7 +232,6 @@ class CPesertaMatakuliah extends MainPageM {
         }
         $idkelas=$_SESSION['currentPagePesertaMatakuliah']['idkelas'];
         $str_kelas=($idkelas=='' || $idkelas=='none') ? '' : " AND vdm.idkelas='$idkelas'";
-        
         $this->lblMessagePrintout->Text=$messageprintout;
         $this->lblPrintout->Text='Daftar Peserta '. $label=($idkelas=="none") ? 'Semua Kelas' : $this->DMaster->getNamaKelasByID($idkelas) ;
         $this->modalPrintOut->show();

@@ -101,8 +101,9 @@
                                         <th scope="col">NIM</th>
                                         <th scope="col">NIRM</th>
                                         <th scope="col">NILAI</th>
-                                        <th scope="col">AM</th>
                                         <th scope="col">HM</th>
+                                        <th scope="col">AM</th>
+                                        <th scope="col">M</th>
                                         <th scope="col">KET</th>                                        
                                     </tr>								
                                     </thead>
@@ -115,6 +116,7 @@
                                     <td><%# $this->DataItem['jk']%></td>
                                     <td><%#$this->DataItem['nim']%></td>
                                     <td><%# $this->DataItem['nirm']%></td>
+                                    <td><%# $this->DataItem['n_kuan']%></td>
                                     <td><%# $this->DataItem['n_kual']%></td>
                                     <td><%# $this->DataItem['am']%></td>							
                                     <td><%# $this->DataItem['hm']%></td>							

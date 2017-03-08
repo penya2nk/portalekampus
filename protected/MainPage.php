@@ -285,6 +285,7 @@ class MainPage extends TPage {
 				}
 			}			
 		}        
+        $_SESSION['tahun_masuk']=$_SESSION['tahun_masuk'] < $ta ?  $_SESSION['tahun_masuk']:$ta;
 		return $tahun_akademik;
 	}
     /**

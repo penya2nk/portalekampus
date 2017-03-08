@@ -39,20 +39,23 @@ class CDetailDPNA extends MainPageD {
 	}
 	protected function populateData() {	
         $idkelas_mhs=$_SESSION['currentPageDetailDPNA']['DataDPNA']['idkelas_mhs'];
-        $str = "SELECT vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.jk,n.n_kual FROM kelas_mhs_detail kmd LEFT JOIN nilai_matakuliah n ON (n.idkrsmatkul=kmd.idkrsmatkul) JOIN v_krsmhs vkm ON (vkm.idkrsmatkul=kmd.idkrsmatkul) JOIN v_datamhs vdm ON (vkm.nim=vdm.nim) WHERE  kmd.idkelas_mhs=$idkelas_mhs AND vkm.sah=1 AND vkm.batal=0 ORDER BY vdm.nama_mhs ASC";        
-        $this->DB->setFieldTable(array('nim','nirm','nama_mhs','jk','n_kual'));
+        $str = "SELECT vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.jk,n.n_kuan,n.n_kual FROM kelas_mhs_detail kmd LEFT JOIN nilai_matakuliah n ON (n.idkrsmatkul=kmd.idkrsmatkul) JOIN v_krsmhs vkm ON (vkm.idkrsmatkul=kmd.idkrsmatkul) JOIN v_datamhs vdm ON (vkm.nim=vdm.nim) WHERE  kmd.idkelas_mhs=$idkelas_mhs AND vkm.sah=1 AND vkm.batal=0 ORDER BY vdm.nama_mhs ASC";        
+        $this->DB->setFieldTable(array('nim','nirm','nama_mhs','jk','n_kuan','n_kual'));
         $r=$this->DB->getRecord($str);	           
         $result=array();
         $sks=$this->Demik->InfoMatkul['sks'];
-        while (list($k,$v)=each($r)) {                
+        while (list($k,$v)=each($r)) {
+            $n_kuan='-';
             $n_kual='-';
             $am='-';
             $hm='-';
             if ($v['n_kual']!= '') {
+                $n_kuan=$v['n_kuan'];
                 $n_kual=$v['n_kual'];
                 $am=$this->Nilai->getAngkaMutu($v['n_kual']);
                 $hm=$am*$sks;
             }
+            $v['n_kuan']=$n_kuan;
             $v['n_kual']=$n_kual;
             $v['am']=$am;
             $v['hm']=$hm;

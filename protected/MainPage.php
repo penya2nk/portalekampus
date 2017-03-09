@@ -140,6 +140,10 @@ class MainPage extends TPage {
      */
     public $showDPNA=false;
     /**     
+     * show page Evaluasi Hasil Belajar [akademik nilai]
+     */
+    public $showEvaluasiHasilBelajar=false;
+    /**     
      * show page transkrip sementara [akademik nilai]
      */
     public $showTranskripKurikulum=false;

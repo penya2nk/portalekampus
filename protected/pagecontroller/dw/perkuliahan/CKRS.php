@@ -169,7 +169,7 @@ class CKRS Extends MainPageDW {
 		$item=$param->Item;
 		if ($item->ItemType==='Item' || $item->ItemType==='AlternatingItem') {			
             $idkrs=$item->DataItem['idkrs'];
-            $str = "SELECT COUNT(idkrsmatkul) AS jumlah_matkul,SUM(sks) AS jumlah_sks FROM v_krsmhs WHERE idkrs='$idkrs'";						
+            $str = "SELECT COUNT(idkrsmatkul) AS jumlah_matkul,SUM(sks) AS jumlah_sks FROM v_krsmhs WHERE idkrs='$idkrs' AND batal=0";						
             $this->DB->setFieldTable (array('jumlah_matkul','jumlah_sks'));
 			$r=$this->DB->getRecord($str);
             $item->literalMatkul->Text=$r[1]['jumlah_matkul'] > 0 ?$r[1]['jumlah_matkul']:0;

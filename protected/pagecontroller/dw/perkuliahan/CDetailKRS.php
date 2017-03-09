@@ -5,11 +5,18 @@ class CDetailKRS extends MainPageDW {
 	* total SKS
 	*/
 	static $totalSKS=0;
-	
+	 /**
+	* total SKS Batal
+	*/
+	public static $totalSKSBatal=0;	
 	/**
 	* jumlah matakuliah
 	*/
 	static $jumlahMatkul=0;	
+     /**
+	* total Matakuliah Batal
+	*/
+	public static $jumlahMatkulBatal=0;	
 	public function onLoad($param) {
 		parent::onLoad($param);	
         $this->showSubMenuAkademikPerkuliahan=true;
@@ -37,8 +44,13 @@ class CDetailKRS extends MainPageDW {
     public function itemCreated ($sender,$param) {
         $item=$param->Item;
         if ($item->ItemType === 'Item' || $item->ItemType === 'AlternatingItem') {                
-            CDetailKRS::$totalSKS+=$item->DataItem['sks'];
-            CDetailKRS::$jumlahMatkul+=1;
+            if ($item->DataItem['batal']) {
+                CDetailKRS::$totalSKSBatal+=$item->DataItem['sks'];
+                CDetailKRS::$jumlahMatkulBatal+=1;
+            }else{
+                CDetailKRS::$totalSKS+=$item->DataItem['sks'];
+                CDetailKRS::$jumlahMatkul+=1;
+            }            
         }
     }
 	protected function populateData () {

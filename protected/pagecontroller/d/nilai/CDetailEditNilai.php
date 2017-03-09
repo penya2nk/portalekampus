@@ -78,8 +78,8 @@ class CDetailEditNilai extends MainPageD {
         $persentase_quiz=$datakelas['persen_quiz'] > 0 ?number_format($datakelas['persen_quiz']/100,2):0;
         $persentase_tugas=$datakelas['persen_tugas'] > 0 ?number_format($datakelas['persen_tugas']/100,2):0;
         $persentase_uts=$datakelas['persen_uts'] > 0 ?number_format($datakelas['persen_uts']/100,2):0;
-        $persentase_uas=$datakelas['persen_uas'] > 0 ?number_format($datakelas['persen_uas']/100,2):0;;
-        $persentase_absen=$datakelas['persen_absen'] > 0 ?number_format($datakelas['persen_absen']/100,2):0;;
+        $persentase_uas=$datakelas['persen_uas'] > 0 ?number_format($datakelas['persen_uas']/100,2):0;
+        $persentase_absen=$datakelas['persen_absen'] > 0 ?number_format($datakelas['persen_absen']/100,2):0;
         
         while (list($k,$v)=each($r)) {                
             $v['persentase_quiz']=$persentase_quiz;

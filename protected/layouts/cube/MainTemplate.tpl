@@ -738,12 +738,7 @@
                                                 <span>Nilai</span>
                                                 <i class="fa fa-angle-right drop-icon"></i>
                                             </a>
-                                            <ul class="submenu">                                                
-                                                <li>
-                                                    <a href="<%=$this->Page->constructUrl('nilai.DPNA',true)%>"<%=$this->Page->showDPNA==true ? ' class="active" ':''%>>
-                                                        DPNA
-                                                    </a>
-                                                </li>
+                                            <ul class="submenu">
                                                 <li>
                                                     <a href="<%=$this->Page->constructUrl('nilai.EditNilai',true)%>"<%=$this->Page->showEditNilai==true ? ' class="active" ':''%>>
                                                         Edit Nilai
@@ -752,6 +747,16 @@
                                                 <li>
                                                     <a href="#" <%=$this->Page->showImportNilai==true ? ' class="active" ':''%>>
                                                         Import Nilai
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('nilai.DPNA',true)%>"<%=$this->Page->showDPNA==true ? ' class="active" ':''%>>
+                                                        DPNA
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('nilai.EvaluasiHasilBelajar',true)%>"<%=$this->Page->showEvaluasiHasilBelajar==true ? ' class="active" ':''%>>
+                                                        Evaluasi Hasil Belajar
                                                     </a>
                                                 </li>
                                             </ul>

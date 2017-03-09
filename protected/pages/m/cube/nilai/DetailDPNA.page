@@ -113,7 +113,7 @@
                 <header class="main-box-header clearfix">
                     <h2 class="pull-left"></h2>                     
                     <div class="filter-block pull-right">                                                   
-                        <com:TActiveLinkButton ID="btnPrintDPNA" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out Kartu Hasil Studi">
+                        <com:TActiveLinkButton ID="btnPrintDPNA" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out DPNA">
                             <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
                             <prop:ClientSide.OnPreDispatch>
                                 $('loading').show();

@@ -2292,11 +2292,209 @@ class Logic_ReportNilai extends Logic_Report {
                                     'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_LEFT)
                                 );
                 $sheet->getStyle("B$row_awal:B$row")->applyFromArray($styleArray);
-                $sheet->getStyle("B$row_awal:B$row")->getAlignment()->setWrapText(true);
                 $this->printOut('daftarisiannilai_'.$this->dataReport['kmatkul'].'_'.$this->dataReport['nama_kelas']);
             break;
         }
         $this->setLink($this->dataReport['linkoutput'],"Daftar Isian Nilai Mahasiswa");
+    }
+     /**
+     * digunakan untuk memprint Konversi Matakuliah
+     * @param type $objNilai object
+     */
+    public function printFormatEvaluasiHasilBelajar ($objNilai) { 
+        $idkelas_mhs=$this->dataReport['idkelas_mhs'];
+        switch ($this->getDriver()) {
+            case 'excel2003' :               
+            case 'excel2007' :          
+                $this->setHeaderPT('J');
+                $sheet=$this->rpt->getActiveSheet();
+                $this->rpt->getDefaultStyle()->getFont()->setName('Arial');                
+                $this->rpt->getDefaultStyle()->getFont()->setSize('9');                                    
+                
+                $sheet->mergeCells("A7:T7");
+                $sheet->getRowDimension(7)->setRowHeight(20);
+                $sheet->setCellValue("A7","FORMAT EVALUASI HASIL BELAJAR");                                
+                $styleArray=array(
+								'font' => array('bold' => true,
+                                                'size' => 16),
+								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+												   'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+							);
+                $sheet->getStyle("A7:T7")->applyFromArray($styleArray);
+                                 
+                $sheet->mergeCells('E9:F9');		                
+                $sheet->setCellValue('E9','Kode Matakuliah');
+                $sheet->setCellValue('G9',': '.$this->dataReport['kmatkul']);
+
+                $sheet->mergeCells('E10:F10');		
+                $sheet->setCellValue('E10','Nama Matakuliah');
+                $sheet->setCellValue('G10',': '.$this->dataReport['nmatkul']);
+                
+                $sheet->mergeCells('E11:F11');		
+                $sheet->setCellValue('E11','SKS');
+                $sheet->setCellValueExplicit("G11",': '.$this->dataReport['sks'],PHPExcel_Cell_DataType::TYPE_STRING);
+                                
+                $sheet->mergeCells('E12:F12');		
+                $sheet->setCellValue('E12','T.A / Semester');
+                $sheet->setCellValue('G12',': '.$this->dataReport['tahun'].' / '.$this->dataReport['nama_semester']);
+
+                $sheet->mergeCells('E13:F13');		
+                $sheet->setCellValue('E13','Dosen Pengampu');
+                $sheet->setCellValue('G13',': '.$this->dataReport['nama_dosen_matakuliah'].' ['.$this->dataReport['nidn_dosen_matakuliah'].') ');
+//
+                $sheet->mergeCells('E14:F14');
+                $sheet->setCellValue('E14','Dosen Pengajar');
+                $sheet->setCellValue('G14',': '.$this->dataReport['nama_dosen'].' ['.$this->dataReport['nidn'].') ');
+                
+                $sheet->mergeCells('E15:F15');
+                $sheet->setCellValue('E15','Kelas');
+                $sheet->setCellValue('G15',': '.$this->dataReport['namakelas']);
+                
+                $sheet->mergeCells('A17:A18');				
+                $sheet->setCellValue('A17','NO');				
+                $sheet->mergeCells('B17:E18');				
+                $sheet->setCellValue('B17','NAMA');				
+                $sheet->mergeCells('F17:F18');				
+                $sheet->setCellValue('F17','JK');				
+                $sheet->mergeCells('G17:G18');				
+                $sheet->setCellValue('G17','NIM');				
+                $sheet->mergeCells('H17:H18');				
+                $sheet->setCellValue('H17','NIRM');	
+                
+                $sheet->mergeCells('I17:J17');				
+                $sheet->setCellValue('I17','QUIZ ('.$this->dataReport['persen_quiz'].'%)');	
+                
+                $sheet->mergeCells('K17:L17');				
+                $sheet->setCellValue('K17','TUGAS ('.$this->dataReport['persen_tugas'].'%)');	
+                
+                $sheet->mergeCells('M17:N17');				
+                $sheet->setCellValue('M17','UTS ('.$this->dataReport['persen_uts'].'%)');
+                
+                $sheet->mergeCells('O17:P17');				
+                $sheet->setCellValue('O17','UAS ('.$this->dataReport['persen_uas'].'%)');
+                
+                $sheet->mergeCells('Q17:R17');				
+                $sheet->setCellValue('Q17','ABSEN ('.$this->dataReport['persen_absen'].'%)');
+                
+                $sheet->mergeCells('S17:T17');				
+                $sheet->setCellValue('S17','NILAI AKHIR');
+                
+                $sheet->setCellValue('I18','NA');			
+                $sheet->setCellValue('J18','%');
+                $sheet->setCellValue('K18','NA');			
+                $sheet->setCellValue('L18','%');	
+                $sheet->setCellValue('M18','NA');			
+                $sheet->setCellValue('N18','%');
+                $sheet->setCellValue('O18','NA');			
+                $sheet->setCellValue('P18','%');
+                $sheet->setCellValue('Q18','NA');			
+                $sheet->setCellValue('R18','%');
+                $sheet->setCellValue('S18','AM');			
+                $sheet->setCellValue('T18','HM');
+                
+                $sheet->getColumnDimension('A')->setWidth(10);
+                $sheet->getColumnDimension('H')->setWidth(17);
+                $sheet->getColumnDimension('I')->setWidth(6);
+                $sheet->getColumnDimension('J')->setWidth(6);
+                $sheet->getColumnDimension('K')->setWidth(6);
+                $sheet->getColumnDimension('L')->setWidth(6);
+                $sheet->getColumnDimension('M')->setWidth(6);
+                $sheet->getColumnDimension('N')->setWidth(6);
+                $sheet->getColumnDimension('O')->setWidth(6);
+                $sheet->getColumnDimension('P')->setWidth(6);
+                $sheet->getColumnDimension('Q')->setWidth(6);
+                $sheet->getColumnDimension('R')->setWidth(6); 
+                $sheet->getColumnDimension('S')->setWidth(8);
+                $sheet->getColumnDimension('T')->setWidth(8);
+                
+                $styleArray=array(								
+                                    'font' => array('bold' => true),
+                                    'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                                                       'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+                                    'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+                                );																					 
+                $sheet->getStyle("A17:T18")->applyFromArray($styleArray);
+                $sheet->getStyle("A17:T18")->getAlignment()->setWrapText(true);
+                
+                $str = "SELECT vkm.idkrsmatkul,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.jk,n.persentase_quiz, n.persentase_tugas, n.persentase_uts, n.persentase_uas, n.persentase_absen, n.nilai_quiz, n.nilai_tugas, n.nilai_uts, n.nilai_uas, n.nilai_absen, n.n_kuan,n.n_kual FROM kelas_mhs_detail kmd LEFT JOIN nilai_matakuliah n ON (n.idkrsmatkul=kmd.idkrsmatkul) JOIN v_krsmhs vkm ON (vkm.idkrsmatkul=kmd.idkrsmatkul) JOIN v_datamhs vdm ON (vkm.nim=vdm.nim) WHERE kmd.idkelas_mhs=$idkelas_mhs AND vkm.sah=1 AND vkm.batal=0 ORDER BY vdm.nama_mhs ASC";        
+                $this->db->setFieldTable(array('idkrsmatkul','nim','nirm','nama_mhs','jk','persentase_quiz', 'persentase_tugas', 'persentase_uts', 'persentase_uas', 'persentase_absen', 'nilai_quiz', 'nilai_tugas', 'nilai_uts', 'nilai_uas', 'nilai_absen','n_kuan','n_kual'));
+                $r=$this->db->getRecord($str);	
+                $row_awal=19;
+                $row=19;
+                while (list($k,$v)=each($r)) { 			
+                    $sheet->setCellValue("A$row",$v['no']);				
+                    $sheet->mergeCells("B$row:E$row");				
+                    $sheet->setCellValue("B$row",$v['nama_mhs']);			
+                    $sheet->setCellValue("F$row",$v['jk']);		
+                    $sheet->setCellValueExplicit("G$row",$v['nim'],PHPExcel_Cell_DataType::TYPE_STRING);	
+                    $sheet->setCellValueExplicit("H$row",$v['nirm'],PHPExcel_Cell_DataType::TYPE_STRING);			
+                    
+                    $sheet->setCellValue("I$row",$v['nilai_quiz']);	
+                    $sheet->setCellValue("J$row",($v['persentase_quiz'] > 0 || $v['nilai_quiz']!='') ? $v['persentase_quiz']*$v['nilai_quiz']:'');	
+                    $sheet->setCellValue("K$row",$v['nilai_tugas']);
+                    $sheet->setCellValue("L$row",($v['persentase_tugas'] > 0 || $v['nilai_tugas']!='') ? $v['persentase_tugas']*$v['nilai_tugas']:'');
+                    $sheet->setCellValue("M$row",$v['nilai_uts']);
+                    $sheet->setCellValue("N$row",($v['persentase_uts'] > 0 || $v['nilai_uts']!='') ? $v['persentase_uts']*$v['nilai_uts']:'');
+                    $sheet->setCellValue("O$row",$v['nilai_uas']);
+                    $sheet->setCellValue("P$row",($v['persentase_uas'] > 0 || $v['nilai_uas']!='') ? $v['persentase_uas']*$v['nilai_uas'] :'');
+                    $sheet->setCellValue("Q$row",$v['nilai_absen']);
+                    $sheet->setCellValue("R$row",($v['persentase_absen'] > 0 || $v['nilai_absen']!='') ? $v['persentase_absen']*$v['nilai_absen'] :'');
+                    $sheet->setCellValue("S$row",$v['n_kuan']);	
+                     $sheet->setCellValue("T$row",$v['n_kual']);	
+                    $row+=1;
+                }
+                $row=$row-1;
+                $styleArray=array(
+								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+												   'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+								'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+							);
+                $sheet->getStyle("A$row_awal:T$row")->applyFromArray($styleArray);
+                $sheet->getStyle("A$row_awal:T$row")->getAlignment()->setWrapText(true);
+                
+                $styleArray=array(								
+                                    'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_LEFT)
+                                );
+                $sheet->getStyle("B$row_awal:B$row")->applyFromArray($styleArray);
+                
+                $row+=3;
+                $row_awaL=$row;
+                $sheet->setCellValue("B$row",'Nilai Angka (NA)');
+                $sheet->setCellValue("D$row",'Huruf Mutu (HM)');
+                $sheet->setCellValue("F$row",'Angka Mutu (AM)');
+                $sheet->setCellValue("N$row",'Tanjungpinang, '.$this->tgl->tanggal('d F Y'));
+                $row+=1;
+                $sheet->setCellValue("B$row",'85-100');
+                $sheet->setCellValue("D$row",'A');
+                $sheet->setCellValue("F$row",'4');
+                $sheet->setCellValue("N$row",'Dosen Matakuliah');
+                $row+=1;
+                $sheet->setCellValue("B$row",'70-84');
+                $sheet->setCellValue("D$row",'B');
+                $sheet->setCellValue("F$row",'3');
+                $row+=1;
+                $sheet->setCellValue("B$row",'55-69');
+                $sheet->setCellValue("D$row",'C');
+                $sheet->setCellValue("F$row",'2');
+                $row+=1;
+                $sheet->setCellValue("B$row",'40-54');
+                $sheet->setCellValue("D$row",'D');
+                $sheet->setCellValue("F$row",'1');
+                $row+=1;
+                $sheet->setCellValue("B$row",'0-39');
+                $sheet->setCellValue("D$row",'E');
+                $sheet->setCellValue("F$row",'0');
+                $sheet->setCellValue("N$row",$this->dataReport['nama_dosen']);
+                
+                $styleArray=array(								
+                                    'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_LEFT)
+                                );
+                $sheet->getStyle("F$row_awal:F$row")->applyFromArray($styleArray);
+                
+                $this->printOut('formatevaluasihasilbelajar');
+            break;
+        }
+        $this->setLink($this->dataReport['linkoutput'],"Format Evaluasi Hasil Belajar");
     }
 }
 ?>

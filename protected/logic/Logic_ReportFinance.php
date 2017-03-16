@@ -194,7 +194,7 @@ class Logic_ReportFinance extends Logic_Report {
      * @param type $objFinance object
      * @param type $objDMaster object
      */
-    public function printRekapPembayaranSemester ($objFinance,$objDMaster) {
+    public function printRekapPembayaranSemester ($objFinance) {
         $kjur=$this->dataReport['kjur'];
         $nama_ps=$this->dataReport['nama_ps'];
         

@@ -226,6 +226,37 @@ class CProfilMahasiswa extends MainPageM {
 			$nirm=addslashes($this->txtEditNIRM->Text);		
 			$str = "UPDATE register_mahasiswa SET nim='$nim',nirm='$nirm' WHERE nim='$nimasal'";
 			$this->DB->updateRecord($str);	
+          
+            $str = "UPDATE transaksi SET nim='$nim' WHERE nim='$nimasal'";
+			$this->DB->updateRecord($str);
+            
+            $nama_mhs=$_SESSION['currentPageProfilMahasiswa']['DataMHS']['nama_mhs'];
+            $str = "UPDATE forumposts SET userid='$nim',nama_user='$nama_mhs [$nim]' WHERE userid='$nimasal'";
+			$this->DB->updateRecord($str);
+            
+            $str = "UPDATE log_nilai_matakuliah SET nim='$nim' WHERE nim='$nimasal'";
+			$this->DB->updateRecord($str);
+            
+            $str = "UPDATE log_transkrip_asli SET nim='$nim' WHERE nim='$nimasal'";
+			$this->DB->updateRecord($str);
+            
+            $str = "UPDATE profiles_mahasiswa SET nim='$nim' WHERE nim='$nimasal'";
+			$this->DB->updateRecord($str);
+            
+            $str = "UPDATE profiles_ortu SET nim='$nim' WHERE nim='$nimasal'";
+			$this->DB->updateRecord($str);
+            
+            $str = "UPDATE tweets SET userid='$nim' WHERE userid='$nimasal' AND tipe='mh'";
+			$this->DB->updateRecord($str);
+            
+            $str = "UPDATE tweetscomment SET userid='$nim' WHERE userid='$nimasal' AND tipe='mh'";
+			$this->DB->updateRecord($str);
+            
+            $str = "UPDATE rekap_status_mahasiswa SET nim='$nim',nirm='$nirm' WHERE nim='$nimasal'";
+			$this->DB->updateRecord($str);
+            
+            $str = "UPDATE rekap_laporan_pembayaran_per_semester SET nim='$nim',nirm='$nirm' WHERE nim='$nimasal'";
+			$this->DB->updateRecord($str);
             
             $this->redirect('kemahasiswaan.ProfilMahasiswa',true,array('id'=>$nim));
 		}

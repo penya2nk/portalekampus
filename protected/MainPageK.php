@@ -48,6 +48,14 @@ class MainPageK extends MainPage {
      * show page rekap pembayaran ganjil [report]
      */
     public $showReportRekapPembayaranGanjil=false;
+     /**     
+     * show page rekap pembayaran genap [report]
+     */
+    public $showReportRekapPembayaranGenap=false;
+     /**     
+     * show page rincian pembayaran genap [report]
+     */
+    public $showReportRincianPembayaranGenap=false;
     /**     
      * show page piutang jangka pendek [report]
      */

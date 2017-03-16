@@ -188,9 +188,20 @@
                     <li class="dropdown-header">REKAPITULASI</li>
                     <li<%=$this->Page->showReportRekapPembayaranGanjil==true?' class="active"':''%>>
                         <a href="<%=$this->Page->constructUrl('report.RekapPembayaranSemesterGanjil',true)%>">
-                            <i class="icon-file-text"></i> Rekap. Pembayaran SMT Ganjil
+                            <i class="icon-file-text"></i> Rekap. Pembayaran Ganjil
                         </a>
                     </li> 
+                    <li<%=$this->Page->showReportRekapPembayaranGenap==true?' class="active"':''%>>
+                        <a href="<%=$this->Page->constructUrl('report.RekapPembayaranSemesterGenap',true)%>">
+                            <i class="icon-file-text"></i> Rekap. Pembayaran Genap
+                        </a>
+                    </li> 
+                    <li class="dropdown-header">RINCIAN</li>
+                    <li<%=$this->Page->showReportRincianPembayaranGenap==true?' class="active"':''%>>
+                        <a href="<%=$this->Page->constructUrl('report.RincianPembayaranSemesterGenap',true)%>">
+                            <i class="icon-file-text"></i> Rincian Pembayaran Genap
+                        </a>
+                    </li>
                     <li class="dropdown-header">PIUTANG</li>
                     <li<%=$this->Page->showReportPiutangJangkaPendek==true?' class="active"':''%>>
                         <a href="<%=$this->Page->constructUrl('report.PiutangJangkaPendek',true)%>">

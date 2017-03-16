@@ -164,7 +164,7 @@
                             <td><%# $this->Data['nkelas']%></td>
                             <td><%# $this->Data['jumlah_matkul']%></td>
                             <td><%# $this->Data['jumlah_sks']%></td>
-                            <td><%# number_format($this->Data['kewajiban'],0,0,'.')%></td>
+                            <td><%# number_format((float)$this->Data['kewajiban'],0,0,'.')%></td>
                             <td>
                                 <com:THiddenField ID="hiddentoglelunas" />
                                 <com:TLiteral ID="literalKet" />

@@ -216,7 +216,7 @@ class CKRS Extends MainPageM {
 
                     $nama_dosen=$this->DMaster->getNamaDosenWaliByID($datamhs['iddosen_wali']);				                    
                     $datamhs['nama_dosen']=$nama_dosen;
-                    
+                    $datamhs['iddata_konversi']=$this->Nilai->isMhsPindahan($nim,true);
                     $_SESSION['currentPageKRS']['DataMHS']=$datamhs;
                     
                     $_SESSION['currentPageKRS']['DataKRS']=$this->KRS->DataKRS;
@@ -233,7 +233,7 @@ class CKRS Extends MainPageM {
 
                     $nama_dosen=$this->DMaster->getNamaDosenWaliByID($datamhs['iddosen_wali']);				                    
                     $datamhs['nama_dosen']=$nama_dosen;
-                    
+                    $datamhs['iddata_konversi']=$this->Nilai->isMhsPindahan($nim,true);
                     $_SESSION['currentPageKRS']['DataMHS']=$datamhs;
                     
                     $idsmt=$_SESSION['semester'];

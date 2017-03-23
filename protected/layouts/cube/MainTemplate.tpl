@@ -631,7 +631,12 @@
                                                 <span>Nilai</span>
                                                 <i class="fa fa-angle-right drop-icon"></i>
                                             </a>
-                                            <ul class="submenu">                                                                                   
+                                            <ul class="submenu">    
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('nilai.KonversiMatakuliah',true)%>"<%=$this->Page->showKonversiMatakuliah==true?' class="active"':''%>>
+                                                        Konversi Matakuliah											
+                                                    </a>                                        
+                                                </li>  
                                                 <li>
                                                     <a<%=$this->Page->showKHS==true ? ' class="active" ':''%>  href="<%=$this->Page->constructUrl('nilai.KHS',true)%>">                                                        
                                                         <span>Kartu Hasil Studi</span>											
@@ -667,6 +672,21 @@
                                                 <span>Daftar Ulang</span>											
                                             </a>                                        
                                         </li>  
+                                        <li class="nav-header nav-header-first hidden-sm hidden-xs">
+                                            PEMBAYARAN
+                                        </li>
+                                        <li<%=$this->Page->showPembayaranSemesterGanjil==true?' class="active"':''%>>
+                                            <a href="<%=$this->Page->constructUrl('pembayaran.PembayaranSemesterGanjil',true)%>">
+                                                <i class="fa fa-usd"></i>
+                                                <span>Semester Ganjil</span>
+                                            </a>
+                                        </li> 
+                                        <li<%=$this->Page->showPembayaranSemesterGenap==true?' class="active"':''%>>
+                                            <a href="<%=$this->Page->constructUrl('pembayaran.PembayaranSemesterGenap',true)%>">
+                                                <i class="fa fa-usd"></i> 
+                                                <span>Semester Genap</span>
+                                            </a>
+                                        </li>
                                         <li class="nav-header nav-header-first hidden-sm hidden-xs">
                                             SETTING
                                         </li>                                                                             

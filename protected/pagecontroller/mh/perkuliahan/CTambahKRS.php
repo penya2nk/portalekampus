@@ -40,14 +40,13 @@ class CTambahKRS extends MainPageMHS {
                 $this->KRS->setDataMHS($datamhs);
                 $this->Finance->setDataMHS($datamhs);
                 
-                if ($tahun >= 2010) {                    
-                    if ($idsmt==3) {                        
-                        if (!$this->Finance->getSKSFromSP ($tahun,$idsmt))throw new Exception ("Anda tidak bisa mengisi KRS karena belum melakukan pembayaran untuk Semester Pendek");																			
-                    }else {
-                        $data=$this->Finance->getTresholdPembayaran($tahun,$idsmt,true);				                        
-                        if (!$data['bool'])throw new Exception ("Anda tidak bisa mengisi KRS karena baru membayar(".$this->Finance->toRupiah($data['total_bayar'])."), harus minimal setengahnya sebesar (".$this->Finance->toRupiah($data['ambang_pembayaran']).") dari total (".$this->Finance->toRupiah($data['total_biaya']).")");
-                    }
-                }                
+                if ($idsmt==3) {                        
+                    if (!$this->Finance->getSKSFromSP ($tahun,$idsmt))throw new Exception ("Anda tidak bisa mengisi KRS karena belum melakukan pembayaran untuk Semester Pendek");																			
+                }else {
+                    $data=$this->Finance->getTresholdPembayaran($tahun,$idsmt,true);				                        
+                    if (!$data['bool'])throw new Exception ("Anda tidak bisa mengisi KRS karena baru membayar(".$this->Finance->toRupiah($data['total_bayar'])."), harus minimal setengahnya sebesar (".$this->Finance->toRupiah($data['ambang_pembayaran']).") dari total (".$this->Finance->toRupiah($data['total_biaya']).")");
+                }
+                              
                 $datadulang=$this->KRS->getDataDulang($idsmt,$tahun);
                 $nama_tahun = $this->DMaster->getNamaTA($tahun);
                 $nama_semester = $this->setup->getSemester($idsmt);
@@ -73,8 +72,14 @@ class CTambahKRS extends MainPageMHS {
                                      'tasmt'=>$tasmt);		                    
                 }                                
                 $this->Nilai->setDataMHS($datamhs);
-                $this->KRS->DataKRS['krs']['maxSKS']=$this->Nilai->getMaxSKS($tahun,$idsmt);                
-                $this->KRS->DataKRS['krs']['ipstasmtbefore']=$this->Nilai->getIPS();                                
+                $datadulangbefore=$this->Nilai->getDataDulangBeforeCurrentSemester($idsmt,$tahun);
+                if ($datadulangbefore['k_status']=='C') {
+                    $this->KRS->DataKRS['krs']['maxSKS']=21;                
+                    $this->KRS->DataKRS['krs']['ipstasmtbefore']='N.A (Status Cuti)';
+                }else{
+                    $this->KRS->DataKRS['krs']['maxSKS']=$this->Nilai->getMaxSKS($tahun,$idsmt);                
+                    $this->KRS->DataKRS['krs']['ipstasmtbefore']=$this->Nilai->getIPS();
+                }                                                
                 
                 $_SESSION['currentPageKRS']['DataKRS']=$this->KRS->DataKRS;
                 $kjur=$datamhs['kjur'];

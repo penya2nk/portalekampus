@@ -143,13 +143,14 @@ class CDetailPembayaranCutiSemesterGenap Extends MainPageK {
                 $k_status=$datamhs['k_status'];
                 $ta=$datamhs['ta'];
                 $idsmt=$datamhs['idsmt'];
+                $tasmt=$ta.$idsmt;
                 
                 $str = "SELECT tanggal FROM transaksi_cuti WHERE no_transaksi=$no_transaksi";
                 $this->DB->setFieldTable(array('no_transaksi','no_faktur','tanggal','date_added','dibayarkan','commited'));
                 $result=$this->DB->getRecord($str);	
                 $tanggal=$result[1]['tanggal'];
                 
-                $str = "INSERT INTO dulang (iddulang,nim,tahun,idsmt,tanggal,idkelas,status_sebelumnya,k_status) VALUES (NULL,'$nim','$ta','$idsmt','$tanggal','$kelas','$k_status','C')";
+                $str = "INSERT INTO dulang (iddulang,nim,tahun,idsmt,tasmt,tanggal,idkelas,status_sebelumnya,k_status) VALUES (NULL,'$nim','$ta','$idsmt','$tasmt','$tanggal','$kelas','$k_status','C')";
                 $this->DB->insertRecord($str);
 
                 $str = "UPDATE register_mahasiswa SET k_status='C' WHERE nim='$nim'";

@@ -184,7 +184,8 @@ class CTransaksiPembayaranSemesterGenap Extends MainPageK {
                 $this->Finance->setDataMHS($datamhs);
                 $bool=$this->Finance->getTresholdPembayaran($ta,$idsmt);						                                
                 if ($bool) {
-                    $str = "INSERT INTO dulang (iddulang,nim,tahun,idsmt,tanggal,idkelas,status_sebelumnya,k_status) VALUES (NULL,'$nim','$ta','$idsmt','$tanggal','$kelas','$k_status','A')";
+                    $tasmt=$ta.$idsmt;
+                    $str = "INSERT INTO dulang (iddulang,nim,tahun,idsmt,tasmt,tanggal,idkelas,status_sebelumnya,k_status) VALUES (NULL,'$nim','$ta','$idsmt','$tasmt','$tanggal','$kelas','$k_status','A')";
                     $this->DB->insertRecord($str);
                     
                     $str = "UPDATE register_mahasiswa SET k_status='A' WHERE nim='$nim'";

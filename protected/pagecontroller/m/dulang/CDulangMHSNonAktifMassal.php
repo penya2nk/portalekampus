@@ -143,7 +143,8 @@ class CDulangMHSNonAktifMassal Extends MainPageM {
                     $this->DB->query ('BEGIN');						
                     $idkelas=$inputan->hiddenidkelas->Value;;
                     $status_sebelumnya=$inputan->hiddenstatus->Value;
-                    $str = "INSERT INTO dulang (iddulang,nim,tahun,idsmt,tanggal,idkelas,status_sebelumnya,k_status) VALUES (NULL,'$nim','$ta','$idsmt',NOW(),'$idkelas','$status_sebelumnya','N')";														
+                    $tasmt=$ta.$idsmt;
+                    $str = "INSERT INTO dulang (iddulang,nim,tahun,idsmt,tasmt,tanggal,idkelas,status_sebelumnya,k_status) VALUES (NULL,'$nim','$ta','$idsmt','$tasmt',NOW(),'$idkelas','$status_sebelumnya','N')";														
                     if ($this->DB->insertRecord($str)) {
                         if ($status == 1) {
                             $str = "UPDATE register_mahasiswa SET k_status='N' WHERE nim='$nim'";			

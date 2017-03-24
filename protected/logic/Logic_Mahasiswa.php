@@ -179,7 +179,7 @@ class Logic_Mahasiswa extends Logic_Global {
 		return $this->db->updateRecord($str);
 	}
     /**
-     * digunakan untuk mendapatkan id dulang
+     * digunakan untuk mendapatkan data daftar ulang
      * @param type $idsmt
      * @param type $tahun
      * @return boolean atau id dulang
@@ -194,6 +194,24 @@ class Logic_Mahasiswa extends Logic_Global {
         }else {
             return false;
         }		
+	}
+    /**
+     * digunakan untuk mendapatkan data daftar dulang
+     * @param type $idsmt
+     * @param type $tahun
+     * @return boolean atau id dulang
+     */
+	public function getDataDulangBeforeCurrentSemester ($idsmt,$tahun) {				
+        $nim=$this->DataMHS['nim'];
+        $current_tasmt=$tahun.$idsmt;
+        $str = ($this->getDataMHS('tahun_masuk')==$tahun&&$this->getDataMHS('semester_masuk')==$idsmt)?"SELECT iddulang,nim,tahun,idsmt,tanggal,idkelas,status_sebelumnya,k_status FROM dulang WHERE nim='$nim' AND tasmt <= $current_tasmt ORDER BY iddulang DESC LIMIT 1":"SELECT iddulang,nim,tahun,idsmt,tanggal,idkelas,status_sebelumnya,k_status FROM dulang WHERE nim='$nim' AND tasmt < $current_tasmt ORDER BY iddulang DESC LIMIT 1";
+        $this->db->setFieldTable(array('iddulang','nim','tahun','idsmt','tanggal','idkelas','status_sebelumnya','k_status'));
+        $r=$this->db->getRecord($str);						        
+        if (isset($r[1])) {				            
+            return $r[1];
+        }else {
+            return false;
+        }	
 	}
 }
 ?>

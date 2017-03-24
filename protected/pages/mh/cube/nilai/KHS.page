@@ -105,19 +105,19 @@
                                             <td colspan="5"><strong>Jumlah Kredit</strong></td>
                                             <td style="text-align:right"><%= KHS::$TotalSKS%></td>
                                             <td style="text-align:right"><%= KHS::$TotalM%></td>
-                                            <td colspan="2"><strong>IPS :</strong> <%= @ bcdiv(KHS::$TotalM,KHS::$TotalSKS,2)%> </td>
+                                            <td colspan="3"><strong>IPS :</strong> <%= @ bcdiv(KHS::$TotalM,KHS::$TotalSKS,2)%> </td>
                                         </tr>	
                                         <tr>
                                             <td colspan="5"><strong>Jumlah Kumulatif Semester Lalu (JKSL)</strong></td>
                                             <td style="text-align:right"><%= $this->Page->NilaiSemesterLalu['total_sks']%></td>
                                             <td style="text-align:right"><%= $this->Page->NilaiSemesterLalu['total_nm']%></td>							
-                                            <td colspan="2"></td>
+                                            <td colspan="3"></td>
                                         </tr>		                                    
                                         <tr>
                                             <td colspan="5"><strong>Jumlah Kumulatif Semester Ini (JKSI)</strong></td>
                                             <td style="text-align:right"><%= $this->Page->NilaiSemesterSekarang['sks']%></td>
                                             <td style="text-align:right"><%= $this->Page->NilaiSemesterSekarang['nm']%></td>
-                                            <td colspan="2"><strong>IPK :<%= $this->Page->NilaiSemesterSekarang['ipk']%></strong> </td>
+                                            <td colspan="3"><strong>IPK :<%= $this->Page->NilaiSemesterSekarang['ipk']%></strong> </td>
                                         </tr>	
                                     </tfoot>
                                     </table>

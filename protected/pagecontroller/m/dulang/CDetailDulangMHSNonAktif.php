@@ -65,7 +65,8 @@ class CDetailDulangMHSNonAktif Extends MainPageM {
             
 			$this->DB->query ('BEGIN');
             $status_sebelumnnya=$datamhs['k_status'];
-			$str = "INSERT INTO dulang (iddulang,nim,tahun,idsmt,tanggal,idkelas,status_sebelumnya,k_status) VALUES (NULL,'$nim','$ta','$semester',NOW(),'$kelas','$status_sebelumnnya','N')";
+            $tasmt=$ta.$semester;
+			$str = "INSERT INTO dulang (iddulang,nim,tahun,idsmt,tasmt,tanggal,idkelas,status_sebelumnya,k_status) VALUES (NULL,'$nim','$ta','$semester','$tasmt',NOW(),'$kelas','$status_sebelumnnya','N')";
 			if ($this->DB->insertRecord($str)) {
                 if ($this->cmbAddStatus->Text == 1){
                     $str = "UPDATE register_mahasiswa SET iddosen_wali='$iddosen_wali',k_status='N' WHERE nim='$nim'";			

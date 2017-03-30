@@ -267,7 +267,7 @@ class KHSEkstension extends MainPageM {
                         $this->report->setMode('excel2007');
                         
                         $messageprintout="Summary Kartu Hasil Studi: <br/>";
-                        $this->report->printSummaryKHS($this->Nilai,$this->DMaster,true);
+                        $this->printSummaryKHS($this->report,true);
                         
                     break;
                     case  'excel2007' :
@@ -283,5 +283,171 @@ class KHSEkstension extends MainPageM {
         $this->lblPrintout->Text='Kartu Hasil Studi';
         $this->modalPrintOut->show();
 	}
+    /**
+     * digunakan untuk memprint KHS
+     */
+    public function printSummaryKHS ($objReport,$withsignature=false) {
+        $ta=$objReport->dataReport['ta'];
+        $tahun_masuk=$objReport->dataReport['tahun_masuk'];
+        $semester=$objReport->dataReport['semester'];
+        $kjur=$objReport->dataReport['kjur'];
+        $nama_tahun=$objReport->dataReport['nama_tahun'];
+        $nama_semester=$objReport->dataReport['nama_semester'];
+        $nama_ps = $objReport->dataReport['nama_ps'];
+        switch ($objReport->getDriver()) {
+            case 'excel2003' :               
+            case 'excel2007' :          
+                $objReport->setHeaderPT('L'); 
+                $sheet= $objReport->rpt->getActiveSheet();
+                $objReport->rpt->getDefaultStyle()->getFont()->setName('Arial');                
+                $objReport->rpt->getDefaultStyle()->getFont()->setSize('9');                                    
+                
+                $sheet->mergeCells("A7:L7");
+                $sheet->getRowDimension(7)->setRowHeight(20);
+                $sheet->setCellValue("A7","SUMMARY KHS T.A $nama_tahun SEMESTER $nama_semester");                                
+                
+                $sheet->mergeCells("A8:L8");
+                $sheet->setCellValue("A8","PROGRAM STUDI $nama_ps");                                
+                $sheet->getRowDimension(8)->setRowHeight(20);
+                $styleArray=array(
+								'font' => array('bold' => true,
+                                                'size' => 16),
+								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+												   'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+							);
+                $sheet->getStyle("A7:L8")->applyFromArray($styleArray);
+                
+                $sheet->getRowDimension(10)->setRowHeight(25);              
+                
+                $sheet->getColumnDimension('B')->setWidth(15);
+                $sheet->getColumnDimension('C')->setWidth(18);
+                $sheet->getColumnDimension('D')->setWidth(35);
+                $sheet->getColumnDimension('E')->setWidth(10);
+                $sheet->getColumnDimension('I')->setWidth(10);
+                $sheet->getColumnDimension('G')->setWidth(10);
+                $sheet->getColumnDimension('H')->setWidth(10);
+                $sheet->getColumnDimension('I')->setWidth(15);
+                $sheet->getColumnDimension('J')->setWidth(15);
+                $sheet->getColumnDimension('K')->setWidth(14);
+                $sheet->getColumnDimension('L')->setWidth(18);
+                                
+                $sheet->setCellValue('A10','NO');				
+                $sheet->setCellValue('B10','NIM');
+                $sheet->setCellValue('C10','NIRM');				                        
+                $sheet->setCellValue('D10','NAMA');				
+                $sheet->setCellValue('E10','JK');				
+                $sheet->setCellValue('F10','ANGK.');				
+                $sheet->setCellValue('G10','IPS');				
+                $sheet->setCellValue('H10','IPK');				
+                $sheet->setCellValue('I10','SKS SEMESTER');				
+                $sheet->setCellValue('J10','SKS TOTAL');	
+                $sheet->setCellValue('K10','SKS KONVERSI DI AKUI');
+                $sheet->setCellValue('L10','KELAS');
+                
+                $styleArray=array(								
+                                    'font' => array('bold' => true),
+                                    'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                                                       'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+                                    'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+                                );																					 
+                $sheet->getStyle("A10:L10")->applyFromArray($styleArray);
+                $sheet->getStyle("A10:L10")->getAlignment()->setWrapText(true);
+                
+                $str_tahun_masuk=$tahun_masuk == 'none' ?'':"AND vdm.tahun_masuk=$tahun_masuk";
+                $str = "SELECT k.idkrs,k.tgl_krs,k.nim,nirm,vdm.nama_mhs,vdm.jk,vdm.kjur,vdm.idkelas,vdm.tahun_masuk,vdm.semester_masuk,dk.iddata_konversi FROM krs k JOIN v_datamhs vdm ON (k.nim=vdm.nim) LEFT JOIN data_konversi dk ON (dk.nim=vdm.nim) WHERE vdm.idkelas='C' AND tahun='$ta' AND idsmt='$semester' AND kjur=$kjur AND k.sah=1 $str_tahun_masuk ORDER BY vdm.nama_mhs ASC";
+                $this->DB->setFieldTable(array('idkrs','tgl_krs','nim','nirm','nama_mhs','jk','kjur','idkelas','tahun_masuk','semester_masuk','iddata_konversi'));
+                $r=$this->DB->getRecord($str);
+                $row=11;                
+                while (list($k,$v)=each($r)) {
+                    $nim=$v['nim'];						
+                    $this->Nilai->setDataMHS(array('nim'=>$nim));
+                    $this->Nilai->getKHS($_SESSION['ta'],$_SESSION['semester']);
+                    $ip=$this->Nilai->getIPS ();
+                    $sks=$this->Nilai->getTotalSKS ();                
+                    $dataipk=$this->Nilai->getIPKSampaiTASemester($ta,$semester,'ipksks');	                
+                
+                    $sheet->setCellValue("A$row",$v['no']);				                    
+                    $sheet->setCellValueExplicit("B$row",$v['nim'],PHPExcel_Cell_DataType::TYPE_STRING);
+                    $sheet->setCellValueExplicit("C$row",$v['nirm'],PHPExcel_Cell_DataType::TYPE_STRING);	                        
+                    $sheet->setCellValue("D$row",$v['nama_mhs']);				
+                    $sheet->setCellValue("E$row",$v['jk']);				
+                    $sheet->setCellValue("F$row",$v['tahun_masuk']);				
+                    $sheet->setCellValue("G$row",$ip);				
+                    $sheet->setCellValue("H$row",$dataipk['ipk']);				
+                    $sheet->setCellValue("I$row",$sks);				
+                    $sheet->setCellValue("J$row",$dataipk['sks']);
+                    $iddata_konversi = $v['iddata_konversi'];
+                    $jumlah_sks=0;
+                    if ($iddata_konversi > 0) {
+                        $jumlah_sks=$this->DB->getSumRowsOfTable ('sks',"v_konversi2 WHERE iddata_konversi=$iddata_konversi");
+                    }
+                    $sheet->setCellValue("K$row",$jumlah_sks);
+                    $sheet->setCellValue("L$row",$this->DMaster->getNamaKelasByID($v['idkelas']));
+                    $row+=1;
+                }
+                $row-=1;
+                $styleArray=array(								
+                                    'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                                                       'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+                                    'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+                                );																					 
+                $sheet->getStyle("A11:L$row")->applyFromArray($styleArray);
+                $sheet->getStyle("A11:L$row")->getAlignment()->setWrapText(true);
+                
+                $styleArray=array(								
+                                    'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+                                );
+                
+                $sheet->getStyle("A11:C$row")->applyFromArray($styleArray);
+                $sheet->getStyle("E11:L$row")->applyFromArray($styleArray);
+                
+                if ($withsignature) {
+                    $row+=3;
+                    $row_awal=$row;
+                    $sheet->mergeCells("C$row:D$row");                    
+                    $sheet->setCellValue("C$row",'Mengetahui');				                    
+                    
+                    $sheet->mergeCells("F$row:I$row");       
+                    $tanggal=$this->TGL->tanggal('l, j F Y');		
+                    $sheet->setCellValue("F$row","Tanjungpinang, $tanggal");				                    
+                    
+                    $row+=1;
+                    $sheet->mergeCells("C$row:D$row");      
+                    $sheet->setCellValue("C$row",'A.n. Ketua STISIPOL Raja Haji');				                    
+                    $sheet->mergeCells("F$row:I$row");                           
+                    $sheet->setCellValue("F$row",'Ketua Program Studi');				                    
+                    
+                    $row+=1;
+                    $sheet->mergeCells("C$row:D$row");      
+                    $sheet->setCellValue("C$row",$objReport->dataReport['nama_jabatan_khs']);				                    
+                    $sheet->mergeCells("F$row:I$row");                           
+                    $sheet->setCellValue("F$row",$nama_ps);
+                    
+                    $row+=5;
+                    $sheet->mergeCells("C$row:D$row");                    
+                    $sheet->setCellValue("C$row",$objReport->dataReport['nama_penandatangan_khs']);
+                    $sheet->mergeCells("F$row:I$row");                           
+                    $sheet->setCellValue("F$row",$objReport->dataReport['nama_kaprodi']);
+                    
+                    $row+=1;
+                    $sheet->mergeCells("C$row:D$row");                    
+                    $nama_jabatan=$objReport->dataReport['jabfung_penandatangan_khs'];
+                    $nidn=$objReport->dataReport['nidn_penandatangan_khs'];
+                    $sheet->setCellValue("C$row","$nama_jabatan NIDN : $nidn");
+                    $sheet->mergeCells("F$row:I$row");                           
+                    $sheet->setCellValue("F$row",$objReport->dataReport['jabfung_kaprodi']. ' NIDN : '.$objReport->dataReport['nidn_kaprodi']);
+                    
+                    $styleArray=array(								
+                                    'font' => array('bold' => true),                                    
+                                );																					 
+                    $sheet->getStyle("A$row_awal:L$row")->applyFromArray($styleArray);
+                    $sheet->getStyle("A$row_awal:L$row")->getAlignment()->setWrapText(true);
+                }
+                
+                $objReport->printOut("summarykhs");
+            break;
+        }
+        $objReport->setLink($objReport->dataReport['linkoutput'],"Summary KHS T.A $nama_tahun Semester $nama_semester");
+    }
 }
 ?>

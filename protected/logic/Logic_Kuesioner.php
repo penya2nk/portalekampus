@@ -30,7 +30,7 @@ class Logic_Kuesioner extends Logic_Akademik {
         $maks_buruk=$maks_sangatburuk+$interval;
         $maks_sedang=$maks_buruk+$interval;
         $maks_baik=$maks_sedang+$interval;
-        $maks_sangatbaik=$maks_baik+$maks_baik;
+        $maks_sangatbaik=$maks_baik+$interval;
         
         if ($totalnilai >= $skor_terendah && $totalnilai < $maks_sangatburuk) {
             $n_kuan=1;

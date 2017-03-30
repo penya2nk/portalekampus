@@ -92,8 +92,7 @@ class CDetailPKRS extends MainPageDW {
 		$id=explode('_',$sender->CommandParameter);
 		$idpenyelenggaraan=$id[1];	
 		if ($id[0]==1) {			
-			try {				
-				
+			try {
 				$str = "SELECT SUM(sks) AS jumlah FROM v_krsmhs WHERE idkrs='$idkrs' AND batal=0";
 				$this->DB->setFieldTable(array('jumlah'));
 				$r=$this->DB->getRecord($str);	

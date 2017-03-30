@@ -178,19 +178,26 @@ class CPKRS extends MainPageDW {
             $krs['tahun_masuk']=$_SESSION['currentPagePKRS']['DataMHS']['tahun_masuk'];
             $krs['semester_masuk']=$_SESSION['currentPagePKRS']['DataMHS']['semester_masuk'];
             $krs['kjur']=$_SESSION['currentPagePKRS']['DataMHS']['kjur'];
-            $this->Finance->setDataMHS($krs);
             $this->Nilai->setDataMHS($krs);            
             $idkrs=$krs['idkrs'];
             $tahun=$krs['tahun'];
             $idsmt=$krs['idsmt'];            
-            if ($idsmt==3) {               
+            if ($idsmt==3) {  
+                $this->Finance->setDataMHS($krs);
                 $maxSKS=$this->Finance->getSKSFromSP($tahun,$idsmt);
                 $this->Nilai->getKHSBeforeCurrentSemester($tahun,$idsmt);
+                $krs['ipstasmtbefore']=$this->Nilai->getIPS();
             }else{
-               $maxSKS=$this->Nilai->getMaxSKS($tahun,$idsmt);
+               $datadulangbefore=$this->Nilai->getDataDulangBeforeCurrentSemester($idsmt,$tahun);
+               if ($datadulangbefore['k_status']=='C') {
+                   $maxSKS=$this->setup->getSettingValue('jumlah_sks_krs_setelah_cuti'); 
+                   $krs['ipstasmtbefore']='N.A (Status Cuti)';
+               }else{
+                   $maxSKS=$this->Nilai->getMaxSKS($tahun,$idsmt);
+                   $krs['ipstasmtbefore']=$this->Nilai->getIPS();
+               }               
             }            
             $krs['maxSKS']=$maxSKS;
-            $krs['ipstasmtbefore']=$this->Nilai->getIPS();
             $_SESSION['currentPagePKRS']['DataKRS']['krs']=$krs;
             $this->redirect ('perkuliahan.DetailPKRS',true,array('id'=>$idkrs));
         }		

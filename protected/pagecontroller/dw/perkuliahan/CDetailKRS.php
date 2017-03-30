@@ -106,7 +106,7 @@ class CDetailKRS extends MainPageDW {
         }else{
            $datadulangbefore=$this->Nilai->getDataDulangBeforeCurrentSemester($idsmt,$tahun);
             if ($datadulangbefore['k_status']=='C') {
-                $maxSKS=21;                
+                $maxSKS=$this->setup->getSettingValue('jumlah_sks_krs_setelah_cuti');                
                 $datakrs['krs']['ipstasmtbefore']='N.A (Status Cuti)';
             }else{
                 $maxSKS=$this->Nilai->getMaxSKS($tahun,$idsmt);

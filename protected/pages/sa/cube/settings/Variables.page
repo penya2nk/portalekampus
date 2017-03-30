@@ -106,7 +106,53 @@
                 </div>
             </div>
         </div>    
-    </div>    
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left"><i class="fa fa-cogs"></i> Kartu Rencana Studi (KRS)</h2>                 
+                </header>
+                <div class="main-box-body clearfix">
+                    <div class="form-horizontal">
+                        <div class="form-group" id="divKRSJumlahSKSSetelahCuti">
+                            <label class="col-lg-2 control-label">Jumlah SKS Setelah Cuti :</label>
+                            <div class="col-lg-3">                                
+                                <com:TTextBox ID="txtKRSJumlahSKSSetelahCuti" CssClass="form-control" Text="0" Attributes.OnKeyUp="formatangka(this,true)" Width="75px" />
+                                <com:TRequiredFieldValidator ID="FieldKRSJumlahSKSSetelahCuti" ValidationGroup="settingkrs" Display="Dynamic" ControlToValidate="txtKRSJumlahSKSSetelahCuti" ErrorMessage="Isi Jumlah SKS KRS Setelah Cuti" CssClass="has-error help-block">	
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divKRSJumlahSKSSetelahCuti').addClassName('has-error');
+                                        jQuery('#<%=$this->FieldKRSJumlahSKSSetelahCuti->ClientID%>').removeAttr('style');
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divKRSJumlahSKSSetelahCuti').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator>     
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <com:TActiveCustomButton ID="btnSaveKRS" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="settingkrs">
+                                    <prop:Text><i class="fa fa-save"></i> Simpan</span></prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->btnSaveKRS->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnSaveKRS->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                        $('<%=$this->btnSaveKRS->ClientId%>').disabled='';
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>
+                            </div>
+                        </div>                    
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </div>       
     <div class="row">
         <div class="col-lg-12">
             <div class="main-box">

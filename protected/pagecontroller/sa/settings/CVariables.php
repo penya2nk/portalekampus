@@ -26,21 +26,26 @@ class CVariables extends MainPageSA {
         $this->txtJumlahBarisRepeater->Text=$this->setup->getSettingValue('default_pagesize');
         $this->txtMinimalNilaiKelulusan->Text=$this->setup->getSettingValue('minimal_nilai_kelulusan');
         
-        $this->txtTranskripNilaiNamaJabatan->Text=$this->setup->getSettingValue('nama_jabatan_transkrip');
+        //KRS
+        $this->txtKRSJumlahSKSSetelahCuti->Text=$this->setup->getSettingValue('jumlah_sks_krs_setelah_cuti');  
         
-        $daftardw=$this->DMaster->removeIdFromArray($this->DMaster->getDaftarDosen(),'none');
+        //Transkrip Nilai        
+        $this->txtTranskripNilaiNamaJabatan->Text=$this->setup->getSettingValue('nama_jabatan_transkrip');
+        $daftardosen=$this->DMaster->removeIdFromArray($this->DMaster->getDaftarDosen(),'none');
         $this->cmbNamaPenandatangan->Text=$this->setup->getSettingValue('id_penandatangan_transkrip');
-        $this->cmbNamaPenandatangan->DataSource=$daftardw;
+        $this->cmbNamaPenandatangan->DataSource=$daftardosen;
         $this->cmbNamaPenandatangan->DataBind();
         
+        //Kartu Hasil Studi
         $this->txtKHSNamaJabatan->Text=$this->setup->getSettingValue('nama_jabatan_khs');        
         $this->cmbNamaPenandatanganKHS->Text=$this->setup->getSettingValue('id_penandatangan_khs');
-        $this->cmbNamaPenandatanganKHS->DataSource=$daftardw;
+        $this->cmbNamaPenandatanganKHS->DataSource=$daftardosen;
         $this->cmbNamaPenandatanganKHS->DataBind();
-                
+        
+        //DPNA
         $this->txtDPNANamaJabatan->Text=$this->setup->getSettingValue('nama_jabatan_dpna');        
         $this->cmbNamaPenandatanganDPNA->Text=$this->setup->getSettingValue('id_penandatangan_dpna');
-        $this->cmbNamaPenandatanganDPNA->DataSource=$daftardw;
+        $this->cmbNamaPenandatanganDPNA->DataSource=$daftardosen;
         $this->cmbNamaPenandatanganDPNA->DataBind();
         
         
@@ -65,6 +70,11 @@ class CVariables extends MainPageSA {
                     $str = "UPDATE setting SET value='$minimal_nilai_kelulusan' WHERE setting_id=55";            
                     $this->DB->updateRecord($str);
                     
+                break;
+                case 'btnSaveKRS' :
+                    $jumlah_sks_krs_setelah_cuti= $this->txtKRSJumlahSKSSetelahCuti->Text;
+                    $str = "UPDATE setting SET value='$jumlah_sks_krs_setelah_cuti' WHERE setting_id=60";            
+                    $this->DB->updateRecord($str);
                 break;
                 case 'btnSaveTranskripNilai' :                    
                     $iddosen=$this->cmbNamaPenandatangan->Text;

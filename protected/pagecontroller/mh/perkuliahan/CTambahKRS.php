@@ -74,7 +74,7 @@ class CTambahKRS extends MainPageMHS {
                 $this->Nilai->setDataMHS($datamhs);
                 $datadulangbefore=$this->Nilai->getDataDulangBeforeCurrentSemester($idsmt,$tahun);
                 if ($datadulangbefore['k_status']=='C') {
-                    $this->KRS->DataKRS['krs']['maxSKS']=21;                
+                    $this->KRS->DataKRS['krs']['maxSKS']=$this->setup->getSettingValue('jumlah_sks_krs_setelah_cuti');                
                     $this->KRS->DataKRS['krs']['ipstasmtbefore']='N.A (Status Cuti)';
                 }else{
                     $this->KRS->DataKRS['krs']['maxSKS']=$this->Nilai->getMaxSKS($tahun,$idsmt);                

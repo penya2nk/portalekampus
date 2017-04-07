@@ -90,7 +90,7 @@ class CKUM extends MainPageK {
         $str_tahun_masuk=" AND vdm.tahun_masuk=$tahun_masuk";
         if ($search) {
             $str = "SELECT vdm.no_formulir,k.idkrs,k.nim,vdm.nama_mhs,tahun_masuk,semester_masuk FROM krs k,v_datamhs vdm WHERE vdm.nim=k.nim AND k.sah=1 AND k.tahun=$ta AND k.idsmt=$semester";
-            $txtsearch=$this->txtKriteria->Text;
+            $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
                     $clausa="AND vdm.nim='$txtsearch'";

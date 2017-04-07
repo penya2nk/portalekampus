@@ -86,7 +86,7 @@ class CDetailDulangMHSBaru Extends MainPageM {
 			$this->DB->query ('BEGIN');
 			if ($this->DB->insertRecord($str)) {
                 $tasmt=$ta.$semester;
-				$str = "INSERT INTO dulang (iddulang,nim,tahun,idsmt,tanggal,idkelas,status_sebelumnya,k_status) VALUES (NULL,'$nim','$ta','$semester','$tasmt','$tanggal','$kelas','A','A')";
+				$str = "INSERT INTO dulang (iddulang,nim,tahun,idsmt,tasmt,tanggal,idkelas,status_sebelumnya,k_status) VALUES (NULL,'$nim','$ta','$semester','$tasmt','$tanggal','$kelas','A','A')";
 				$this->DB->insertRecord($str);
 				$password=md5(1234);
 				$str="UPDATE profiles_mahasiswa SET nim='$nim',userpassword='$password' WHERE no_formulir='$no_formulir'";

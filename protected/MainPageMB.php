@@ -3,7 +3,11 @@ class MainPageMB extends MainPage {
     /**     
      * show page pendaftaran via Web [spmb]
      */
-    public $showFormulirPendaftaran=false;    
+    public $showFormulirPendaftaran=false;
+    /**     
+     * show page jadwal ujian PMB [spmb]
+     */
+    public $showJadwalUjianPMB=false;    
     /**     
      * show page soal PMB
      */

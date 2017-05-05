@@ -3,7 +3,7 @@
     <i class="fa fa-circle-o"></i> PIN<br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
 </com:TContent>
 <com:TContent ID="configtools">    
-    <%include Application.layouts.cube.FilterMode9%>
+    <%include Application.layouts.cube.FilterMode10%>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
     <li><a href="#">SPMB</a></li>
@@ -95,7 +95,6 @@
                                     </prop:ClientSide.OnComplete>
                                 </com:TActiveDropDownList> 	
                             </div>
-                             
                         </div>                            
                     </div>
                 </div>
@@ -155,7 +154,8 @@
                                     <thead>
                                         <th scope="col">NO</th>
                                         <th scope="col">NO. FORMULIR</th>						
-                                        <th scope="col">PIN</th>																						
+                                        <th scope="col">PIN</th>			
+                                        <th scope="col">KELAS</th>
                                         <th scope="col">NAMA MAHASISWA</th>
                                         <th scope="col" width="90">STATUS</th>	
                                     </thead>
@@ -165,7 +165,8 @@
                                 <tr>
                                     <td><%#$this->DataItem['no']%></td>
                                     <td><%#$this->DataItem['no_formulir']%></td>											
-                                    <td><%#$this->DataItem['no_pin']%></td>					
+                                    <td><%#$this->DataItem['no_pin']%></td>
+                                    <td><%#$this->Page->DMaster->getNamaKelasByID($this->DataItem['idkelas'])%></td>
                                     <td><%#($this->DataItem['nama_mhs']=='')?'N.A':$this->DataItem['nama_mhs']%></td>
                                     <td><span class="label <%#($this->DataItem['ket']=='')?'label-default':'label-success'%>"><i class="<%#($this->DataItem['ket']=='')?'fa fa-times-circle':'fa fa-check-square'%>"></i></td>
                                 </tr>                         

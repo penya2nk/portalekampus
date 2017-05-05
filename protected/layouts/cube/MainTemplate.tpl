@@ -82,7 +82,7 @@
                         </li>                        
                         <li class="hidden-xxs">
 							<com:THyperLink ID="linkTopTASemester" CssClass="btn">
-								Saat ini Anda berada di T.A <%=$this->Page->setup->getSettingValue('default_ta');%>/<%=$this->Page->setup->getSemester($this->Page->setup->getSettingValue('default_semester'));%>
+								Saat ini Anda berada di T.A <%=$this->Page->setup->getSettingValue('default_ta');%>/<%=$this->Page->setup->getSemester($this->Page->setup->getSettingValue('default_semester'));%>, Tahun Pendaftaran <%=$this->Page->setup->getSettingValue('default_tahun_pendaftaran')%>
 							</com:THyperLink>
 						</li>
 						<li class="dropdown profile-dropdown visible">
@@ -178,8 +178,11 @@
                                                 <i class="fa fa-dashboard"></i>
                                                 <span>Dashboard</span>											
                                             </a>                                        
-                                        </li> 
-                                        <li<%=$this->Page->showSubMenuAkademikPerkuliahan==true?' class="active"':''%>>
+                                        </li>
+                                        <li class="nav-header nav-header-first hidden-sm hidden-xs">
+                                            DATA MASTER
+                                        </li>
+                                        <li<%=$this->Page->showSubMenuDMasterPerkuliahan==true?' class="active"':''%>>
                                             <a href="#" class="dropdown-toggle">
                                                 <i class="fa fa-truck"></i>
                                                 <span>Perkuliahan</span>
@@ -187,12 +190,12 @@
                                             </a>
                                             <ul class="submenu">
                                                 <li>
-                                                    <a href="<%=$this->Page->constructUrl('perkuliahan.KRS',true)%>"<%=$this->Page->showKRS==true ? ' class="active" ':''%>>
-                                                        KRS
+                                                    <a href="<%=$this->Page->constructUrl('dmaster.TA',true)%>"<%=$this->Page->showTA==true ? ' class="active" ':''%>>
+                                                        Tahun Akademik
                                                     </a>
                                                 </li>
                                             </ul>
-                                        </li>   
+                                        </li>
                                         <li class="nav-header nav-header-first hidden-sm hidden-xs">
                                             SETTING
                                         </li>
@@ -289,7 +292,8 @@
                                         </li>  
                                         <li class="nav-header nav-header-first hidden-sm hidden-xs">
                                             DATA MASTER
-                                        </li><li<%=$this->Page->showSubMenuDMasterPerkuliahan==true?' class="active"':''%>>
+                                        </li>
+                                        <li<%=$this->Page->showSubMenuDMasterPerkuliahan==true?' class="active"':''%>>
                                             <a href="#" class="dropdown-toggle">
                                                 <i class="fa fa-truck"></i>
                                                 <span>Perkuliahan</span>
@@ -708,6 +712,12 @@
                                             <a href="<%=$this->Page->constructUrl('FormulirPendaftaran',true)%>">
                                                 <i class="fa fa-file-o"></i>
                                                 <span>Formulir Pendaftaran</span>											
+                                            </a>                                        
+                                        </li>
+                                        <li<%=$this->Page->showJadwalUjianPMB==true?' class="active"':''%>>
+                                            <a href="<%=$this->Page->constructUrl('JadwalUjianPMB',true)%>">
+                                                <i class="fa fa-calendar"></i>
+                                                <span>Jadwal Ujian PMB</span>											
                                             </a>                                        
                                         </li>
                                         <li<%=$this->Page->showSoalPMB==true?' class="active"':''%>>

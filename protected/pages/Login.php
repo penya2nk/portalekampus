@@ -137,7 +137,7 @@ class Login extends MainPage {
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);                    
                 break; 
             }      
-            $_SESSION['tahun_masuk']=$_SESSION['ta'];
+            $_SESSION['tahun_masuk']=$setup->getSettingValue('default_tahun_pendaftaran');
             $_SESSION['semester']=$setup->getSettingValue('default_semester');            
             $_SESSION['kelas']='none';
             $_SESSION['foto']='no_photo.png';

@@ -5,7 +5,7 @@
         </div>
         <div class="modal-body">
             <com:TActiveLabel ID="lblMessagePrintout" />
-            <com:TActiveHyperLink ID="linkOutput" />        
+            <com:TActiveHyperLink ID="linkOutput" Attributes.style="color:#FFB74D" />        
         </div>
         <div class="modal-footer" style="background-color: #696969">
             <div class="row">

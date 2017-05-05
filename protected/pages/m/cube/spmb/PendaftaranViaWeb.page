@@ -7,7 +7,7 @@
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
     <li><a href="#">SPMB</a></li>
-    <li><a href="#">PENDAFTARAM</a></li>
+    <li><a href="#">PENDAFTARAN</a></li>
     <li class="active">VIA WEB</li>
 </com:TContent>
 <com:TContent ID="csscontent">

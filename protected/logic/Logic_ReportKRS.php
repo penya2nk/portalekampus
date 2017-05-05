@@ -408,7 +408,7 @@ class Logic_ReportKRS extends Logic_Report {
                         $rpt->Cell(70, 5, $v['nmatkul'].$flag , 1, 0, 'L');							
                         $rpt->Cell(8, 5, $v['sks'], 1, 0, 'C');				
                         $rpt->Cell(8, 5, $v['semester'], 1, 0, 'C');				
-                        $rpt->Cell(60, 5, $v['nama_dosen'], 1, 0, 'L');						
+                        $rpt->Cell(60, 5, '', 1, 0, 'L');						
                         $rpt->Cell(15, 5, '', 1, 0, 'C');
                         $rpt->Cell(15, 5, '', 1, 0, 'C');					
                         $totalSks+=$v['sks'];

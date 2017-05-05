@@ -3,8 +3,7 @@ prado::using ('Application.MainPageSA');
 class CVariables extends MainPageSA {    
 	public function onLoad($param) {		
 		parent::onLoad($param);				        
-		$this->showVariable=true;              
-        
+		$this->showVariable=true;       
 		if (!$this->IsPostBack&&!$this->IsCallBack) {	           
             if (!isset($_SESSION['currentPageVariables'])||$_SESSION['currentPageVariables']['page_name']!='sa.settings.Variables') {
 				$_SESSION['currentPageVariables']=array('page_name'=>'sa.settings.Variables','page_num'=>0);												
@@ -13,7 +12,11 @@ class CVariables extends MainPageSA {
 		}
 	}    
     public function populateData () { 
-        $ta=$this->DMaster->removeIdFromArray($this->DMaster->getListTA(),'none');        
+        $ta=$this->DMaster->removeIdFromArray($this->DMaster->getListTA(),'none');  
+        $this->cmbDefaultTahunPendaftaran->DataSource=$ta;        
+        $this->cmbDefaultTahunPendaftaran->Text=$this->setup->getSettingValue('default_tahun_pendaftaran');
+        $this->cmbDefaultTahunPendaftaran->dataBind();
+        
         $this->cmbDefaultTahunAkademik->DataSource=$ta;        
         $this->cmbDefaultTahunAkademik->Text=$this->setup->getSettingValue('default_ta');
         $this->cmbDefaultTahunAkademik->dataBind();
@@ -68,6 +71,10 @@ class CVariables extends MainPageSA {
                     
                     $minimal_nilai_kelulusan= $this->txtMinimalNilaiKelulusan->Text;
                     $str = "UPDATE setting SET value='$minimal_nilai_kelulusan' WHERE setting_id=55";            
+                    $this->DB->updateRecord($str);
+                    
+                    $default_tahun_pendaftaran= $this->cmbDefaultTahunPendaftaran->Text;
+                    $str = "UPDATE setting SET value='$default_tahun_pendaftaran' WHERE setting_id=56";            
                     $this->DB->updateRecord($str);
                     
                 break;

@@ -4,6 +4,14 @@ class MainPageK extends MainPage {
      * show page rekening [datamaster]
      */
     public $showRekening=false;
+    /**
+     * show page PIN [spmb]
+     */
+    public $showPIN=false;
+    /**
+     * show page Pembayaran Formulir [spmb]
+     */
+    public $showPembayaranFormulir=false;
     /**     
      * show page komponen biaya per TA [datamaster]
      */

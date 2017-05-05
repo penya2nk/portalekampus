@@ -121,8 +121,8 @@ class UserManager extends TAuthManager {
                 $this->db->setFieldTable(array('no_formulir','tahun_masuk','theme'));
                 $r=$this->db->getRecord($str);
                 if (!isset($r[1])) {
-                    $str = "SELECT no_formulir,tahun_masuk,no_pin FROM pin WHERE no_formulir='$username'";						
-                    $this->db->setFieldTable(array('no_formulir','tahun_masuk','no_pin'));
+                    $str = "SELECT pin.no_formulir,pin.tahun_masuk,pin.no_pin,pin.idkelas FROM transaksi t JOIN pin ON (t.no_formulir=pin.no_formulir) JOIN transaksi_detail td ON (t.no_transaksi=td.no_transaksi) WHERE pin.no_formulir=t.no_formulir AND td.idkombi=1 AND pin.no_formulir='$username'";						
+                    $this->db->setFieldTable(array('no_formulir','tahun_masuk','no_pin','idkelas'));
                     $r=$this->db->getRecord($str);
                     $r[1]['theme']='cube';
                 }
@@ -219,7 +219,7 @@ class UserManager extends TAuthManager {
                 if (isset($result[1])) {
                     $result[1]['active']=$result[1]['nim']==''?1:0;
                 }else{
-                    $str = "SELECT no_formulir AS username,no_pin AS userpassword FROM pin WHERE no_formulir='$username'";				
+                    $str = "SELECT pin.no_formulir AS username,pin.no_formulir AS userpassword FROM transaksi t JOIN pin ON (t.no_formulir=pin.no_formulir) JOIN transaksi_detail td ON (t.no_transaksi=td.no_transaksi) WHERE pin.no_formulir=t.no_formulir AND td.idkombi=1 AND pin.no_formulir='$username'";
                     $result = $this->db->getRecord($str);
                     if (isset($result[1])) {
                         $result[1]['userpassword']=md5($result[1]['userpassword']);

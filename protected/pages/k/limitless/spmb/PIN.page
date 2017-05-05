@@ -1,0 +1,190 @@
+<%@ Title="SPMB - PIN"%>
+<com:TContent ID="moduleheader">    
+    <i class="icon-circle position-left"></i> <span class="text-semibold">PIN</span>
+</com:TContent>
+<com:TContent ID="sidebarcontent">
+<div class="sidebar sidebar-main sidebar-default sidebar-separate" style="width:330px">
+    <div class="sidebar-content" style="margin-right:5px">   
+        <div class="sidebar-category">
+            <div class="category-title">
+                <span>Pencarian</span>
+                <ul class="icons-list">
+                    <li><a href="#" data-action="collapse"></a></li>
+                </ul>
+            </div>
+            <div class="category-content">   
+                <div class="form-group">
+                    <label><strong>Kriteria :</strong></label>
+                    <com:TDropDownList ID="cmbKriteria" CssClass="form-control">                                                           
+                        <com:TListItem Value="no_formulir" Text="No Formulir" />
+                        <com:TListItem Value="nama_mhs" Text="Nama Mahasiswa" />
+                    </com:TDropDownList>
+                </div>      
+                <div class="form-group" id="divtxtKriteria">
+                    <label><strong>Isi Kriteria :</strong></label>
+                    <com:TActiveTextBox ID="txtKriteria" CssClass="form-control" />                                                                            
+                    <com:TRequiredFieldValidator ID="spanKriteriaValidator2" ValidationGroup="formPencarianValidator" Display="Dynamic" ControlToValidate="txtKriteria" ErrorMessage="Input apa yang Anda cari, sesuai dengan kriteria yang Anda tentukan." FocusOnError="true" CssClass="has-error help-block">	
+                        <prop:ClientSide.OnValidationError>
+                            $('divtxtKriteria').addClassName('has-error');
+                            jQuery('#<%=$this->spanKriteriaValidator2->ClientID%>').removeAttr('style');                                
+                        </prop:ClientSide.OnValidationError>
+                        <prop:ClientSide.OnValidationSuccess>
+                            $('divtxtKriteria').removeClassName('has-error');
+                        </prop:ClientSide.OnValidationSuccess>
+                    </com:TRequiredFieldValidator>           
+                </div>
+                <div class="form-group">
+                    <com:TActiveCustomButton ID="btnSearch" CssClass="btn btn-info"  OnClick="Page.searchRecord" ValidationGroup="formPencarianValidator" Attributes.Title="Cari">
+                        <prop:Text>                                        
+                            <i class="icon-search4"></i> Cari                                        
+                        </prop:Text>
+                        <prop:ClientSide.OnPreDispatch>
+                            $('<%=$this->btnSearch->ClientId%>').disabled='disabled';
+                            Pace.stop();
+                            Pace.start();                    
+                        </prop:ClientSide.OnPreDispatch>
+                       <prop:ClientSide.OnLoading>
+                            $('<%=$this->btnSearch->ClientId%>').disabled='disabled';
+                        </prop:ClientSide.OnLoading>
+                        <prop:ClientSide.onComplete>                            
+                            $('<%=$this->btnSearch->ClientId%>').disabled='';
+                        </prop:ClientSide.OnComplete>	
+                    </com:TActiveCustomButton> 
+                </div>    
+            </div>
+        </div>
+        <%include Application.layouts.limitless.FilterMode10%>
+        <div class="sidebar-category">
+            <div class="category-title">
+                <span>Filter</span>
+                <ul class="icons-list">
+                    <li><a href="#" data-action="collapse"></a></li>
+                </ul>
+            </div>
+            <div class="category-content">   
+                <div class="form-group">
+                    <label><strong>Display Record :</strong></label>
+                    <com:TActiveDropDownList ID="cmbDisplayRecord" OnSelectedIndexChanged="changeDisplay" CssClass="form-control">					
+                        <com:TListItem Value="all" Text="SELURUH" />
+                        <com:TListItem Value="terdaftar" Text="TERDAFTAR" />
+                        <com:TListItem Value="belum_terdaftar" Text="BELUM TERDAFTAR" />
+                        <prop:ClientSide.OnPreDispatch>         
+                            $('loading').show();
+                        </prop:ClientSide.OnPreDispatch>
+                        <prop:ClientSide.OnLoading>
+                            $('<%=$this->cmbDisplayRecord->ClientId%>').disabled='disabled';						
+                        </prop:ClientSide.OnLoading>
+                        <prop:ClientSide.OnComplete>																	
+                            $('<%=$this->cmbDisplayRecord->ClientId%>').disabled='';						                               						                                        
+                            $('loading').hide();
+                        </prop:ClientSide.OnComplete>
+                    </com:TActiveDropDownList> 	
+                </div>  
+            </div>
+        </div>
+        <%include Application.layouts.limitless.OutputReportMode1%>
+    </div>
+</div>
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li><a href="#">SPMB</a></li>
+    <li class="active">PIN</li>
+</com:TContent>
+<com:TContent ID="csscontent">
+<link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/assets/css/libs/nifty-component.css"/>
+</com:TContent>
+<com:TContent ID="maincontent">
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>" CssClass="row">
+    <div class="col-md-12">
+        <div class="panel panel-flat">
+            <div class="panel-heading">
+                <h5 class="panel-title"><i class="icon-circle position-left"></i>  DAFTAR PIN <com:TActiveLabel ID="lblModulHeader" /></h5>                
+                <div class="heading-elements">
+                    <div class="heading-form">       
+                        <div class="form-group pull-left">
+                            <com:TTextBox ID="txtJumlahFormulir" Attributes.PlaceHolder="Jumlah Formulir" CssClass="form-control" />                                                       
+                            <com:TRequiredFieldValidator ID="fieldValidatorFieldNIM" ControlToValidate="txtJumlahFormulir" Display="Dynamic" ErrorMessage="Isikan Jumlah Formulir" ValidationGroup="frmCheckPIN" CssClass="has-error help-block" FocusOnError="true"> 										
+                                <prop:ClientSide.OnValidationError>
+                                    jQuery('#<%=$this->fieldValidatorFieldNIM->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>                                          
+                        </div>
+                        <com:TActiveCustomButton ID="btnGeneratePIN" CssClass="btn btn-info btn-icon heading-btn" OnClick="generatePIN" Attributes.Title="Generate PIN" ValidationGroup="frmCheckPIN">
+                            <prop:Text><i class="icon-spinner"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>                                                                   
+                                Pace.stop();
+                                Pace.start();
+                                $('<%=$this->btnGeneratePIN->ClientId%>').disabled='disabled';						
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnGeneratePIN->ClientId%>').disabled='disabled';						
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                $('<%=$this->btnGeneratePIN->ClientId%>').disabled='';
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveCustomButton>
+                        <com:TActiveCustomButton ID="btnPrintPIN" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-info btn-icon heading-btn" Attributes.Title="Print Out PIN">
+                            <prop:Text><i class="icon-printer"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                Pace.stop();
+                                Pace.start();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnPrintPIN->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnPrintPIN->ClientId%>').disabled='';
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveCustomButton>
+                    </div>   
+                </div>
+            </div>                
+            <div class="table-responsive">
+                <com:TActiveRepeater ID="RepeaterS" DataKeyField="no_formulir" AllowPaging="true" AllowCustomPaging="true">
+                    <prop:HeaderTemplate>                           
+                        <table class="table table-striped table-hover">								
+                            <thead>
+                                <tr class="bg-teal-700">
+                                    <th scope="col">NO</th>
+                                    <th scope="col">NO. FORMULIR</th>						
+                                    <th scope="col">PIN</th>			
+                                    <th scope="col">KELAS</th>
+                                    <th scope="col">NAMA MAHASISWA</th>
+                                    <th scope="col" width="90">STATUS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    </prop:HeaderTemplate>	
+                    <prop:ItemTemplate>
+                        <tr>
+                            <td><%#$this->DataItem['no']%></td>
+                            <td><%#$this->DataItem['no_formulir']%></td>											
+                            <td><%#$this->DataItem['no_pin']%></td>
+                            <td><%#$this->Page->DMaster->getNamaKelasByID($this->DataItem['idkelas'])%></td>
+                            <td><%#($this->DataItem['nama_mhs']=='')?'N.A':$this->DataItem['nama_mhs']%></td>
+                            <td><span class="label <%#($this->DataItem['ket']=='')?'label-default':'label-success'%>"><i class="<%#($this->DataItem['ket']=='')?'icon-cancel-square':'icon-checkbox-checked'%>"></i></td>
+                        </tr>                         
+                    </prop:ItemTemplate>                        
+                    <prop:FooterTemplate>
+                        <tbody>
+                        </table>
+                    </prop:FooterTemplate>
+                    <prop:EmptyTemplate>                                                       
+                        <div class="alert alert-info">
+                            <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                            <strong>
+                                Info!
+                            </strong>
+                             Tidak ada data yang bisa ditampilkan.
+                        </div>
+                    </prop:EmptyTemplate>
+                </com:TActiveRepeater>
+                <%include Application.layouts.limitless.CustomPaging%>
+            </div>
+        </div>
+    </div>
+</com:TPanel>
+<%include Application.layouts.limitless.ModalPrintOut%>
+</com:TContent>

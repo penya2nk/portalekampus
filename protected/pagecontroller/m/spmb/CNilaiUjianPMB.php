@@ -20,8 +20,8 @@ class CNilaiUjianPMB extends MainPageM {
 			$this->tbCmbPs->Text=$_SESSION['currentPageNilaiUjianPMB']['kjur'];			
 			$this->tbCmbPs->dataBind();
             
-            $tahun_masuk=$this->DMaster->removeIdFromArray($this->DMaster->getListTA(),'none');			
-			$this->tbCmbTahunMasuk->DataSource=$tahun_masuk	;					
+            $daftar_ta=$this->DMaster->removeIdFromArray($this->DMaster->getListTA(),'none');			
+			$this->tbCmbTahunMasuk->DataSource=$daftar_ta;					
 			$this->tbCmbTahunMasuk->Text=$_SESSION['tahun_masuk'];						
 			$this->tbCmbTahunMasuk->dataBind();
 

@@ -39,7 +39,56 @@
 </com:TContent>
 <com:TContent ID="sidebarcontent">
 <div class="sidebar sidebar-main sidebar-default sidebar-separate" style="width:330px">
-    <div class="sidebar-content" style="margin-right:5px">                    
+    <div class="sidebar-content" style="margin-right:5px">   
+        <div class="sidebar-category">
+            <div class="category-title">
+                <span>Pencarian</span>
+                <ul class="icons-list">
+                    <li><a href="#" data-action="collapse"></a></li>
+                </ul>
+            </div>
+            <div class="category-content">   
+                <div class="form-group">
+                    <label><strong>Kriteria :</strong></label>
+                    <com:TDropDownList ID="cmbKriteria" CssClass="form-control">
+                        <com:TListItem Text="NO. FAKTUR" Value="no_faktur" />
+                        <com:TListItem Text="NIM" Value="nim" />
+                        <com:TListItem Text="NAMA MAHASISWA" Value="nama" />                                    
+                    </com:TDropDownList>
+                </div>      
+                <div class="form-group" id="divtxtKriteria">
+                    <label><strong>Isi Kriteria :</strong></label>
+                    <com:TActiveTextBox ID="txtKriteria" CssClass="form-control" />                                                                            
+                    <com:TRequiredFieldValidator ID="spanKriteriaValidator2" ValidationGroup="formPencarianValidator" Display="Dynamic" ControlToValidate="txtKriteria" ErrorMessage="Input apa yang Anda cari, sesuai dengan kriteria yang Anda tentukan." FocusOnError="true" CssClass="has-error help-block">	
+                        <prop:ClientSide.OnValidationError>
+                            $('divtxtKriteria').addClassName('has-error');
+                            jQuery('#<%=$this->spanKriteriaValidator2->ClientID%>').removeAttr('style');                                
+                        </prop:ClientSide.OnValidationError>
+                        <prop:ClientSide.OnValidationSuccess>
+                            $('divtxtKriteria').removeClassName('has-error');
+                        </prop:ClientSide.OnValidationSuccess>
+                    </com:TRequiredFieldValidator>           
+                </div>
+                <div class="form-group">
+                    <com:TActiveCustomButton ID="btnSearch" CssClass="btn btn-info"  OnClick="Page.searchRecord" ValidationGroup="formPencarianValidator" Attributes.Title="Cari">
+                        <prop:Text>                                        
+                            <i class="icon-search4"></i> Cari                                        
+                        </prop:Text>
+                        <prop:ClientSide.OnPreDispatch>
+                            $('<%=$this->btnSearch->ClientId%>').disabled='disabled';
+                            Pace.stop();
+                            Pace.start();                    
+                        </prop:ClientSide.OnPreDispatch>
+                       <prop:ClientSide.OnLoading>
+                            $('<%=$this->btnSearch->ClientId%>').disabled='disabled';
+                        </prop:ClientSide.OnLoading>
+                        <prop:ClientSide.onComplete>                            
+                            $('<%=$this->btnSearch->ClientId%>').disabled='';
+                        </prop:ClientSide.OnComplete>	
+                    </com:TActiveCustomButton> 
+                </div>    
+            </div>
+        </div>   
         <%include Application.layouts.limitless.FilterMode14%>
         <%include Application.layouts.limitless.OutputReportMode1%>
     </div>
@@ -64,7 +113,7 @@
                             <thead>
                                 <tr class="bg-teal-700">
                                     <th scope="col">NO</th>							
-                                    <th scope="col">NO. TRANSAKSI</th>
+                                    <th scope="col">FAKTUR</th>
                                     <th scope="col">TANGGAL</th>
                                     <th scope="col">NIM</th>                                    
                                     <th scope="col">NAMA MAHASISWA</th>																												
@@ -78,7 +127,7 @@
                     <prop:ItemTemplate>
                         <tr>
                             <td><%#$this->DataItem['no']%></td>					
-                            <td><%#$this->DataItem['no_transaksi']%></td>
+                            <td><%#$this->DataItem['no_faktur']%></td>
                             <td><%#$this->DataItem['tanggal']%></td>
                             <td><%# $this->Data['nim']%></td>																	                            												
                             <td><%#$this->DataItem['nama_mhs']%></td>					

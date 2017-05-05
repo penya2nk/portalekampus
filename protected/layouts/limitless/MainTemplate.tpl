@@ -30,7 +30,7 @@
         <p class="navbar-text">
             <com:THyperLink ID="linkTopTASemester">
                 <span class="label bg-success-400">
-                    Saat ini Anda berada di T.A <%=$this->Page->setup->getSettingValue('default_ta');%>/<%=$this->Page->setup->getSemester($this->Page->setup->getSettingValue('default_semester'));%>
+                    Saat ini Anda berada di T.A <%=$this->Page->setup->getSettingValue('default_ta');%>/<%=$this->Page->setup->getSemester($this->Page->setup->getSettingValue('default_semester'));%>, Pendaftaran Tahun <%=$this->Page->setup->getSettingValue('default_tahun_pendaftaran')%>
                 </span>
             </com:THyperLink>
         </p>
@@ -98,6 +98,18 @@
                     </li>
                 </ul>
             </li>
+            <li class="dropdown<%=$this->Page->showDMaster==true?' active':''%> visible">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="icon-square-up-right position-left"></i> SPMB <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu width-250">
+                    <li<%=$this->Page->showPIN==true?' class="active"':''%>>
+                        <a href="<%=$this->Page->constructUrl('spmb.PIN',true)%>">
+                            <i class="icon-circle"></i> PIN
+                        </a>
+                    </li>
+                </ul>
+            </li>
             <li class="dropdown mega-menu mega-menu-wide<%=$this->Page->showMenuAkademik==true?' active':''%> visible">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="icon-stars position-left"></i> Akademik <span class="caret"></span>
@@ -126,6 +138,16 @@
                 <div class="dropdown-menu dropdown-content">
                     <div class="dropdown-content-body">
                         <div class="row">
+                            <div class="col-md-3">
+                                <span class="menu-heading underlined">SPMB</span>
+                                <ul class="menu-list">
+                                    <li<%=$this->Page->showPembayaranFormulir==true?' class="active"':''%>>
+                                        <a href="<%=$this->Page->constructUrl('pembayaran.PembayaranFormulir',true)%>">
+                                            <i class="icon-calculator3"></i> Pembayaran Formulir
+                                        </a>
+                                    </li> 
+                                </ul>
+                            </div>
                             <div class="col-md-3">
                                 <span class="menu-heading underlined">SEMESTER</span>
                                 <ul class="menu-list">
@@ -285,17 +307,16 @@
         <com:TContentPlaceHolder ID="sidebarcontent" />
         <div class="content-wrapper">
             <com:TContentPlaceHolder ID="maincontent" />
-            <com:TJavascriptLogger />
         </div>        
     </div>    
 </div>
+</com:TForm>
+<br />
 <!-- Footer -->
 <div class="footer text-muted">
     <%=$this->Application->getID()%> licensed to <%=$this->Page->setup->getSettingValue('nama_pt_alias')%> Powered by <a href="https://www.yacanet.com">Yacanet.com</a>
 </div>
 <!-- /footer -->
-
-</com:TForm>
 <script type="text/javascript" src="<%=$this->Page->Theme->baseUrl%>/assets/js/core/libraries/jquery.min.js"></script>
 <script type="text/javascript">
     jQuery.noConflict();
@@ -308,6 +329,7 @@
 <script type="text/javascript" src="<%=$this->Page->Theme->baseUrl%>/assets/js/core/portalekampus.js"></script>
 <com:TContentPlaceHolder ID="jscontent" />
 <com:TContentPlaceHolder ID="jsinlinecontent" />
+<com:TJavascriptLogger />
 </body>
 </html>
 

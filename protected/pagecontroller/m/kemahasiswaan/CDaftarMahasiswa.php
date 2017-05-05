@@ -56,14 +56,12 @@ class CDaftarMahasiswa extends MainPageM {
 	}
 	public function changeTbTahunMasuk($sender,$param) {    				
 		$_SESSION['tahun_masuk']=$this->tbCmbTahunMasuk->Text;	
-        
         $this->populateSummary();
         $this->populateKonsentrasi();
 		$this->populateData();
 	}
 	public function changeTbKelas ($sender,$param) {				
 		$_SESSION['kelas']=$this->tbCmbKelas->Text;		
-        
         $this->populateSummary();
         $this->populateKonsentrasi();
 		$this->populateData();

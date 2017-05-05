@@ -61,7 +61,7 @@ class Logic_Finance extends Logic_Mahasiswa {
 		}        			
 	}
     /**
-     * digunakan untuk mendapatkan total biaya mahasiswa
+     * digunakan untuk mendapatkan total biaya mahasiswa [deprecated]
      * @param $status baru atau lama
      * @return jumlah biaya mahasiswa
      */
@@ -137,6 +137,32 @@ class Logic_Finance extends Logic_Mahasiswa {
 		
 		return $r[1]['jumlah'];
 	}	
+    /**
+	* untuk mendapatkan lunas pembayaran Formulir
+	* @return boolean atau array
+	*/
+	public function getLunasPembayaranFormulir ($data=false) {
+        $no_formulir=$this->DataMHS['no_formulir'];
+        $tahun_masuk=$this->DataMHS['tahun_masuk'];
+        $semester_masuk=$this->DataMHS['semester_masuk'];
+        $idkelas=$this->DataMHS['idkelas'];
+        $biaya_pendaftaran=$this->getBiayaPendaftaran($tahun_masuk,$semester_masuk,$idkelas);
+        
+        $str = "SELECT td.dibayarkan FROM transaksi t,transaksi_detail td WHERE td.no_transaksi=t.no_transaksi AND t.no_formulir='$no_formulir' AND td.idkombi=1";
+        $this->db->setFieldTable(array('dibayarkan'));
+        $r=$this->db->getRecord($str);
+        $bool=$biaya_pendaftaran<=$r[1]['dibayarkan'];
+		if ($data) {
+			$data=array();
+			$data['total_biaya']=$$biaya_pendaftaran;
+			$data['total_bayar']=$r[1]['dibayarkan'];			
+			$data['bool']=$bool;
+			return $data;
+		}else {                        
+			return $bool;
+        }
+
+	}
     /**
 	* untuk mendapatkan lunas pembayaran	
 	* @return boolean atau array

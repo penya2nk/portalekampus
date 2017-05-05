@@ -1,6 +1,6 @@
 <%@ Title="Report - Rekap. Pembayaran Semester Genap"%>
 <com:TContent ID="moduleheader">    
-    <i class="icon-file-text position-left"></i> <span class="text-semibold">Rekapitulasi Pembayaran Semester Genap T.A <%=$this->Page->setup->getSettingValue('default_ta');%></span>
+    <i class="icon-file-text position-left"></i> <span class="text-semibold">Rekapitulasi Pembayaran Semester Genap</span>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
     <li><a href="#">REPORT</a></li>

@@ -516,6 +516,90 @@ class Logic_ReportSPMB extends Logic_Report {
         }
         $this->setLink($this->dataReport['linkoutput'],"Daftar PIN Mahasiswa");
     }
+    /**
+     * digunakan untuk memprint KHS
+     * @param type $objNilai object
+     */
+    public function printKartuUjianPMB() {
+        switch ($this->getDriver()) {
+            case 'pdf' :
+                $rpt=$this->rpt;
+                $rpt->setTitle('Kartu Ujian PMB');
+				$rpt->setSubject('Kartu Ujian PMB');
+                $rpt->AddPage();
+				$this->setHeaderPT();
+                
+                $row=$this->currentRow;
+				$row+=6;
+				$rpt->SetFont ('helvetica','B',12);	
+				$rpt->setXY(3,$row);			
+				$rpt->Cell(0,$row,'KARTU UJIAN PMB',0,0,'C');
+                
+                $row+=6;
+				$rpt->SetFont ('helvetica','B',8);	
+				$rpt->setXY(3,$row);			
+				$rpt->Cell(0,$row,'No. Formulir');
+				$rpt->SetFont ('helvetica','',8);
+                $rpt->setXY(38,$row);			
+				$rpt->Cell(0,$row,': '.$this->dataReport['no_formulir']);
+                
+                $rpt->SetFont ('helvetica','B',8);	
+				$rpt->setXY(105,$row);			
+				$rpt->Cell(0,$row,'Tanggal');
+				$rpt->SetFont ('helvetica','',8);
+				$rpt->setXY(130,$row);			
+				$rpt->Cell(0,$row,': '.$this->tgl->Tanggal('l, d F Y',$this->dataReport['tanggal_ujian']));
+                
+                $row+=3;
+				$rpt->setXY(3,$row);			
+				$rpt->SetFont ('helvetica','B',8);	
+				$rpt->Cell(0,$row,'Nama Peserta');
+				$rpt->SetFont ('helvetica','',8);
+				$rpt->setXY(38,$row);			
+				$rpt->Cell(0,$row,': '.$this->dataReport['nama_mhs']);
+                
+                $rpt->SetFont ('helvetica','B',8);	
+				$rpt->setXY(105,$row);			
+				$rpt->Cell(0,$row,'Jam');
+				$rpt->SetFont ('helvetica','',8);
+				$rpt->setXY(130,$row);			
+				$rpt->Cell(0,$row,': '.$this->dataReport['jam_mulai']. ' - '.$this->dataReport['jam_akhir']);
+                
+                $row+=3;
+				$rpt->setXY(3,$row);			
+				$rpt->SetFont ('helvetica','B',8);	
+				$rpt->Cell(0,$row,'Prodi. Pilihan ke - 1');
+				$rpt->SetFont ('helvetica','',8);
+				$rpt->setXY(38,$row);			
+				$rpt->Cell(0,$row,': '.$this->dataReport['nama_ps1']);
+                
+                $rpt->SetFont ('helvetica','B',8);	
+				$rpt->setXY(105,$row);			
+				$rpt->Cell(0,$row,'Ruangan');
+				$rpt->SetFont ('helvetica','',8);
+				$rpt->setXY(130,$row);			
+				$rpt->Cell(0,$row,': '.$this->dataReport['namaruang']);
+                
+                $row+=3;
+				$rpt->setXY(3,$row);			
+				$rpt->SetFont ('helvetica','B',8);	
+				$rpt->Cell(0,$row,'Prodi. Pilihan ke - 2');
+				$rpt->SetFont ('helvetica','',8);
+				$rpt->setXY(38,$row);			
+				$rpt->Cell(0,$row,': '.$this->dataReport['nama_ps2']);
+                
+                $rpt->SetFont ('helvetica','B',8);	
+				$rpt->setXY(105,$row);			
+				$rpt->Cell(0,$row,'Periode');
+				$rpt->SetFont ('helvetica','',8);
+				$rpt->setXY(130,$row);			
+				$rpt->Cell(0,$row,': '.$this->dataReport['nama_kegiatan']);
+                
+                $this->printOut("kartu_ujian_pmb");
+            break;
+        }
+        $this->setLink($this->dataReport['linkoutput'],"Kartu Ujian PMB");
+    }
 }
 ?>
 

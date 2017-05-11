@@ -45,7 +45,7 @@ class CRuangKelas Extends MainPageM {
         $ruangkelas=$param->Value;		
         if ($ruangkelas != '') {
             try {   
-                if ($this->hiddenid->Value!=$ruangkelas) {                                                            
+                if ($this->hiddennamaruang->Value!=$ruangkelas) {                                                            
                     if ($this->DB->checkRecordIsExist('namaruang','ruangkelas',$ruangkelas)) {                                
                         throw new Exception ("Nama Ruang ($ruangkelas) sudah tidak tersedia silahkan ganti dengan yang lain.");		
                     }                               

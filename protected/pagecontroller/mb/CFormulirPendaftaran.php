@@ -10,8 +10,8 @@ class CFormulirPendaftaran extends MainPageMB {
             try {                
                 if (!isset($_SESSION['currentPageFormulirPendaftaran'])||$_SESSION['currentPageFormulirPendaftaran']['page_name']!='mb.FormulirPendaftaran') {
                     $_SESSION['currentPageFormulirPendaftaran']=array('page_name'=>'mb.FormulirPendaftaran','page_num'=>0,'reguler'=>0,'karyawan'=>0,'ekstensi'=>0);												
-                }     
-                $semester_default=$this->setup->getSettingValue('default_semester');
+                }
+                $semester_default=$this->Pengguna->getDataUser('semester_masuk');
                 $reguler=$this->Finance->getBiayaPendaftaran($_SESSION['tahun_masuk'],$semester_default,'A');							
                 $karyawan=$this->Finance->getBiayaPendaftaran($_SESSION['tahun_masuk'],$semester_default,'B');							
                 $ekstensi=$this->Finance->getBiayaPendaftaran($_SESSION['tahun_masuk'],$semester_default,'C');
@@ -217,7 +217,8 @@ class CFormulirPendaftaran extends MainPageMB {
 			$nomor_ijazah=trim($this->txtAddNomorIjazah->Text);			            
             $kjur1=$this->cmbAddKjur1->Text;
             $kjur2=$this->cmbAddKjur2->Text;
-            $waktu_mendaftar=date('Y-m-d H:m:s');            
+            $waktu_mendaftar=date('Y-m-d H:m:s');   
+            $idsmt=$this->Pengguna->getDataUser('semester_masuk');
             $ta=$this->Pengguna->getDataUser('tahun_masuk');
             $idkelas=$this->cmbAddKelas->Text;
             switch ($idkelas) {
@@ -231,10 +232,9 @@ class CFormulirPendaftaran extends MainPageMB {
                     $dibayarkan=$_SESSION['currentPageFormulirPendaftaran']['ekstensi'];
                 break;
             }
-			$str ="INSERT INTO formulir_pendaftaran (no_formulir,nama_mhs,tempat_lahir,tanggal_lahir,jk,idagama,nama_ibu_kandung,idwarga,nik,idstatus,alamat_kantor,alamat_rumah,kelurahan,kecamatan,telp_kantor,telp_rumah,telp_hp,idjp,pendidikan_terakhir,jurusan,kota,provinsi,tahun_pa,jenis_slta,asal_slta,status_slta,nomor_ijazah,kjur1,kjur2,waktu_mendaftar,ta,idsmt,idkelas,daftar_via) VALUES ('$no_formulir','$nama_mhs','$tempat_lahir','$tgl_lahir','$jk',$idagama,'$nama_ibu_kandung','$idwarga','$no_ktp','$idstatus','$alamat_kantor','$alamat_rumah','$kelurahan','$kecamatan','$telp_kantor','$telp_rumah','$telp_hp',$idjp,'$pendidikan_terakhir','$jurusan','$kota','$provinsi','$tahun_pa','$jenisslta','$asal_slta','$statusslta','$nomor_ijazah','$kjur1','$kjur2','$waktu_mendaftar',$ta,1,'$idkelas','WEB')";		
+			$str ="INSERT INTO formulir_pendaftaran (no_formulir,nama_mhs,tempat_lahir,tanggal_lahir,jk,idagama,nama_ibu_kandung,idwarga,nik,idstatus,alamat_kantor,alamat_rumah,kelurahan,kecamatan,telp_kantor,telp_rumah,telp_hp,idjp,pendidikan_terakhir,jurusan,kota,provinsi,tahun_pa,jenis_slta,asal_slta,status_slta,nomor_ijazah,kjur1,kjur2,waktu_mendaftar,ta,idsmt,idkelas,daftar_via) VALUES ('$no_formulir','$nama_mhs','$tempat_lahir','$tgl_lahir','$jk',$idagama,'$nama_ibu_kandung','$idwarga','$no_ktp','$idstatus','$alamat_kantor','$alamat_rumah','$kelurahan','$kecamatan','$telp_kantor','$telp_rumah','$telp_hp',$idjp,'$pendidikan_terakhir','$jurusan','$kota','$provinsi','$tahun_pa','$jenisslta','$asal_slta','$statusslta','$nomor_ijazah','$kjur1','$kjur2','$waktu_mendaftar',$ta,$idsmt,'$idkelas','WEB')";		
             $this->DB->query('BEGIN');
 			if ($this->DB->insertRecord($str)) {
-                
                 $userpassword=md5($this->Pengguna->getDataUser('no_pin'));
                 $str = "INSERT INTO profiles_mahasiswa (idprofile,no_formulir,email,userpassword) VALUES (NULL,$no_formulir,'$email','$userpassword')";
                 $this->DB->insertRecord($str);
@@ -284,9 +284,10 @@ class CFormulirPendaftaran extends MainPageMB {
             $kjur2=$this->cmbEditKjur2->Text;
             $waktu_mendaftar=date('Y-m-d H:m:s');            
             $ta=$this->Pengguna->getDataUser('tahun_masuk');
+            $idsmt=$this->Pengguna->getDataUser('semester_masuk');
             $idkelas=$this->cmbEditKelas->Text;
          			
-            $str ="UPDATE formulir_pendaftaran SET nama_mhs='$nama_mhs',tempat_lahir='$tempat_lahir',tanggal_lahir='$tgl_lahir',jk='$jk',idagama=$idagama,nama_ibu_kandung='$nama_ibu_kandung',idwarga='$idwarga',nik='$no_ktp',idstatus='$idstatus',alamat_kantor='$alamat_kantor',alamat_rumah='$alamat_rumah',kelurahan='$kelurahan',kecamatan='$kecamatan',telp_kantor='$telp_kantor',telp_rumah='$telp_rumah',telp_hp='$telp_hp',idjp=$idjp,pendidikan_terakhir='$pendidikan_terakhir',jurusan='$jurusan',kota='$kota',provinsi='$provinsi',tahun_pa='$tahun_pa',jenis_slta='$jenisslta',asal_slta='$asal_slta',status_slta='$statusslta',nomor_ijazah='$nomor_ijazah',kjur1='$kjur1',kjur2='$kjur2',waktu_mendaftar='$waktu_mendaftar',ta=$ta,idsmt=1,idkelas='$idkelas',daftar_via='WEB' WHERE no_formulir='$no_formulir'";
+            $str ="UPDATE formulir_pendaftaran SET nama_mhs='$nama_mhs',tempat_lahir='$tempat_lahir',tanggal_lahir='$tgl_lahir',jk='$jk',idagama=$idagama,nama_ibu_kandung='$nama_ibu_kandung',idwarga='$idwarga',nik='$no_ktp',idstatus='$idstatus',alamat_kantor='$alamat_kantor',alamat_rumah='$alamat_rumah',kelurahan='$kelurahan',kecamatan='$kecamatan',telp_kantor='$telp_kantor',telp_rumah='$telp_rumah',telp_hp='$telp_hp',idjp=$idjp,pendidikan_terakhir='$pendidikan_terakhir',jurusan='$jurusan',kota='$kota',provinsi='$provinsi',tahun_pa='$tahun_pa',jenis_slta='$jenisslta',asal_slta='$asal_slta',status_slta='$statusslta',nomor_ijazah='$nomor_ijazah',kjur1='$kjur1',kjur2='$kjur2',waktu_mendaftar='$waktu_mendaftar',ta=$ta,idsmt=$idsmt,idkelas='$idkelas',daftar_via='WEB' WHERE no_formulir='$no_formulir'";
             $this->DB->query('BEGIN');
 			if ($this->DB->updateRecord($str)) {
                 $email=$this->txtEditEmail->Text;                

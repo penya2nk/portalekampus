@@ -378,7 +378,12 @@
                                                 <span>Ujian PMB</span>
                                                 <i class="fa fa-angle-right drop-icon"></i>
                                             </a>
-                                            <ul class="submenu">                                                
+                                            <ul class="submenu"> 
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('spmb.JadwalUjianPMB',true)%>"<%=$this->Page->showJadwalUjianPMB==true ? ' class="active" ':''%>>
+                                                        Jadwal Ujian PMB
+                                                    </a>
+                                                </li>   
                                                 <li>
                                                     <a href="<%=$this->Page->constructUrl('spmb.PassingGrade',true)%>"<%=$this->Page->showPassingGradePMB==true ? ' class="active" ':''%>>
                                                         Passing Grade

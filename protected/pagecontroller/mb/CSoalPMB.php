@@ -54,18 +54,34 @@ class CSoalPMB extends MainPageMB {
             }
         }
     }
+    public function checkPIN ($sender,$param) { 
+        $pin=addslashes($param->Value);
+        try {
+            if ($pin != '') {			            
+                $no_formulir=$this->Pengguna->getDataUser('username');
+                if (!$this->DB->checkRecordIsExist ('no_pin','pin',$pin," AND no_formulir='$no_formulir'")) {
+                    throw new Exception ("Nomor PIN ($pin) tidak terdaftar di Portal.");
+                }     
+            }
+        }catch(Exception $e) {			
+            $sender->ErrorMessage=$e->getMessage();				
+            $param->IsValid=false;			
+		}
+    }
     public function startUjian ($sender,$param) {        
-        $no_formulir=$this->Pengguna->getDataUser('username');
-        $str = "INSERT INTO kartu_ujian (no_formulir,no_ujian,tgl_ujian,idtempat_spmb) VALUES ($no_formulir,'$no_formulir',NOW(),0)";			
-        $this->DB->query('BEGIN');
-        if ($this->DB->insertRecord($str)) {              
-            $str = "INSERT INTO jawaban_ujian (idsoal,idjawaban,no_formulir) SELECT s.idsoal,0,$no_formulir FROM soal s ORDER BY RAND() LIMIT 80";
-            $this->DB->insertRecord($str);        
-            $this->DB->query('COMMIT');			
-        }else {
-            $this->DB->query('ROLLBACK');
-        }        
-        $this->redirect('SoalPMB',true);
+        if ($this->IsValid) {
+            $no_formulir=$this->Pengguna->getDataUser('username');
+            $str = "INSERT INTO kartu_ujian (no_formulir,no_ujian,tgl_ujian,idtempat_spmb) VALUES ($no_formulir,'$no_formulir',NOW(),0)";			
+            $this->DB->query('BEGIN');
+            if ($this->DB->insertRecord($str)) {              
+                $str = "INSERT INTO jawaban_ujian (idsoal,idjawaban,no_formulir) SELECT s.idsoal,0,$no_formulir FROM soal s ORDER BY RAND() LIMIT 80";
+                $this->DB->insertRecord($str);        
+                $this->DB->query('COMMIT');			
+            }else {
+                $this->DB->query('ROLLBACK');
+            }        
+            $this->redirect('SoalPMB',true);
+        }
     }    
     public function populateSoal () {
         $no_formulir=$this->Pengguna->getDataUser('username');

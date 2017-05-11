@@ -111,25 +111,55 @@
     <div class="col-lg-12">
         <div class="main-box clearfix">
             <header class="main-box-header clearfix">
-                <h2 class="pull-left"><i class="fa fa-list-ul"></i> Tekan tombol disebelah kanan, untuk memulai ujian PMB Anda.</h2> 
-                <div class="filter-block pull-right">                                                   
-                    <com:TActiveLinkButton ID="btnStart" OnClick="startUjian" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Start Ujian">
-                        <prop:Text><i class="fa fa-dot-circle-o fa-lg"></i></prop:Text>
-                        <prop:ClientSide.OnPreDispatch>
-                            $('loading').show();
-                        </prop:ClientSide.OnPreDispatch>
-                        <prop:ClientSide.OnLoading>
-                            $('<%=$this->btnStart->ClientId%>').disabled='disabled';				
-                        </prop:ClientSide.OnLoading>
-                        <prop:ClientSide.OnComplete>
-                            $('<%=$this->btnStart->ClientId%>').disabled='';				
-                            $('loading').hide();
-                        </prop:ClientSide.OnComplete>
-                    </com:TActiveLinkButton> 									
+                <h2 class="pull-left"><i class="fa fa-list-ul"></i> Untuk memulai ujian PMB Anda, Isi PIN :</h2> 
+                <div class="filter-block pull-right"> 
+                    						
                 </div>
             </header>
             <div class="main-box-body clearfix">
-                
+                <div class="form-horizontal">
+                    <div class="form-group" id="divAddPIN">
+                        <label class="col-lg-1 control-label">PIN :</label>
+                        <div class="col-lg-4">
+                            <com:TTextBox ID="txtAddPIN" Attributes.PlaceHolder="PIN" CssClass="form-control" />
+                            <com:TRequiredFieldValidator ID="fieldValidatorFieldPIN" ControlToValidate="txtAddPIN" Display="Dynamic" ErrorMessage="Isikan PIN" ValidationGroup="ujianpmb" CssClass="has-error help-block" FocusOnError="true"> 										
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddPIN').addClassName('has-error');
+                                    jQuery('#<%=$this->fieldValidatorFieldPIN->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddPIN').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                            <com:TActiveCustomValidator ID="customValidatorFieldPIN" ControlToValidate="txtAddPIN" Display="Dynamic" ValidationGroup="ujianpmb" OnServerValidate="checkPIN" CssClass="has-error help-block">
+                               <prop:ClientSide.OnValidationError>
+                                    $('divAddPIN').addClassName('has-error');
+                                    jQuery('#<%=$this->customValidatorFieldPIN->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddPIN').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TActiveCustomValidator>  
+                        </div>
+                    </div>    
+                    <div class="form-group">
+                        <div class="col-lg-offset-1 col-lg-9">
+                            <com:TActiveLinkButton ID="btnStart" OnClick="startUjian" CssClass="btn btn-primary pull-left" Attributes.Title="Start Ujian" ValidationGroup="ujianpmb">
+                                <prop:Text><i class="fa fa-flag fa-lg"></i> Mulai</prop:Text>
+                                <prop:ClientSide.OnPreDispatch>
+                                    $('loading').show();
+                                </prop:ClientSide.OnPreDispatch>
+                                <prop:ClientSide.OnLoading>
+                                    $('<%=$this->btnStart->ClientId%>').disabled='disabled';				
+                                </prop:ClientSide.OnLoading>
+                                <prop:ClientSide.OnComplete>
+                                    $('<%=$this->btnStart->ClientId%>').disabled='';				
+                                    $('loading').hide();
+                                </prop:ClientSide.OnComplete>
+                            </com:TActiveLinkButton> 			
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>        

@@ -88,34 +88,50 @@ class Login extends MainPage {
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
                     $_SESSION['kjur']=$setup->getSettingValue('default_kjur');
-                    $_SESSION['ta']=$setup->getSettingValue('default_ta');             
+                    $_SESSION['ta']=$setup->getSettingValue('default_ta');   
+                    
+                    $_SESSION['tahun_masuk']=$setup->getSettingValue('default_tahun_pendaftaran');
+                    $_SESSION['semester']=$setup->getSettingValue('default_semester');
                 break; 
                 case 'dw' :
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
                     $_SESSION['kjur']=$setup->getSettingValue('default_kjur');           
                     $_SESSION['ta']=$setup->getSettingValue('default_ta'); 
+                    
+                    $_SESSION['tahun_masuk']=$setup->getSettingValue('default_tahun_pendaftaran');
+                    $_SESSION['semester']=$setup->getSettingValue('default_semester');
                 break;
                 case 'd' :
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
                     $_SESSION['kjur']=$setup->getSettingValue('default_kjur');           
                     $_SESSION['ta']=$setup->getSettingValue('default_ta'); 
+                    
+                    $_SESSION['tahun_masuk']=$setup->getSettingValue('default_tahun_pendaftaran');
+                    $_SESSION['semester']=$setup->getSettingValue('default_semester');
                 break;
                 case 'm' :                    
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
                     $_SESSION['kjur']=$setup->getSettingValue('default_kjur');           
-                    $_SESSION['ta']=$setup->getSettingValue('default_ta');                 
+                    $_SESSION['ta']=$setup->getSettingValue('default_ta'); 
+                    
+                    $_SESSION['tahun_masuk']=$setup->getSettingValue('default_tahun_pendaftaran');
+                    $_SESSION['semester']=$setup->getSettingValue('default_semester');
                 break;                
                 case 'mh' :
                     $_SESSION['ta']=$setup->getSettingValue('default_ta') < $pengguna->getDataUser('tahun_masuk') ? $pengguna->getDataUser('tahun_masuk') :$setup->getSettingValue('default_ta');
+                    $_SESSION['semester']=$setup->getSettingValue('default_semester');
                 break;
                 case 'k' :
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
                     $_SESSION['kjur']=$setup->getSettingValue('default_kjur');
-                    $_SESSION['ta']=$setup->getSettingValue('default_ta');             
+                    $_SESSION['ta']=$setup->getSettingValue('default_ta');  
+                    
+                    $_SESSION['tahun_masuk']=$setup->getSettingValue('default_tahun_pendaftaran');
+                    $_SESSION['semester']=$setup->getSettingValue('default_semester');
                 break; 
                 case 'on' :
                     $group_id=$pengguna->getDataUser('group_id');
@@ -130,15 +146,18 @@ class Login extends MainPage {
                         $_SESSION['kjur']=$setup->getSettingValue('default_kjur');
                         $_SESSION['ta']=$setup->getSettingValue('default_ta');
                     }                                
+                    $_SESSION['tahun_masuk']=$setup->getSettingValue('default_tahun_pendaftaran');
+                    $_SESSION['semester']=$setup->getSettingValue('default_semester');
                 break; 
                 case 'mb' :
                     $_SESSION['ta']=$pengguna->getDataUser('tahun_masuk');
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
-                    $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);                    
+                    $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2); 
+                    
+                    $_SESSION['tahun_masuk']=$pengguna->getDataUser('tahun_masuk');
+                    $_SESSION['semester']=$pengguna->getDataUser('semester_masuk');
                 break; 
-            }      
-            $_SESSION['tahun_masuk']=$setup->getSettingValue('default_tahun_pendaftaran');
-            $_SESSION['semester']=$setup->getSettingValue('default_semester');            
+            }                              
             $_SESSION['kelas']='none';
             $_SESSION['foto']='no_photo.png';
             $_SESSION['theme']=$pengguna->getDataUser('theme');

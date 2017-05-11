@@ -121,13 +121,13 @@ class CPIN extends MainPageM {
                 for ($i=$no_urut;$i<$jumlah_formulir;$i++) {                    
                     $no_pin=$i.mt_rand(100000,999999);
                     if ($jumlah_formulir > $i+1) {
-                        $values=$values."('$no_pin',$i,$tahun_masuk,'$idkelas'),";
+                        $values=$values."('$no_pin',$i,$tahun_masuk,1,'$idkelas'),";
                     }else {
-                        $values=$values."('$no_pin',$i,$tahun_masuk,'$idkelas')";
+                        $values=$values."('$no_pin',$i,$tahun_masuk,1,'$idkelas')";
                     }
                 }
             }
-            $str="INSERT INTO pin (no_pin,no_formulir,tahun_masuk,idkelas) VALUES $values";
+            $str="INSERT INTO pin (no_pin,no_formulir,tahun_masuk,semester_masuk,idkelas) VALUES $values";
             $this->DB->insertRecord($str);
             $this->redirect('spmb.PIN',true);
         }

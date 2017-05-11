@@ -117,12 +117,12 @@ class UserManager extends TAuthManager {
                 $this->db->updateRecord("UPDATE user SET logintime=NOW() WHERE username='$username'");
 			break;
 			case 'MahasiswaBaru' :				
-                $str = "SELECT pm.no_formulir,fp.ta AS tahun_masuk,pm.theme FROM formulir_pendaftaran fp,profiles_mahasiswa pm WHERE pm.no_formulir=fp.no_formulir AND fp.no_formulir='$username'";						
-                $this->db->setFieldTable(array('no_formulir','tahun_masuk','theme'));
+                $str = "SELECT pm.no_formulir,fp.ta AS tahun_masuk,fp.idsmt AS semester_masuk,pm.theme FROM formulir_pendaftaran fp,profiles_mahasiswa pm WHERE pm.no_formulir=fp.no_formulir AND fp.no_formulir='$username'";						
+                $this->db->setFieldTable(array('no_formulir','tahun_masuk','semester_masuk','theme'));
                 $r=$this->db->getRecord($str);
                 if (!isset($r[1])) {
-                    $str = "SELECT pin.no_formulir,pin.tahun_masuk,pin.no_pin,pin.idkelas FROM transaksi t JOIN pin ON (t.no_formulir=pin.no_formulir) JOIN transaksi_detail td ON (t.no_transaksi=td.no_transaksi) WHERE pin.no_formulir=t.no_formulir AND td.idkombi=1 AND pin.no_formulir='$username'";						
-                    $this->db->setFieldTable(array('no_formulir','tahun_masuk','no_pin','idkelas'));
+                    $str = "SELECT pin.no_formulir,pin.tahun_masuk,pin.semester_masuk,pin.no_pin,pin.idkelas FROM transaksi t JOIN pin ON (t.no_formulir=pin.no_formulir) JOIN transaksi_detail td ON (t.no_transaksi=td.no_transaksi) WHERE pin.no_formulir=t.no_formulir AND td.idkombi=1 AND pin.no_formulir='$username'";						
+                    $this->db->setFieldTable(array('no_formulir','tahun_masuk','semester_masuk','no_pin','idkelas'));
                     $r=$this->db->getRecord($str);
                     $r[1]['theme']='cube';
                 }
@@ -214,9 +214,10 @@ class UserManager extends TAuthManager {
 			break;			
 			case 'MahasiswaBaru' :
 				$this->db->setFieldTable (array('username','nim','userpassword'));					
-                $str = "SELECT no_formulir AS username,nim,userpassword FROM profiles_mahasiswa WHERE no_formulir='$username'";
-                $result = $this->db->getRecord($str);			
+                $str = "SELECT no_formulir AS username,nim,no_formulir AS userpassword FROM profiles_mahasiswa WHERE no_formulir='$username'";
+                $result = $this->db->getRecord($str);	
                 if (isset($result[1])) {
+                    $result[1]['userpassword']=md5($result[1]['userpassword']);
                     $result[1]['active']=$result[1]['nim']==''?1:0;
                 }else{
                     $str = "SELECT pin.no_formulir AS username,pin.no_formulir AS userpassword FROM transaksi t JOIN pin ON (t.no_formulir=pin.no_formulir) JOIN transaksi_detail td ON (t.no_transaksi=td.no_transaksi) WHERE pin.no_formulir=t.no_formulir AND td.idkombi=1 AND pin.no_formulir='$username'";

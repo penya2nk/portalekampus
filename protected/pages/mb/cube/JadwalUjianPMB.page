@@ -1,0 +1,138 @@
+<%@ Title="SPMB - Jadwal Ujian PMB"%>
+<com:TContent ID="moduleheader">
+	<i class="fa fa-calendar"></i> Jadwal Ujian PMB<br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li class="active">JADWAL UJIAN PMB</li>
+</com:TContent>
+<com:TContent ID="csscontent">
+<link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/css/libs/nifty-component.css"/>
+</com:TContent>
+<com:TContent ID="maincontent">
+<com:TPanel Visible="<%= $this->getViewProcess(false) %>" CssClass="row">                    
+    <div class="col-lg-12">
+        <div class="main-box clearfix">               
+            <header class="main-box-header clearfix">
+            </header>
+            <div class="main-box-body">
+                <div class="alert alert-warning">
+                    <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                    <strong>
+                        Info!
+                    </strong>
+                     <com:TLiteral ID="errorMessage" />
+                </div>
+            </div>            
+        </div>
+    </div>
+</com:TPanel>
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left"><i class="fa fa-calendar"></i> Jadwal Ujian PMB</h2> 
+                    <div class="filter-block pull-right">
+                        
+                    </div>
+                </header>
+                <div class="main-box-body clearfix">  
+                    <div class="table-responsive">
+                        <com:TActiveRepeater ID="RepeaterS"  DataKeyField="idjadwal_ujian" AllowPaging="true" AllowCustomPaging="true">
+                            <prop:HeaderTemplate>
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th width="15" scope="col">NO</th>
+                                    <th width="100" scope="col">TAHUN MASUK</th>                                    
+                                    <th width="250" scope="col">NAMA KEGIATAN</th>
+                                    <th width="150" scope="col">TANGGAL UJIAN</th>
+                                    <th scope="col">TANGGAL AKHIR <br />PENDAFTARAN</th> 
+                                    <th scope="col">RUANG UJIAN</th>                                    
+                                    <th scope="col">STATUS</th>
+                                    <th scope="col">JUMLAH <br/>PESERTA</th>
+                                    <th scope="col" width="120">AKSI</th>
+                                </tr>	
+                                </thead>		
+                                <tbody>		
+                            </prop:HeaderTemplate>
+                            <prop:ItemTemplate>	
+                                <tr>
+                                    <td><%# $this->Data['no']%></td>
+                                    <td><%# $this->Data['tahun_masuk']%><%# $this->Data['idsmt']%></td>
+                                    <td><%# $this->Data['nama_kegiatan']%></td>   
+                                    <td><%# $this->Page->TGL->tanggal ('l, d F Y',$this->Data['tanggal_ujian'])%> <%#$this->DataItem['jam_mulai'].'-'.$this->DataItem['jam_akhir']%></td>
+                                    <td><%# $this->Page->TGL->tanggal ('l, d F Y',$this->Data['tanggal_akhir_daftar'])%></td>
+                                    <td><%#$this->DataItem['namaruang'].' ['.$this->DataItem['kapasitas'].']'%></td>                                    
+                                    <td><span class="label<%# $this->Data['status']==1?' label-success':' label-default'%> label-success"><%# $this->Data['status']==1?'BUKA':'TUTUP'%></span></td>
+                                    <td>                                        
+                                        <%#$this->DataItem['jumlah_peserta']%>                                        
+                                    </td>
+                                    <td>
+                                        <com:TActiveLinkButton ID="btnPilih" ClientSide.PostState="false" CssClass="table-link" OnClick="Page.pilihRecord" Attributes.Title="Pilih" Visible="<%#$this->DataItem['bool_pilih']%>" >
+                                            <prop:Text>
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-check-circle-o fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </prop:Text>
+                                            <prop:ClientSide.OnPreDispatch>
+                                                $('loading').show();                                             
+                                                $('<%=$this->btnPilih->ClientId%>').disabled='disabled';						
+                                            </prop:ClientSide.OnPreDispatch>
+                                            <prop:ClientSide.OnLoading>
+                                                $('<%=$this->btnPilih->ClientId%>').disabled='disabled';									                            
+                                            </prop:ClientSide.OnLoading>
+                                            <prop:ClientSide.onComplete>
+                                                $('loading').hide();                                                
+                                            </prop:ClientSide.OnComplete>
+                                        </com:TActiveLinkButton>       
+                                        <com:TActiveLinkButton ID="btnPrintOutR" CssClass="table-link" OnClick="Page.printOut" Attributes.Title="Print Daftar Hadir" ClientSide.PostState="false">
+                                            <prop:Text>
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-print fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </prop:Text>
+                                            <prop:ClientSide.OnPreDispatch>                                                                   
+                                                $('loading').show(); 
+                                                $('<%=$this->btnPrintOutR->ClientId%>').disabled='disabled';						
+                                            </prop:ClientSide.OnPreDispatch>
+                                            <prop:ClientSide.OnLoading>
+                                                $('<%=$this->btnPrintOutR->ClientId%>').disabled='disabled';						
+                                            </prop:ClientSide.OnLoading>
+                                            <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                                $('<%=$this->btnPrintOutR->ClientId%>').disabled='';
+                                                $('loading').hide(); 
+                                            </prop:ClientSide.OnComplete>
+                                        </com:TActiveLinkButton>
+                                    </td>
+                                </tr>	
+                            </prop:ItemTemplate>	                        
+                            <prop:FooterTemplate>
+                            </tbody>				
+                            </table>
+                            </prop:FooterTemplate>
+                            <prop:EmptyTemplate>                                                       
+                                <div class="row">
+                                    <div class="main-box-body">
+                                        <div class="alert alert-info">
+                                            <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                            <strong>
+                                                Info!
+                                            </strong>
+                                             Tidak ada data yang bisa ditampilkan.
+                                        </div>
+                                    </div>
+                                </div>
+                            </prop:EmptyTemplate>
+                        </com:TActiveRepeater> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+</com:TPanel>
+<%include Application.layouts.cube.ModalPrintOut%>
+<%include Application.layouts.cube.ModalMessageError%>
+</com:TContent>

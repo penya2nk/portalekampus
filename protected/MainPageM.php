@@ -89,6 +89,10 @@ class MainPageM extends MainPage {
      */
     public $showSubMenuSPMBUjianPMB=false;
     /**
+     * show page Jadwal Ujian PMB [spmb]
+     */
+    public $showJadwalUjianPMB=false;
+    /**
      * show page passing grade [spmb ujian PMB]
      */
     public $showPassingGradePMB=false;

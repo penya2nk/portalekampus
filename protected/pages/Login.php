@@ -92,6 +92,8 @@ class Login extends MainPage {
                     
                     $_SESSION['tahun_masuk']=$setup->getSettingValue('default_tahun_pendaftaran');
                     $_SESSION['semester']=$setup->getSettingValue('default_semester');
+                    
+                    $foto='resources/userimages/no_photo.png';
                 break; 
                 case 'dw' :
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
@@ -110,6 +112,8 @@ class Login extends MainPage {
                     
                     $_SESSION['tahun_masuk']=$setup->getSettingValue('default_tahun_pendaftaran');
                     $_SESSION['semester']=$setup->getSettingValue('default_semester');
+                    
+                    $foto='resources/userimages/no_photo.png';
                 break;
                 case 'm' :                    
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
@@ -119,10 +123,14 @@ class Login extends MainPage {
                     
                     $_SESSION['tahun_masuk']=$setup->getSettingValue('default_tahun_pendaftaran');
                     $_SESSION['semester']=$setup->getSettingValue('default_semester');
+                    
+                    $foto='resources/userimages/no_photo.png';
                 break;                
                 case 'mh' :
                     $_SESSION['ta']=$setup->getSettingValue('default_ta') < $pengguna->getDataUser('tahun_masuk') ? $pengguna->getDataUser('tahun_masuk') :$setup->getSettingValue('default_ta');
                     $_SESSION['semester']=$setup->getSettingValue('default_semester');
+                    
+                    $foto='resources/userimages/no_photo.png';
                 break;
                 case 'k' :
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
@@ -132,6 +140,8 @@ class Login extends MainPage {
                     
                     $_SESSION['tahun_masuk']=$setup->getSettingValue('default_tahun_pendaftaran');
                     $_SESSION['semester']=$setup->getSettingValue('default_semester');
+                    
+                    $foto='resources/userimages/no_photo.png';
                 break; 
                 case 'on' :
                     $group_id=$pengguna->getDataUser('group_id');
@@ -148,6 +158,8 @@ class Login extends MainPage {
                     }                                
                     $_SESSION['tahun_masuk']=$setup->getSettingValue('default_tahun_pendaftaran');
                     $_SESSION['semester']=$setup->getSettingValue('default_semester');
+                    
+                    $foto='resources/userimages/no_photo.png';
                 break; 
                 case 'mb' :
                     $_SESSION['ta']=$pengguna->getDataUser('tahun_masuk');
@@ -156,10 +168,12 @@ class Login extends MainPage {
                     
                     $_SESSION['tahun_masuk']=$pengguna->getDataUser('tahun_masuk');
                     $_SESSION['semester']=$pengguna->getDataUser('semester_masuk');
+                    
+                    $foto=$pengguna->getDataUser('photo_profile');
                 break; 
             }                              
             $_SESSION['kelas']='none';
-            $_SESSION['foto']='no_photo.png';
+            $_SESSION['foto']=$foto;
             $_SESSION['theme']=$pengguna->getDataUser('theme');
                 
             $_SESSION['outputreport']='pdf';

@@ -9,7 +9,7 @@ class CFormulirPendaftaran extends MainPageMB {
             $this->lblModulHeader->Text='T.A '.$this->DMaster->getNamaTA($this->Pengguna->getDataUser('tahun_masuk'));
             try {                
                 if (!isset($_SESSION['currentPageFormulirPendaftaran'])||$_SESSION['currentPageFormulirPendaftaran']['page_name']!='mb.FormulirPendaftaran') {
-                    $_SESSION['currentPageFormulirPendaftaran']=array('page_name'=>'mb.FormulirPendaftaran','page_num'=>0,'reguler'=>0,'karyawan'=>0,'ekstensi'=>0);												
+                    $_SESSION['currentPageFormulirPendaftaran']=array('page_name'=>'mb.FormulirPendaftaran','page_num'=>0,'reguler'=>0,'karyawan'=>0,'ekstensi'=>0,'temp_file'=>'');												
                 }
                 $semester_default=$this->Pengguna->getDataUser('semester_masuk');
                 $reguler=$this->Finance->getBiayaPendaftaran($_SESSION['tahun_masuk'],$semester_default,'A');							
@@ -28,7 +28,7 @@ class CFormulirPendaftaran extends MainPageMB {
                     $this->editProcess();                
                 }else{
                     $this->addProcess();                
-                }                         
+                } 
             }catch (Exception $e) {
                 $this->idProcess='view';
                 $this->errorMessage->Text=$e->getMessage();
@@ -38,8 +38,8 @@ class CFormulirPendaftaran extends MainPageMB {
     private function editProcess() {
         $this->idProcess='edit';                         
         $no_formulir=$this->Pengguna->getDataUser('no_formulir');
-        $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.tempat_lahir,fp.tanggal_lahir,fp.jk,fp.idagama,a.nama_agama,fp.nama_ibu_kandung,fp.idwarga,fp.nik,fp.idstatus,fp.alamat_kantor,fp.alamat_rumah,kelurahan,kecamatan,fp.telp_rumah,fp.telp_kantor,fp.telp_hp,pm.email,fp.idjp,fp.pendidikan_terakhir,fp.jurusan,fp.kota,fp.provinsi,fp.tahun_pa,jp.nama_pekerjaan,fp.jenis_slta,fp.asal_slta,fp.status_slta,fp.nomor_ijazah,fp.kjur1,fp.kjur2,fp.idkelas,fp.waktu_mendaftar,fp.ta,fp.idsmt FROM formulir_pendaftaran fp,agama a,jenis_pekerjaan jp,profiles_mahasiswa pm WHERE fp.idagama=a.idagama AND fp.idjp=jp.idjp AND pm.no_formulir=fp.no_formulir AND fp.no_formulir='$no_formulir'";
-        $this->DB->setFieldTable(array('no_formulir','nama_mhs','tempat_lahir','tanggal_lahir','jk','idagama','nama_agama','nama_ibu_kandung','idwarga','nik','idstatus','alamat_kantor','alamat_rumah','kelurahan','kecamatan','telp_rumah','telp_kantor','telp_hp','email','idjp','pendidikan_terakhir','jurusan','kota','provinsi','tahun_pa','nama_pekerjaan','jenis_slta','asal_slta','status_slta','nomor_ijazah','kjur1','kjur2','idkelas','waktu_mendaftar','ta','idsmt'));
+        $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.tempat_lahir,fp.tanggal_lahir,fp.jk,fp.idagama,a.nama_agama,fp.nama_ibu_kandung,fp.idwarga,fp.nik,fp.idstatus,fp.alamat_kantor,fp.alamat_rumah,kelurahan,kecamatan,fp.telp_rumah,fp.telp_kantor,fp.telp_hp,pm.email,fp.idjp,fp.pendidikan_terakhir,fp.jurusan,fp.kota,fp.provinsi,fp.tahun_pa,jp.nama_pekerjaan,fp.jenis_slta,fp.asal_slta,fp.status_slta,fp.nomor_ijazah,fp.kjur1,fp.kjur2,fp.idkelas,fp.waktu_mendaftar,fp.ta,fp.idsmt,pm.photo_profile FROM formulir_pendaftaran fp,agama a,jenis_pekerjaan jp,profiles_mahasiswa pm WHERE fp.idagama=a.idagama AND fp.idjp=jp.idjp AND pm.no_formulir=fp.no_formulir AND fp.no_formulir='$no_formulir'";
+        $this->DB->setFieldTable(array('no_formulir','nama_mhs','tempat_lahir','tanggal_lahir','jk','idagama','nama_agama','nama_ibu_kandung','idwarga','nik','idstatus','alamat_kantor','alamat_rumah','kelurahan','kecamatan','telp_rumah','telp_kantor','telp_hp','email','idjp','pendidikan_terakhir','jurusan','kota','provinsi','tahun_pa','nama_pekerjaan','jenis_slta','asal_slta','status_slta','nomor_ijazah','kjur1','kjur2','idkelas','waktu_mendaftar','ta','idsmt','photo_profile'));
         $r=$this->DB->getRecord($str);
         $dataMhs=$r[1];								
         if ($dataMhs['waktu_mendaftar']=='0000-00-00 00:00:00') {							
@@ -125,7 +125,8 @@ class CFormulirPendaftaran extends MainPageMB {
             $this->cmbEditKjur2->Text=$dataMhs['kjur2'];
             $this->cmbEditKjur2->dataBind();
             $this->cmbEditKjur2->Enabled=true;
-        }	              			
+        }	         
+        $this->imgEditFoto->ImageUrl=$dataMhs['photo_profile'];        
     }
     private function addProcess() {     
         $this->idProcess='add';        
@@ -143,7 +144,8 @@ class CFormulirPendaftaran extends MainPageMB {
         $this->cmbAddKjur1->DataSource=$_SESSION['daftar_jurusan'];            
         $this->cmbAddKjur1->dataBind();
         $this->cmbAddKjur2->Enabled=false;
-			
+        
+        $this->imgEditFoto->ImageUrl=$this->Pengguna->getDataUser('photo_profile');
     }
 	public function changePs($sender,$param) {
         if ($sender->getId()=='cmbAddKjur1') {
@@ -221,6 +223,7 @@ class CFormulirPendaftaran extends MainPageMB {
             $idsmt=$this->Pengguna->getDataUser('semester_masuk');
             $ta=$this->Pengguna->getDataUser('tahun_masuk');
             $idkelas=$this->cmbAddKelas->Text;
+            $photo_profile=$this->hiddenAddFoto->Value;
             switch ($idkelas) {
                 case 'A' :
                     $dibayarkan=$_SESSION['currentPageFormulirPendaftaran']['reguler'];
@@ -235,14 +238,16 @@ class CFormulirPendaftaran extends MainPageMB {
 			$str ="INSERT INTO formulir_pendaftaran (no_formulir,nama_mhs,tempat_lahir,tanggal_lahir,jk,idagama,nama_ibu_kandung,idwarga,nik,idstatus,alamat_kantor,alamat_rumah,kelurahan,kecamatan,telp_kantor,telp_rumah,telp_hp,idjp,pendidikan_terakhir,jurusan,kota,provinsi,tahun_pa,jenis_slta,asal_slta,status_slta,nomor_ijazah,kjur1,kjur2,waktu_mendaftar,ta,idsmt,idkelas,daftar_via) VALUES ('$no_formulir','$nama_mhs','$tempat_lahir','$tgl_lahir','$jk',$idagama,'$nama_ibu_kandung','$idwarga','$no_ktp','$idstatus','$alamat_kantor','$alamat_rumah','$kelurahan','$kecamatan','$telp_kantor','$telp_rumah','$telp_hp',$idjp,'$pendidikan_terakhir','$jurusan','$kota','$provinsi','$tahun_pa','$jenisslta','$asal_slta','$statusslta','$nomor_ijazah','$kjur1','$kjur2','$waktu_mendaftar',$ta,$idsmt,'$idkelas','WEB')";		
             $this->DB->query('BEGIN');
 			if ($this->DB->insertRecord($str)) {
+                $photo_profile=$this->hiddenAddFoto->Value;
                 $userpassword=md5($this->Pengguna->getDataUser('no_pin'));
-                $str = "INSERT INTO profiles_mahasiswa (idprofile,no_formulir,email,userpassword) VALUES (NULL,$no_formulir,'$email','$userpassword')";
+                $str = "INSERT INTO profiles_mahasiswa (idprofile,no_formulir,email,userpassword,theme,photo_profile) VALUES (NULL,$no_formulir,'$email','$userpassword','cube','$photo_profile')";
                 $this->DB->insertRecord($str);
                 $ket="Input Via WEB";
                 $userid=1;
                 $str = 'INSERT INTO bipend (idbipend,tahun,no_faktur,tgl_bayar,no_formulir,gelombang,dibayarkan,ket,userid) VALUES ';
                 $str .= "(NULL,".$_SESSION['tahun_masuk'].",'$no_formulir','$waktu_mendaftar','$no_formulir','1','$dibayarkan','$ket','$userid')";				
                 $this->DB->insertRecord($str);
+                $_SESSION['foto']=$photo_profile;
                 $this->DB->query('COMMIT');
             }else {
                 $this->DB->query('ROLLBACK');
@@ -286,13 +291,15 @@ class CFormulirPendaftaran extends MainPageMB {
             $ta=$this->Pengguna->getDataUser('tahun_masuk');
             $idsmt=$this->Pengguna->getDataUser('semester_masuk');
             $idkelas=$this->cmbEditKelas->Text;
-         			
+         	$photo_profile=$this->hiddenEditFoto->Value;
+            
             $str ="UPDATE formulir_pendaftaran SET nama_mhs='$nama_mhs',tempat_lahir='$tempat_lahir',tanggal_lahir='$tgl_lahir',jk='$jk',idagama=$idagama,nama_ibu_kandung='$nama_ibu_kandung',idwarga='$idwarga',nik='$no_ktp',idstatus='$idstatus',alamat_kantor='$alamat_kantor',alamat_rumah='$alamat_rumah',kelurahan='$kelurahan',kecamatan='$kecamatan',telp_kantor='$telp_kantor',telp_rumah='$telp_rumah',telp_hp='$telp_hp',idjp=$idjp,pendidikan_terakhir='$pendidikan_terakhir',jurusan='$jurusan',kota='$kota',provinsi='$provinsi',tahun_pa='$tahun_pa',jenis_slta='$jenisslta',asal_slta='$asal_slta',status_slta='$statusslta',nomor_ijazah='$nomor_ijazah',kjur1='$kjur1',kjur2='$kjur2',waktu_mendaftar='$waktu_mendaftar',ta=$ta,idsmt=$idsmt,idkelas='$idkelas',daftar_via='WEB' WHERE no_formulir='$no_formulir'";
             $this->DB->query('BEGIN');
 			if ($this->DB->updateRecord($str)) {
                 $email=$this->txtEditEmail->Text;                
-                $str = "UPDATE profiles_mahasiswa SET email='$email' WHERE no_formulir=$no_formulir";
+                $str = "UPDATE profiles_mahasiswa SET email='$email',photo_profile='$photo_profile' WHERE no_formulir=$no_formulir";
                 $this->DB->updateRecord($str);
+                $_SESSION['foto']=$photo_profile;
                 $this->DB->query('COMMIT');
             }else {
                 $this->DB->query('ROLLBACK');
@@ -300,6 +307,150 @@ class CFormulirPendaftaran extends MainPageMB {
 			$this->redirect('FormulirPendaftaran',true);
 		}
 	}
+    public function uploadAddFoto ($sender,$param) {
+		if ($sender->getHasFile()) {
+            $this->setup->totalDelete($_SESSION['currentPageFormulirPendaftaran']['temp_file']);
+            $this->lblAddTipeFileError->Text='';
+            $mime=$sender->getFileType();
+            if($mime!="image/png" && $mime!="image/jpg" && $mime!="image/jpeg"){
+                $error =  '<div class="alert alert-warning">                
+                            <p><strong>Error:</strong>File ini bukan tipe gambar</p>
+                        </div>'; 
+                $this->lblAddTipeFileError->Text=$error;
+                return;
+            }         
+
+            if($mime=="image/png")	{
+                if(!(imagetypes() & IMG_PNG)) {
+                    $error =  '<div class="alert alert-warning">                
+                            <p><strong>Error:</strong>missing png support in gd library.</p>
+                        </div>'; 
+                    $this->lblAddTipeFileError->Text=$error;                    
+                    return;
+                }
+            }
+            if(($mime=="image/jpg" || $mime=="image/jpeg")){
+                if(!(imagetypes() & IMG_JPG)){                    
+                    $error =  '<div class="alert alert-warning">                
+                            <p><strong>Error:</strong>missing jpeg support in gd library.</p>
+                        </div>'; 
+                    $this->lblAddTipeFileError->Text=$error;
+                    return;
+                }
+            }
+            $filename=substr(hash('sha512',rand()),0,8);
+            $name=$sender->FileName;
+            $part=$this->setup->cleanFileNameString($name);            
+            $path="resources/photomhs/$filename-$part";
+            $sender->saveAs($path);            
+            chmod(BASEPATH."/$path",0644); 
+            $this->hiddenAddFoto->Value=$path;
+            $this->imgAddFoto->ImageUrl=$path;  
+            $_SESSION['currentPageFormulirPendaftaran']['temp_file']=$path;
+        }else {                    
+            //error handling
+            switch ($sender->ErrorCode){
+                case 1:
+                    $err="file size too big (php.ini).";
+                break;
+                case 2:
+                    $err="file size too big (form).";
+                break;
+                case 3:
+                    $err="file upload interrupted.";
+                break;
+                case 4:
+                    $err="no file chosen.";
+                break;
+                case 6:
+                    $err="internal problem (missing temporary directory).";
+                break;
+                case 7:
+                    $err="unable to write file on disk.";
+                break;
+                case 8:
+                    $err="file type not accepted.";
+                break;
+            }
+            $error =  '<div class="alert alert-warning">                
+                            <p><strong>Error:</strong>'.$err.'</p>
+                        </div>';   
+            $this->lblAddTipeFileError->Text=$error;
+            return;   
+        }
+    }
+    public function uploadEditFoto ($sender,$param) {
+		if ($sender->getHasFile()) {
+            $this->setup->totalDelete($_SESSION['currentPageFormulirPendaftaran']['temp_file']);
+            $this->lblEditTipeFileError->Text='';
+            $mime=$sender->getFileType();
+            if($mime!="image/png" && $mime!="image/jpg" && $mime!="image/jpeg"){
+                $error =  '<div class="alert alert-warning">                
+                            <p><strong>Error:</strong>File ini bukan tipe gambar</p>
+                        </div>'; 
+                $this->lblEditTipeFileError->Text=$error;
+                return;
+            }         
+
+            if($mime=="image/png")	{
+                if(!(imagetypes() & IMG_PNG)) {
+                    $error =  '<div class="alert alert-warning">                
+                            <p><strong>Error:</strong>missing png support in gd library.</p>
+                        </div>'; 
+                    $this->lblEditTipeFileError->Text=$error;                    
+                    return;
+                }
+            }
+            if(($mime=="image/jpg" || $mime=="image/jpeg")){
+                if(!(imagetypes() & IMG_JPG)){                    
+                    $error =  '<div class="alert alert-warning">                
+                            <p><strong>Error:</strong>missing jpeg support in gd library.</p>
+                        </div>'; 
+                    $this->lblEditTipeFileError->Text=$error;
+                    return;
+                }
+            }
+            $filename=substr(hash('sha512',rand()),0,8);
+            $name=$sender->FileName;
+            $part=$this->setup->cleanFileNameString($name);            
+            $path="resources/photomhs/$filename-$part";
+            $sender->saveAs($path);            
+            chmod(BASEPATH."/$path",0644); 
+            $this->hiddenEditFoto->Value=$path;
+            $this->imgEditFoto->ImageUrl=$path;  
+            $_SESSION['currentPageFormulirPendaftaran']['temp_file']=$path;
+        }else {                    
+            //error handling
+            switch ($sender->ErrorCode){
+                case 1:
+                    $err="file size too big (php.ini).";
+                break;
+                case 2:
+                    $err="file size too big (form).";
+                break;
+                case 3:
+                    $err="file upload interrupted.";
+                break;
+                case 4:
+                    $err="no file chosen.";
+                break;
+                case 6:
+                    $err="internal problem (missing temporary directory).";
+                break;
+                case 7:
+                    $err="unable to write file on disk.";
+                break;
+                case 8:
+                    $err="file type not accepted.";
+                break;
+            }
+            $error =  '<div class="alert alert-warning">                
+                            <p><strong>Error:</strong>'.$err.'</p>
+                        </div>';   
+            $this->lblEditTipeFileError->Text=$error;
+            return;   
+        }
+    }
 }
 
 ?>

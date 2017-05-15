@@ -65,8 +65,8 @@ class CJadwalUjianPMB extends MainPageMB {
 	}
     public function pilihRecord ($sender,$param) {        
 		$id=$this->getDataKeyField($sender,$this->RepeaterS);
-        $str = "SELECT tahun_masuk,idsmt,nama_kegiatan,tanggal_akhir_daftar,status FROM jadwal_ujian_pmb jup LEFT JOIN ruangkelas rk ON (jup.idruangkelas=rk.idruangkelas) WHERE idjadwal_ujian='$id'";
-        $this->DB->setFieldTable(array('tahun_masuk','idsmt','nama_kegiatan','tanggal_akhir_daftar','status'));
+        $str = "SELECT tahun_masuk,idsmt,nama_kegiatan,tanggal_akhir_daftar,status,rk.kapasitas FROM jadwal_ujian_pmb jup LEFT JOIN ruangkelas rk ON (jup.idruangkelas=rk.idruangkelas) WHERE idjadwal_ujian='$id'";
+        $this->DB->setFieldTable(array('tahun_masuk','idsmt','nama_kegiatan','tanggal_akhir_daftar','status','kapasitas'));
 		$r = $this->DB->getRecord($str);	
         try {
             $dataujian=$r[1];
@@ -81,6 +81,10 @@ class CJadwalUjianPMB extends MainPageMB {
             $tanggal_akhir_daftar = strtotime($dataujian['tanggal_akhir_daftar']);
             if ($date_now > $tanggal_akhir_daftar) {
                 throw new Exception ("Tidak bisa mendaftar pada {$dataujian['nama_kegiatan']} T.A {$dataujian['tahun_masuk']}{$dataujian['idsmt']} karena tanggal pendaftaran telah berakhir");
+            }
+            $jumlah_peserta=$this->DB->getCountRowsOfTable("peserta_ujian_pmb WHERE idjadwal_ujian=$id",'idjadwal_ujian');            
+            if ($jumlah_peserta >= $dataujian['kapasitas']){
+                throw new Exception ("Tidak bisa mendaftar pada {$dataujian['nama_kegiatan']} T.A {$dataujian['tahun_masuk']}{$dataujian['idsmt']} karena kapasitas ruangan telah penuh");
             }
             
             $str = "INSERT INTO peserta_ujian_pmb SET idpeserta_ujian=NULL,no_formulir=$no_formulir,idjadwal_ujian=$id,date_added=NOW()";
@@ -105,14 +109,15 @@ class CJadwalUjianPMB extends MainPageMB {
         $dataReport=$r[1];
         
         $no_formulir=$this->Pengguna->getDataUser('no_formulir');
-        $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.tempat_lahir,fp.tanggal_lahir,fp.jk,fp.idagama,a.nama_agama,fp.nama_ibu_kandung,fp.idwarga,fp.nik,fp.idstatus,fp.alamat_kantor,fp.alamat_rumah,kelurahan,kecamatan,fp.telp_rumah,fp.telp_kantor,fp.telp_hp,pm.email,fp.idjp,fp.pendidikan_terakhir,fp.jurusan,fp.kota,fp.provinsi,fp.tahun_pa,jp.nama_pekerjaan,fp.jenis_slta,fp.asal_slta,fp.status_slta,fp.nomor_ijazah,fp.kjur1,fp.kjur2,fp.idkelas,fp.waktu_mendaftar,fp.ta,fp.idsmt FROM formulir_pendaftaran fp,agama a,jenis_pekerjaan jp,profiles_mahasiswa pm WHERE fp.idagama=a.idagama AND fp.idjp=jp.idjp AND pm.no_formulir=fp.no_formulir AND fp.no_formulir='$no_formulir'";
-        $this->DB->setFieldTable(array('no_formulir','nama_mhs','tempat_lahir','tanggal_lahir','jk','idagama','nama_agama','nama_ibu_kandung','idwarga','nik','idstatus','alamat_kantor','alamat_rumah','kelurahan','kecamatan','telp_rumah','telp_kantor','telp_hp','email','idjp','pendidikan_terakhir','jurusan','kota','provinsi','tahun_pa','nama_pekerjaan','jenis_slta','asal_slta','status_slta','nomor_ijazah','kjur1','kjur2','idkelas','waktu_mendaftar','ta','idsmt'));
+        $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.tempat_lahir,fp.tanggal_lahir,fp.jk,fp.idagama,a.nama_agama,fp.nama_ibu_kandung,fp.idwarga,fp.nik,fp.idstatus,fp.alamat_kantor,fp.alamat_rumah,kelurahan,kecamatan,fp.telp_rumah,fp.telp_kantor,fp.telp_hp,pm.email,fp.idjp,fp.pendidikan_terakhir,fp.jurusan,fp.kota,fp.provinsi,fp.tahun_pa,jp.nama_pekerjaan,fp.jenis_slta,fp.asal_slta,fp.status_slta,fp.nomor_ijazah,fp.kjur1,fp.kjur2,fp.idkelas,fp.waktu_mendaftar,fp.ta,fp.idsmt,pm.photo_profile FROM formulir_pendaftaran fp,agama a,jenis_pekerjaan jp,profiles_mahasiswa pm WHERE fp.idagama=a.idagama AND fp.idjp=jp.idjp AND pm.no_formulir=fp.no_formulir AND fp.no_formulir='$no_formulir'";
+        $this->DB->setFieldTable(array('no_formulir','nama_mhs','tempat_lahir','tanggal_lahir','jk','idagama','nama_agama','nama_ibu_kandung','idwarga','nik','idstatus','alamat_kantor','alamat_rumah','kelurahan','kecamatan','telp_rumah','telp_kantor','telp_hp','email','idjp','pendidikan_terakhir','jurusan','kota','provinsi','tahun_pa','nama_pekerjaan','jenis_slta','asal_slta','status_slta','nomor_ijazah','kjur1','kjur2','idkelas','waktu_mendaftar','ta','idsmt','photo_profile'));
         $r=$this->DB->getRecord($str);
         
         $dataReport['no_formulir']=$no_formulir;
         $dataReport['nama_mhs']=$r[1]['nama_mhs'];
         $dataReport['nama_ps1']=$_SESSION['daftar_jurusan'][$r[1]['kjur1']];
         $dataReport['nama_ps2']=$r[1]['kjur2'] > 0 ? $_SESSION['daftar_jurusan'][$r[1]['kjur2']] :'-';
+        $dataReport['photo_profile']=BASEPATH.$r[1]['photo_profile'];
         
         $dataReport['linkoutput']=$this->linkOutput; 
         $this->report->setDataReport($dataReport); 

@@ -87,7 +87,7 @@
 						</li>
 						<li class="dropdown profile-dropdown visible">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-								<img alt="<%=$this->Page->Pengguna->getUsername()%>" src="resources/userimages/<%=$_SESSION['foto']%>" OnError="no_photo(this,'<%=$this->Page->setup->getAddress()%>/resources/userimages/no_photo.png')" />
+								<img alt="<%=$this->Page->Pengguna->getUsername()%>" src="<%=$_SESSION['foto']%>" OnError="no_photo(this,'<%=$this->Page->setup->getAddress()%>/resources/userimages/no_photo.png')" />
 								<span class="hidden-xs"><%=$this->Page->Pengguna->getUsername()%></span> <b class="caret"></b>
 							</a>
 							<ul class="dropdown-menu dropdown-menu-right">
@@ -137,7 +137,7 @@
 					<section id="col-left" class="col-left-nano">
 						<div id="col-left-inner" class="col-left-nano-content">
 							<div id="user-left-box" class="clearfix hidden-sm hidden-xs dropdown profile2-dropdown">
-								<img alt="<%=$this->Page->Pengguna->getUsername()%>" src="resources/userimages/<%=$_SESSION['foto']%>" />
+								<img alt="<%=$this->Page->Pengguna->getUsername()%>" src="<%=$_SESSION['foto']%>" />
 								<div class="user-box">
 									<span class="name">
 										<a href="#" class="dropdown-toggle" data-toggle="dropdown">

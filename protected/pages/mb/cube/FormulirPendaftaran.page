@@ -471,6 +471,33 @@
                             <com:TActiveDropDownList ID="cmbEditKjur2" AutoPostBack="false" CssClass="form-control" />
                         </div>
                     </div>
+                </div>
+                <h3>Foto Identitas (Resmi)</h3>
+                <div class="form-horizontal">
+                    <div class="form-group" id="divEditFoto">
+                        <label class="col-lg-2 control-label">Foto (Maks. 2MB, format file : jpg,png) :</label>
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <com:TActiveHiddenField ID="hiddenEditFoto" />
+                                    <com:TActiveFileUpload ID="fileEditFoto" MaxFileSize="<%=$this->setup->getMaxFileSize(2)%>" OnFileUpload="uploadEditFoto" />
+                                    <com:TActiveLabel ID="lblEditTipeFileError" />
+                                    <com:TRequiredFieldValidator ID="FieldEditFotoValidator" ControlToValidate="hiddenEditFoto" Display="Dynamic" ErrorMessage="Mohon masukan photo identitas resmi." ValidationGroup="editformulir" FocusOnError="true" CssClass="has-error help-block">			
+                                        <prop:ClientSide.OnValidationError>
+                                            $('divEditFoto').addClassName('has-error');
+                                            jQuery('#<%=$this->FieldEditFotoValidator->ClientID%>').removeAttr('style');
+                                        </prop:ClientSide.OnValidationError>
+                                        <prop:ClientSide.OnValidationSuccess>
+                                            $('divEditFoto').removeClassName('has-error');
+                                        </prop:ClientSide.OnValidationSuccess>
+                                    </com:TRequiredFieldValidator>  
+                                </div>
+                                <div class="col-lg-4">
+                                    <com:TActiveImage ID="imgEditFoto" Height="150px" Width="150px" />
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
                     <div class="form-group">
                         <div class="col-lg-offset-2 col-lg-10">
                             <com:TActiveCustomButton ID="btnUpdate" CssClass="btn btn-primary" OnClick="updateData" ValidationGroup="editformulir">
@@ -940,6 +967,33 @@
                         <label class="col-lg-2 control-label">Program Studi (Pilihan 2) :</label>
                         <div class="col-lg-4">
                             <com:TActiveDropDownList ID="cmbAddKjur2" AutoPostBack="false" CssClass="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <h3>Foto Identitas (Resmi)</h3>
+                <div class="form-horizontal">
+                    <div class="form-group" id="divAddFoto">
+                        <label class="col-lg-2 control-label">Foto (Maks. 2MB, format file : jpg,png) :</label>
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <com:TActiveHiddenField ID="hiddenAddFoto" />
+                                    <com:TActiveFileUpload ID="fileAddFoto" MaxFileSize="<%=$this->setup->getMaxFileSize(2)%>" OnFileUpload="uploadAddFoto" />
+                                    <com:TActiveLabel ID="lblAddTipeFileError" />
+                                    <com:TRequiredFieldValidator ID="FieldAddFotoValidator" ControlToValidate="hiddenAddFoto" Display="Dynamic" ErrorMessage="Mohon masukan photo identitas resmi." ValidationGroup="addformulir" FocusOnError="true" CssClass="has-error help-block">			
+                                        <prop:ClientSide.OnValidationError>
+                                            $('divAddFoto').addClassName('has-error');
+                                            jQuery('#<%=$this->FieldAddFotoValidator->ClientID%>').removeAttr('style');
+                                        </prop:ClientSide.OnValidationError>
+                                        <prop:ClientSide.OnValidationSuccess>
+                                            $('divAddFoto').removeClassName('has-error');
+                                        </prop:ClientSide.OnValidationSuccess>
+                                    </com:TRequiredFieldValidator>  
+                                </div>
+                                <div class="col-lg-4">
+                                    <com:TActiveImage ID="imgAddFoto" Height="150px" Width="150px" />
+                                </div>
+                            </div>                            
                         </div>
                     </div>
                     <div class="form-group">

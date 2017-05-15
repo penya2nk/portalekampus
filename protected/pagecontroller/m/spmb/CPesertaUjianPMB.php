@@ -1,15 +1,16 @@
 <?php
 prado::using ('Application.MainPageM');
-class CPesertaUjianPMB extends MainPageM {	
+class CPesertaUjianPMB extends MainPageM {
+    public $DataUjianPMB=array();
 	public function onLoad($param) {		
 		parent::onLoad($param);				
-        $this->showSubMenuAkademikPerkuliahan=true;
-        $this->showPembagianKelas=true;
+        $this->showSubMenuSPMBUjianPMB=true;
+        $this->showJadwalUjianPMB=true;
         
         $this->createObj('Akademik');
 		if (!$this->IsPostBack&&!$this->IsCallBack) {
             if (!isset($_SESSION['currentPagePesertaUjianPMB'])||$_SESSION['currentPagePesertaUjianPMB']['page_name']!='m.spmb.PesertaUjianPMB') {
-				$_SESSION['currentPagePesertaUjianPMB']=array('page_name'=>'m.spmb.PesertaUjianPMB','page_num'=>0,'search'=>false);
+				$_SESSION['currentPagePesertaUjianPMB']=array('page_name'=>'m.spmb.PesertaUjianPMB','page_num'=>0,'search'=>false,'DataUjianPMB');
 			}  
             $_SESSION['currentPagePesertaUjianPMB']['search']=false;            
             $this->tbCmbOutputReport->DataSource=$this->setup->getOutputFileType();
@@ -17,15 +18,15 @@ class CPesertaUjianPMB extends MainPageM {
             $this->tbCmbOutputReport->DataBind();            
             try {                     
                 $id=addslashes($this->request['id']); 
-                $infokelas=$this->Demik->getInfoKelas($id);
-                if (!isset($infokelas['idkelas_mhs'])){
-                    throw new Exception ("Kode Kelas dengan id ($id) tidak terdaftar.");
+                $str = "SELECT idjadwal_ujian,tahun_masuk,idsmt,nama_kegiatan,tanggal_ujian,jam_mulai,jam_akhir,tanggal_akhir_daftar,rk.namaruang,rk.kapasitas,status FROM jadwal_ujian_pmb jup LEFT JOIN ruangkelas rk ON (jup.idruangkelas=rk.idruangkelas) WHERE idjadwal_ujian=$id ORDER BY tanggal_ujian ASC";
+        
+                $this->DB->setFieldTable(array('idjadwal_ujian','tahun_masuk','idsmt','nama_kegiatan','tanggal_ujian','jam_mulai','jam_akhir','tanggal_akhir_daftar','namaruang','kapasitas','status'));
+                $r = $this->DB->getRecord($str);
+                if (!isset($r[1])){
+                    throw new Exception ("Jadwal Ujian PMB dengan id ($id) tidak terdaftar.");
                 }
-                $infokelas['namakelas']=$this->DMaster->getNamaKelasByID($infokelas['idkelas']).'-'.chr($infokelas['nama_kelas']+64);
-                $infokelas['hari']=$this->Page->TGL->getNamaHari($infokelas['hari']);
-                $this->Demik->InfoKelas=$infokelas;
-                $_SESSION['currentPagePembagianKelas']['iddosen']=$infokelas['iddosen'];
-                $_SESSION['currentPagePesertaUjianPMB']['InfoKelas']=$infokelas;          
+                $this->DataUjianPMB=$r[1];
+                $_SESSION['currentPagePesertaUjianPMB']['DataUjianPMB']=$this->DataUjianPMB;
                 $this->populateData();		
             } catch (Exception $ex) {
                 $this->idProcess='view';
@@ -38,80 +39,68 @@ class CPesertaUjianPMB extends MainPageM {
 		$this->populateData($_SESSION['currentPagePesertaMatakuliah']['search']);
 	}
     public function populateData ($search=false) {
-        $idkelas_mhs=$_SESSION['currentPagePesertaUjianPMB']['InfoKelas']['idkelas_mhs'];        
-        $str = "SELECT kmd.idkrsmatkul,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.jk,vdm.tahun_masuk,k.sah FROM kelas_mhs_detail kmd,krsmatkul km,krs k,v_datamhs vdm WHERE kmd.idkrsmatkul=km.idkrsmatkul AND km.idkrs=k.idkrs AND k.nim=vdm.nim AND kmd.idkelas_mhs=$idkelas_mhs AND km.batal=0";
+        $idjadwal_ujian=$_SESSION['currentPagePesertaUjianPMB']['DataUjianPMB']['idjadwal_ujian'];        
+        $str = "SELECT pum.no_formulir,fp.nama_mhs,fp.jk,fp.kjur1,fp.kjur2,pin.no_pin FROM peserta_ujian_pmb pum,formulir_pendaftaran fp,pin WHERE fp.no_formulir=pum.no_formulir AND pin.no_formulir=pum.no_formulir AND pum.idjadwal_ujian=$idjadwal_ujian";
         if ($search) {            
             $txtsearch=$this->txtKriteria->Text;
             switch ($this->cmbKriteria->Text) {                
-                case 'nim' :
-                    $cluasa="AND vdm.nim='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("kelas_mhs_detail kmd,krsmatkul km,krs k,v_datamhs vdm WHERE kmd.idkrsmatkul=km.idkrsmatkul AND km.idkrs=k.idkrs AND k.nim=vdm.nim AND kmd.idkelas_mhs=$idkelas_mhs AND km.batal=0 $cluasa",'kmd.idkrsmatkul');
-                    $str = "$str $cluasa";
-                break;
-                case 'nirm' :
-                    $cluasa="AND vdm.nirm='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("kelas_mhs_detail kmd,krsmatkul km,krs k,v_datamhs vdm WHERE kelas_mhs_detail kmd,krsmatkul km,krs k,v_datamhs vdm WHERE kmd.idkrsmatkul=km.idkrsmatkul AND km.idkrs=k.idkrs AND k.nim=vdm.nim AND kmd.idkelas_mhs=$idkelas_mhs AND km.batal=0 $cluasa",'kmd.idkrsmatkul');
-                    $str = "$str $cluasa";
+                case 'no_formulir' :
+                    $clausa="AND fp.no_formulir='$txtsearch'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("peserta_ujian_pmb pum,formulir_pendaftaran fp,pin WHERE fp.no_formulir=pum.no_formulir AND pin.no_formulir=pum.no_formulir AND pum.idjadwal_ujian=$idjadwal_ujian $clausa",'pum.no_formulir');
+                    $str = "$str $clausa";
                 break;
                 case 'nama' :
-                    $cluasa="AND vdm.nama_mhs LIKE '%$txtsearch%'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("kelas_mhs_detail kmd,krsmatkul km,krs k,v_datamhs vdm WHERE kmd.idkrsmatkul=km.idkrsmatkul AND km.idkrs=k.idkrs AND k.nim=vdm.nim AND kmd.idkelas_mhs=$idkelas_mhs AND km.batal=0 $cluasa",'kmd.idkrsmatkul');
-                    $str = "$str $cluasa";
+                    $clausa="AND fp.nama_mhs LIKE '%$txtsearch%'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("peserta_ujian_pmb pum,formulir_pendaftaran fp,pin WHERE fp.no_formulir=pum.no_formulir AND pin.no_formulir=pum.no_formulir AND pum.idjadwal_ujian=$idjadwal_ujian $clausa",'pum.no_formulir');
+                    $str = "$str $clausa";
                 break;
             }
         }else{                        
-            $jumlah_baris=$this->DB->getCountRowsOfTable("kelas_mhs_detail kmd,krsmatkul km,krs k,v_datamhs vdm WHERE kmd.idkrsmatkul=km.idkrsmatkul AND km.idkrs=k.idkrs AND k.nim=vdm.nim AND kmd.idkelas_mhs=$idkelas_mhs AND km.batal=0",'kmd.idkrsmatkul');
+            $jumlah_baris=$this->DB->getCountRowsOfTable ("peserta_ujian_pmb pum,formulir_pendaftaran fp,pin WHERE fp.no_formulir=pum.no_formulir AND pin.no_formulir=pum.no_formulir AND pum.idjadwal_ujian=$idjadwal_ujian",'pum.no_formulir');
         }				
-        $str = "$str ORDER BY vdm.nama_mhs ASC";
-		$this->DB->setFieldTable(array('nim','nirm','nama_mhs','jk','tahun_masuk','sah'));	
-		$r=$this->DB->getRecord($str,$offset+1);
-        $result=array();
-        while (list($k,$v)=each($r)) {
-            $status='belum disahkan';
-            if ($v['sah']==1) {
-                $status='sah';
-            }
-            $v['status']=$status;
-            $result[$k]=$v;
-        }
-		$this->RepeaterS->DataSource=$result;
+        $str = "$str ORDER BY fp.nama_mhs ASC";
+		$this->DB->setFieldTable(array('no_formulir','no_pin','nama_mhs','jk','kjur1','kjur2'));	
+		$r=$this->DB->getRecord($str);
+        
+        
+		$this->RepeaterS->DataSource=$r;
 		$this->RepeaterS->dataBind();
         
 	}
     public function printOut ($sender,$param) {		
-        $this->createObj('reportakademik');
-        $this->linkOutput->Text='';
-        $this->linkOutput->NavigateUrl='#';        
-        $dataReport=$_SESSION['currentPagePesertaUjianPMB']['InfoKelas'];
-		switch ($_SESSION['outputreport']) {
-            case  'summarypdf' :
-                $messageprintout="Mohon maaf Print out pada mode summary pdf tidak kami support.";                
-            break;
-            case  'summaryexcel' :
-                $messageprintout="Mohon maaf Print out pada mode summary excel tidak kami support.";                
-            break;
-            case  'excel2007' :               
-                $dataReport['namakelas']=$this->DMaster->getNamaKelasByID($dataReport['idkelas']).'-'.chr($dataReport['nama_kelas']+64);
-                $dataReport['hari']=$this->Page->TGL->getNamaHari($dataReport['hari']);
-                
-                $dataReport['nama_prodi']=$_SESSION['daftar_jurusan'][$dataReport['kjur']];
-                $dataReport['nama_tahun'] = $this->DMaster->getNamaTA($dataReport['tahun']);
-                $dataReport['nama_semester'] = $this->setup->getSemester($dataReport['idsmt']);               
-                
-                $dataReport['linkoutput']=$this->linkOutput; 
-                $this->report->setDataReport($dataReport); 
-                $this->report->setMode($_SESSION['outputreport']);  
-                
-                $messageprintout="Daftar Hadir Mahasiswa : <br/>";
-                $this->report->printDaftarHadirMahasiswa();
-            break;
-            case  'pdf' :
-                $messageprintout="Mohon maaf Print out pada mode excel pdf belum kami support.";
-            break;
-        }                
-        $this->lblMessagePrintout->Text=$messageprintout;
-        $this->lblPrintout->Text='Daftar Hadir Mahasiswa';
-        $this->modalPrintOut->show();
+//        $this->createObj('reportakademik');
+//        $this->linkOutput->Text='';
+//        $this->linkOutput->NavigateUrl='#';        
+//        $dataReport=$_SESSION['currentPagePesertaUjianPMB']['InfoKelas'];
+//		switch ($_SESSION['outputreport']) {
+//            case  'summarypdf' :
+//                $messageprintout="Mohon maaf Print out pada mode summary pdf tidak kami support.";                
+//            break;
+//            case  'summaryexcel' :
+//                $messageprintout="Mohon maaf Print out pada mode summary excel tidak kami support.";                
+//            break;
+//            case  'excel2007' :               
+//                $dataReport['namakelas']=$this->DMaster->getNamaKelasByID($dataReport['idkelas']).'-'.chr($dataReport['nama_kelas']+64);
+//                $dataReport['hari']=$this->Page->TGL->getNamaHari($dataReport['hari']);
+//                
+//                $dataReport['nama_prodi']=$_SESSION['daftar_jurusan'][$dataReport['kjur']];
+//                $dataReport['nama_tahun'] = $this->DMaster->getNamaTA($dataReport['tahun']);
+//                $dataReport['nama_semester'] = $this->setup->getSemester($dataReport['idsmt']);               
+//                
+//                $dataReport['linkoutput']=$this->linkOutput; 
+//                $this->report->setDataReport($dataReport); 
+//                $this->report->setMode($_SESSION['outputreport']);  
+//                
+//                $messageprintout="Daftar Hadir Mahasiswa : <br/>";
+//                $this->report->printDaftarHadirMahasiswa();
+//            break;
+//            case  'pdf' :
+//                $messageprintout="Mohon maaf Print out pada mode excel pdf belum kami support.";
+//            break;
+//        }                
+//        $this->lblMessagePrintout->Text=$messageprintout;
+//        $this->lblPrintout->Text='Daftar Hadir Mahasiswa';
+//        $this->modalPrintOut->show();
 	}
 }
 ?>

@@ -28,7 +28,7 @@
                         <div class="form-group" id="divAddNamaRuang">
                             <label class="col-lg-2 control-label">Nama Ruang :</label>
                             <div class="col-lg-4">
-                                <com:TTextBox ID="txtAddNamaRuang" CssClass="form-control" MaxLength="10" Width="120px" />
+                                <com:TTextBox ID="txtAddNamaRuang" CssClass="form-control" />
                                 <com:TRequiredFieldValidator ID="FieldAddNamaRuangValidator" ControlToValidate="txtAddNamaRuang" Display="Dynamic" ErrorMessage="Isi Nama Ruang" ValidationGroup="addruangkelas" CssClass="has-error help-block">
                                     <prop:ClientSide.OnValidationError>
                                         $('divAddNamaRuang').addClassName('has-error');
@@ -108,7 +108,7 @@
                         <div class="form-group" id="divEditNamaRuang">
                             <label class="col-lg-2 control-label">Nama Ruang :</label>
                             <div class="col-lg-4">
-                                <com:TTextBox ID="txtEditNamaRuang" CssClass="form-control" MaxLength="10" Width="120px" />
+                                <com:TTextBox ID="txtEditNamaRuang" CssClass="form-control" />
                                 <com:TRequiredFieldValidator ID="FieldEditNamaRuangValidator" ControlToValidate="txtEditNamaRuang" Display="Dynamic" ErrorMessage="Isi Nama Ruang" ValidationGroup="editruangkelas" CssClass="has-error help-block">
                                     <prop:ClientSide.OnValidationError>
                                         $('divEditNamaRuang').addClassName('has-error');

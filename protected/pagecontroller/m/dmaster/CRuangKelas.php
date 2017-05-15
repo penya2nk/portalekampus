@@ -62,6 +62,12 @@ class CRuangKelas Extends MainPageM {
 			$kapasitas=addslashes($this->txtAddKapasitas->Text);
 			$str = "INSERT INTO ruangkelas (namaruang,kapasitas) VALUES ('$namaruang','$kapasitas')";
 			$this->DB->insertRecord($str);
+            
+            if ($this->Application->Cache) {
+                $dataitem=$this->DMaster->getList ('ruangkelas',array('idruangkelas','namaruang','kapasitas'),'namaruang',null,2);			
+                $dataitem['none']='Daftar Ruang Kelas';    
+                $this->Application->Cache->set('listruangkelas',$dataitem);                
+            }
 			$this->redirect('dmaster.RuangKelas',true);
 		}
 	}
@@ -81,6 +87,11 @@ class CRuangKelas Extends MainPageM {
 			$kapasitas=  addslashes($this->txtEditKapasitas->Text);
 			$str = "UPDATE ruangkelas SET namaruang='$namaruang',kapasitas='$kapasitas' WHERE idruangkelas=$idruangkelas";
 			$this->DB->updateRecord($str);
+            if ($this->Application->Cache) {
+                $dataitem=$this->DMaster->getList ('ruangkelas',array('idruangkelas','namaruang','kapasitas'),'namaruang',null,2);			
+                $dataitem['none']='Daftar Ruang Kelas';    
+                $this->Application->Cache->set('listruangkelas',$dataitem);                
+            }
 			$this->redirect('dmaster.RuangKelas',true);
 		}
 	}
@@ -92,6 +103,11 @@ class CRuangKelas Extends MainPageM {
             $this->modalMessageError->Show();
         }else{
             $this->DB->deleteRecord("ruangkelas WHERE idruangkelas=$idruangkelas");
+            if ($this->Application->Cache) {
+                $dataitem=$this->DMaster->getList ('ruangkelas',array('idruangkelas','namaruang','kapasitas'),'namaruang',null,2);			
+                $dataitem['none']='Daftar Ruang Kelas';    
+                $this->Application->Cache->set('listruangkelas',$dataitem);                
+            }
             $this->redirect('dmaster.RuangKelas',true);
         }
 		

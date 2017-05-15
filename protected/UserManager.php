@@ -117,14 +117,15 @@ class UserManager extends TAuthManager {
                 $this->db->updateRecord("UPDATE user SET logintime=NOW() WHERE username='$username'");
 			break;
 			case 'MahasiswaBaru' :				
-                $str = "SELECT pm.no_formulir,fp.ta AS tahun_masuk,fp.idsmt AS semester_masuk,pm.theme FROM formulir_pendaftaran fp,profiles_mahasiswa pm WHERE pm.no_formulir=fp.no_formulir AND fp.no_formulir='$username'";						
-                $this->db->setFieldTable(array('no_formulir','tahun_masuk','semester_masuk','theme'));
+                $str = "SELECT pm.no_formulir,fp.ta AS tahun_masuk,fp.idsmt AS semester_masuk,pm.theme,pm.photo_profile FROM formulir_pendaftaran fp,profiles_mahasiswa pm WHERE pm.no_formulir=fp.no_formulir AND fp.no_formulir='$username'";						
+                $this->db->setFieldTable(array('no_formulir','tahun_masuk','semester_masuk','theme','photo_profile'));
                 $r=$this->db->getRecord($str);
                 if (!isset($r[1])) {
                     $str = "SELECT pin.no_formulir,pin.tahun_masuk,pin.semester_masuk,pin.no_pin,pin.idkelas FROM transaksi t JOIN pin ON (t.no_formulir=pin.no_formulir) JOIN transaksi_detail td ON (t.no_transaksi=td.no_transaksi) WHERE pin.no_formulir=t.no_formulir AND td.idkombi=1 AND pin.no_formulir='$username'";						
                     $this->db->setFieldTable(array('no_formulir','tahun_masuk','semester_masuk','no_pin','idkelas'));
                     $r=$this->db->getRecord($str);
                     $r[1]['theme']='cube';
+                    $r[1]['photo_profile']='resources/photomhs/no_photo.png';
                 }
 				$this->dataUser['data_user']=$r[1];
 				$this->dataUser['data_user']['username']=$username;

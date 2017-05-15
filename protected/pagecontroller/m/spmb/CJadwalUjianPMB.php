@@ -82,7 +82,7 @@ class CJadwalUjianPMB extends MainPageM {
         $this->idProcess='add';
         $this->hiddentahunmasuk->Value=$_SESSION['tahun_masuk'];
          //load kelas 				
-        $this->cmbAddRuang->DataSource=$this->getLogic('DMaster')->getRuangKelas();
+        $this->cmbAddRuang->DataSource=$this->DMaster->getRuangKelas();
         $this->cmbAddRuang->dataBind();
     }
 	public function saveData ($sender,$param) {
@@ -116,7 +116,7 @@ class CJadwalUjianPMB extends MainPageM {
         $this->txtEditJamMasuk->Text=$r[1]['jam_mulai'];
         $this->txtEditJamKeluar->Text=$r[1]['jam_akhir'];
         $this->txtEditTanggalAkhirDaftar->Text=$this->TGL->tanggal('d-m-Y',$r[1]['tanggal_akhir_daftar']);
-        $this->cmbEditRuang->DataSource=$this->getLogic('DMaster')->getRuangKelas();
+        $this->cmbEditRuang->DataSource=$this->DMaster->getRuangKelas();
         $this->cmbEditRuang->dataBind();
         $this->cmbEditRuang->Text=$r[1]['idruangkelas'];	
         $this->cmbEditStatus->Text=$r[1]['status'];

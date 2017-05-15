@@ -103,9 +103,13 @@ class Logic_Setup extends Logic_Global {
     /**
      * digunakan untuk memperoleh ukuran maksimal file
      */
-    public function getMaxFileSize () {
-        $size=(int)ini_get('upload_max_filesize');        
-        $filesize=$size*1048576;
+    public function getMaxFileSize ($size=null) {
+        if ($size == null) {
+            $size=(int)ini_get('upload_max_filesize');        
+            $filesize=$size*1048576;
+        }else{      
+            $filesize=$size*1048576;
+        }
         return $filesize;
     }
     /**
@@ -407,6 +411,26 @@ class Logic_Setup extends Logic_Global {
             }
         } 
         return $themefolders;
+    }
+    /**
+     * digunakan untuk mendapatkan tipe image
+     */
+    public function getImageType ($filename) {
+        $type   = exif_imagetype($filename);
+        switch ( $type ) {
+            case 1:   
+                $tipe='gif';   
+            break;
+            case 2:
+                $tipe='jpg';
+            break;
+            case 3:
+                $tipe='png';
+            break;
+            default: 
+                return false;
+        }
+        return $tipe;
     }
 }
 ?>

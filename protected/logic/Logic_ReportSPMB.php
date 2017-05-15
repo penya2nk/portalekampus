@@ -535,65 +535,108 @@ class Logic_ReportSPMB extends Logic_Report {
 				$rpt->setXY(3,$row);			
 				$rpt->Cell(0,$row,'KARTU UJIAN PMB',0,0,'C');
                 
-                $row+=6;
+                $row+=20;
 				$rpt->SetFont ('helvetica','B',8);	
 				$rpt->setXY(3,$row);			
-				$rpt->Cell(0,$row,'No. Formulir');
+				$rpt->Cell(0,7,'No. Formulir','LT');
 				$rpt->SetFont ('helvetica','',8);
                 $rpt->setXY(38,$row);			
-				$rpt->Cell(0,$row,': '.$this->dataReport['no_formulir']);
+				$rpt->Cell(0,7,': '.$this->dataReport['no_formulir']);
                 
                 $rpt->SetFont ('helvetica','B',8);	
 				$rpt->setXY(105,$row);			
-				$rpt->Cell(0,$row,'Tanggal');
+				$rpt->Cell(0,7,'Tanggal');
 				$rpt->SetFont ('helvetica','',8);
 				$rpt->setXY(130,$row);			
-				$rpt->Cell(0,$row,': '.$this->tgl->Tanggal('l, d F Y',$this->dataReport['tanggal_ujian']));
+				$rpt->Cell(0,7,': '.$this->tgl->Tanggal('l, d F Y',$this->dataReport['tanggal_ujian']),'TR');
                 
-                $row+=3;
+                $row+=7;
 				$rpt->setXY(3,$row);			
 				$rpt->SetFont ('helvetica','B',8);	
-				$rpt->Cell(0,$row,'Nama Peserta');
+				$rpt->Cell(0,7,'Nama Peserta','L');
 				$rpt->SetFont ('helvetica','',8);
 				$rpt->setXY(38,$row);			
-				$rpt->Cell(0,$row,': '.$this->dataReport['nama_mhs']);
+				$rpt->Cell(0,7,': '.$this->dataReport['nama_mhs']);
                 
                 $rpt->SetFont ('helvetica','B',8);	
 				$rpt->setXY(105,$row);			
-				$rpt->Cell(0,$row,'Jam');
+				$rpt->Cell(0,7,'Jam');
 				$rpt->SetFont ('helvetica','',8);
 				$rpt->setXY(130,$row);			
-				$rpt->Cell(0,$row,': '.$this->dataReport['jam_mulai']. ' - '.$this->dataReport['jam_akhir']);
+				$rpt->Cell(0,7,': '.$this->dataReport['jam_mulai']. ' - '.$this->dataReport['jam_akhir'],'R');
                 
-                $row+=3;
+                $row+=7;
 				$rpt->setXY(3,$row);			
 				$rpt->SetFont ('helvetica','B',8);	
-				$rpt->Cell(0,$row,'Prodi. Pilihan ke - 1');
+				$rpt->Cell(0,7,'Prodi. Pilihan ke - 1','L');
 				$rpt->SetFont ('helvetica','',8);
 				$rpt->setXY(38,$row);			
-				$rpt->Cell(0,$row,': '.$this->dataReport['nama_ps1']);
+				$rpt->Cell(0,7,': '.$this->dataReport['nama_ps1']);
                 
                 $rpt->SetFont ('helvetica','B',8);	
 				$rpt->setXY(105,$row);			
-				$rpt->Cell(0,$row,'Ruangan');
+				$rpt->Cell(0,7,'Ruangan');
 				$rpt->SetFont ('helvetica','',8);
 				$rpt->setXY(130,$row);			
-				$rpt->Cell(0,$row,': '.$this->dataReport['namaruang']);
+				$rpt->Cell(0,7,': '.$this->dataReport['namaruang'],'R');
                 
-                $row+=3;
+                $row+=7;
 				$rpt->setXY(3,$row);			
 				$rpt->SetFont ('helvetica','B',8);	
-				$rpt->Cell(0,$row,'Prodi. Pilihan ke - 2');
+				$rpt->Cell(0,7,'Prodi. Pilihan ke - 2','BL');
 				$rpt->SetFont ('helvetica','',8);
 				$rpt->setXY(38,$row);			
-				$rpt->Cell(0,$row,': '.$this->dataReport['nama_ps2']);
+				$rpt->Cell(0,7,': '.$this->dataReport['nama_ps2'],'B');
                 
                 $rpt->SetFont ('helvetica','B',8);	
 				$rpt->setXY(105,$row);			
-				$rpt->Cell(0,$row,'Periode');
+				$rpt->Cell(0,7,'Periode','B');
 				$rpt->SetFont ('helvetica','',8);
 				$rpt->setXY(130,$row);			
-				$rpt->Cell(0,$row,': '.$this->dataReport['nama_kegiatan']);
+				$rpt->Cell(0,7,': '.$this->dataReport['nama_kegiatan'],'BR');
+                
+                $row+=20;
+                $rpt->Image($this->dataReport['photo_profile'],15,$row,35,35,'','','',false,300,'',false,false,1);
+                
+                $rpt->SetFont ('helvetica','B',8);
+                $rpt->setXY(105,$row);               				
+                $rpt->Cell(105, 5, "Tanjungpinang, ................................................",0,0,'L');		
+
+                $row+=5;
+                $rpt->setXY(105,$row);			
+                $rpt->Cell(100, 5, "Pengawas Ujian PMB",0,0,'L');
+                
+                $row+=17;
+                $rpt->setXY(105,$row);			
+                $rpt->Cell(100, 5, "(....................................) ",0,0,'L');
+                
+                $row+=20;
+                $rpt->setXY(3,$row);
+                $rpt->SetFont ('helvetica','B',6);
+                $rpt->Cell(28, 5, "TATA TERTIB UJIAN PMB :",'B',0,'L');
+                $row+=5;
+                $rpt->SetFont ('helvetica','',6);
+                $rpt->setXY(3,$row);
+                $rpt->Cell(14, 5, '1. Pakaian ');
+                $rpt->Cell(3, 5, ':');
+                $rpt->Cell(40, 5, 'a. Baju kemeja putih, celana bahan hitam dan sepatu (laki-laki).');
+                $row+=5;
+                $rpt->setXY(3,$row);
+                $rpt->Cell(14, 5, '');
+                $rpt->Cell(3, 5, ':');
+                $rpt->Cell(40, 5, 'b. Baju kemeja putih, rok / celana bahan hitam, dan sepatu (perempuan).');
+                
+                $row+=5;
+                $rpt->setXY(3,$row);
+                $rpt->Cell(50, 5, '2. Hadir  30 menit sebelum jadwal ujian berlangsung.');
+                
+                $row+=5;
+                $rpt->setXY(3,$row);
+                $rpt->Cell(50, 5, '3. Peserta diwajibkan membawa kartu ujian PMB.');
+                
+                $row+=5;
+                $rpt->setXY(3,$row);
+                $rpt->Cell(50, 5, '4. Jika tidak datang pada waktu yang ditetapkan, peserta wajib melaporkan kepada pengawas ujian untuk mendapatkan jadwal ujian yang baru.');
                 
                 $this->printOut("kartu_ujian_pmb");
             break;

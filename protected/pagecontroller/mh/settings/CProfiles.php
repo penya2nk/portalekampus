@@ -19,8 +19,8 @@ class CProfiles extends MainPageMHS {
         
         $no_formulir=$this->Pengguna->getDataUser('no_formulir');
         
-        $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.tempat_lahir,fp.tanggal_lahir,fp.jk,fp.idagama,a.nama_agama,fp.nama_ibu_kandung,fp.idwarga,fp.nik,fp.idstatus,fp.alamat_kantor,fp.alamat_rumah,kelurahan,kecamatan,fp.telp_rumah,fp.telp_kantor,fp.telp_hp,pm.email,fp.idjp,fp.pendidikan_terakhir,fp.jurusan,fp.kota,fp.provinsi,fp.tahun_pa,jp.nama_pekerjaan,fp.jenis_slta,fp.asal_slta,fp.status_slta,fp.nomor_ijazah,fp.kjur1,fp.kjur2,fp.idkelas,fp.waktu_mendaftar,fp.ta,fp.idsmt FROM formulir_pendaftaran fp,agama a,jenis_pekerjaan jp,profiles_mahasiswa pm WHERE fp.idagama=a.idagama AND fp.idjp=jp.idjp AND pm.no_formulir=fp.no_formulir AND fp.no_formulir='$no_formulir'";
-        $this->DB->setFieldTable(array('no_formulir','nama_mhs','tempat_lahir','tanggal_lahir','jk','idagama','nama_agama','nama_ibu_kandung','idwarga','nik','idstatus','alamat_kantor','alamat_rumah','kelurahan','kecamatan','telp_rumah','telp_kantor','telp_hp','email','idjp','pendidikan_terakhir','jurusan','kota','provinsi','tahun_pa','nama_pekerjaan','jenis_slta','asal_slta','status_slta','nomor_ijazah','kjur1','kjur2','idkelas','waktu_mendaftar','ta','idsmt'));
+        $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.tempat_lahir,fp.tanggal_lahir,fp.jk,fp.idagama,a.nama_agama,fp.nama_ibu_kandung,fp.idwarga,fp.nik,fp.idstatus,fp.alamat_kantor,fp.alamat_rumah,kelurahan,kecamatan,fp.telp_rumah,fp.telp_kantor,fp.telp_hp,pm.email,fp.idjp,fp.pendidikan_terakhir,fp.jurusan,fp.kota,fp.provinsi,fp.tahun_pa,jp.nama_pekerjaan,fp.jenis_slta,fp.asal_slta,fp.status_slta,fp.nomor_ijazah,fp.kjur1,fp.kjur2,fp.idkelas,fp.waktu_mendaftar,fp.ta,fp.idsmt,pm.photo_profile FROM formulir_pendaftaran fp,agama a,jenis_pekerjaan jp,profiles_mahasiswa pm WHERE fp.idagama=a.idagama AND fp.idjp=jp.idjp AND pm.no_formulir=fp.no_formulir AND fp.no_formulir='$no_formulir'";
+        $this->DB->setFieldTable(array('no_formulir','nama_mhs','tempat_lahir','tanggal_lahir','jk','idagama','nama_agama','nama_ibu_kandung','idwarga','nik','idstatus','alamat_kantor','alamat_rumah','kelurahan','kecamatan','telp_rumah','telp_kantor','telp_hp','email','idjp','pendidikan_terakhir','jurusan','kota','provinsi','tahun_pa','nama_pekerjaan','jenis_slta','asal_slta','status_slta','nomor_ijazah','kjur1','kjur2','idkelas','waktu_mendaftar','ta','idsmt','photo_profile'));
         $r=$this->DB->getRecord($str);
         $dataMhs=$r[1];								
         
@@ -78,6 +78,8 @@ class CProfiles extends MainPageMHS {
         $this->literalKjur2->Text=$daftar_jurusan[$dataMhs['kjur2']];
 		$this->literalTahunMasuk->Text=$this->DMaster->getNamaTA($dataMhs['ta']);
         $this->literalSemesterMasuk->Text=$this->setup->getSemester($dataMhs['idsmt']);
+        
+        $this->imgPhotoUser->ImageUrl=$dataMhs['photo_profile'];
 			
     }
     
@@ -148,4 +150,76 @@ class CProfiles extends MainPageMHS {
             $this->redirect('settings.Profiles',true);
         }
 	}
+    public function uploadPhotoProfile ($sender,$param) {
+		if ($sender->getHasFile()) {
+            $this->lblTipeFileError->Text='';
+            $mime=$sender->getFileType();
+            if($mime!="image/png" && $mime!="image/jpg" && $mime!="image/jpeg"){
+                $error =  '<div class="alert alert-warning">                
+                            <p><strong>Error:</strong>File ini bukan tipe gambar</p>
+                        </div>'; 
+                $this->lblTipeFileError->Text=$error;
+                return;
+            }         
+
+            if($mime=="image/png")	{
+                if(!(imagetypes() & IMG_PNG)) {
+                    $error =  '<div class="alert alert-warning">                
+                            <p><strong>Error:</strong>missing png support in gd library.</p>
+                        </div>'; 
+                    $this->lblTipeFileError->Text=$error;                    
+                    return;
+                }
+            }
+            if(($mime=="image/jpg" || $mime=="image/jpeg")){
+                if(!(imagetypes() & IMG_JPG)){                    
+                    $error =  '<div class="alert alert-warning">                
+                            <p><strong>Error:</strong>missing jpeg support in gd library.</p>
+                        </div>'; 
+                    $this->lblTipeFileError->Text=$error;
+                    return;
+                }
+            }
+            $filename=substr(hash('sha512',rand()),0,8);
+            $name=$sender->FileName;
+            $part=$this->setup->cleanFileNameString($name);            
+            $path="resources/photomhs/$filename-$part";
+            $sender->saveAs($path);            
+            chmod(BASEPATH."/$path",0644); 
+            $this->imgPhotoUser->ImageUrl=$path; 
+            $no_formulir=$this->Pengguna->getDataUser('no_formulir');
+            $this->DB->updateRecord("UPDATE profiles_mahasiswa SET photo_profile='$path' WHERE no_formulir='$no_formulir'");
+            $_SESSION['foto']=$path;
+        }else {                    
+            //error handling
+            switch ($sender->ErrorCode){
+                case 1:
+                    $err="file size too big (php.ini).";
+                break;
+                case 2:
+                    $err="file size too big (form).";
+                break;
+                case 3:
+                    $err="file upload interrupted.";
+                break;
+                case 4:
+                    $err="no file chosen.";
+                break;
+                case 6:
+                    $err="internal problem (missing temporary directory).";
+                break;
+                case 7:
+                    $err="unable to write file on disk.";
+                break;
+                case 8:
+                    $err="file type not accepted.";
+                break;
+            }
+            $error =  '<div class="alert alert-warning">                
+                            <p><strong>Error:</strong>'.$err.'</p>
+                        </div>';   
+            $this->lblTipeFileError->Text=$error;
+            return;   
+        }
+    }
 }

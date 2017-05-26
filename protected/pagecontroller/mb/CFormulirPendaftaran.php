@@ -126,7 +126,8 @@ class CFormulirPendaftaran extends MainPageMB {
             $this->cmbEditKjur2->dataBind();
             $this->cmbEditKjur2->Enabled=true;
         }	         
-        $this->imgEditFoto->ImageUrl=$dataMhs['photo_profile'];        
+        $this->imgEditFoto->ImageUrl=$dataMhs['photo_profile']; 
+        $this->hiddenEditFoto->Value=$dataMhs['photo_profile']; 
     }
     private function addProcess() {     
         $this->idProcess='add';        

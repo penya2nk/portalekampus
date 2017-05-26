@@ -17,10 +17,12 @@
                             <h2><%=$this->Pengguna->getDataUser('nama')%></h2>
                         </header>
                         <div class="main-box-body clearfix">                                                        
-                            <img alt="<%=$this->Page->Pengguna->getUsername()%>" src="resources/userimages/<%=$_SESSION['foto']%>" OnError="no_photo(this,'<%=$this->Page->setup->getAddress()%>/resources/userimages/no_photo.png')" class="profile-img img-responsive center-block" />
+                            <com:TActiveImage ID="imgPhotoUser" Attributes.alt="<%=$this->Page->Pengguna->getUsername()%>" CssClass="profile-img img-responsive center-block" />                            
                             <div class="profile-label">
                                 <span class="label label-danger"><%=$this->Pengguna->getDataUser('username')%></span>
                             </div>
+                            <com:TActiveLabel ID="lblTipeFileError" />
+                            <com:TActiveFileUpload ID="filePhotoProfile" MaxFileSize="<%=$this->setup->getMaxFileSize(2)%>" OnFileUpload="uploadPhotoProfile" />
                         </div>
                     </div>
                 </div>

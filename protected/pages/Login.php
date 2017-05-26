@@ -103,6 +103,8 @@ class Login extends MainPage {
                     
                     $_SESSION['tahun_masuk']=$setup->getSettingValue('default_tahun_pendaftaran');
                     $_SESSION['semester']=$setup->getSettingValue('default_semester');
+                    
+                    $foto='resources/userimages/no_photo.png';
                 break;
                 case 'd' :
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.
@@ -130,7 +132,7 @@ class Login extends MainPage {
                     $_SESSION['ta']=$setup->getSettingValue('default_ta') < $pengguna->getDataUser('tahun_masuk') ? $pengguna->getDataUser('tahun_masuk') :$setup->getSettingValue('default_ta');
                     $_SESSION['semester']=$setup->getSettingValue('default_semester');
                     
-                    $foto='resources/userimages/no_photo.png';
+                    $foto=$pengguna->getDataUser('photo_profile');
                 break;
                 case 'k' :
                     //daftar prodi diload saat awal, tujuannya supaya tidak terus2an diload.

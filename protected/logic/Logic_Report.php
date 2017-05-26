@@ -85,7 +85,7 @@ class Logic_Report extends Logic_Global {
                 require_once (BASEPATH.'protected/lib/tcpdf/tcpdf.php');
 				$this->rpt=new TCPDF();			
 				$this->rpt->setCreator ($this->Application->getID());
-				$this->rpt->setAuthor ($this->setup->getSettingValue('config_name'));
+				$this->rpt->setAuthor ($this->setup->getSettingValue('nama_pt'));
 				$this->rpt->setPrintHeader(false);
 				$this->rpt->setPrintFooter(false);				
 				$this->exportedDir['pdf_path']=$host.'exported/pdf/';	
@@ -114,7 +114,7 @@ class Logic_Report extends Logic_Global {
 		switch ($this->getDriver()) {
             case 'pdf' :
                 $rpt=$this->rpt;
-                $rpt->Image($headerLogo,3,6,17,17,'JPG');
+                $rpt->Image($headerLogo,3,6,17,17);
                 
                 $rpt->SetFont ('helvetica','B',12);
 				$rpt->setXY(20,5);

@@ -396,6 +396,35 @@ class Logic_Setup extends Logic_Global {
         }
     }
     /**
+     * digunakan untuk mengkonversikan bilangan menjadi terbilang
+     * @param type $n
+     * @return type integer
+     */
+    public function toTerbilang($n) {
+        $dasar = array(1 => 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam','tujuh', 'delapan', 'sembilan');
+        $angka = array(1000000000, 1000000, 1000, 100, 10, 1);
+        $satuan = array('milyar', 'juta', 'ribu', 'ratus', 'puluh', '');
+
+        $i = 0;
+        if($n==0){
+            $str = "nol";
+        }else{
+            while ($n != 0) {
+                $count = (int)($n/$angka[$i]);
+                if ($count >= 10) {
+                    $str .= $this->baca($count). " ".$satuan[$i]." ";
+                }else if($count > 0 && $count < 10){
+                    $str .= $dasar[$count] . " ".$satuan[$i]." ";
+                }
+                $n -= $angka[$i] * $count;
+                $i++;
+            }
+            $str = preg_replace("/satu puluh (\w+)/i", "\\1 belas", $str);
+            $str = preg_replace("/satu (ribu|ratus|puluh|belas)/i", "se\\1", $str);
+        }
+        return $str;
+    }
+    /**
      * digunakan untuk mendapatkan daftar nama themes
      */
     public function getListThemes () {

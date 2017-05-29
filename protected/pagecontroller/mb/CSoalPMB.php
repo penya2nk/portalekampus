@@ -160,7 +160,7 @@ class CSoalPMB extends MainPageMB {
         $jawaban_salah=$this->DB->getCountRowsOfTable("jawaban_ujian ju LEFT JOIN jawaban j ON (j.idjawaban=ju.idjawaban) WHERE no_formulir='$no_formulir' AND ju.idjawaban!=0 AND status=0",'ju.idjawaban');        
         $soal_tidak_terjawab=$this->DB->getCountRowsOfTable("jawaban_ujian WHERE idjawaban=0 AND no_formulir='$no_formulir'",'idjawaban');        
         $jumlah_soal=$jawaban_benar+$jawaban_salah+$soal_tidak_terjawab;                
-        $nilai=($jawaban_benar/$jumlah_soal)*100;
+        $nilai=$jawaban_benar > 0 ? ($jawaban_benar/$jumlah_soal)*100:0;
         
         $str = "UPDATE kartu_ujian SET tgl_selesai_ujian=NOW(),isfinish=1 WHERE no_formulir=$no_formulir";        
         $this->DB->query ('BEGIN');

@@ -287,7 +287,7 @@
                                                 $('loading').hide();                                                
                                             </prop:ClientSide.OnComplete>
                                         </com:TActiveLinkButton>       
-                                        <com:TActiveLinkButton ID="btnPrintOutR" CssClass="table-link" OnClick="Page.printOut" Attributes.Title="Print Daftar Hadir" ClientSide.PostState="false">
+                                        <com:TActiveLinkButton ID="btnPrintOutR" CssClass="table-link" OnClick="Page.printOut" Attributes.Title="Print Berita Acara" ClientSide.PostState="false">
                                             <prop:Text>
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>

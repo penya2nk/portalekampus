@@ -70,10 +70,10 @@ class CPIN extends MainPageM {
             $txtsearch=$this->txtKriteria->Text;
             switch ($this->cmbKriteria->Text) {
                 case 'no_formulir' :
-                    $clausa=" AND pin.no_formulir='$txtsearch'"; 
+                    $clausa=" AND fp.no_formulir='$txtsearch'"; 
                 break;
                 case 'nama_mhs' :
-                    $clausa=" AND pin.nama_mhs LIKE '%$txtsearch%'";                    
+                    $clausa=" AND fp.nama_mhs LIKE '%$txtsearch%'";                    
                 break;
             }
             $str="$str $clausa";

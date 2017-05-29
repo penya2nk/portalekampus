@@ -151,6 +151,39 @@ class Logic_DMaster extends Logic_Global {
         return $dataitem;     		
 	}
     /**
+     * digunakan untuk mendapatkan daftar alias program studi
+     */
+    public function getListAliasProgramStudi () {
+        if ($this->Application->Cache) {            
+            $dataitem=$this->Application->Cache->get('listaliasprodi');            
+            if (!isset($dataitem[1])) { 
+                $dataitem=$this->getList ("program_studi ps WHERE ps.kjur!=0",array('kjur','nama_ps_alias'),'nama_ps_alias',null,1);			                
+                $this->Application->Cache->set('listaliasprodi',$dataitem);
+            }
+        }else {                        
+            $str = 'SELECT ps.kjur,ps.nama_ps_alias FROM program_studi ps WHERE ps.kjur!=0';
+            $this->db->setFieldTable(array('kjur','nama_ps_alias'));
+            $dataitem = $this->db->getRecord($str);            
+        }
+        
+        return $dataitem;        
+    }       
+    /**
+     * digunakan untuk mendapatkan nama alias ps
+     * @param type $kjur
+     * @return type
+     */
+    public function getNamaAliasProgramStudiByID ($kjur) {	
+        if ($this->Application->Cache) {            
+            $dataitem=$this->getListAliasProgramStudi ();
+            $nama_item=$dataitem[$kjur];
+        }else {
+            $dataitem=$this->getList("nama_ps_alias WHERE kjur=$kjur",array('nama_ps_alias'),'nama_ps_alias');
+            $nama_item=$dataitem[1]['nama_ps_alias'];                               
+        }
+        return $nama_item;
+    }
+    /**
      * digunakan untuk mendapatkan daftar program studi
      */
     public function getListProgramStudi ($mode=0) {

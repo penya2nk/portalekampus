@@ -517,8 +517,7 @@ class Logic_ReportSPMB extends Logic_Report {
         $this->setLink($this->dataReport['linkoutput'],"Daftar PIN Mahasiswa");
     }
     /**
-     * digunakan untuk memprint KHS
-     * @param type $objNilai object
+     * digunakan untuk memprint kartu ujian PMB
      */
     public function printKartuUjianPMB() {
         switch ($this->getDriver()) {
@@ -643,6 +642,171 @@ class Logic_ReportSPMB extends Logic_Report {
         }
         $this->setLink($this->dataReport['linkoutput'],"Kartu Ujian PMB");
     }
+    /**
+     * digunakan untuk memprint KHS
+     * @param type $objNilai object
+     */
+    public function printBeritaAcaraUjianSPMB ($objDMaster) {
+        switch ($this->getDriver()) {
+            case 'pdf' :
+                $rpt=$this->rpt;
+                $rpt->setTitle('Berita Acara Ujian SPMB');
+				$rpt->setSubject('Berita Acara Ujian SPMB');
+                $rpt->AddPage('P','LETTER');
+				$this->setHeaderPT();
+                
+                $row=$this->currentRow;
+				$row+=12;
+				$rpt->SetFont ('helvetica','B',12);	
+				$rpt->setXY(3,$row);			
+				$rpt->Cell(0,6,'BERITA ACARA UJIAN SELEKSI PENERIMAAN MAHASISWA BARU',0,0,'C');
+                $row+=6;
+				$rpt->setXY(3,$row);			
+				$rpt->Cell(0,6,'TAHUN AKADEMIK '.$this->dataReport['nama_tahun'],0,0,'C');
+                
+                $row+=8;
+                $rpt->setXY(3,$row);
+                $rpt->SetFont ('helvetica','',8);
+                $hari_ujian=$this->tgl->tanggal ('l',$this->dataReport['tanggal_ujian']);
+                $terbilang_tanggal=  ucwords($this->setup->toTerbilang($this->tgl->tanggal ('d',$this->dataReport['tanggal_ujian'])));
+                $bulan=$this->tgl->tanggal ('F',$this->dataReport['tanggal_ujian']);
+                $terbilang_tahun=  ucwords($this->setup->toTerbilang($this->tgl->tanggal ('Y',$this->dataReport['tanggal_ujian'])));
+                $nama_pt=  ucwords(strtolower($this->setup->getSettingValue('nama_pt')));
+                $txt="Pada hari ini <b>$hari_ujian</b> tanggal <b>$terbilang_tanggal</b> bulan <b>$bulan</b> tahun <b>$terbilang_tahun</b> telah dilaksanakan ujian seleksi penerimaan mahasiswa baru {$nama_pt}.";
+                $rpt->MultiCell(0, 10, $txt, 0, 'J', 0, 1, '', '', true, 0, true, true, 0);
+                
+                $row+=10;
+                $rpt->setXY(30,$row);
+                $rpt->Cell(50,6,'1. Jenis Ujian');
+                $rpt->Cell(5,6,':');
+                $rpt->Cell(0,6,'Tertulis / Wawancara *)','B');
+                
+                $row+=6;
+                $rpt->setXY(30,$row);
+                $rpt->Cell(50,6,'2. Jumlah Peserta');
+                $rpt->Cell(5,6,':');
+                $rpt->Cell(0,6,$this->dataReport['jumlah_peserta'],'B');
+                
+                $row+=6;
+                $rpt->setXY(30,$row);
+                $rpt->Cell(50,6,'3. Nama / Nomor Ruangan');
+                $rpt->Cell(5,6,':');
+                $rpt->Cell(0,6,$this->dataReport['namaruang'],'B');
+                
+                $row+=6;
+                $rpt->setXY(30,$row);
+                $rpt->Cell(50,6,'4. Jumlah yang Tidak Hadir');
+                $rpt->Cell(5,6,':');
+                $rpt->Cell(0,6,'','B');
+                
+                $row+=6;
+                $rpt->setXY(30,$row);
+                $rpt->Cell(50,6,'5. Nomor Peserta yang Tidak Hadir');
+                $rpt->Cell(5,6,':');
+                $rpt->Cell(0,6,'1. ','B');
+                
+                $row+=6;
+                $rpt->setXY(30,$row);
+                $rpt->Cell(50,6,'');
+                $rpt->Cell(5,6,'');
+                $rpt->Cell(0,6,'2. ','B');
+                $row+=6;
+                $rpt->setXY(30,$row);
+                $rpt->Cell(50,6,'');
+                $rpt->Cell(5,6,'');
+                $rpt->Cell(0,6,'3. ','B');
+                $row+=6;
+                $rpt->setXY(30,$row);
+                $rpt->Cell(50,6,'');
+                $rpt->Cell(5,6,'');
+                $rpt->Cell(0,6,'4. ','B');
+                $row+=6;
+                $rpt->setXY(30,$row);
+                $rpt->Cell(50,6,'');
+                $rpt->Cell(5,6,'');
+                $rpt->Cell(0,6,'5. ','B');
+                
+                $row+=6;
+                $rpt->setXY(30,$row);
+                $rpt->Cell(50,6,'6. Keterangan');
+                $rpt->Cell(5,6,':');
+                $rpt->Cell(0,6,'','B');
+                
+                $row+=10;
+                $rpt->setXY(3,$row);
+                $rpt->Cell(0,5,'Pengawas Ujian / Pewawancara *)');
+                
+                $row+=6;
+                $rpt->setXY(3,$row);
+                $rpt->Cell(20,6,'1. Nama');
+                $rpt->Cell(5,6,':');
+                $rpt->Cell(50,6,'','B');
+                $rpt->Cell(35,6,'(');
+                $rpt->Cell(0,6,')');
+                $row+=6;
+                $rpt->setXY(3,$row);
+                $rpt->Cell(20,6,'2. Nama');
+                $rpt->Cell(5,6,':');
+                $rpt->Cell(50,6,'','B');
+                $rpt->Cell(35,6,'(');
+                $rpt->Cell(0,6,')');
+                
+                $row+=10;
+                $rpt->setXY(3,$row);
+                $rpt->Cell(0,5,'Daftar Peserta :');
+                
+                $row+=10;
+                $rpt->SetFont ('helvetica','B',8);
+                $rpt->setXY(3,$row);
+                $rpt->Cell(30,12,'NO. FORMULIR',1,0,'C');
+                $rpt->Cell(50,12,"NAMA PESERTA",1,0,'C');
+                $rpt->Cell(24,12,'TANDA TANGAN',1,0,'C');
+                $rpt->Cell(23,12,'NO. HP',1,0,'C');
+                $rpt->Cell(25,12,'PILIHAN KELAS',1,0,'C');
+                $rpt->Cell(46,6,'PILIHAN PRODI',1,0,'C');
+                $row+=6;
+                $rpt->setXY(155,$row);
+                $rpt->Cell(23,6,'I',1,0,'C');
+                $rpt->Cell(23,6,'II',1,0,'C');
+                
+                $idjadwal_ujian=$this->dataReport['idjadwal_ujian'];        
+                $str = "SELECT pum.no_formulir,fp.nama_mhs,fp.idkelas,fp.kjur1,fp.kjur2,fp.telp_hp FROM peserta_ujian_pmb pum,formulir_pendaftaran fp,pin WHERE fp.no_formulir=pum.no_formulir AND pin.no_formulir=pum.no_formulir AND pum.idjadwal_ujian=$idjadwal_ujian ORDER BY fp.no_formulir ASC";
+                $this->db->setFieldTable(array('no_formulir','telp_hp','nama_mhs','idkelas','kjur1','kjur2'));	
+                $r=$this->db->getRecord($str);
+                
+                $rpt->SetFont ('helvetica','',8);
+                $row+=6;
+                while (list($k,$v)=each($r)) {                    
+                    $rpt->setXY(3,$row);
+                    $rpt->Cell(30,6,$v['no_formulir'],1,0,'C');
+                    $rpt->Cell(50,6,$v['nama_mhs'],1);
+                    $rpt->Cell(24,6,'',1);
+                    $rpt->Cell(23,6,$v['telp_hp'],1,0,'C');
+                    $rpt->Cell(25,6,$objDMaster->getNamaKelasByID($v['idkelas']),1,0,'C');
+                    $rpt->Cell(23,6,$objDMaster->getNamaAliasProgramStudiByID($v['kjur1']),1,0,'C');
+                    $rpt->Cell(23,6,$objDMaster->getNamaAliasProgramStudiByID($v['kjur2']),1,0,'C');
+                    $row+=6;
+                }
+                $row+=5;
+                $rpt->setXY(3,$row);
+                $rpt->SetFont ('helvetica','B',8);
+                $rpt->Cell(0,5,'Mengetahui',0,0,'C');
+                $row+=5;
+                $rpt->setXY(3,$row);
+                $rpt->Cell(0,5,'Ketua '.$this->setup->getSettingValue('nama_pt_alias'),0,0,'C');
+                $row+=15;
+                $rpt->setXY(3,$row);
+                $rpt->Cell(0,5,'ENDRI SANOPAKA, S.Sos., MPM',0,0,'C');
+                $row+=5;
+                $rpt->setXY(3,$row);
+                $rpt->Cell(0,5,'Lektor NIDN : 1005118101',0,0,'C');
+                
+                $this->printOut("berita_acara_pmb");
+            break;
+        }
+        $this->setLink($this->dataReport['linkoutput'],"Berita Acara Ujian SPMB");
+    }
+    
 }
 ?>
 

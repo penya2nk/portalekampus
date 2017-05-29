@@ -5,36 +5,6 @@ class Logic_Finance extends Logic_Mahasiswa {
 		parent::__construct ($db);				
 	}
     /**
-	* casting ke integer	
-	*/
-	public function toInteger ($stringNumeric) {
-		return str_replace('.','',$stringNumeric);
-	}
-    /**
-	* Untuk mendapatkan uang dalam format rupiah
-	* @param angka	
-	* @return string dalam rupiah
-	*/
-	public function toRupiah($angka,$tanpa_rp=true)  {
-		if ($angka == '') {
-			$angka=0;
-		}
-		$rupiah='';
-		$rp=strlen($angka);
-		while ($rp>3){
-			$rupiah = ".". substr($angka,-3). $rupiah;
-			$s=strlen($angka) - 3;
-			$angka=substr($angka,0,$s);
-			$rp=strlen($angka);
-		}
-		if ($tanpa_rp) {
-			$rupiah = $angka . $rupiah;
-		}else {
-			$rupiah = "Rp. " . $angka . $rupiah;
-		}
-		return $rupiah;
-	}
-    /**
 	* digunakan untuk mendapatkan biaya pendaftaran berdasarkan tahun dan idsmt		
 	*/
 	public function getBiayaPendaftaran ($tahun,$idsmt,$idkelas) {
@@ -244,6 +214,36 @@ class Logic_Finance extends Logic_Mahasiswa {
 			return $r[1]['sks'];
 		else
 			return false;
+	}
+    /**
+	* casting ke integer	
+	*/
+	public function toInteger ($stringNumeric) {
+		return str_replace('.','',$stringNumeric);
+	}
+    /**
+	* Untuk mendapatkan uang dalam format rupiah
+	* @param angka	
+	* @return string dalam rupiah
+	*/
+	public function toRupiah($angka,$tanpa_rp=true)  {
+		if ($angka == '') {
+			$angka=0;
+		}
+		$rupiah='';
+		$rp=strlen($angka);
+		while ($rp>3){
+			$rupiah = ".". substr($angka,-3). $rupiah;
+			$s=strlen($angka) - 3;
+			$angka=substr($angka,0,$s);
+			$rp=strlen($angka);
+		}
+		if ($tanpa_rp) {
+			$rupiah = $angka . $rupiah;
+		}else {
+			$rupiah = "Rp. " . $angka . $rupiah;
+		}
+		return $rupiah;
 	}
 }
 ?>

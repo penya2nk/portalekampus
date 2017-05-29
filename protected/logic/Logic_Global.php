@@ -152,6 +152,6 @@ class Logic_Global extends TModule {
 		}else {
 			return $arr;
 		}
-	}		
+	}
 }
 ?>

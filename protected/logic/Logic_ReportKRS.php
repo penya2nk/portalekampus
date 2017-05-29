@@ -378,23 +378,23 @@ class Logic_ReportKRS extends Logic_Report {
                     $row+=20;
                     $rpt->SetFont ('helvetica','B',8);
                     $rpt->setXY(3,$row);			
-                    $rpt->Cell(8, 8, 'NO', 1, 0, 'C');				
-                    $rpt->Cell(15, 8, 'KODE', 1, 0, 'C');								
-                    $rpt->Cell(70, 8, 'MATAKULIAH', 1, 0, 'C');							
-                    $rpt->Cell(8, 8, 'SKS', 1, 0, 'C');				
-                    $rpt->Cell(8, 8, 'SMT', 1, 0, 'C');				
-                    $rpt->Cell(60, 8, 'PENGAWAS', 1, 0, 'C');						
-                    $rpt->Cell(15, 8, 'TGL', 1, 0, 'C');
-                    $rpt->Cell(15, 8, 'TTD', 1, 0, 'C');
+                    $rpt->Cell(8, 6, 'NO', 1, 0, 'C');				
+                    $rpt->Cell(15, 6, 'KODE', 1, 0, 'C');								
+                    $rpt->Cell(70, 6, 'MATAKULIAH', 1, 0, 'C');							
+                    $rpt->Cell(8, 6, 'SKS', 1, 0, 'C');				
+                    $rpt->Cell(8, 6, 'SMT', 1, 0, 'C');				
+                    $rpt->Cell(60, 6, 'PENGAWAS', 1, 0, 'C');						
+                    $rpt->Cell(15, 6, 'TGL', 1, 0, 'C');
+                    $rpt->Cell(15, 6, 'TTD', 1, 0, 'C');
 
                     $daftar_matkul=$objKRS->getDetailKRS($idkrs);
                     $totalSks=0;
-                    $row+=8;				
+                    $row+=6;				
                     $rpt->SetFont ('helvetica','',8);
                     while (list($k,$v)=each($daftar_matkul)) {
                         $rpt->setXY(3,$row);	
-                        $rpt->Cell(8, 8, $v['no'], 1, 0, 'C');				
-                        $rpt->Cell(15, 8, $v['kmatkul'], 1, 0, 'C');		
+                        $rpt->Cell(8, 6, $v['no'], 1, 0, 'C');				
+                        $rpt->Cell(15, 6, $v['kmatkul'], 1, 0, 'C');		
                         $flag='';
                         if ($jenisujian=='uas') {
                             $idkrsmatkul=$v['idkrsmatkul'];
@@ -405,21 +405,21 @@ class Logic_ReportKRS extends Logic_Report {
                                 $flag=$minimal<75?'*':'';
                             }
                         }					
-                        $rpt->Cell(70, 8, $v['nmatkul'].$flag , 1, 0, 'L');							
-                        $rpt->Cell(8, 8, $v['sks'], 1, 0, 'C');				
-                        $rpt->Cell(8, 8, $v['semester'], 1, 0, 'C');				
-                        $rpt->Cell(60, 8, '', 1, 0, 'L');						
-                        $rpt->Cell(15, 8, '', 1, 0, 'C');
-                        $rpt->Cell(15, 8, '', 1, 0, 'C');					
+                        $rpt->Cell(70, 6, $v['nmatkul'].$flag , 1, 0, 'L');							
+                        $rpt->Cell(8, 6, $v['sks'], 1, 0, 'C');				
+                        $rpt->Cell(8, 6, $v['semester'], 1, 0, 'C');				
+                        $rpt->Cell(60, 6, '', 1, 0, 'L');						
+                        $rpt->Cell(15, 6, '', 1, 0, 'C');
+                        $rpt->Cell(15, 6, '', 1, 0, 'C');					
                         $totalSks+=$v['sks'];
-                        $row+=8;
+                        $row+=6;
                     }
                     $rpt->SetFont ('helvetica','B',8);
                     $rpt->setXY(3,$row);
-                    $rpt->Cell(93, 8, 'TOTAL SKS' , 1, 0, 'R');							
-                    $rpt->Cell(8, 8, $totalSks, 1, 0, 'C');
+                    $rpt->Cell(93, 6, 'TOTAL SKS' , 1, 0, 'R');							
+                    $rpt->Cell(8, 6, $totalSks, 1, 0, 'C');
 
-                    $row+=8;
+                    $row+=5;
                     $rpt->setXY(3,$row);	
                     $rpt->SetFont ('helvetica','',6);
                     $rpt->Cell(70, 5, 'Catatan : Tanda "*" memiliki arti absensi Mahasiswa kurang dari 75%.' , 0, 0, 'L');	
@@ -514,23 +514,23 @@ class Logic_ReportKRS extends Logic_Report {
                 $row+=20;
 				$rpt->SetFont ('helvetica','B',8);
 				$rpt->setXY(3,$row);			
-				$rpt->Cell(8, 8, 'NO', 1, 0, 'C');				
-				$rpt->Cell(15, 5, 'KODE', 1, 0, 'C');								
-				$rpt->Cell(70, 8, 'MATAKULIAH', 1, 0, 'C');							
-				$rpt->Cell(8, 8, 'SKS', 1, 0, 'C');				
-				$rpt->Cell(8, 8, 'SMT', 1, 0, 'C');				
-				$rpt->Cell(60, 8, 'PENGAWAS', 1, 0, 'C');						
-				$rpt->Cell(15, 8, 'TGL', 1, 0, 'C');
-				$rpt->Cell(15, 8, 'TTD', 1, 0, 'C');
+				$rpt->Cell(8, 6, 'NO', 1, 0, 'C');				
+				$rpt->Cell(15, 6, 'KODE', 1, 0, 'C');								
+				$rpt->Cell(70, 6, 'MATAKULIAH', 1, 0, 'C');							
+				$rpt->Cell(8, 6, 'SKS', 1, 0, 'C');				
+				$rpt->Cell(8, 6, 'SMT', 1, 0, 'C');				
+				$rpt->Cell(60, 6, 'PENGAWAS', 1, 0, 'C');						
+				$rpt->Cell(15, 6, 'TGL', 1, 0, 'C');
+				$rpt->Cell(15, 6, 'TTD', 1, 0, 'C');
                 
                 $daftar_matkul=$objKRS->getDetailKRS($this->dataReport['idkrs']);
 				$totalSks=0;
-				$row+=8;				
+				$row+=6;				
 				$rpt->SetFont ('helvetica','',8);
                 while (list($k,$v)=each($daftar_matkul)) {
                     $rpt->setXY(3,$row);	
-					$rpt->Cell(8, 8, $v['no'], 1, 0, 'C');				
-					$rpt->Cell(15, 8, $v['kmatkul'], 1, 0, 'C');		
+					$rpt->Cell(8, 6, $v['no'], 1, 0, 'C');				
+					$rpt->Cell(15, 6, $v['kmatkul'], 1, 0, 'C');		
 					$flag='';
 					if ($jenisujian=='uas') {
 						$idkrsmatkul=$v['idkrsmatkul'];
@@ -541,21 +541,21 @@ class Logic_ReportKRS extends Logic_Report {
 							$flag=$minimal<75?'*':'';
 						}
 					}					
-					$rpt->Cell(70, 8, $v['nmatkul'].$flag , 1, 0, 'L');							
-					$rpt->Cell(8, 8, $v['sks'], 1, 0, 'C');				
-					$rpt->Cell(8, 8, $v['semester'], 1, 0, 'C');				
-					$rpt->Cell(60, 8, '', 1, 0, 'L');						
-					$rpt->Cell(15, 8, '', 1, 0, 'C');
-					$rpt->Cell(15, 8, '', 1, 0, 'C');					
+					$rpt->Cell(70, 6, $v['nmatkul'].$flag , 1, 0, 'L');							
+					$rpt->Cell(8, 6, $v['sks'], 1, 0, 'C');				
+					$rpt->Cell(8, 6, $v['semester'], 1, 0, 'C');				
+					$rpt->Cell(60, 6, '', 1, 0, 'L');						
+					$rpt->Cell(15, 6, '', 1, 0, 'C');
+					$rpt->Cell(15, 6, '', 1, 0, 'C');					
 					$totalSks+=$v['sks'];
-					$row+=8;
+					$row+=6;
 				}
                 $rpt->SetFont ('helvetica','B',8);
                 $rpt->setXY(3,$row);
-                $rpt->Cell(93, 8, 'TOTAL SKS' , 1, 0, 'R');							
-                $rpt->Cell(8, 8, $totalSks, 1, 0, 'C');
+                $rpt->Cell(93, 6, 'TOTAL SKS' , 1, 0, 'R');							
+                $rpt->Cell(8, 6, $totalSks, 1, 0, 'C');
                 
-                $row+=8;
+                $row+=5;
 				$rpt->setXY(3,$row);	
 				$rpt->SetFont ('helvetica','',6);
 				$rpt->Cell(70, 5, 'Catatan : Tanda "*" memiliki arti absensi Mahasiswa kurang dari 75%.' , 0, 0, 'L');	

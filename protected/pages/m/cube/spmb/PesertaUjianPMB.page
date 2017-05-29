@@ -179,16 +179,16 @@
                 <header class="main-box-header clearfix">
                      <h2 class="pull-left"><i class="fa fa-user"></i> Daftar Peserta Ujian</h2> 
                      <div class="filter-block pull-right">  
-                        <com:TActiveLinkButton ID="btnPrintOut" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out Daftar Hadir Mahasiswa">
+                        <com:TActiveLinkButton ID="btnPrintOutBerintaAcara" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out Berita Acara">
                             <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
                             <prop:ClientSide.OnPreDispatch>
                                 $('loading').show();
                             </prop:ClientSide.OnPreDispatch>
                             <prop:ClientSide.OnLoading>
-                                $('<%=$this->btnPrintOut->ClientId%>').disabled='disabled';				
+                                $('<%=$this->btnPrintOutBerintaAcara->ClientId%>').disabled='disabled';				
                             </prop:ClientSide.OnLoading>
                             <prop:ClientSide.OnComplete>
-                                $('<%=$this->btnPrintOut->ClientId%>').disabled='';				
+                                $('<%=$this->btnPrintOutBerintaAcara->ClientId%>').disabled='';				
                                 $('loading').hide();
                             </prop:ClientSide.OnComplete>
                         </com:TActiveLinkButton>  

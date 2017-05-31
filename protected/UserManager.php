@@ -60,12 +60,12 @@ class UserManager extends TAuthManager {
                 $this->db->updateRecord("UPDATE user SET logintime=NOW() WHERE userid=$userid");
             break;
 			case 'Manajemen' :	
-                $str = "SELECT u.userid,u.username,u.nama,u.email,u.page,u.group_id,u.kjur,u.isdeleted,u.foto,u.theme FROM user u WHERE username='$username' AND u.page='m'";
-                $this->db->setFieldTable (array('userid','username','nama','email','page','group_id','kjur','isdeleted','foto','theme'));							
+                $str = "SELECT u.userid,u.username,u.nama,u.email,u.page,u.group_id,u.kjur,u.isdeleted,u.foto AS photo_profile,u.theme FROM user u WHERE username='$username' AND u.page='m'";
+                $this->db->setFieldTable (array('userid','username','nama','email','page','group_id','kjur','isdeleted','photo_profile','theme'));							
                 $result= $this->db->getRecord($str);	
                 if (!isset($result[1])) {
-                    $str = "SELECT su.userid,sg.groupname,su.active,su.kjur,su.theme FROM simak_user su,simak_group sg WHERE su.groupid=sg.groupid AND su.username='$username'";
-                    $this->db->setFieldTable (array('userid','groupname','active','kjur','theme'));							
+                    $str = "SELECT su.userid,sg.groupname,su.active,su.kjur,su.theme,foto AS photo_profile FROM simak_user su,simak_group sg WHERE su.groupid=sg.groupid AND su.username='$username'";
+                    $this->db->setFieldTable (array('userid','groupname','active','kjur','theme','photo_profile'));							
                     $result = $this->db->getRecord($str);
                 }				
 				$this->dataUser['data_user']=$result[1];							

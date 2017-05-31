@@ -126,7 +126,7 @@ class Login extends MainPage {
                     $_SESSION['tahun_masuk']=$setup->getSettingValue('default_tahun_pendaftaran');
                     $_SESSION['semester']=$setup->getSettingValue('default_semester');
                     
-                    $foto='resources/userimages/no_photo.png';
+                    $foto=$pengguna->getDataUser('photo_profile');
                 break;                
                 case 'mh' :
                     $_SESSION['ta']=$setup->getSettingValue('default_ta') < $pengguna->getDataUser('tahun_masuk') ? $pengguna->getDataUser('tahun_masuk') :$setup->getSettingValue('default_ta');

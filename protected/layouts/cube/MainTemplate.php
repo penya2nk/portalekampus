@@ -27,13 +27,14 @@ class MainTemplate extends TTemplateControl {
         $page = $this->Page->Pengguna->getDataUser('page');
         switch ($page) {
             case 'm' :
-                $str = "UPDATE simak_user SET theme='$theme' WHERE userid=$userid";                            
+                $str = "UPDATE simak_user SET theme='$theme' WHERE userid=$userid";
+                $this->Page->DB->updateRecord($str);
             break;
             case 'mh' :
-                $str = "UPDATE profiles_mahasiswa SET theme='$theme' WHERE nim=$userid"; 
+                $str = "UPDATE profiles_mahasiswa SET theme='$theme' WHERE nim=$userid";                 
+                $this->Page->DB->updateRecord($str);
             break;
         }        
-        $this->Page->DB->updateRecord($str);
         $this->Parent->Page->redirect ('Home',true);
     }
     public function getStatusUser() {

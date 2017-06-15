@@ -56,6 +56,118 @@
         </div>
     </div>
 </com:TPanel>
+<com:TPanel Visible="<%= $this->getEditProcess(false) %>" CssClass="row">
+    <com:THiddenField ID="hiddenid" />
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left"><i class="fa fa-bars"></i> Informasi Jadwal Ujian</h2> 
+                    <div class="filter-block pull-right">                                           
+
+                    </div>
+                </header>
+                <div class="main-box-body clearfix">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label"><strong>TAHUN PENDAFTARAN: </strong></label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static"><%= $this->DataUjianPMB['tahun_masuk']%><%= $this->DataUjianPMB['idsmt']%></p>
+                                    </div>                            
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label"><strong>NAMA KEGIATAN: </strong></label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static"><%=$this->DataUjianPMB['nama_kegiatan']%></p>
+                                    </div>                            
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label"><strong>RUANGAN / KAPASITAS: </strong></label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static"><%=$this->DataUjianPMB['namaruang']%> [<%=$this->DataUjianPMB['kapasitas']%>]</p>
+                                    </div>                            
+                                </div>                            
+                            </div>
+                        </div>                    
+                        <div class="col-sm-6">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label"><strong>TANGGAL UJIAN: </strong></label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static"><%=$this->TGL->tanggal('l, d F Y',$this->DataUjianPMB['tanggal_ujian'])%></p>
+                                    </div>                            
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label"><strong>JAM UJIAN: </strong></label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static"><%=$this->DataUjianPMB['jam_mulai']%> - <%=$this->DataUjianPMB['jam_akhir']%></p>
+                                    </div>                            
+                                </div>                            
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label"><strong>TANGGAL AKHIR DAFTAR: </strong></label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static"><%=$this->TGL->tanggal('l, d F Y',$this->DataUjianPMB['tanggal_akhir_daftar'])%></p>
+                                    </div>                            
+                                </div>
+                            </div>
+                        </div>
+                    </div>                
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="main-box clearfix">
+            <header class="main-box-header clearfix">
+                <h2 class="pull-left"><i class="fa fa-calendar"></i> Ubah Jadwal Ujian</h2> 
+                <div class="filter-block pull-right"> 
+                    <a href="<%=$this->constructUrl('spmb.PesertaUjianPMB',true,array('id'=>$this->DataUjianPMB['idjadwal_ujian']))%>" class="btn btn-default pull-right" title="Keluar">                                        
+                        <i class='fa  fa-times fa-lg'></i>
+                    </a> 
+                </div>
+            </header>
+            <div class="main-box-body clearfix">                    
+                <div class="form-horizontal">
+                    <div class="form-group" id="divEditJadwalUjian">
+                        <label class="col-lg-2 control-label">Jadwal Ujian:</label>
+                        <div class="col-lg-10">                                       
+                            <com:TDropDownList ID="cmbEditJadwal" CssClass="form-control" />
+                            <com:TRequiredFieldValidator ID="FieldEditJadwalValidator" InitialValue="none" ControlToValidate="cmbEditJadwal" Display="Dynamic" ErrorMessage="Pilih Jadwal Ujian" ValidationGroup="editjadwalujian" CssClass="has-error help-block">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divEditJadwalUjian').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldEditJadwalValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divEditJadwalUjian').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">&nbsp;</label>
+                        <div class="col-lg-9">
+                            <com:TActiveCustomButton ID="btnUpdate" CssClass="btn btn-primary" OnClick="updateData" ValidationGroup="editjadwalujian">
+                                <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
+                                <prop:ClientSide.OnPreDispatch>                                                                   
+                                    $('loading').show(); 
+                                    $('<%=$this->btnUpdate->ClientId%>').disabled='disabled';						
+                                </prop:ClientSide.OnPreDispatch>
+                                <prop:ClientSide.OnLoading>
+                                    $('<%=$this->btnUpdate->ClientId%>').disabled='disabled';						
+                                </prop:ClientSide.OnLoading>
+                                <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                    $('<%=$this->btnUpdate->ClientId%>').disabled='';
+                                    $('loading').hide(); 
+                                </prop:ClientSide.OnComplete>
+                            </com:TActiveCustomButton>
+                        </div>
+                    </div>       
+                </div>
+            </div>
+        </div>
+</com:TPanel>
 <com:TPanel Visible="<%= $this->getDefaultProcess() %>">
     <div class="row">
         <div class="col-lg-12">
@@ -199,7 +311,7 @@
                 </header>
                 <div class="main-box-body clearfix">
                     <div class="table-responsive">
-                        <com:TActiveRepeater ID="RepeaterS" DataKeyField="idkrsmatkul">
+                        <com:TActiveRepeater ID="RepeaterS" DataKeyField="idpeserta_ujian">
                             <prop:HeaderTemplate>
                             <table class="table table-striped table-hover">
                                 <thead>
@@ -211,6 +323,7 @@
                                     <th scope="col">JK</th>
                                     <th scope="col">PRODI. PIL. 1</th>					
                                     <th scope="col">PRODI. PIL. 2</th>
+                                    <th scope="col" width="100">AKSI</th>
                                 </tr>	
                                 </thead>		
                                 <tbody>		
@@ -224,6 +337,34 @@
                                     <td><%# $this->DataItem['jk']%></td>
                                     <td><%# $_SESSION['daftar_jurusan'][$this->DataItem['kjur1']]%></td>
                                     <td><%# $this->DataItem['kjur2'] > 0 ? $_SESSION['daftar_jurusan'][$this->DataItem['kjur2']] : '-'%></td>					
+                                    <td>                                        
+                                        <com:TLinkButton CssClass="table-link" OnClick="Page.editRecord" Attributes.Title="Ubah Jadwal Ujian">
+                                            <prop:Text>
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-play fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </prop:Text>
+                                        </com:TLinkButton>
+                                        <com:TActiveLinkButton ID="btnDelete" ClientSide.PostState="false" CssClass="table-link danger" OnClick="Page.deleteRecord" Attributes.Title="Hapus Peserta Ujian" Attributes.OnClick="if(!confirm('Anda ingin menghapus peserta Ujian PMB ini ?')) return false;">
+                                            <prop:Text>
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </prop:Text>
+                                            <prop:ClientSide.OnPreDispatch>
+                                                $('loading').show();                                             
+                                                $('<%=$this->btnDelete->ClientId%>').disabled='disabled';						
+                                            </prop:ClientSide.OnPreDispatch>
+                                            <prop:ClientSide.OnLoading>
+                                                $('<%=$this->btnDelete->ClientId%>').disabled='disabled';									                            
+                                            </prop:ClientSide.OnLoading>
+                                            <prop:ClientSide.onComplete>
+                                                $('loading').hide();                                                
+                                            </prop:ClientSide.OnComplete>
+                                        </com:TActiveLinkButton>   
+                                    </td>
                                 </tr>	
                             </prop:ItemTemplate>	                       
                             <prop:FooterTemplate>
@@ -251,4 +392,5 @@
     </div>
 </com:TPanel>
 <%include Application.layouts.cube.ModalPrintOut%>
+<%include Application.layouts.cube.ModalMessageError%>
 </com:TContent>

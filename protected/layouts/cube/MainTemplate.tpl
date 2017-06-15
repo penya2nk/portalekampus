@@ -431,6 +431,11 @@
                                                         Pindah Kelas
                                                     </a>
                                                 </li>
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('kemahasiswaan.Perwalian',true)%>"<%=$this->Page->showPerwalian==true ? ' class="active" ':''%>>
+                                                        Perwalian
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </li>                                                                                                                       
                                         <li<%=$this->Page->showSubMenuAkademikDulang==true?' class="active"':''%>>

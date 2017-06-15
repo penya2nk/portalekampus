@@ -784,6 +784,7 @@ class Logic_ReportAkademik extends Logic_Report {
                 $sheet->mergeCells("A7:V7");
                 $sheet->mergeCells("A8:V8");
                 $sheet->getRowDimension(7)->setRowHeight(20);
+                $sheet->getRowDimension(8)->setRowHeight(20);
                 $sheet->setCellValue("A7","DAFTAR HADIR DOSEN");
                 $sheet->setCellValue("A8",$nama=($this->dataReport['nama_hari']=='')?'JADWAL KESELURUHAN'.',SEMESTER '.$this->dataReport['nama_semester']. ' T.A '.$this->dataReport['nama_tahun']:strtoupper($this->dataReport['hari']).',SEMESTER '.$this->dataReport['nama_semester']. ' T.A '.$this->dataReport['nama_tahun']);
                 $styleArray=array(
@@ -903,6 +904,194 @@ class Logic_ReportAkademik extends Logic_Report {
             break;
         }
         $this->setLink($this->dataReport['linkoutput'],"Daftar Hadir Dosen");
+    }
+    /**
+     * digunakan untuk mencetak data mahasiswa daftar ulang non-aktif
+     */
+    public function printDulangNONAKTIF ($objDMaster) {
+        $idsmt=$this->dataReport['idsmt'];
+        $ta=$this->dataReport['ta'];
+        $kjur=$this->dataReport['kjur'];
+        switch ($this->getDriver()) {
+            case 'excel2003' :               
+            case 'excel2007' :                
+                $this->setHeaderPT('I'); 
+                $sheet=$this->rpt->getActiveSheet();
+                $this->rpt->getDefaultStyle()->getFont()->setName('Arial');                
+                $this->rpt->getDefaultStyle()->getFont()->setSize('9');                                    
+                
+                $sheet->mergeCells("A7:I7");
+                $sheet->mergeCells("A8:I8");
+                $sheet->getRowDimension(7)->setRowHeight(20);
+                $sheet->setCellValue("A7","DAFTAR MAHASISWA DAFTAR ULANG STATUS NON-AKTIF");
+                $sheet->setCellValue("A8",'PROGRAM STUDI '.$this->dataReport['nama_ps'].' T.A '.$this->dataReport['nama_tahun'].' SEMESTER '.$this->dataReport['nama_semester']);
+                $styleArray=array(
+								'font' => array('bold' => true,
+                                                'size' => 16),
+								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+												   'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+							);
+                $sheet->getStyle("A7:A7")->applyFromArray($styleArray);
+                $sheet->getStyle("A8:A8")->applyFromArray($styleArray);
+                
+                $sheet->getRowDimension(15)->setRowHeight(20);
+				$sheet->setCellValue('A10','NO');
+                $sheet->mergeCells("B10:C10");
+                $sheet->setCellValue('B10','NO. FORMULIR');
+                $sheet->setCellValue('D10','NIM');
+                $sheet->setCellValue('E10','NIRM');
+                $sheet->setCellValue('F10','NAMA MHS'); 
+                $sheet->setCellValue('G10','DOSEN WALI'); 
+                $sheet->setCellValue('H10','TANGGAL DAFTAR ULANG'); 
+                $sheet->setCellValue('I10','T.A DAN SMT DAFTAR ULANG');
+                
+                $sheet->getColumnDimension('C')->setWidth(15);
+                $sheet->getColumnDimension('D')->setWidth(15);
+                $sheet->getColumnDimension('E')->setWidth(15);
+                $sheet->getColumnDimension('F')->setWidth(50);
+                $sheet->getColumnDimension('G')->setWidth(40);
+                $sheet->getColumnDimension('H')->setWidth(17);
+                $sheet->getColumnDimension('I')->setWidth(17);
+                
+                 $styleArray=array(
+								'font' => array('bold' => true),
+								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+												   'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+								'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+							);
+                $sheet->getStyle("A10:I10")->applyFromArray($styleArray);
+                $sheet->getStyle("A10:I10")->getAlignment()->setWrapText(true);
+                
+                $sheet->getRowDimension(16)->setRowHeight(20);
+                
+                $str = "SELECT d.iddulang,vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.iddosen_wali,d.tanggal,d.tahun,d.idsmt FROM v_datamhs vdm,dulang d WHERE vdm.nim=d.nim AND d.tahun=$ta AND d.idsmt=$idsmt AND vdm.kjur='$kjur' AND d.k_status='N' ORDER BY vdm.nama_mhs ASC";
+                $this->db->setFieldTable(array('iddulang','no_formulir','nim','nirm','nama_mhs','iddosen_wali','tanggal','tahun','idsmt'));
+                $r=$this->db->getRecord($str);
+                $row=11;
+                while (list($k,$v)=each ($r)) {       
+                    $sheet->setCellValue("A$row",$v['no']);
+                    $sheet->mergeCells("B$row:C$row");
+                    $sheet->setCellValue("B$row",$v['no_formulir']);
+                    $sheet->setCellValueExplicit("D$row",$v['nim'],PHPExcel_Cell_DataType::TYPE_STRING);
+                    $sheet->setCellValueExplicit("E$row",$v['nirm'],PHPExcel_Cell_DataType::TYPE_STRING);
+                    $sheet->setCellValue("F$row",$v['nama_mhs']); 
+                    $sheet->setCellValue("G$row",$objDMaster->getNamaDosenWaliByID($v['iddosen_wali'])); 
+                    $sheet->setCellValue("H$row",$this->tgl->tanggal('d F Y',$v['tanggal'])); 
+                    $sheet->setCellValue("I$row",$v['tahun'].$v['idsmt']);
+                    $row+=1;       
+                }
+                $row=$row-1;
+                $styleArray=array(
+								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+												   'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+								'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+							);
+                $sheet->getStyle("A11:I$row")->applyFromArray($styleArray);
+                $sheet->getStyle("A11:I$row")->getAlignment()->setWrapText(true);
+                
+                $styleArray=array(								
+                                    'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_LEFT)
+                                );
+                $sheet->getStyle("F11:G$row")->applyFromArray($styleArray);
+                
+                $this->printOut('dulangnonaktif');
+            break;
+        }
+        $this->setLink($this->dataReport['linkoutput'],"Daftar Mahasiswa Daftar Ulang NON-AKTIF");
+    }
+    /**
+     * digunakan untuk mencetak data mahasiswa daftar ulang lulus
+     */
+    public function printDulangLULUS ($objDMaster) {
+        $idsmt=$this->dataReport['idsmt'];
+        $ta=$this->dataReport['ta'];
+        $kjur=$this->dataReport['kjur'];
+        switch ($this->getDriver()) {
+            case 'excel2003' :               
+            case 'excel2007' :                
+                $this->setHeaderPT('I'); 
+                $sheet=$this->rpt->getActiveSheet();
+                $this->rpt->getDefaultStyle()->getFont()->setName('Arial');                
+                $this->rpt->getDefaultStyle()->getFont()->setSize('9');                                    
+                
+                $sheet->mergeCells("A7:I7");
+                $sheet->mergeCells("A8:I8");
+                $sheet->getRowDimension(7)->setRowHeight(20);
+                $sheet->setCellValue("A7","DAFTAR MAHASISWA DAFTAR ULANG STATUS LULUS");
+                $sheet->setCellValue("A8",'PROGRAM STUDI '.$this->dataReport['nama_ps'].' T.A '.$this->dataReport['nama_tahun'].' SEMESTER '.$this->dataReport['nama_semester']);
+                $styleArray=array(
+								'font' => array('bold' => true,
+                                                'size' => 16),
+								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+												   'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+							);
+                $sheet->getStyle("A7:A7")->applyFromArray($styleArray);
+                $sheet->getStyle("A8:A8")->applyFromArray($styleArray);
+                
+                $sheet->getRowDimension(15)->setRowHeight(20);
+				$sheet->setCellValue('A10','NO');
+                $sheet->mergeCells("B10:C10");
+                $sheet->setCellValue('B10','NO. FORMULIR');
+                $sheet->setCellValue('D10','NIM');
+                $sheet->setCellValue('E10','NIRM');
+                $sheet->setCellValue('F10','NAMA MHS'); 
+                $sheet->setCellValue('G10','DOSEN WALI'); 
+                $sheet->setCellValue('H10','TANGGAL DAFTAR ULANG'); 
+                $sheet->setCellValue('I10','T.A DAN SMT DAFTAR ULANG');
+                
+                $sheet->getColumnDimension('C')->setWidth(15);
+                $sheet->getColumnDimension('D')->setWidth(15);
+                $sheet->getColumnDimension('E')->setWidth(15);
+                $sheet->getColumnDimension('F')->setWidth(50);
+                $sheet->getColumnDimension('G')->setWidth(40);
+                $sheet->getColumnDimension('H')->setWidth(17);
+                $sheet->getColumnDimension('I')->setWidth(17);
+                
+                 $styleArray=array(
+								'font' => array('bold' => true),
+								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+												   'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+								'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+							);
+                $sheet->getStyle("A10:I10")->applyFromArray($styleArray);
+                $sheet->getStyle("A10:I10")->getAlignment()->setWrapText(true);
+                
+                $sheet->getRowDimension(16)->setRowHeight(20);
+                
+                $str = "SELECT d.iddulang,vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.iddosen_wali,d.tanggal,d.tahun,d.idsmt FROM v_datamhs vdm,dulang d WHERE vdm.nim=d.nim AND d.tahun=$ta AND d.idsmt=$idsmt AND vdm.kjur='$kjur' AND d.k_status='L' ORDER BY vdm.nama_mhs ASC";
+                $this->db->setFieldTable(array('iddulang','no_formulir','nim','nirm','nama_mhs','iddosen_wali','tanggal','tahun','idsmt'));
+                $r=$this->db->getRecord($str);
+                $row=11;
+                while (list($k,$v)=each ($r)) {       
+                    $sheet->setCellValue("A$row",$v['no']);
+                    $sheet->mergeCells("B$row:C$row");
+                    $sheet->setCellValue("B$row",$v['no_formulir']);
+                    $sheet->setCellValueExplicit("D$row",$v['nim'],PHPExcel_Cell_DataType::TYPE_STRING);
+                    $sheet->setCellValueExplicit("E$row",$v['nirm'],PHPExcel_Cell_DataType::TYPE_STRING);
+                    $sheet->setCellValue("F$row",$v['nama_mhs']); 
+                    $sheet->setCellValue("G$row",$objDMaster->getNamaDosenWaliByID($v['iddosen_wali'])); 
+                    $sheet->setCellValue("H$row",$this->tgl->tanggal('d F Y',$v['tanggal'])); 
+                    $sheet->setCellValue("I$row",$v['tahun'].$v['idsmt']);
+                    $row+=1;       
+                }
+                $row=$row-1;
+                $styleArray=array(
+								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+												   'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+								'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+							);
+                $sheet->getStyle("A11:I$row")->applyFromArray($styleArray);
+                $sheet->getStyle("A11:I$row")->getAlignment()->setWrapText(true);
+                
+                $styleArray=array(								
+                                    'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_LEFT)
+                                );
+                $sheet->getStyle("F11:G$row")->applyFromArray($styleArray);
+                
+                $this->printOut('dulanglulus');
+            break;
+        }
+        $this->setLink($this->dataReport['linkoutput'],"Daftar Mahasiswa Daftar Ulang LULUS");
     }
 }
 ?>

@@ -88,7 +88,7 @@ class CPembayaranSemesterGanjil Extends MainPageK {
                 break;
                 case 'nama' :
                     $str = "$str $clausa";
-                    $clausa="AND fp.nama_mhs LIKE '%$txtsearch%'";                    
+                    $clausa="AND vdm.nama_mhs LIKE '%$txtsearch%'";                    
                     $jumlah_baris=$this->DB->getCountRowsOfTable("transaksi t JOIN v_datamhs vdm ON (t.nim=vdm.nim) WHERE t.tahun='$ta' AND t.idsmt='$semester' AND t.kjur=$kjur $clausa",'no_transaksi');	
                 break;
             }

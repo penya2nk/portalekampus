@@ -49,6 +49,10 @@ class MainPageM extends MainPage {
      */
     public $showPindahKelas=false;
     /**
+     * show page perwalian [akademik perwalian]
+     */
+    public $showPerwalian=false;
+    /**
      * show sub menu akademik daftar ulang [akademik daftar ulang calon mahasiswa]
      */
     public $showCalonMHS=false;

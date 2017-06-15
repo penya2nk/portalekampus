@@ -19,7 +19,7 @@
                         <div class="col-lg-6">
                             <div class="form-horizontal">
                                 <div class="form-group" id="divDefaultTahunPendaftaran">
-                                    <label class="col-lg-4 control-label">Default Tahun Akademik :</label>
+                                    <label class="col-lg-4 control-label">Default Tahun Pendaftaran :</label>
                                     <div class="col-lg-5">                                
                                         <com:TDropDownList ID="cmbDefaultTahunPendaftaran" CssClass="form-control" Width="120px" />
                                         <com:TRequiredFieldValidator ID="FieldDefaultTahunPendaftaranValidator" ValidationGroup="settinggeneral" Display="Dynamic" ControlToValidate="cmbDefaultTahunPendaftaran" ErrorMessage="Pilih Tahun Pendaftaran" CssClass="has-error help-block">	

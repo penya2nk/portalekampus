@@ -155,7 +155,7 @@ class CPendaftaranViaWeb extends MainPageM {
             $idagama=$this->cmbEditAgama->Text;
             $nama_ibu_kandung=addslashes($this->txtEditNamaIbuKandung->Text);
 			$idwarga=$this->rdEditWNI->Checked===true?'WNI':'WNA';
-            $no_ktp=strtoupper(trim(addslashes($this->txtEditNoKTP->Text)));
+            $no_ktp=strtoupper(trim(addslashes($this->txtEditNIK->Text)));
             $alamat_rumah=strtoupper(trim(addslashes($this->txtEditAlamatKTP->Text)));
             $kelurahan=addslashes($this->txtEditKelurahan->Text);
             $kecamatan=addslashes($this->txtEditKecamatan->Text);
@@ -232,7 +232,7 @@ class CPendaftaranViaWeb extends MainPageM {
         else
             $this->rdEditWNA->Checked=true;
         
-        $this->txtEditNoKTP->Text=$dataMhs['nik'];
+        $this->txtEditNIK->Text=$dataMhs['nik'];
         $this->txtEditAlamatKTP->Text=$dataMhs['alamat_rumah'];
 		$this->txtEditKelurahan->Text=$dataMhs['kelurahan'];
         $this->txtEditKecamatan->Text=$dataMhs['kecamatan'];

@@ -67,6 +67,8 @@ class CPindahKelas Extends MainPageM {
 		$r=$this->DB->getRecord($str,$offset+1);
 		$this->RepeaterS->DataSource=$r;
 		$this->RepeaterS->dataBind();
+        
+        $this->paginationInfo->Text=$this->getInfoPaging($this->RepeaterS);
 	}
 	public function processDataBound ($sender,$param) {			
 		$item=$param->Item;

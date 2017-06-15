@@ -45,7 +45,7 @@ class CDiskusi extends MainPageMHS {
         if ($search) {  
             
         }else{
-            $str = "SELECT fp.idpost,fk.nama_kategori,fp.title,fp.content,fp.nama_user,fp.date_added FROM forumposts fp, forumkategori fk WHERE fp.idkategori=fk.idkategori AND parentpost=0";
+            $str = "SELECT fp.userid,fp.idpost,fk.nama_kategori,fp.title,fp.content,fp.nama_user,fp.tipe,fp.tipe,fp.date_added FROM forumposts fp, forumkategori fk WHERE fp.idkategori=fk.idkategori AND parentpost=0";
             $jumlah_baris=$this->DB->getCountRowsOfTable("forumposts WHERE parentpost=0",'idpost');						
         }        
         $this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageDiskusi']['page_num'];
@@ -57,11 +57,22 @@ class CDiskusi extends MainPageMHS {
 		}
 		if ($limit < 0) {$offset=0;$limit=$this->setup->getSettingValue('default_pagesize');$_SESSION['currentPageDiskusi']['page_num']=0;}
         $str="$str ORDER BY date_added DESC LIMIT $offset,$limit";				
-		$this->DB->setFieldTable (array('idpost','nama_kategori','title','content','nama_user','date_added'));			
+		$this->DB->setFieldTable (array('userid','idpost','nama_kategori','title','content','nama_user','tipe','date_added'));			
 		$r=$this->DB->getRecord($str);	
         $result=array();
         while (list($k,$v)=each($r)) {
             $idpost=$v['idpost'];
+            $userid=$v['userid'];
+            $photo='resources/userimages/no_photo.png';
+            switch ($v['tipe']) {
+                case 'mh' :   
+                    $str = "SELECT photo_profile FROM profiles_mahasiswa WHERE nim='$userid'";
+                    $this->DB->setFieldTable (array('photo_profile'));			
+                    $profile=$this->DB->getRecord($str);	
+                    $photo=$profile[1]['photo_profile'];
+                break;
+            }
+            $v['photo_profile']=$photo;
             $v['jumlahcomment']=$this->DB->getCountRowsOfTable("forumposts WHERE parentpost=$idpost",'idpost');
             $v['tanggal_post']=$this->page->TGL->relativeTime(date('Y-m-d H:i:s'),$v['date_added'],'lasttweet');
             $result[$k]=$v;
@@ -92,6 +103,16 @@ class CDiskusi extends MainPageMHS {
         $result=array();
         while (list($k,$v)=each($r)) {
             $idpost=$v['idpost'];
+            $photo='resources/userimages/no_photo.png';
+            switch ($v['tipe']) {
+                case 'mh' :   
+                    $str = "SELECT photo_profile FROM profiles_mahasiswa WHERE nim='$userid'";
+                    $this->DB->setFieldTable (array('photo_profile'));			
+                    $profile=$this->DB->getRecord($str);	
+                    $photo=$profile[1]['photo_profile'];
+                break;
+            }
+            $v['photo_profile']=$photo;
             $v['jumlahcomment']=$this->DB->getCountRowsOfTable("forumposts WHERE parentpost=$idpost",'idpost');
             $v['tanggal_post']=$this->page->TGL->relativeTime(date('Y-m-d H:i:s'),$v['date_added'],'lasttweet');
             $result[$k]=$v;

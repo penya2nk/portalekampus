@@ -190,7 +190,7 @@
                                 </prop:ClientSide.OnValidationSuccess>
                             </com:TRequiredFieldValidator>
                         </div>
-                    </div>   
+                    </div>  
                     <div class="form-group">
                         <label class="col-lg-2 control-label">&nbsp;</label>
                         <div class="col-lg-9">
@@ -233,12 +233,11 @@
                             <table class="table table-striped table-hover">
                                 <thead>
                                 <tr>
-                                    <th width="15" scope="col">NO</th>
-                                    <th width="100" scope="col">TAHUN MASUK</th>                                    
+                                    <th width="15" scope="col">NO</th>                                    
                                     <th width="250" scope="col">NAMA KEGIATAN</th>
-                                    <th width="150" scope="col">TANGGAL UJIAN</th>
+                                    <th width="150" scope="col">TANGGAL UJIAN</th>                                                                        
                                     <th scope="col">TANGGAL AKHIR <br />PENDAFTARAN</th> 
-                                    <th scope="col">RUANG UJIAN</th>                                    
+                                    <th scope="col">RUANG UJIAN</th>          
                                     <th scope="col">STATUS</th>
                                     <th scope="col">JUMLAH <br/>PESERTA</th>
                                     <th scope="col" width="150">AKSI</th>
@@ -248,8 +247,7 @@
                             </prop:HeaderTemplate>
                             <prop:ItemTemplate>	
                                 <tr<%# $this->Data['status']==0?' class="danger"':''%>>
-                                    <td><%# $this->Data['no']%></td>
-                                    <td><%# $this->Data['tahun_masuk']%><%# $this->Data['idsmt']%></td>
+                                    <td><%# $this->Data['no']%></td>                                    
                                     <td><%# $this->Data['nama_kegiatan']%></td>   
                                     <td><%# $this->Page->TGL->tanggal ('l, d F Y',$this->Data['tanggal_ujian'])%> <%#$this->DataItem['jam_mulai'].'-'.$this->DataItem['jam_akhir']%></td>
                                     <td><%# $this->Page->TGL->tanggal ('l, d F Y',$this->Data['tanggal_akhir_daftar'])%></td>

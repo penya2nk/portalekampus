@@ -40,7 +40,7 @@ class CPesertaUjianPMB extends MainPageM {
         $idjadwal_ujian=$_SESSION['currentPagePesertaUjianPMB']['DataUjianPMB']['idjadwal_ujian'];        
         $str = "SELECT pum.idpeserta_ujian,pum.no_formulir,fp.nama_mhs,fp.jk,fp.kjur1,fp.kjur2,pin.no_pin FROM peserta_ujian_pmb pum,formulir_pendaftaran fp,pin WHERE fp.no_formulir=pum.no_formulir AND pin.no_formulir=pum.no_formulir AND pum.idjadwal_ujian=$idjadwal_ujian";
         if ($search) {            
-            $txtsearch=$this->txtKriteria->Text;
+            $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'no_formulir' :
                     $clausa="AND fp.no_formulir='$txtsearch'";

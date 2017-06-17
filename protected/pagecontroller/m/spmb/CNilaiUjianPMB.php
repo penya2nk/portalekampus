@@ -9,7 +9,7 @@ class CNilaiUjianPMB extends MainPageM {
         $this->createObj('Akademik');
 		if (!$this->IsPostBack && !$this->IsCallBack) {	
             if (!isset($_SESSION['currentPageNilaiUjianPMB'])||$_SESSION['currentPageNilaiUjianPMB']['page_name']!='m.spmb.NilaiUjianPMB') {
-				$_SESSION['currentPageNilaiUjianPMB']=array('page_name'=>'m.spmb.NilaiUjianPMB','page_num'=>0,'offset'=>0,'limit'=>0,'search'=>false,'kjur'=>'none','passinggrade'=>array());												
+				$_SESSION['currentPageNilaiUjianPMB']=array('page_name'=>'m.spmb.NilaiUjianPMB','page_num'=>0,'offset'=>0,'limit'=>0,'search'=>false,'kjur'=>'none');												
 			}
             $_SESSION['currentPageNilaiUjianPMB']['search']=false;
             $this->RepeaterS->PageSize=$this->setup->getSettingValue('default_pagesize');
@@ -34,8 +34,6 @@ class CNilaiUjianPMB extends MainPageM {
             $this->tbCmbOutputCompress->Text= $_SESSION['outputcompress'];
             $this->tbCmbOutputCompress->DataBind();
             
-            $_SESSION['currentPageNilaiUjianPMB']['passinggrade']=$this->DMaster->getDataPassingGrade($_SESSION['tahun_masuk']);
-            
             $this->lblModulHeader->Text=$this->getInfoToolbar();            
             $this->populateData ();	
 		}	
@@ -44,8 +42,7 @@ class CNilaiUjianPMB extends MainPageM {
         return $this->Demik->getDataMHS($idx);
     }
 	public function changeTbTahunMasuk($sender,$param) {					
-		$_SESSION['tahun_masuk']=$this->tbCmbTahunMasuk->Text;
-        $_SESSION['currentPageNilaiUjianPMB']['passinggrade']=$this->DMaster->getDataPassingGrade($_SESSION['tahun_masuk']);
+		$_SESSION['tahun_masuk']=$this->tbCmbTahunMasuk->Text;        
         $this->lblModulHeader->Text=$this->getInfoToolbar();
 		$this->populateData();
 	}
@@ -78,8 +75,8 @@ class CNilaiUjianPMB extends MainPageM {
         $kjur=$_SESSION['currentPageNilaiUjianPMB']['kjur'];        
         if ($search) {                        
             $str_kjur=$kjur=='none'?' WHERE (num.kjur=0 OR num.kjur IS NULL)':" AND num.kjur=$kjur";	                
-            $str = "SELECT fp.no_formulir,fp.nama_mhs,ku.tgl_ujian,ts.nama_tempat,num.kjur,num.jumlah_soal,num.jawaban_benar,num.jawaban_salah,num.nilai,fp.kjur1,fp.kjur2,num.passinggrade,num.kjur AS diterima_di_prodi FROM kartu_ujian ku JOIN formulir_pendaftaran fp ON (fp.no_formulir=ku.no_formulir) JOIN tempat_spmb ts ON (ku.idtempat_spmb=ts.idtempat_spmb) JOIN nilai_ujian_masuk num ON (ku.no_formulir=num.no_formulir)$str_kjur";
-            $txtsearch=$this->txtKriteria->Text;
+            $str = "SELECT fp.no_formulir,fp.nama_mhs,ku.tgl_ujian,ts.nama_tempat,num.kjur,num.jumlah_soal,num.jawaban_benar,num.jawaban_salah,num.nilai,fp.kjur1,fp.kjur2,num.passing_grade_1,num.passing_grade_2,num.kjur AS diterima_di_prodi FROM kartu_ujian ku JOIN formulir_pendaftaran fp ON (fp.no_formulir=ku.no_formulir) JOIN tempat_spmb ts ON (ku.idtempat_spmb=ts.idtempat_spmb) JOIN nilai_ujian_masuk num ON (ku.no_formulir=num.no_formulir)$str_kjur";
+            $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {
                 case 'no_formulir' :
                     $clausa=" AND fp.no_formulir='$txtsearch'";
@@ -94,7 +91,7 @@ class CNilaiUjianPMB extends MainPageM {
             }
         }else{
             $str_kjur=$kjur=='none'?' AND (num.kjur=0 OR num.kjur IS NULL)':" AND num.kjur=$kjur";	                
-            $str = "SELECT fp.no_formulir,fp.nama_mhs,ku.tgl_ujian,ts.nama_tempat,num.kjur,num.jumlah_soal,num.jawaban_benar,num.jawaban_salah,num.nilai,fp.kjur1,fp.kjur2,num.passinggrade,num.kjur AS diterima_di_prodi FROM kartu_ujian ku JOIN formulir_pendaftaran fp ON (fp.no_formulir=ku.no_formulir) JOIN tempat_spmb ts ON (ku.idtempat_spmb=ts.idtempat_spmb) JOIN nilai_ujian_masuk num ON (ku.no_formulir=num.no_formulir) WHERE fp.ta='$tahun_masuk'$str_kjur";
+            $str = "SELECT fp.no_formulir,fp.nama_mhs,ku.tgl_ujian,ts.nama_tempat,num.kjur,num.jumlah_soal,num.jawaban_benar,num.jawaban_salah,num.nilai,fp.kjur1,fp.kjur2,num.passing_grade_1,num.passing_grade_2,num.kjur AS diterima_di_prodi FROM kartu_ujian ku JOIN formulir_pendaftaran fp ON (fp.no_formulir=ku.no_formulir) JOIN tempat_spmb ts ON (ku.idtempat_spmb=ts.idtempat_spmb) JOIN nilai_ujian_masuk num ON (ku.no_formulir=num.no_formulir) WHERE fp.ta='$tahun_masuk'$str_kjur";
             $jumlah_baris=$this->DB->getCountRowsOfTable("kartu_ujian ku JOIN formulir_pendaftaran fp ON (fp.no_formulir=ku.no_formulir) JOIN tempat_spmb ts ON (ku.idtempat_spmb=ts.idtempat_spmb) JOIN nilai_ujian_masuk num ON (ku.no_formulir=num.no_formulir) WHERE fp.ta='$tahun_masuk'$str_kjur",'ku.no_formulir');			            
         }	
 		$this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageNilaiUjianPMB']['page_num'];
@@ -108,17 +105,16 @@ class CNilaiUjianPMB extends MainPageM {
 		$str = $str . " ORDER BY fp.nama_mhs ASC LIMIT $offset,$limit";				
         $_SESSION['currentPageNilaiUjianPMB']['offset']=$offset;
         $_SESSION['currentPageNilaiUjianPMB']['limit']=$limit;
-        $this->DB->setFieldTable(array('no_formulir','nama_mhs','tgl_ujian','jumlah_soal','jawaban_benar','jawaban_salah','nilai','kjur1','kjur2','passinggrade','diterima_di_prodi'));				
+        $this->DB->setFieldTable(array('no_formulir','nama_mhs','tgl_ujian','jumlah_soal','jawaban_benar','jawaban_salah','nilai','kjur1','kjur2','passing_grade_1','passing_grade_2','diterima_di_prodi'));				
 		$r = $this->DB->getRecord($str,$offset+1);
         $result=array();
-        $passinggrade=$_SESSION['currentPageNilaiUjianPMB']['passinggrade'];        
         while (list($k,$v)=each($r)) { 
             if ($kjur=='none') {
                 $pil1='N.A';
                 $bool1=false;
                 if ($v['kjur1'] > 0) {                  
-                    $nama_ps=$_SESSION['daftar_jurusan'][$v['kjur1']];      
-                    $bool1=($v['nilai'] >= $passinggrade[$v['kjur1']]);
+                    $nama_ps=$_SESSION['daftar_jurusan'][$v['kjur1']] . ' ['.$v['passing_grade_1'].']';      
+                    $bool1=($v['nilai'] >= $v['passing_grade_1']);
                     $ket=$bool1 == true ? 'LULUS' : 'GAGAL';                            
                     $pil1='<a href="#" OnClick="return false;" Title="'.$nama_ps.'">'.$ket.'</a';
 
@@ -127,8 +123,8 @@ class CNilaiUjianPMB extends MainPageM {
                 $pil2='N.A';
                 $bool2=false;
                 if ($v['kjur2'] > 0) {
-                    $nama_ps=$_SESSION['daftar_jurusan'][$v['kjur2']];      
-                    $bool2=($v['nilai'] >= $passinggrade[$v['kjur2']]);
+                    $nama_ps=$_SESSION['daftar_jurusan'][$v['kjur2']] . ' ['.$v['passing_grade_2'].']';      
+                    $bool2=($v['nilai'] >= $v['passing_grade_2']);
                     $ket=$bool2 == true ? 'LULUS' : 'GAGAL';                            
                     $pil2='<a href="#" OnClick="return false;" Title="'.$nama_ps.'">'.$ket.'</a';
                 }            
@@ -137,14 +133,14 @@ class CNilaiUjianPMB extends MainPageM {
             }else{
                 $pil1='N.A';
                 if ($v['kjur1'] == $v['diterima_di_prodi']) {
-                    $nama_ps=$_SESSION['daftar_jurusan'][$v['diterima_di_prodi']];     
+                    $nama_ps=$_SESSION['daftar_jurusan'][$v['diterima_di_prodi']] . ' ['.$v['passing_grade_1'].']';     
                     $ket='DI TERIMA';
                     $pil1='<a href="#" OnClick="return false;" Title="'.$nama_ps.'">'.$ket.'</a';
                 }
                 $v['pil1']=$pil1;                
                 $pil2='N.A';
                 if ($v['kjur2'] == $v['diterima_di_prodi']) {
-                    $nama_ps=$_SESSION['daftar_jurusan'][$v['diterima_di_prodi']];     
+                    $nama_ps=$_SESSION['daftar_jurusan'][$v['diterima_di_prodi']] . ' ['.$v['passing_grade_2'].']';     
                     $ket='DI TERIMA';
                     $pil1='<a href="#" OnClick="return false;" Title="'.$nama_ps.'">'.$ket.'</a';
                 }
@@ -177,8 +173,8 @@ class CNilaiUjianPMB extends MainPageM {
         $r[1]['status']='N.A';          
         
         $this->Demik->setDataMHS($r[1]);
-        $str = "SELECT num.idnilai_ujian_masuk,ku.tgl_ujian,ku.tgl_selesai_ujian,ku.isfinish,num.jumlah_soal,num.jawaban_benar,num.jawaban_salah,num.soal_tidak_terjawab,num.nilai FROM kartu_ujian ku JOIN nilai_ujian_masuk num ON ku.no_formulir=num.no_formulir WHERE ku.no_formulir=$no_formulir";
-        $this->DB->setFieldTable(array('idnilai_ujian_masuk','tgl_ujian','tgl_selesai_ujian','isfinish','jumlah_soal','jawaban_benar','jawaban_salah','soal_tidak_terjawab','nilai'));
+        $str = "SELECT num.idnilai_ujian_masuk,ku.tgl_ujian,ku.tgl_selesai_ujian,ku.isfinish,num.jumlah_soal,num.jawaban_benar,num.jawaban_salah,num.soal_tidak_terjawab,num.passing_grade_1,num.passing_grade_2,num.nilai FROM kartu_ujian ku JOIN nilai_ujian_masuk num ON ku.no_formulir=num.no_formulir WHERE ku.no_formulir=$no_formulir";
+        $this->DB->setFieldTable(array('idnilai_ujian_masuk','tgl_ujian','tgl_selesai_ujian','isfinish','jumlah_soal','jawaban_benar','jawaban_salah','soal_tidak_terjawab','passing_grade_1','passing_grade_2','nilai'));
         $dataujian = $this->DB->getRecord($str);         
         $this->DataUjian=$dataujian[1];
         $this->hiddenid->Value=$this->DataUjian['idnilai_ujian_masuk'];
@@ -194,9 +190,12 @@ class CNilaiUjianPMB extends MainPageM {
         $kjur=$param->Value;		
         if ($kjur != '') {
             try {
-                $passinggrade=$_SESSION['currentPageNilaiUjianPMB']['passinggrade'][$kjur];
-                if (!($passinggrade > 0)) {
-                    throw new Exception ("Untuk Program studi ini, Nilai passing grade belum disetting.");	
+                $id=$this->hiddenid->Value;
+                $str = "SELECT passing_grade_1,passing_grade_2 FROM nilai_ujian_masuk WHERE idnilai_ujian_masuk=$id";
+                $this->DB->setFieldTable(array('passing_grade_1','passing_grade_2')); 
+                $r=$this->DB->getRecord($str);                   
+                if ($r[1]['passing_grade_1'] <= 0 || $r[1]['passing_grade_2'] <= 0) {
+                    throw new Exception ("Nilai Passing Grade Pil. 1 dan Pil.2 belum disetting di jadwal ujian.");	
                 }               
             }catch (Exception $e) {
                 $param->IsValid=false;
@@ -208,8 +207,7 @@ class CNilaiUjianPMB extends MainPageM {
 		if ($this->IsValid) {		            
             $id=$this->hiddenid->Value;
             $prodi=$this->cmbAddKjur->Text;
-            $passinggrade=$_SESSION['currentPageNilaiUjianPMB']['passinggrade'][$prodi];
-			$str = "UPDATE nilai_ujian_masuk SET passinggrade=$passinggrade,ket_lulus=1,kjur=$prodi WHERE idnilai_ujian_masuk=$id";
+			$str = "UPDATE nilai_ujian_masuk SET ket_lulus=1,kjur=$prodi WHERE idnilai_ujian_masuk=$id";
 			$this->DB->updateRecord($str);
 			$this->redirect('spmb.NilaiUjianPMB',true);
 		}

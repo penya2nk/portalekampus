@@ -94,8 +94,7 @@ class CJadwalUjianPMB extends MainPageM {
             $jam_masuk=addslashes($this->txtAddJamMasuk->Text);
             $jam_keluar=addslashes($this->txtAddJamKeluar->Text);
             $tgl_akhir_pendaftaran=date ('Y-m-d',$this->txtAddTanggalAkhirDaftar->TimeStamp);
-            $ruangkelas=$this->cmbAddRuang->Text;
-            
+            $ruangkelas=$this->cmbAddRuang->Text;            
             $str = "INSERT INTO jadwal_ujian_pmb SET idjadwal_ujian=NULL,tahun_masuk=$tahun_masuk,idsmt=$semester,nama_kegiatan='$nama_kegiatan',tanggal_ujian='$tgl_ujian',jam_mulai='$jam_masuk',jam_akhir='$jam_keluar',tanggal_akhir_daftar='$tgl_akhir_pendaftaran',idruangkelas='$ruangkelas',date_added=NOW(),date_modified=NOW(),status=1";
             $this->DB->insertRecord($str);
             
@@ -118,7 +117,7 @@ class CJadwalUjianPMB extends MainPageM {
         $this->txtEditTanggalAkhirDaftar->Text=$this->TGL->tanggal('d-m-Y',$r[1]['tanggal_akhir_daftar']);
         $this->cmbEditRuang->DataSource=$this->DMaster->getRuangKelas();
         $this->cmbEditRuang->dataBind();
-        $this->cmbEditRuang->Text=$r[1]['idruangkelas'];	
+        $this->cmbEditRuang->Text=$r[1]['idruangkelas'];        
         $this->cmbEditStatus->Text=$r[1]['status'];
     }
     public function updateData ($sender,$param) {
@@ -130,7 +129,7 @@ class CJadwalUjianPMB extends MainPageM {
             $jam_keluar=addslashes($this->txtEditJamKeluar->Text);
             $tgl_akhir_pendaftaran=date ('Y-m-d',$this->txtEditTanggalAkhirDaftar->TimeStamp);
             $ruangkelas=$this->cmbEditRuang->Text;
-            $status=$this->cmbEditStatus->Text;
+            $status=$this->cmbEditStatus->Text;            
             $str = "UPDATE jadwal_ujian_pmb SET nama_kegiatan='$nama_kegiatan',tanggal_ujian='$tgl_ujian',jam_mulai='$jam_masuk',jam_akhir='$jam_keluar',tanggal_akhir_daftar='$tgl_akhir_pendaftaran',idruangkelas='$ruangkelas',date_modified=NOW(),status='$status' WHERE idjadwal_ujian=$id";
             $this->DB->updateRecord($str);
             

@@ -14,26 +14,72 @@
 <link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/css/libs/nifty-component.css"/>
 </com:TContent>
 <com:TContent ID="maincontent">
-<com:TPanel Visible="<%= $this->getDefaultProcess() %>">		    
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>">	
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2><i class="fa fa-bookmark"></i> Filter Data</h2>                    
+                </header>
+                <div class="main-box-body">
+                    <div class="form-horizontal">
+                        <div class="form-group" id="divJadwalUjian">
+                            <label class="col-lg-2 control-label">Jadwal Ujian :</label>
+                            <div class="col-lg-10">
+                                <com:TActiveDropDownList ID="cmbJadwalUjian" CssClass="form-control" OnCallBack="changeJadwalUjian">                                                           
+                                    <prop:ClientSide.OnPreDispatch>         
+                                        $('loading').show();
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->cmbJadwalUjian->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	
+                                        $('<%=$this->cmbJadwalUjian->ClientId%>').disabled='';						                               						                                        
+                                        $('loading').hide();
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveDropDownList>
+                                <com:TRequiredFieldValidator ID="FieldJadwalUjianValidator" InitialValue="none" ValidationGroup="filterForm" Display="Dynamic" ControlToValidate="cmbJadwalUjian" ErrorMessage="pilih jadwal ujian yang akan disetting nilai passing grade-nya." FocusOnError="true" CssClass="has-error help-block">	
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divJadwalUjian').addClassName('has-error');
+                                        jQuery('#<%=$this->FieldJadwalUjianValidator->ClientID%>').removeAttr('style');                                
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divJadwalUjian').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator>       
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <com:TActiveCustomButton ID="btnReload" CssClass="btn btn-info"  OnClick="Page.reloadPassingGrade" ValidationGroup="filterForm" Attributes.Title="Setting Passing Grade">
+                                    <prop:Text>                                        
+                                        <i class="fa fa-refresh"></i> Setting Ulang Passing Grade                                        
+                                    </prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>         
+                                        $('loading').show();
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnReload->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	
+                                        $('<%=$this->btnReload->ClientId%>').disabled='';						                               						                                        
+                                        $('loading').hide();
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>  
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="main-box clearfix">
                 <header class="main-box-header clearfix">
                     <h2 class="pull-left"><i class="fa fa-list-ul"></i> Pasing Grade</h2> 
                     <div class="filter-block pull-right">                       
-                        <com:TActiveLinkButton ID="btnRefresh" OnClick="reloadPassingGrade" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Reload Passing Grade">
-                            <prop:Text><i class="fa fa-refresh fa-lg"></i></prop:Text>
-                            <prop:ClientSide.OnPreDispatch>
-                                $('loading').show();
-                            </prop:ClientSide.OnPreDispatch>
-                            <prop:ClientSide.OnLoading>
-                                $('<%=$this->btnRefresh->ClientId%>').disabled='disabled';				
-                            </prop:ClientSide.OnLoading>
-                            <prop:ClientSide.OnComplete>
-                                $('<%=$this->btnRefresh->ClientId%>').disabled='';				
-                                $('loading').hide();
-                            </prop:ClientSide.OnComplete>
-                        </com:TActiveLinkButton>  			                                        
+                        	                                        
                     </div>
                 </header>
                 <div class="main-box-body clearfix">                    
@@ -41,7 +87,7 @@
                         <com:TActiveDataGrid
                             CssClass="table table-striped table-hover"        
                             ID="gridPassingGrade"
-                            DataKeyField="takjur"
+                            DataKeyField="idpassing_grade"
                             AutoGenerateColumns="false"        
                             ShowFOoter="false"                
                             OnItemCreated="onItemCreatedTargetFisik"

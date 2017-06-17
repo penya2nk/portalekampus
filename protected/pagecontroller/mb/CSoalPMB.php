@@ -18,7 +18,7 @@ class CSoalPMB extends MainPageMB {
                         $this->DB->setFieldTable(array('tgl_ujian','tgl_selesai_ujian','isfinish','jumlah_soal','jawaban_benar','jawaban_salah','soal_tidak_terjawab','nilai'));
                         $r = $this->DB->getRecord($str);      
                         if (isset($r[1]) ) {
-                            $dataujian=$r[1];                                                        
+                            $dataujian=$r[1];   
                             if ($dataujian['isfinish']) {
                                 $this->idProcess='edit';
                                 if ($dataujian['nilai'] == '') {                                    
@@ -33,8 +33,25 @@ class CSoalPMB extends MainPageMB {
                                     $nilai=($jawaban_benar/$jumlah_soal)*100;
                                     $dataujian['nilai']=$nilai;
                                     
-                                    $str= "INSERT INTO nilai_ujian_masuk (idnilai_ujian_masuk,no_formulir,jumlah_soal,jawaban_benar,jawaban_salah,soal_tidak_terjawab,nilai,ket_lulus) VALUES (NULL,$no_formulir,$jumlah_soal,$jawaban_benar,$jawaban_salah,$soal_tidak_terjawab,$nilai,0)";
-                                    $this->DB->insertRecord($str);                                        
+                                    $str = "SELECT fp.kjur1,fp.kjur2,pp.kjur,pp.nilai FROM formulir_pendaftaran fp,peserta_ujian_pmb pup,passinggrade pp WHERE pup.no_formulir=fp.no_formulir AND pp.idjadwal_ujian=pup.idjadwal_ujian AND (pp.kjur=fp.kjur1 OR pp.kjur=fp.kjur2) AND fp.no_formulir=$no_formulir ORDER BY pp.kjur ASC";
+                                    $this->DB->setFieldTable(array('kjur1','kjur2','kjur','nilai')); 
+                                    $r=$this->DB->getRecord($str);                   
+                                    print_R($r);
+                                    $passing_grade_1=0;
+                                    $passing_grade_2=0;
+                                    if (isset($r[1])) {
+                                        while (list($k,$v)=each($r)) {
+                                            if ($v['kjur1'] == $v['kjur']) {
+                                                $passing_grade_1=$v['nilai'];
+                                            }
+                                            if ($v['kjur2'] == $v['kjur']) {
+                                                $passing_grade_2=$v['nilai'];
+                                            }
+                                        }
+                                    }
+                                    
+                                    $str= "INSERT INTO nilai_ujian_masuk SET idnilai_ujian_masuk=NULL,no_formulir=$no_formulir,jumlah_soal=$jumlah_soal,jawaban_benar=$jawaban_benar,jawaban_salah=$jawaban_salah,soal_tidak_terjawab=$soal_tidak_terjawab,passing_grade_1=$passing_grade_1,passing_grade_2=$passing_grade_2,nilai=$nilai,ket_lulus=0";
+                                    $this->DB->insertRecord($str);                                   
                                 }
                                 $this->DataUjian=$dataujian;                                
                             }else{
@@ -117,10 +134,9 @@ class CSoalPMB extends MainPageMB {
                 $item->rdJawaban->Checked=$item->DataItem['jawaban_tersimpan']==$item->DataItem['idjawaban'];
             }
 		}
-	}    
-    public function saveJawaban ($sender,$param) {
-        $no_formulir=$this->Pengguna->getDataUser('no_formulir');        
-        foreach($this->RepeaterS->Items as $v) {                
+	} 
+    private function simpanJawaban ($repeater,$no_formulir) {
+        foreach($repeater->Items as $v) {                
             $repeaterJawaban=$v->RepeaterJawaban->Items;             
             $idsoal=$v->txtIDSoal->Value;             
             $idjawaban='';
@@ -133,8 +149,14 @@ class CSoalPMB extends MainPageMB {
                     break;
                 }
             }            
-        }            
-        $this->redirect('SoalPMB',true);
+        }
+    }
+    public function saveJawaban ($sender,$param) {
+        if ($this->IsValid) {
+            $no_formulir=$this->Pengguna->getDataUser('no_formulir');        
+            $this->simpanJawaban($this->RepeaterS, $no_formulir);
+            $this->redirect('SoalPMB',true);
+        }
     }
     public function saveJawabanTimer ($sender,$param) {
         $no_formulir=$this->Pengguna->getDataUser('no_formulir');        
@@ -155,7 +177,7 @@ class CSoalPMB extends MainPageMB {
     }
     public function selesaiUjian ($sender,$param) {            
         $no_formulir=$this->Pengguna->getDataUser('no_formulir');
-        $this->saveJawaban($sender, $param);
+        $this->simpanJawaban($this->RepeaterS, $no_formulir);
         $jawaban_benar=$this->DB->getCountRowsOfTable("jawaban_ujian ju LEFT JOIN jawaban j ON (j.idjawaban=ju.idjawaban) WHERE no_formulir='$no_formulir' AND ju.idjawaban!=0 AND status=1",'ju.idjawaban');        
         $jawaban_salah=$this->DB->getCountRowsOfTable("jawaban_ujian ju LEFT JOIN jawaban j ON (j.idjawaban=ju.idjawaban) WHERE no_formulir='$no_formulir' AND ju.idjawaban!=0 AND status=0",'ju.idjawaban');        
         $soal_tidak_terjawab=$this->DB->getCountRowsOfTable("jawaban_ujian WHERE idjawaban=0 AND no_formulir='$no_formulir'",'idjawaban');        
@@ -165,7 +187,23 @@ class CSoalPMB extends MainPageMB {
         $str = "UPDATE kartu_ujian SET tgl_selesai_ujian=NOW(),isfinish=1 WHERE no_formulir=$no_formulir";        
         $this->DB->query ('BEGIN');
         if ($this->DB->updateRecord($str)) {
-            $str= "INSERT INTO nilai_ujian_masuk (idnilai_ujian_masuk,no_formulir,jumlah_soal,jawaban_benar,jawaban_salah,soal_tidak_terjawab,nilai,ket_lulus) VALUES (NULL,$no_formulir,$jumlah_soal,$jawaban_benar,$jawaban_salah,$soal_tidak_terjawab,$nilai,0)";
+            $str = "SELECT fp.kjur1,fp.kjur2,pp.kjur,pp.nilai FROM formulir_pendaftaran fp,peserta_ujian_pmb pup,passinggrade pp WHERE pup.no_formulir=fp.no_formulir AND pp.idjadwal_ujian=pup.idjadwal_ujian AND (pp.kjur=fp.kjur1 OR pp.kjur=fp.kjur2) AND fp.no_formulir=$no_formulir ORDER BY pp.kjur ASC";
+            $this->DB->setFieldTable(array('kjur1','kjur2','kjur','nilai')); 
+            $r=$this->DB->getRecord($str);                   
+            $passing_grade_1=0;
+            $passing_grade_2=0;
+            if (isset($r[1])) {
+                while (list($k,$v)=each($r)) {
+                    if ($v['kjur1'] == $v['kjur']) {
+                        $passing_grade_1=$v['nilai'];
+                    }
+                    if ($v['kjur2'] == $v['kjur']) {
+                        $passing_grade_2=$v['nilai'];
+                    }
+                }
+            }
+            $str= "INSERT INTO nilai_ujian_masuk SET idnilai_ujian_masuk=NULL,no_formulir=$no_formulir,jumlah_soal=$jumlah_soal,jawaban_benar=$jawaban_benar,jawaban_salah=$jawaban_salah,soal_tidak_terjawab=$soal_tidak_terjawab,passing_grade_1=$passing_grade_1,passing_grade_2=$passing_grade_2,nilai=$nilai,ket_lulus=0";
+            $this->DB->insertRecord($str);
             $this->DB->query('COMMIT');
             $this->redirect('SoalPMB',true);
         }else{

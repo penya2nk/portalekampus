@@ -304,13 +304,13 @@ class Logic_ReportSPMB extends Logic_Report {
      * @param type $passinggrade
      * @param type $daftar_jurusan
      */
-    public function printNilaiUjian ($passinggrade,$daftar_jurusan) {
+    public function printNilaiUjian ($daftar_jurusan) {
         $kjur=$this->dataReport['kjur'];        
         $tahun_masuk=$this->dataReport['tahun_masuk'];
         
         $str_kjur=$kjur=='none'?' AND (num.kjur=0 OR num.kjur IS NULL)':" AND num.kjur=$kjur";	                
-        $str = "SELECT fp.no_formulir,fp.nama_mhs,ku.tgl_ujian,ts.nama_tempat,num.kjur,num.jumlah_soal,num.jawaban_benar,num.jawaban_salah,num.nilai,fp.kjur1,fp.kjur2,num.passinggrade,num.kjur AS diterima_di_prodi FROM kartu_ujian ku JOIN formulir_pendaftaran fp ON (fp.no_formulir=ku.no_formulir) JOIN tempat_spmb ts ON (ku.idtempat_spmb=ts.idtempat_spmb) JOIN nilai_ujian_masuk num ON (ku.no_formulir=num.no_formulir) WHERE fp.ta='$tahun_masuk'$str_kjur ORDER BY nilai DESC,nama_mhs ASC";
-        $this->db->setFieldTable(array('no_formulir','nama_mhs','tgl_ujian','jumlah_soal','jawaban_benar','jawaban_salah','nilai','kjur1','kjur2','passinggrade','diterima_di_prodi'));				
+        $str = "SELECT fp.no_formulir,fp.nama_mhs,ku.tgl_ujian,ts.nama_tempat,num.kjur,num.jumlah_soal,num.jawaban_benar,num.jawaban_salah,num.nilai,fp.kjur1,fp.kjur2,num.passing_grade_1,num.passing_grade_2,num.kjur AS diterima_di_prodi FROM kartu_ujian ku JOIN formulir_pendaftaran fp ON (fp.no_formulir=ku.no_formulir) JOIN tempat_spmb ts ON (ku.idtempat_spmb=ts.idtempat_spmb) JOIN nilai_ujian_masuk num ON (ku.no_formulir=num.no_formulir) WHERE fp.ta='$tahun_masuk'$str_kjur ORDER BY nilai DESC,nama_mhs ASC";
+        $this->db->setFieldTable(array('no_formulir','nama_mhs','tgl_ujian','jumlah_soal','jawaban_benar','jawaban_salah','nilai','kjur1','kjur2','passing_grade_1','passing_grade_2','diterima_di_prodi'));				
         $r = $this->db->getRecord($str);        
         
         switch ($this->getDriver()) {
@@ -383,7 +383,7 @@ class Logic_ReportSPMB extends Logic_Report {
                         $bool1=false;
                         if ($v['kjur1'] > 0) {                  
                             $nama_ps=$daftar_jurusan[$v['kjur1']];      
-                            $bool1=($v['nilai'] >= $passinggrade[$v['kjur1']]);
+                            $bool1=($v['nilai'] >= $v['passing_grade_1']);
                             $ket=$bool1 == true ? 'LULUS' : 'GAGAL';                            
                             $pil1="$ket ($nama_ps)";
 
@@ -392,7 +392,7 @@ class Logic_ReportSPMB extends Logic_Report {
                         $bool2=false;
                         if ($v['kjur2'] > 0) {
                             $nama_ps=$daftar_jurusan[$v['kjur2']];      
-                            $bool2=($v['nilai'] >= $passinggrade[$v['kjur2']]);
+                            $bool2=($v['nilai'] >= $v['passing_grade_2']);
                             $ket=$bool2 == true ? 'LULUS' : 'GAGAL';                            
                             $pil2="$ket ($nama_ps)";
                         }                   

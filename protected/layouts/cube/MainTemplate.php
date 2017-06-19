@@ -5,7 +5,7 @@ class MainTemplate extends TTemplateControl {
 		parent::onLoad($param);		        
 		if (!$this->Page->IsPostBack&&!$this->Page->IsCallback) {		
             $tipeuser=$this->Page->Pengguna->getTipeUser();
-            $this->linkTopTASemester->NavigateUrl=$tipeuser=='m'?$this->Page->constructUrl('settings.Variables',true):'#';
+            $this->linkTopTASemester->NavigateUrl=$tipeuser=='sa'?$this->Page->constructUrl('settings.Variables',true):'#';
             $this->lblStatusUser->Text=$this->getStatusUser();
             
             $this->populateThemes();

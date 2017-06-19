@@ -12,7 +12,7 @@ class CKHS extends MainPageDW {
         $this->createObj('Finance');
 		if (!$this->IsPostBack&&!$this->IsCallBack) {
             if (!isset($_SESSION['currentPageKHS'])||$_SESSION['currentPageKHS']['page_name']!='m.nilai.KHS') {
-				$_SESSION['currentPageKHS']=array('page_name'=>'m.nilai.KHS','page_num'=>0,'search'=>false,'iddosen_wali'=>'none','tahun_masuk'=>$_SESSION['tahun_masuk']);
+				$_SESSION['currentPageKHS']=array('page_name'=>'m.nilai.KHS','page_num'=>0,'search'=>false,'iddosen_wali'=>'none','tahun_masuk'=>'none');
 			}   
 			$_SESSION['currentPageKHS']['search']=false;
             $this->RepeaterS->PageSize=10;

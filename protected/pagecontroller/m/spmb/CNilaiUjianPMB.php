@@ -235,7 +235,7 @@ class CNilaiUjianPMB extends MainPageM {
                 $dataReport['linkoutput']=$this->linkOutput; 
                 $this->report->setDataReport($dataReport); 
                 $this->report->setMode($_SESSION['outputreport']);                
-                $this->report->printNilaiUjian($_SESSION['currentPageNilaiUjianPMB']['passinggrade'],$_SESSION['daftar_jurusan']);
+                $this->report->printNilaiUjian($_SESSION['daftar_jurusan']);
             break;        
             
         }

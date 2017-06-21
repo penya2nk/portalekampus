@@ -353,25 +353,12 @@
                                                 <span>PIN</span>                                                
                                             </a>
                                         </li>
-                                        <li<%=$this->Page->showSubMenuSPMBPendaftaran==true?' class="active"':''%>>
-                                            <a href="#" class="dropdown-toggle">
+                                        <li<%=$this->Page->showPendaftaranViaWeb==true ? ' class="active" ':''%>>                                            
+                                            <a href="<%=$this->Page->constructUrl('spmb.PendaftaranViaWeb',true)%>">
                                                 <i class="fa fa-sign-in"></i>
-                                                <span>Pendaftaran</span>
-                                                <i class="fa fa-angle-right drop-icon"></i>
+                                                <span>Formulir Pendaftaran</span>                                                
                                             </a>
-                                            <ul class="submenu">
-                                                <li>
-                                                    <a href="#"<%=$this->Page->showPendaftaranViaFO==true ? ' class="active" ':''%>>
-                                                        Via Front Office
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="<%=$this->Page->constructUrl('spmb.PendaftaranViaWeb',true)%>"<%=$this->Page->showPendaftaranViaWeb==true ? ' class="active" ':''%>>
-                                                        Via Web
-                                                    </a>
-                                                </li>                                                
-                                            </ul>
-                                        </li>    
+                                        </li>
                                         <li<%=$this->Page->showSubMenuSPMBUjianPMB==true?' class="active"':''%>>
                                             <a href="#" class="dropdown-toggle">
                                                 <i class="fa fa-flag-checkered"></i>

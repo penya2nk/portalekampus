@@ -77,14 +77,6 @@ class MainPageM extends MainPage {
      */
     public $showPIN=false;
     /**
-     * show sub menu spmb pendaftaran
-     */
-    public $showSubMenuSPMBPendaftaran=false;
-    /**
-     * show page pendaftaran via fo [spmb pendaftaran]
-     */
-    public $showPendaftaranViaFO=false;
-    /**
      * show page pendaftaran via Web [spmb pendaftaran]
      */
     public $showPendaftaranViaWeb=false;

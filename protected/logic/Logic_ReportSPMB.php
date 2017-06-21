@@ -7,10 +7,10 @@ class Logic_ReportSPMB extends Logic_Report {
     /**
      * digunakan untuk memprint formulir pendaftaran
      */
-    public function printFormulirPendaftaran () {
+    public function printFormulirPendaftaran ($daftar_ps,$objDMaster) {
         $no_formulir=$this->dataReport['no_formulir'];
-        $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.tempat_lahir,fp.tanggal_lahir,fp.jk,fp.idagama,a.nama_agama,fp.idwarga,fp.idstatus,fp.alamat_kantor,fp.alamat_rumah,fp.telp_rumah,fp.telp_kantor,fp.telp_hp,pm.email,fp.idjp,fp.pendidikan_terakhir,fp.jurusan,fp.kota,fp.provinsi,fp.tahun_pa,jp.nama_pekerjaan,fp.jenis_slta,fp.asal_slta,fp.status_slta,fp.nomor_ijazah,fp.kjur1,fp.kjur2,fp.idkelas,fp.waktu_mendaftar,fp.ta,fp.idsmt FROM formulir_pendaftaran fp,agama a,jenis_pekerjaan jp,profiles_mahasiswa pm WHERE fp.idagama=a.idagama AND fp.idjp=jp.idjp AND pm.no_formulir=fp.no_formulir AND fp.no_formulir='$no_formulir'";
-        $this->db->setFieldTable(array('no_formulir','nama_mhs','tempat_lahir','tanggal_lahir','jk','idagama','nama_agama','idwarga','idstatus','alamat_kantor','alamat_rumah','telp_rumah','telp_kantor','telp_hp','email','idjp','pendidikan_terakhir','jurusan','kota','provinsi','tahun_pa','nama_pekerjaan','jenis_slta','asal_slta','status_slta','nomor_ijazah','kjur1','kjur2','idkelas','waktu_mendaftar','ta','idsmt'));
+        $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.tempat_lahir,fp.tanggal_lahir,fp.jk,fp.idagama,a.nama_agama,fp.nama_ibu_kandung,fp.idwarga,fp.nik,fp.idstatus,fp.alamat_kantor,fp.alamat_rumah,fp.telp_rumah,fp.telp_kantor,fp.telp_hp,pm.email,fp.idjp,jp.nama_pekerjaan,fp.pendidikan_terakhir,fp.jurusan,fp.kota,fp.provinsi,fp.tahun_pa,jp.nama_pekerjaan,fp.jenis_slta,fp.asal_slta,fp.status_slta,fp.nomor_ijazah,fp.kjur1,fp.kjur2,fp.idkelas,fp.waktu_mendaftar,fp.ta,fp.idsmt FROM formulir_pendaftaran fp,agama a,jenis_pekerjaan jp,profiles_mahasiswa pm WHERE fp.idagama=a.idagama AND fp.idjp=jp.idjp AND pm.no_formulir=fp.no_formulir AND fp.no_formulir='$no_formulir'";
+        $this->db->setFieldTable(array('no_formulir','nama_mhs','tempat_lahir','tanggal_lahir','jk','idagama','nama_agama','nama_ibu_kandung','idwarga','nik','idstatus','alamat_kantor','alamat_rumah','telp_rumah','telp_kantor','telp_hp','email','idjp','nama_pekerjaan','pendidikan_terakhir','jurusan','kota','provinsi','tahun_pa','nama_pekerjaan','jenis_slta','asal_slta','status_slta','nomor_ijazah','kjur1','kjur2','idkelas','waktu_mendaftar','ta','idsmt'));
         $r=$this->db->getRecord($str);
         
         $datamhs=$r[1];
@@ -58,20 +58,20 @@ class Logic_ReportSPMB extends Logic_Report {
                 $rpt->Cell(80,5,': '.$datamhs['jk'],1,0);
                 $row+=5;				
                 $rpt->setXY(3,$row);			
+                $rpt->Cell(40,5,'Nama Ibu Kandung',1,0);				
+                $rpt->Cell(80,5,': '.$datamhs['nama_ibu_kandung'],1,0);
+                $row+=5;				
+                $rpt->setXY(3,$row);			
                 $rpt->Cell(40,5,'Agama',1,0);				
                 $rpt->Cell(80,5,': '.$datamhs['nama_agama'],1,0);
                 $row+=5;				
                 $rpt->setXY(3,$row);			
+                $rpt->Cell(40,5,'NIK',1,0);				
+                $rpt->Cell(80,5,': '.$datamhs['nik'],1,0);
+                $row+=5;				
+                $rpt->setXY(3,$row);			
                 $rpt->Cell(40,5,'Kewarganegaraan',1,0);				
                 $rpt->Cell(80,5,': '.$datamhs['idwarga'],1,0);
-                $row+=5;				
-                $rpt->setXY(3,$row);			
-                $rpt->Cell(40,5,'Program Studi Pilihan Ke I',1,0);				
-                $rpt->Cell(80,5,': '.$datamhs['njur1'],1,0);
-                $row+=5;				
-                $rpt->setXY(3,$row);			
-                $rpt->Cell(40,5,'Program Studi Pilihan Ke II',1,0);
-                $rpt->Cell(80,5,': '.$datamhs['njur2'],1,0);
                 $row+=5;				
                 $rpt->setXY(3,$row);			
                 $rpt->Cell(40,5,'Alamat Rumah',1,0);				
@@ -95,7 +95,7 @@ class Logic_ReportSPMB extends Logic_Report {
                 $row+=5;				
                 $rpt->setXY(3,$row);			
                 $rpt->Cell(40,5,'Pekerjaan Orang Tua',1,0);				
-                $rpt->Cell(80,5,': '.$datamhs['Nama Pekerjaan'],1,0);
+                $rpt->Cell(80,5,': '.$datamhs['nama_pekerjaan'],1,0);
                 $row+=5;				
                 $rpt->setXY(3,$row);			
                 $rpt->Cell(40,5,'Pendidikan Terakhir',1,0);				
@@ -131,7 +131,19 @@ class Logic_ReportSPMB extends Logic_Report {
                 $row+=5;				
                 $rpt->setXY(3,$row);			
                 $rpt->Cell(40,5,'Nomor Ijazah',1,0);				
-                $rpt->Cell(80,5,': '.$datamhs['nomor_ijazah'],1,0);	                
+                $rpt->Cell(80,5,': '.$datamhs['nomor_ijazah'],1,0);
+                $row+=5;				
+                $rpt->setXY(3,$row);			
+                $rpt->Cell(40,5,'Program Studi Pilihan Ke I',1,0);				
+                $rpt->Cell(80,5,': '.$daftar_ps[$datamhs['kjur1']],1,0);
+                $row+=5;				
+                $rpt->setXY(3,$row);			
+                $rpt->Cell(40,5,'Program Studi Pilihan Ke II',1,0);
+                $rpt->Cell(80,5,': '.$daftar_ps[$datamhs['kjur2']],1,0);
+                $row+=5;				
+                $rpt->setXY(3,$row);			
+                $rpt->Cell(40,5,'Kelas',1,0);				
+                $rpt->Cell(80,5,': '.$objDMaster->getNamaKelasByID ($datamhs['idkelas']),1,0);
                 $this->printOut("formulirpendaftaran_$no_formulir");            
             break;
         }
@@ -142,24 +154,159 @@ class Logic_ReportSPMB extends Logic_Report {
      * @param type $outputcompress none,zip,tar,etc
      * @param type $level 1 s.d 9
      */
-    public function printFormulirPendaftaranAll ($outputcompress,$level=0) {  
+    public function printFormulirPendaftaranAll ($outputcompress,$daftar_ps,$objDMaster) {  
         $kjur=$this->dataReport['kjur'];        
         $tahun_masuk=$this->dataReport['tahun_masuk'];
         $semester=$this->dataReport['semester'];
         $nama_tahun=$this->dataReport['nama_tahun'];
         $nama_semester=$this->dataReport['nama_semester'];
-        
-        $daftar_via=$this->dataReport['daftar_via'];                
-        $offset=$this->dataReport['offset'];
-        $limit=$this->dataReport['limit'];
+        $daftar_via=$this->dataReport['daftar_via'];
         switch ($this->getDriver()) {
             case 'excel2003' :               
             case 'excel2007' :                
-
+                $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.tempat_lahir,fp.tanggal_lahir,fp.jk,fp.idagama,fp.nama_ibu_kandung,a.nama_agama,nik,fp.idwarga,fp.idstatus,fp.alamat_kantor,fp.alamat_rumah,fp.telp_rumah,fp.telp_kantor,fp.telp_hp,pm.email,fp.idjp,jp.nama_pekerjaan,fp.pendidikan_terakhir,fp.jurusan,fp.kota,fp.provinsi,fp.tahun_pa,jp.nama_pekerjaan,fp.jenis_slta,fp.asal_slta,fp.status_slta,fp.nomor_ijazah,fp.kjur1,fp.kjur2,fp.idkelas,fp.waktu_mendaftar,fp.ta,fp.idsmt FROM formulir_pendaftaran fp,agama a,jenis_pekerjaan jp,profiles_mahasiswa pm WHERE fp.idagama=a.idagama AND fp.idjp=jp.idjp AND pm.no_formulir=fp.no_formulir AND ta='$tahun_masuk' AND idsmt='$semester' AND daftar_via='$daftar_via' AND (kjur1='$kjur' OR kjur2='$kjur')";
+                $this->db->setFieldTable(array('no_formulir','nama_mhs','tempat_lahir','tanggal_lahir','jk','idagama','nama_ibu_kandung','nama_agama','nik','idwarga','idstatus','alamat_kantor','alamat_rumah','telp_rumah','telp_kantor','telp_hp','email','idjp','nama_pekerjaan','pendidikan_terakhir','jurusan','kota','provinsi','tahun_pa','nama_pekerjaan','jenis_slta','asal_slta','status_slta','nomor_ijazah','kjur1','kjur2','idkelas','waktu_mendaftar','ta','idsmt'));
+                $r=$this->db->getRecord($str);
+                
+                $this->setHeaderPT('Z');
+                $sheet=$this->rpt->getActiveSheet();
+                $this->rpt->getDefaultStyle()->getFont()->setName('Arial');                
+                $this->rpt->getDefaultStyle()->getFont()->setSize('9');   
+                
+                $sheet->mergeCells("A7:Z7");
+                $sheet->getRowDimension(7)->setRowHeight(20);
+                $sheet->setCellValue("A7","PENDAFTARAN MAHASISWA BARU / PINDAHAN TAHUN MASUK $tahun_masuk");
+                
+                $styleArray=array(
+								'font' => array('bold' => true,
+                                                'size' => 16),
+								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+												   'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+							);
+                $sheet->getStyle("A7:Z8")->applyFromArray($styleArray);
+                $sheet->getRowDimension(10)->setRowHeight(25);
+                
+                $sheet->getColumnDimension('B')->setWidth(15);
+                $sheet->getColumnDimension('C')->setWidth(40);
+                $sheet->getColumnDimension('D')->setWidth(35);
+                $sheet->getColumnDimension('E')->setWidth(23);
+                $sheet->getColumnDimension('F')->setWidth(7);                
+                $sheet->getColumnDimension('G')->setWidth(10);
+                $sheet->getColumnDimension('H')->setWidth(38);
+                $sheet->getColumnDimension('I')->setWidth(18);
+                $sheet->getColumnDimension('J')->setWidth(10);
+                $sheet->getColumnDimension('K')->setWidth(30);
+                $sheet->getColumnDimension('L')->setWidth(15);
+                $sheet->getColumnDimension('M')->setWidth(17);
+                $sheet->getColumnDimension('N')->setWidth(13);
+                $sheet->getColumnDimension('O')->setWidth(15);
+                $sheet->getColumnDimension('P')->setWidth(18);
+                $sheet->getColumnDimension('Q')->setWidth(28);
+                $sheet->getColumnDimension('R')->setWidth(27);
+                $sheet->getColumnDimension('S')->setWidth(21);
+                $sheet->getColumnDimension('T')->setWidth(27);
+                $sheet->getColumnDimension('U')->setWidth(9);
+                $sheet->getColumnDimension('V')->setWidth(35);
+                $sheet->getColumnDimension('W')->setWidth(8);
+                $sheet->getColumnDimension('X')->setWidth(30);
+                $sheet->getColumnDimension('Y')->setWidth(30);
+                $sheet->getColumnDimension('Z')->setWidth(30);
+                $sheet->getColumnDimension('AA')->setWidth(17);
+                                
+                $sheet->setCellValue('A10','NO');				
+                $sheet->setCellValue('B10','NO. FORMULIR');
+                $sheet->setCellValue('C10','NAMA');
+                $sheet->setCellValue('D10','TEMPAT LAHIR');
+                $sheet->setCellValue('E10','TANGGAL LAHIR');
+                $sheet->setCellValue('F10','JK');
+                $sheet->setCellValue('G10','AGAMA');
+                $sheet->setCellValue('H10','NAMA IBU KANDUNG');
+                $sheet->setCellValue('I10','NIK');
+                $sheet->setCellValue('J10','WARGA NEGARA');
+                $sheet->setCellValue('K10','ALAMAT RUMAH');
+                $sheet->setCellValue('L10','NO. TELP. RUMAH');
+                $sheet->setCellValue('M10','NOMOR HP');
+                $sheet->setCellValue('N10','STATUS KEPEGAWAIAN');
+                $sheet->setCellValue('O10','NO. TELP. KANTOR');
+                $sheet->setCellValue('P10','PEKERJAAN ORANG TUA');
+                $sheet->setCellValue('Q10','PENDIDIKAN TERAKHIR');
+                $sheet->setCellValue('R10','JURUSAN');
+                $sheet->setCellValue('S10','KAB/KODYA/KOTA');
+                $sheet->setCellValue('T10','PROVINSI');
+                $sheet->setCellValue('U10','JENIS SLTA');
+                $sheet->setCellValue('V10','ASAL SLTA');
+                $sheet->setCellValue('W10','STATUS SLTA');
+                $sheet->setCellValue('X10','NOMOR IJAZAH');
+                $sheet->setCellValue('Y10','PROGRAM STUDI 1');
+                $sheet->setCellValue('Z10','PROGRAM STUDI 2');
+                $sheet->setCellValue('AA10','KELAS');
+                $styleArray=array(								
+                                    'font' => array('bold' => true),
+                                    'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                                                       'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+                                    'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+                                );																					 
+                $sheet->getStyle("A10:AA10")->applyFromArray($styleArray);
+                $sheet->getStyle("A10:AA10")->getAlignment()->setWrapText(true);
+                $row=11;                
+                while (list($k,$v)=each($r)) { 
+                    $sheet->setCellValue("A$row",$v['no']);		
+                    $sheet->setCellValue("B$row",$v['no_formulir']);		
+                    $sheet->setCellValue("C$row",$v['nama_mhs']);
+                    $sheet->setCellValue("D$row",$v['tempat_lahir']);
+                    $sheet->setCellValue("E$row",$this->tgl->tanggal('d F Y',$v['tanggal_lahir']));
+                    $sheet->setCellValue("F$row",$v['jk']);
+                    $sheet->setCellValue("G$row",$v['nama_agama']);
+                    $sheet->setCellValue("H$row",$v['nama_ibu_kandung']);
+                    $sheet->setCellValueExplicit("I$row",$v['nik'],PHPExcel_Cell_DataType::TYPE_STRING);
+                    $sheet->setCellValue("J$row",$v['idwarga']);
+                    $sheet->setCellValue("K$row",$v['alamat_rumah']);
+                    $sheet->setCellValueExplicit("L$row",$v['telp_rumah'],PHPExcel_Cell_DataType::TYPE_STRING);
+                    $sheet->setCellValueExplicit("M$row",$v['telp_hp'],PHPExcel_Cell_DataType::TYPE_STRING);                    
+                    $sheet->setCellValue("N$row",$v['idstatus']);
+                    $sheet->setCellValueExplicit("O$row",$v['telp_kantor'],PHPExcel_Cell_DataType::TYPE_STRING);
+                    $sheet->setCellValue("P$row",$v['nama_pekerjaan']);
+                    $sheet->setCellValue("Q$row",$v['pendidikan_terakhir']);
+                    $sheet->setCellValue("R$row",$v['jurusan']);
+                    $sheet->setCellValue("S$row",$v['kota']);
+                    $sheet->setCellValue("T$row",$v['provinsi']);
+                    $sheet->setCellValue("U$row",$v['jenis_slta']);
+                    $sheet->setCellValue("V$row",$v['asal_slta']);
+                    $sheet->setCellValue("W$row",$v['status_slta']);
+                    $sheet->setCellValue("X$row",$v['nomor_ijazah']);
+                    $sheet->setCellValue("Y$row",$daftar_ps[$v['kjur1']]);
+                    $sheet->setCellValue("Z$row",$daftar_ps[$v['kjur2']]);
+                    $sheet->setCellValue("AA$row",$objDMaster->getNamaKelasByID ($v['idkelas']));
+                    $this->db->setFieldTable(array('idstatus','alamat_kantor','alamat_rumah','telp_rumah','telp_kantor','telp_hp','email','idjp','pendidikan_terakhir','jurusan','kota','provinsi','tahun_pa','nama_pekerjaan'));
+                    $row+=1;
+                }
+                $row-=1;
+                $styleArray=array(								
+                                    'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                                                       'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+                                    'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+                                );																					 
+                $sheet->getStyle("A11:AA$row")->applyFromArray($styleArray);
+                $sheet->getStyle("A11:AA$row")->getAlignment()->setWrapText(true);
+                
+                $styleArray=array(								
+                                    'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_LEFT)
+                                );
+                $sheet->getStyle("C11:D$row")->applyFromArray($styleArray);
+                $sheet->getStyle("H11:H$row")->applyFromArray($styleArray);
+                $sheet->getStyle("K11:K$row")->applyFromArray($styleArray);
+                $sheet->getStyle("P11:Q$row")->applyFromArray($styleArray);
+                $sheet->getStyle("S11:T$row")->applyFromArray($styleArray);
+                $sheet->getStyle("V11:V$row")->applyFromArray($styleArray);
+                $sheet->getStyle("X11:X$row")->applyFromArray($styleArray);
+                
+                $this->printOut("pendaftaranmahasiswabaru_$tahun_masuk");
             break;
-            case 'pdf' :                               
-                $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.tempat_lahir,fp.tanggal_lahir,fp.jk,fp.idagama,a.nama_agama,fp.idwarga,fp.idstatus,fp.alamat_kantor,fp.alamat_rumah,fp.telp_rumah,fp.telp_kantor,fp.telp_hp,pm.email,fp.idjp,fp.pendidikan_terakhir,fp.jurusan,fp.kota,fp.provinsi,fp.tahun_pa,jp.nama_pekerjaan,fp.jenis_slta,fp.asal_slta,fp.status_slta,fp.nomor_ijazah,fp.kjur1,fp.kjur2,fp.idkelas,fp.waktu_mendaftar,fp.ta,fp.idsmt FROM formulir_pendaftaran fp,agama a,jenis_pekerjaan jp,profiles_mahasiswa pm WHERE fp.idagama=a.idagama AND fp.idjp=jp.idjp AND pm.no_formulir=fp.no_formulir AND ta='$tahun_masuk' AND idsmt='$semester' AND daftar_via='$daftar_via' AND (kjur1='$kjur' OR kjur2='$kjur') LIMIT $offset,$limit";
-                $this->db->setFieldTable(array('no_formulir','nama_mhs','tempat_lahir','tanggal_lahir','jk','idagama','nama_agama','idwarga','idstatus','alamat_kantor','alamat_rumah','telp_rumah','telp_kantor','telp_hp','email','idjp','pendidikan_terakhir','jurusan','kota','provinsi','tahun_pa','nama_pekerjaan','jenis_slta','asal_slta','status_slta','nomor_ijazah','kjur1','kjur2','idkelas','waktu_mendaftar','ta','idsmt'));
+            case 'pdf' :     
+                $offset=$this->dataReport['offset'];
+                $limit=$this->dataReport['limit'];
+                $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.tempat_lahir,fp.tanggal_lahir,fp.jk,fp.idagama,fp.nama_ibu_kandung,a.nama_agama,nik,fp.idwarga,fp.idstatus,fp.alamat_kantor,fp.alamat_rumah,fp.telp_rumah,fp.telp_kantor,fp.telp_hp,pm.email,fp.idjp,jp.nama_pekerjaan,fp.pendidikan_terakhir,fp.jurusan,fp.kota,fp.provinsi,fp.tahun_pa,jp.nama_pekerjaan,fp.jenis_slta,fp.asal_slta,fp.status_slta,fp.nomor_ijazah,fp.kjur1,fp.kjur2,fp.idkelas,fp.waktu_mendaftar,fp.ta,fp.idsmt FROM formulir_pendaftaran fp,agama a,jenis_pekerjaan jp,profiles_mahasiswa pm WHERE fp.idagama=a.idagama AND fp.idjp=jp.idjp AND pm.no_formulir=fp.no_formulir AND ta='$tahun_masuk' AND idsmt='$semester' AND daftar_via='$daftar_via' AND (kjur1='$kjur' OR kjur2='$kjur') LIMIT $offset,$limit";
+                $this->db->setFieldTable(array('no_formulir','nama_mhs','tempat_lahir','tanggal_lahir','jk','idagama','nama_ibu_kandung','nama_agama','nik','idwarga','idstatus','alamat_kantor','alamat_rumah','telp_rumah','telp_kantor','telp_hp','email','idjp','nama_pekerjaan','pendidikan_terakhir','jurusan','kota','provinsi','tahun_pa','nama_pekerjaan','jenis_slta','asal_slta','status_slta','nomor_ijazah','kjur1','kjur2','idkelas','waktu_mendaftar','ta','idsmt'));
                 $r=$this->db->getRecord($str);
                 
                 while (list($k,$v)=each($r)) {
@@ -214,20 +361,20 @@ class Logic_ReportSPMB extends Logic_Report {
                     $rpt->Cell(80,5,': '.$datamhs['jk'],1,0);
                     $row+=5;				
                     $rpt->setXY(3,$row);			
+                    $rpt->Cell(40,5,'Nama Ibu Kandung',1,0);				
+                    $rpt->Cell(80,5,': '.$datamhs['nama_ibu_kandung'],1,0);
+                    $row+=5;				
+                    $rpt->setXY(3,$row);			
                     $rpt->Cell(40,5,'Agama',1,0);				
                     $rpt->Cell(80,5,': '.$datamhs['nama_agama'],1,0);
                     $row+=5;				
                     $rpt->setXY(3,$row);			
+                    $rpt->Cell(40,5,'NIK',1,0);				
+                    $rpt->Cell(80,5,': '.$datamhs['nik'],1,0);
+                    $row+=5;				
+                    $rpt->setXY(3,$row);			
                     $rpt->Cell(40,5,'Kewarganegaraan',1,0);				
                     $rpt->Cell(80,5,': '.$datamhs['idwarga'],1,0);
-                    $row+=5;				
-                    $rpt->setXY(3,$row);			
-                    $rpt->Cell(40,5,'Program Studi Pilihan Ke I',1,0);				
-                    $rpt->Cell(80,5,': '.$datamhs['njur1'],1,0);
-                    $row+=5;				
-                    $rpt->setXY(3,$row);			
-                    $rpt->Cell(40,5,'Program Studi Pilihan Ke II',1,0);
-                    $rpt->Cell(80,5,': '.$datamhs['njur2'],1,0);
                     $row+=5;				
                     $rpt->setXY(3,$row);			
                     $rpt->Cell(40,5,'Alamat Rumah',1,0);				
@@ -251,7 +398,7 @@ class Logic_ReportSPMB extends Logic_Report {
                     $row+=5;				
                     $rpt->setXY(3,$row);			
                     $rpt->Cell(40,5,'Pekerjaan Orang Tua',1,0);				
-                    $rpt->Cell(80,5,': '.$datamhs['Nama Pekerjaan'],1,0);
+                    $rpt->Cell(80,5,': '.$datamhs['nama_pekerjaan'],1,0);
                     $row+=5;				
                     $rpt->setXY(3,$row);			
                     $rpt->Cell(40,5,'Pendidikan Terakhir',1,0);				
@@ -288,6 +435,18 @@ class Logic_ReportSPMB extends Logic_Report {
                     $rpt->setXY(3,$row);			
                     $rpt->Cell(40,5,'Nomor Ijazah',1,0);				
                     $rpt->Cell(80,5,': '.$datamhs['nomor_ijazah'],1,0);	
+                    $row+=5;				
+                    $rpt->setXY(3,$row);			
+                    $rpt->Cell(40,5,'Program Studi Pilihan Ke I',1,0);				
+                    $rpt->Cell(80,5,': '.$daftar_ps[$datamhs['kjur1']],1,0);
+                    $row+=5;				
+                    $rpt->setXY(3,$row);			
+                    $rpt->Cell(40,5,'Program Studi Pilihan Ke II',1,0);
+                    $rpt->Cell(80,5,': '.$daftar_ps[$datamhs['kjur2']],1,0);
+                    $row+=5;				
+                    $rpt->setXY(3,$row);			
+                    $rpt->Cell(40,5,'Kelas',1,0);				
+                    $rpt->Cell(80,5,': '.$objDMaster->getNamaKelasByID ($datamhs['idkelas']),1,0);
                     $no_formulir=$datamhs['no_formulir'];                    
                     $this->printOut("formulirpendaftaran_$no_formulir",true);                    
                     $filespdf["formulirpendaftaran_$no_formulir.pdf"]=$this->exportedDir['full_path']."formulirpendaftaran_$no_formulir.pdf";

@@ -3,7 +3,6 @@ prado::using ('Application.MainPageM');
 class CPendaftaranViaWeb extends MainPageM {		
 	public function onLoad($param) {
 		parent::onLoad($param);			
-        $this->showSubMenuSPMBPendaftaran=true;
 		$this->showPendaftaranViaWeb=true; 
         $this->createObj('Akademik');        
 		if (!$this->IsPostBack && !$this->IsCallBack) {	
@@ -22,7 +21,7 @@ class CPendaftaranViaWeb extends MainPageM {
             
             $tahun_masuk=$this->DMaster->removeIdFromArray($this->DMaster->getListTA(),'none');			
 			$this->tbCmbTahunMasuk->DataSource=$tahun_masuk	;					
-			$this->tbCmbTahunMasuk->Text=$_SESSION['tahun_masuk'];						
+			$this->tbCmbTahunMasuk->Text=$_SESSION['tahun_pendaftaran'];						
 			$this->tbCmbTahunMasuk->dataBind();
                         
             $this->tbCmbSemester->DataSource=$this->DMaster->removeIdFromArray($this->setup->getSemester(),'none');
@@ -44,7 +43,7 @@ class CPendaftaranViaWeb extends MainPageM {
 	}
 	
 	public function changeTbTahunMasuk($sender,$param) {					
-		$_SESSION['tahun_masuk']=$this->tbCmbTahunMasuk->Text;
+		$_SESSION['tahun_pendaftaran']=$this->tbCmbTahunMasuk->Text;
         $this->lblModulHeader->Text=$this->getInfoToolbar();
 		$this->populateData();
 	}
@@ -61,9 +60,9 @@ class CPendaftaranViaWeb extends MainPageM {
 	public function getInfoToolbar() {        
         $kjur=$_SESSION['kjur'];        
 		$ps=$_SESSION['daftar_jurusan'][$kjur];
-		$tahunmasuk=$this->DMaster->getNamaTA($_SESSION['tahun_masuk']);
+		$tahunmasuk=$this->DMaster->getNamaTA($_SESSION['tahun_pendaftaran']);
 		$semester=$this->setup->getSemester($_SESSION['semester']);
-		$text="Program Studi $ps Tahun Masuk $tahunmasuk Semester $semester";
+		$text="Program Studi $ps Tahun Pendaftaran $tahunmasuk Semester $semester";
 		return $text;
 	}
 	public function searchRecord ($sender,$param) {
@@ -82,7 +81,7 @@ class CPendaftaranViaWeb extends MainPageM {
 		$this->populateData($_SESSION['currentPagePendaftaranWeb']['search']);
 	}		
 	public function populateData ($search=false) {	
-        $tahun_masuk=$_SESSION['tahun_masuk'];
+        $tahun_masuk=$_SESSION['tahun_pendaftaran'];
         $semester=$_SESSION['semester'];
         $kjur=$_SESSION['kjur'];
         if ($search) {            
@@ -328,7 +327,7 @@ class CPendaftaranViaWeb extends MainPageM {
 		if ($this->IsValid) {			
 			try {
 				$no_formulir=trim($this->txtNoFormulir->Text);			
-				$this->checkFormulir2($no_formulir,$_SESSION['tahun_masuk']);			
+				$this->checkFormulir2($no_formulir,$_SESSION['tahun_pendaftaran']);			
 				$_SESSION['addProcess']=$no_formulir;
 				$this->spmb->redirect('a.m.SPMB.PendaftaranViaFO');									
 			}catch (Exception $e) {
@@ -385,6 +384,8 @@ class CPendaftaranViaWeb extends MainPageM {
 	}
 	public function printOut ($sender,$param) {	
         $this->createObj('reportspmb');
+        $this->linkOutput->Text='';
+        $this->linkOutput->NavigateUrl='#';
 		switch ($sender->getId()) {
 			case 'btnPrintOutFormulirPendaftaran' :
                 switch ($_SESSION['outputreport']) {
@@ -395,12 +396,9 @@ class CPendaftaranViaWeb extends MainPageM {
                         $messageprintout="Mohon maaf Print out pada mode summary excel tidak kami support.";                
                     break;
                     case  'excel2007' :
-                        $messageprintout="Mohon maaf Print out pada mode excel 2007 belum kami support.";                
-                    break;
-                    case  'pdf' :
                         $kjur=$_SESSION['kjur'];
                         $nama_prodi=$_SESSION['daftar_jurusan'][$kjur];
-                        $tahun=$_SESSION['tahun_masuk'];
+                        $tahun=$_SESSION['tahun_pendaftaran'];
                         $semester=$_SESSION['semester'];
                         $nama_tahun = $this->DMaster->getNamaTA($tahun);
                         $nama_semester = $this->setup->getSemester($semester);
@@ -416,9 +414,33 @@ class CPendaftaranViaWeb extends MainPageM {
 
                         $messageprintout="Daftar Formulir Pendaftaran PS $nama_prodi Tahun Masuk $nama_tahun Semester $nama_semester : <br/>";
                         $dataReport['linkoutput']=$this->linkOutput;         
-                        $this->report->setDataReport($dataReport);         
+                        $this->report->setDataReport($dataReport); 
                         $this->report->setMode($_SESSION['outputreport']);
-                        $this->report->printFormulirPendaftaranAll($_SESSION['outputcompress']);								
+                        $this->report->printFormulirPendaftaranAll($_SESSION['outputcompress'],$_SESSION['daftar_jurusan'],$this->DMaster);                
+                    break;
+                    case  'pdf' :
+                        $kjur=$_SESSION['kjur'];
+                        $nama_prodi=$_SESSION['daftar_jurusan'][$kjur];
+                        $tahun=$_SESSION['tahun_pendaftaran'];
+                        $semester=$_SESSION['semester'];
+                        $nama_tahun = $this->DMaster->getNamaTA($tahun);
+                        $nama_semester = $this->setup->getSemester($semester);
+
+                        $dataReport['kjur']=$_SESSION['kjur'];                
+                        $dataReport['tahun_masuk']=$tahun;
+                        $dataReport['semester']=$semester;
+                        $dataReport['nama_tahun']=$nama_tahun;
+                        $dataReport['nama_semester']=$nama_semester;        
+                        $dataReport['daftar_via']='WEB';         
+                        $dataReport['offset']=$_SESSION['currentPagePendaftaranWeb']['offset'];         
+                        $dataReport['limit']=$_SESSION['currentPagePendaftaranWeb']['limit'];         
+
+                        $messageprintout="Daftar Formulir Pendaftaran PS $nama_prodi Tahun Masuk $nama_tahun Semester $nama_semester : <br/>";
+                        $dataReport['linkoutput']=$this->linkOutput;         
+                        $this->report->setDataReport($dataReport);   
+                        $_SESSION['outputcompress']=$_SESSION['outputcompress']=='none'?'zip':$_SESSION['outputcompress'];
+                        $this->report->setMode($_SESSION['outputreport']);
+                        $this->report->printFormulirPendaftaranAll($_SESSION['outputcompress'],$_SESSION['daftar_jurusan'],$this->DMaster);								
                     break;
                 }
 			break;
@@ -440,7 +462,7 @@ class CPendaftaranViaWeb extends MainPageM {
                         $this->report->setDataReport($dataReport);      
                         $this->report->setMode($_SESSION['outputreport']);
                         $messageprintout="Formulir Pendaftaran $no_formulir : <br/>";
-                        $this->report->printFormulirPendaftaran();				
+                        $this->report->printFormulirPendaftaran($_SESSION['daftar_jurusan'],$this->DMaster);				
                     break;
                 }
 			break;

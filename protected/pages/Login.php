@@ -89,7 +89,8 @@ class Login extends MainPage {
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
                     $_SESSION['kjur']=$setup->getSettingValue('default_kjur');
                     $_SESSION['ta']=$setup->getSettingValue('default_ta');
-                    
+                    $_SESSION['tahun_masuk']=$_SESSION['ta'];
+                    $_SESSION['tahun_pendaftaran']=$setup->getSettingValue('default_tahun_pendaftaran');
                     $_SESSION['semester']=$setup->getSettingValue('default_semester');
                     
                     $foto='resources/userimages/no_photo.png';
@@ -99,7 +100,8 @@ class Login extends MainPage {
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
                     $_SESSION['kjur']=$setup->getSettingValue('default_kjur');           
                     $_SESSION['ta']=$setup->getSettingValue('default_ta'); 
-                    
+                    $_SESSION['tahun_masuk']=$_SESSION['ta'];
+                    $_SESSION['tahun_pendaftaran']=$setup->getSettingValue('default_tahun_pendaftaran');
                     $_SESSION['semester']=$setup->getSettingValue('default_semester');
                     
                     $foto='resources/userimages/no_photo.png';
@@ -109,7 +111,8 @@ class Login extends MainPage {
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
                     $_SESSION['kjur']=$setup->getSettingValue('default_kjur');           
                     $_SESSION['ta']=$setup->getSettingValue('default_ta'); 
-                    
+                    $_SESSION['tahun_masuk']=$_SESSION['ta'];
+                    $_SESSION['tahun_pendaftaran']=$setup->getSettingValue('default_tahun_pendaftaran');
                     $_SESSION['semester']=$setup->getSettingValue('default_semester');
                     
                     $foto='resources/userimages/no_photo.png';
@@ -119,7 +122,8 @@ class Login extends MainPage {
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
                     $_SESSION['kjur']=$setup->getSettingValue('default_kjur');           
                     $_SESSION['ta']=$setup->getSettingValue('default_ta'); 
-                    
+                    $_SESSION['tahun_masuk']=$_SESSION['ta'];
+                    $_SESSION['tahun_pendaftaran']=$setup->getSettingValue('default_tahun_pendaftaran'); 
                     $_SESSION['semester']=$setup->getSettingValue('default_semester');
                     
                     $foto=$pengguna->getDataUser('photo_profile');
@@ -127,7 +131,8 @@ class Login extends MainPage {
                 case 'mh' :
                     $_SESSION['ta']=$setup->getSettingValue('default_ta') < $pengguna->getDataUser('tahun_masuk') ? $pengguna->getDataUser('tahun_masuk') :$setup->getSettingValue('default_ta');
                     $_SESSION['semester']=$setup->getSettingValue('default_semester');
-                    
+                    $_SESSION['tahun_masuk']=$pengguna->getDataUser('tahun_masuk');
+                    $_SESSION['tahun_pendaftaran']=$_SESSION['tahun_masuk'];
                     $foto=$pengguna->getDataUser('photo_profile');
                 break;
                 case 'k' :
@@ -135,7 +140,8 @@ class Login extends MainPage {
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2);
                     $_SESSION['kjur']=$setup->getSettingValue('default_kjur');
                     $_SESSION['ta']=$setup->getSettingValue('default_ta');  
-                    
+                    $_SESSION['tahun_masuk']=$_SESSION['ta'];
+                    $_SESSION['tahun_pendaftaran']=$setup->getSettingValue('default_tahun_pendaftaran'); 
                     $_SESSION['semester']=$setup->getSettingValue('default_semester');
                     
                     $foto='resources/userimages/no_photo.png';
@@ -154,7 +160,8 @@ class Login extends MainPage {
                         $_SESSION['ta']=$setup->getSettingValue('default_ta');
                     }                                
                     $_SESSION['semester']=$setup->getSettingValue('default_semester');
-                    
+                    $_SESSION['tahun_masuk']=$_SESSION['ta'];
+                    $_SESSION['tahun_pendaftaran']=$setup->getSettingValue('default_tahun_pendaftaran'); 
                     $foto='resources/userimages/no_photo.png';
                 break; 
                 case 'mb' :
@@ -163,16 +170,16 @@ class Login extends MainPage {
                     $_SESSION['daftar_jurusan']=$dmaster->getListProgramStudi(2); 
                     
                     $_SESSION['tahun_masuk']=$pengguna->getDataUser('tahun_masuk');
+                    $_SESSION['tahun_pendaftaran']=$_SESSION['tahun_masuk'];
                     $_SESSION['semester']=$pengguna->getDataUser('semester_masuk');
                     
                     $foto=$pengguna->getDataUser('photo_profile');
                 break; 
             }
-            $_SESSION['tahun_masuk']=$_SESSION['ta'];
             $_SESSION['kelas']='none';
             $_SESSION['foto']=$foto;
             $_SESSION['theme']=$pengguna->getDataUser('theme');
-                
+            
             $_SESSION['outputreport']='pdf';
             $_SESSION['outputcompress']='none';
             

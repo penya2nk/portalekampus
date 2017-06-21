@@ -13,7 +13,7 @@ class CPassingGrade extends MainPageM {
 			}            
             $tahun_masuk=$this->DMaster->removeIdFromArray($this->DMaster->getListTA(),'none');			
 			$this->tbCmbTahunMasuk->DataSource=$tahun_masuk	;					
-			$this->tbCmbTahunMasuk->Text=$_SESSION['tahun_masuk'];						
+			$this->tbCmbTahunMasuk->Text=$_SESSION['tahun_pendaftaran'];						
 			$this->tbCmbTahunMasuk->dataBind();
             
             $this->populateJadwalUjian();
@@ -26,13 +26,13 @@ class CPassingGrade extends MainPageM {
         return $this->Demik->getDataMHS($idx);
     }
 	public function changeTbTahunMasuk($sender,$param) {					
-		$_SESSION['tahun_masuk']=$this->tbCmbTahunMasuk->Text;
+		$_SESSION['tahun_pendaftaran']=$this->tbCmbTahunMasuk->Text;
         $this->lblModulHeader->Text=$this->getInfoToolbar();
         $this->populateJadwalUjian();
 		$this->populateData();
 	}	
 	public function getInfoToolbar() {        
-		$tahunmasuk=$this->DMaster->getNamaTA($_SESSION['tahun_masuk']);		
+		$tahunmasuk=$this->DMaster->getNamaTA($_SESSION['tahun_pendaftaran']);		
 		$text="Tahun Masuk $tahunmasuk";
 		return $text;
 	}	
@@ -41,7 +41,7 @@ class CPassingGrade extends MainPageM {
 		$this->populateData();
 	}	
     private function populateJadwalUjian () {
-        $tahun_masuk=$_SESSION['tahun_masuk'];
+        $tahun_masuk=$_SESSION['tahun_pendaftaran'];
         $str = "SELECT idjadwal_ujian,tahun_masuk,idsmt,nama_kegiatan,tanggal_ujian,jam_mulai,jam_akhir,tanggal_akhir_daftar,jup.idruangkelas,rk.namaruang,rk.kapasitas,date_added,status FROM jadwal_ujian_pmb jup LEFT JOIN ruangkelas rk ON (jup.idruangkelas=rk.idruangkelas) WHERE tahun_masuk='$tahun_masuk' ORDER BY tanggal_ujian ASC";                
         $this->DB->setFieldTable(array('idjadwal_ujian','tahun_masuk','idsmt','nama_kegiatan','tanggal_ujian','jam_mulai','jam_akhir','tanggal_akhir_daftar','idruangkelas','namaruang','kapasitas','status'));
         $r = $this->DB->getRecord($str);	
@@ -69,7 +69,7 @@ class CPassingGrade extends MainPageM {
 	}
 	
 	public function reloadPassingGrade ($sender,$param) {
-        $tahun_masuk=$_SESSION['tahun_masuk'];
+        $tahun_masuk=$_SESSION['tahun_pendaftaran'];
         $idjadwal_ujian=$_SESSION['currentPagePassingGrade']['idjadwal_ujian'];
         $this->DB->query('BEGIN');
         if ($this->DB->deleteRecord("passinggrade WHERE idjadwal_ujian='$idjadwal_ujian'")){

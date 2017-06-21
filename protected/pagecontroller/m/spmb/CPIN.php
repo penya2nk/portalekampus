@@ -15,7 +15,7 @@ class CPIN extends MainPageM {
             
             $tahun_masuk=$this->DMaster->removeIdFromArray($this->DMaster->getListTA(),'none');			
 			$this->tbCmbTahunMasuk->DataSource=$tahun_masuk	;					
-			$this->tbCmbTahunMasuk->Text=$_SESSION['tahun_masuk'];						
+			$this->tbCmbTahunMasuk->Text=$_SESSION['tahun_pendaftaran'];						
 			$this->tbCmbTahunMasuk->dataBind();
             
             $kelas=$this->DMaster->getListKelas();
@@ -34,12 +34,12 @@ class CPIN extends MainPageM {
 	}   
 	public function getInfoToolbar() {                
         $nama_kelas=$this->DMaster->getNamaKelasByID($_SESSION['currentPagePIN']['kelas']);
-		$tahunmasuk=$this->DMaster->getNamaTA($_SESSION['tahun_masuk']);		
+		$tahunmasuk=$this->DMaster->getNamaTA($_SESSION['tahun_pendaftaran']);		
 		$text="Kelas $nama_kelas Tahun Masuk $tahunmasuk";
 		return $text;
 	}
 	public function changeTbTahunMasuk($sender,$param) {					
-		$_SESSION['tahun_masuk']=$this->tbCmbTahunMasuk->Text;
+		$_SESSION['tahun_pendaftaran']=$this->tbCmbTahunMasuk->Text;
         $this->lblModulHeader->Text=$this->getInfoToolbar();
 		$this->populateData();
 	}	
@@ -64,7 +64,7 @@ class CPIN extends MainPageM {
 	}		
 	public function populateData ($search=false) {
         $idkelas=$_SESSION['currentPagePIN']['kelas'];
-        $tahun_masuk=$_SESSION['tahun_masuk'];    
+        $tahun_masuk=$_SESSION['tahun_pendaftaran'];    
         if ($search) {        
             $str = "SELECT pin.no_pin,pin.no_formulir,pin.idkelas,fp.nama_mhs,fp.no_formulir AS ket FROM pin LEFT JOIN formulir_pendaftaran fp ON (fp.no_formulir=pin.no_formulir) WHERE pin.tahun_masuk=$tahun_masuk AND pin.idkelas='$idkelas'";
             $txtsearch=$this->txtKriteria->Text;
@@ -107,7 +107,7 @@ class CPIN extends MainPageM {
     public function generatePIN ($sender,$param) {
         if ($this->IsValid) {
             $idkelas=$_SESSION['currentPagePIN']['kelas'];
-            $tahun_masuk=$_SESSION['tahun_masuk'];
+            $tahun_masuk=$_SESSION['tahun_pendaftaran'];
             $max_record=$this->DB->getMaxOfRecord('no_formulir',"pin WHERE tahun_masuk='$tahun_masuk'")+1;		
 			$urut=substr($max_record,strlen($tahun_masuk),4);		
 			$no_urut=($urut=='')?'0001':$urut;
@@ -145,7 +145,7 @@ class CPIN extends MainPageM {
             break;
             case  'excel2007' :
                 $messageprintout="";
-                $dataReport['tahun_masuk']=$_SESSION['tahun_masuk'];
+                $dataReport['tahun_masuk']=$_SESSION['tahun_pendaftaran'];
                 $dataReport['pilihan']=$_SESSION['currentPagePIN']['display_record'];
                 $dataReport['linkoutput']=$this->linkOutput;
                 $this->report->setDataReport($dataReport); 

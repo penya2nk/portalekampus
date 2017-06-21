@@ -16,7 +16,7 @@ class CJadwalUjianPMB extends MainPageM {
                         
             $tahun_masuk=$this->DMaster->removeIdFromArray($this->DMaster->getListTA(),'none');			
 			$this->tbCmbTahunMasuk->DataSource=$tahun_masuk	;					
-			$this->tbCmbTahunMasuk->Text=$_SESSION['tahun_masuk'];						
+			$this->tbCmbTahunMasuk->Text=$_SESSION['tahun_pendaftaran'];						
 			$this->tbCmbTahunMasuk->dataBind();
             
             $_SESSION['semester']=1;
@@ -36,7 +36,7 @@ class CJadwalUjianPMB extends MainPageM {
 		}			
 	}
     public function changeTbTahunMasuk ($sender,$param) {
-		$_SESSION['tahun_masuk']=$this->tbCmbTahunMasuk->Text;		
+		$_SESSION['tahun_pendaftaran']=$this->tbCmbTahunMasuk->Text;		
         $this->lblModulHeader->Text=$this->getInfoToolbar();
 		$this->populateData($_SESSION['currentPageJadwalUjianPMB']['search']);
 	}	
@@ -46,7 +46,7 @@ class CJadwalUjianPMB extends MainPageM {
 		$this->populateData($_SESSION['currentPageJadwalUjianPMB']['search']);
 	}
     public function getInfoToolbar() {        
-		$ta=$this->DMaster->getNamaTA($_SESSION['tahun_masuk']);
+		$ta=$this->DMaster->getNamaTA($_SESSION['tahun_pendaftaran']);
 		$semester=$this->setup->getSemester($_SESSION['semester']);
 		$text="Tahun Masuk $ta Semester $semester";
 		return $text;
@@ -63,7 +63,7 @@ class CJadwalUjianPMB extends MainPageM {
 		$this->populateData($_SESSION['currentPageJadwalUjianPMB']['search']);
 	}
 	public function populateData($search=false) {	
-        $tahun_masuk=$_SESSION['tahun_masuk'];
+        $tahun_masuk=$_SESSION['tahun_pendaftaran'];
         $idsmt=$_SESSION['semester'];
         $str = "SELECT idjadwal_ujian,tahun_masuk,idsmt,nama_kegiatan,tanggal_ujian,jam_mulai,jam_akhir,tanggal_akhir_daftar,jup.idruangkelas,rk.namaruang,rk.kapasitas,date_added,status FROM jadwal_ujian_pmb jup LEFT JOIN ruangkelas rk ON (jup.idruangkelas=rk.idruangkelas) WHERE tahun_masuk='$tahun_masuk' AND idsmt='$idsmt' ORDER BY tanggal_ujian ASC";
         
@@ -80,7 +80,7 @@ class CJadwalUjianPMB extends MainPageM {
 	}
     public function addProcess ($sender,$param) {
         $this->idProcess='add';
-        $this->hiddentahunmasuk->Value=$_SESSION['tahun_masuk'];
+        $this->hiddentahunmasuk->Value=$_SESSION['tahun_pendaftaran'];
          //load kelas 				
         $this->cmbAddRuang->DataSource=$this->DMaster->getRuangKelas();
         $this->cmbAddRuang->dataBind();
@@ -169,7 +169,7 @@ class CJadwalUjianPMB extends MainPageM {
                 $dataReport=$r[1];        
                 $jumlah_peserta=$this->DB->getCountRowsOfTable ("peserta_ujian_pmb pum,formulir_pendaftaran fp,pin WHERE fp.no_formulir=pum.no_formulir AND pin.no_formulir=pum.no_formulir AND pum.idjadwal_ujian=$idjadwal_ujian",'pum.no_formulir');
 
-                $dataReport['nama_tahun']=$this->DMaster->getNamaTA($dataReport['tahun_masuk']);
+                $dataReport['nama_tahun']=$this->DMaster->getNamaTA($dataReport['tahun_pendaftaran']);
                 $dataReport['jumlah_peserta']=$jumlah_peserta;
                 $dataReport['linkoutput']=$this->linkOutput; 
                 $this->report->setDataReport($dataReport); 

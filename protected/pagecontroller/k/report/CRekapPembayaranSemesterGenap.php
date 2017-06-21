@@ -120,9 +120,9 @@ class CRekapPembayaranSemesterGenap Extends MainPageK {
 		$kjur=$_SESSION['kjur'];	
         
         $kelas=$_SESSION['currentPageRekapPembayaranSemesterGenap']['kelas'];
-        $str_kelas = $kelas == 'none'?'':" AND t2.idkelas='$kelas'";       
+        $str_kelas = $kelas == 'none'?'':" AND idkelas='$kelas'";       
         
-        $this->DB->deleteRecord("rekap_laporan_pembayaran_per_semester t2 WHERE t2.kjur='$kjur' AND t2.tahun=$ta AND t2.idsmt='$semester' AND t2.tahun_masuk='$tahun_masuk'$str_kelas");
+        $this->DB->deleteRecord("rekap_laporan_pembayaran_per_semester WHERE kjur='$kjur' AND tahun=$ta AND idsmt='$semester' AND tahun_masuk='$tahun_masuk'$str_kelas");
         $str = "SELECT fp.no_formulir,rm.nim,rm.nirm,fp.nama_mhs,fp.jk,fp.ta AS tahun_masuk,fp.idsmt AS semester_masuk,t2.idkelas FROM formulir_pendaftaran fp JOIN register_mahasiswa rm ON (rm.no_formulir=fp.no_formulir) JOIN (SELECT DISTINCT(nim) AS nim,idkelas FROM transaksi WHERE kjur='$kjur' AND tahun=$ta AND idsmt='$semester'$str_kelas) AS t2 ON (t2.nim=rm.nim) WHERE fp.ta=$tahun_masuk ORDER BY nim ASC,nama_mhs ASC";			
    		$this->DB->setFieldTable(array('no_formulir','nim','nirm','nama_mhs','jk','tahun_masuk','semester_masuk','idkelas'));
         $r = $this->DB->getRecord($str);    

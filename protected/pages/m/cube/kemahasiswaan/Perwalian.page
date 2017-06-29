@@ -7,7 +7,36 @@
     <li><a href="#">KEMAHASISWAAN</a></li>
     <li class="active">PERWALIAN</li>
 </com:TContent>
+<com:TContent ID="csscontent">
+<link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/css/libs/nifty-component.css"/>
+</com:TContent>
 <com:TContent ID="maincontent">	
+<div id="config-tool" class="closed">
+    <a id="config-tool-cog">
+        <i class="fa fa-cog"></i>
+    </a>
+    <div id="config-tool-options">
+        <h4>OPTION</h4>        
+        <br/>
+        <h4 style="font-size:12px"><strong>Output Report:</strong></h4>
+        <ul id="skin-colors" class="clearfix">
+            <li style="font-size:10px">
+               <com:TActiveDropDownList ID="tbCmbOutputReport" OnCallback="Page.changeOutputReport" CssClass="form-control">
+					<prop:ClientSide.OnPreDispatch>
+						$('loading').show();
+					</prop:ClientSide.OnPreDispatch>
+                   <prop:ClientSide.OnLoading>
+                        $('<%=$this->tbCmbOutputReport->ClientId%>').disabled='disabled';
+                    </prop:ClientSide.OnLoading>
+					<prop:ClientSide.onComplete>
+						$('loading').hide();
+                        $('<%=$this->tbCmbOutputReport->ClientId%>').disabled='';
+					</prop:ClientSide.OnComplete>	
+				</com:TActiveDropDownList>
+            </li>            
+        </ul>
+    </div>
+</div>
 <com:TPanel Visible="<%= $this->getAddProcess(false) %>">
     <%include Application.layouts.cube.DataMHS%>
     <com:THiddenField ID="hiddennim" />
@@ -158,7 +187,19 @@
                 <header class="main-box-header clearfix">
                     <h2 class="pull-left"><i class="fa fa fa-arrows-h"></i> Daftar Mahasiswa</h2> 
                     <div class="filter-block pull-right">                                                   
-                        
+                        <com:TActiveLinkButton ID="btnPrintOut" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out">
+                            <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
+                            <prop:ClientSide.OnPreDispatch>
+                                $('loading').show();
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnPrintOut->ClientId%>').disabled='disabled';				
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>
+                                $('<%=$this->btnPrintOut->ClientId%>').disabled='';				
+                                $('loading').hide();
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveLinkButton> 									
                     </div>
                 </header>
                 <div class="main-box-body clearfix">       
@@ -172,6 +213,8 @@
                                         <th scope="col">NIM</th>
                                         <th scope="col">NIRM</th>										
                                         <th scope="col">NAMA MHS</th>							
+                                        <th scope="col">KELAS</th>
+                                        <th scope="col">STATUS</th>
                                         <th scope="col">TAHUN <Br />MASUK</th>						
                                         <th scope="col" width="100">AKSI</th>						
                                     </tr>		
@@ -183,7 +226,9 @@
                                         <td><%#$this->DataItem['no']%></td>
                                         <td><a href="<%#$this->Page->constructUrl('kemahasiswaan.ProfilMahasiswa',true,array('id'=>$this->DataItem['nim']))%>"><%#$this->DataItem['nim']%></a></td>
                                         <td><%# $this->Data['nirm']%></td>                                        						
-                                        <td><%#$this->DataItem['nama_mhs']%></td>																		
+                                        <td><%#$this->DataItem['nama_mhs']%></td>	
+                                        <td><%#$this->Page->DMaster->getNamaKelasByID($this->DataItem['idkelas'])%></td>
+                                        <td><%#$this->Page->DMaster->getNamaStatusMHSByID($this->DataItem['k_status'])%></td>
                                         <td><%#$this->DataItem['tahun_masuk']%></td>						
                                         <td>
                                             <com:TLinkButton CssClass="table-link" OnClick="Page.gantiPA" Attributes.Title="Ganti PA">
@@ -222,4 +267,6 @@
         </div>
     </div>
 </com:TPanel>
+<%include Application.layouts.cube.ModalPrintOut%>
+<%include Application.layouts.cube.ModalMessageError%>
 </com:TContent>

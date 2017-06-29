@@ -229,6 +229,7 @@
                                     $('divEditEmail').removeClassName('has-error');
                                 </prop:ClientSide.OnValidationSuccess>
                             </com:TEmailAddressValidator>
+                            <com:TActiveCustomValidator ID="editEmail" ControlToValidate="txtEditEmail" Display="Dynamic" OnServerValidate="checkEmail" ValidationGroup="editformulir" CssClass="has-error help-block" />
                         </div>
                     </div> 
                 </div>

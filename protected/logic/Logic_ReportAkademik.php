@@ -727,13 +727,11 @@ class Logic_ReportAkademik extends Logic_Report {
                 }
                 $this->db->setFieldTable(array('nim','nirm','nama_mhs','idkelas','jk','tahun_masuk','batal','sah'));	
                 $r = $this->db->getRecord($str_display);
-                $result=array();
                 
                 $row=15;
-                
                 while (list($k,$v)=each ($r)) {            
                     $sheet->setCellValue("A$row",$v['no']);
-                    $sheet->setCellValue("B$row",$v['nim']);
+                    $sheet->setCellValueExplicit("B$row",$v['nim'],PHPExcel_Cell_DataType::TYPE_STRING);
                     $sheet->setCellValueExplicit("C$row",$v['nirm'],PHPExcel_Cell_DataType::TYPE_STRING);
                     $sheet->setCellValue("D$row",$v['nama_mhs']);
                     $sheet->setCellValue("E$row",$objDMaster->getNamaKelasByID($v['idkelas']));
@@ -744,8 +742,6 @@ class Logic_ReportAkademik extends Logic_Report {
                     }elseif($v['sah']==1 && $v['batal']==1){
                         $status='batal';
                     }
-                    $v['status']=$status;
-                    $result[$k]=$v;
                     $sheet->setCellValue("G$row",$status);
                     $row+=1;
                 } 
@@ -760,18 +756,99 @@ class Logic_ReportAkademik extends Logic_Report {
                 $styleArray=array(								
                                     'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_LEFT)
                                 );																					 
-                $sheet->getStyle("D15:D$row")->applyFromArray($styleArray);
-                $sheet->getStyle("D10:D10")->applyFromArray($styleArray);
+                $sheet->getStyle("D15:D$row")->applyFromArray($styleArray);                
                 
-                $sheet->getStyle("C10:C10")->applyFromArray($styleArray);
-                $sheet->getStyle("C10:C10")->getAlignment()->setWrapText(true);
-                
-                $this->printOut("daftarpeserta$tahun_masuk");
+                $this->printOut("daftarpesertamatakuliah");
             break;
         }
-        $this->setLink($this->dataReport['linkoutput'],"Daftar Peserta");
+        $this->setLink($this->dataReport['linkoutput'],"Daftar Peserta Matakuliah");
     }
-    
+    /**
+     * digunakan untuk mencetak daftar mahasiswa Dosen Wali
+     */
+    public function printMahasiswaDW($objDMaster){
+        $iddosen_wali=$this->dataReport['iddosen_wali'];
+        switch ($this->getDriver()) {
+            case 'excel2003' :               
+            case 'excel2007' :  
+                $this->setHeaderPT('G'); 
+                $sheet=$this->rpt->getActiveSheet();
+                $this->rpt->getDefaultStyle()->getFont()->setName('Arial');                
+                $this->rpt->getDefaultStyle()->getFont()->setSize('9');                                    
+                
+                $sheet->mergeCells("A7:G7");
+                $sheet->mergeCells("A8:G8");
+                $sheet->getRowDimension(7)->setRowHeight(20);
+                $sheet->getRowDimension(8)->setRowHeight(20);
+                $sheet->setCellValue("A7",'DAFTAR MAHASISWA');
+                $sheet->setCellValue("A8",'DI BAWAH PERWALIAN '.$this->dataReport['nama_dosen']);
+                $styleArray=array(
+								'font' => array('bold' => true,
+                                                'size' => 16),
+								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+												   'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+							);
+                $sheet->getStyle("A7:A7")->applyFromArray($styleArray);
+                $sheet->getStyle("A8:A8")->applyFromArray($styleArray);
+                
+                $sheet->getColumnDimension('A')->setWidth(7);
+                $sheet->getColumnDimension('B')->setWidth(14);
+                $sheet->getColumnDimension('C')->setWidth(20);
+                $sheet->getColumnDimension('D')->setWidth(35);
+                $sheet->getColumnDimension('E')->setWidth(20);
+                $sheet->getColumnDimension('F')->setWidth(17);
+                $sheet->getColumnDimension('G')->setWidth(15);
+                $sheet->setCellValue('A10','NO');
+                $sheet->setCellValue('B10','NIM');
+                $sheet->setCellValue('C10','NIRM');
+                $sheet->setCellValue('D10','NAMA');
+                $sheet->setCellValue('E10','KELAS');
+                $sheet->setCellValue('F10','STATUS');
+                $sheet->setCellValue('G10','TAHUN MASUK');
+                $styleArray=array(
+								'font' => array('bold' => true),
+								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+												   'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+								'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+							);
+                $sheet->getStyle("A10:G10")->applyFromArray($styleArray);
+                $sheet->getStyle("A10:G10")->getAlignment()->setWrapText(true);
+                
+                $str = "SELECT nim,nirm,nama_mhs,tahun_masuk,idkelas,k_status FROM v_datamhs vdm WHERE iddosen_wali=$iddosen_wali ORDER BY vdm.k_status ASC,vdm.tahun_masuk DESC,vdm.nama_mhs ASC";
+                $this->db->setFieldTable (array('nim','nirm','nama_mhs','tahun_masuk','idkelas','k_status'));
+                $r=$this->db->getRecord($str);	
+                $row=11;
+                while (list($k,$v)=each ($r)) {            
+                    $sheet->setCellValue("A$row",$v['no']);
+                    $sheet->setCellValueExplicit("B$row",$v['nim'],PHPExcel_Cell_DataType::TYPE_STRING);
+                    $sheet->setCellValueExplicit("C$row",$v['nirm'],PHPExcel_Cell_DataType::TYPE_STRING);
+                    $sheet->setCellValue("D$row",$v['nama_mhs']);
+                    $sheet->setCellValue("E$row",$objDMaster->getNamaKelasByID($v['idkelas']));
+                    $sheet->setCellValue("F$row",$objDMaster->getNamaStatusMHSByID($v['k_status']));                   
+                    $sheet->setCellValue("G$row",$v['tahun_masuk']); 
+                    $row+=1;
+                } 
+                $row-=1;
+                $styleArray=array(								
+                                    'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+                                    'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+                                );																					 
+                $sheet->getStyle("A11:G$row")->applyFromArray($styleArray);
+                $sheet->getStyle("A11:G$row")->getAlignment()->setWrapText(true);
+                
+                $styleArray=array(								
+                                    'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_LEFT)
+                                );																					 
+                $sheet->getStyle("D11:D$row")->applyFromArray($styleArray);
+                
+                $this->printOut('daftarmhsdosenwali');
+            break;
+        }
+        $this->setLink($this->dataReport['linkoutput'],"DAFTAR MAHASISWA DOSEN WALI");
+    }
+    /**
+     * digunakan untuk mencetak daftar hadir mahasiswa
+     */
     public function printDaftarHadirDosen($objDemik){
         switch ($this->getDriver()) {
             case 'excel2003' :               

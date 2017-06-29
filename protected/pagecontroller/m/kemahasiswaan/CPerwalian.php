@@ -6,6 +6,7 @@ class CPerwalian extends MainPageM {
 		parent::onLoad($param);
         $this->showSubMenuAkademikKemahasiswaan=true;
         $this->showPerwalian=true;
+        
 		if (!$this->IsPostBack&&!$this->IsCallback) {
             if (!isset($_SESSION['currentPagePerwalian'])||$_SESSION['currentPagePerwalian']['page_name']!='m.kemahasiswaan.perwalian') {
 				$_SESSION['currentPagePerwalian']=array('page_name'=>'m.kemahasiswaan.perwalian','page_num'=>0,'search'=>false,'iddosen_wali'=>'none');												
@@ -16,7 +17,11 @@ class CPerwalian extends MainPageM {
             $this->cmbDosenWali->DataSource=$daftar_dw;
             $this->cmbDosenWali->Text=$_SESSION['currentPagePerwalian']['iddosen_wali'];
             $this->cmbDosenWali->dataBind();	  
-
+            
+            $this->tbCmbOutputReport->DataSource=$this->setup->getOutputFileType();
+            $this->tbCmbOutputReport->Text= $_SESSION['outputreport'];
+            $this->tbCmbOutputReport->DataBind();
+            
             $this->populateData();
 		
 		}
@@ -61,7 +66,7 @@ class CPerwalian extends MainPageM {
             }
         }else{
             $jumlah_record=$this->DB->getCountRowsOfTable("v_datamhs vdm$str_dw",'vdm.nim');
-            $str = "SELECT nim,nirm,nama_mhs,tahun_masuk FROM v_datamhs vdm$str_dw";
+            $str = "SELECT nim,nirm,nama_mhs,tahun_masuk,idkelas,k_status FROM v_datamhs vdm$str_dw";
         }
 		$this->RepeaterS->VirtualItemCount=$jumlah_record;		
 		$this->RepeaterS->CurrentPageIndex=$_SESSION['currentPagePerwalian']['page_num'];
@@ -71,8 +76,8 @@ class CPerwalian extends MainPageM {
 			$limit=$this->RepeaterS->VirtualItemCount-$offset;
 		}
 		if ($limit < 0) {$offset=0;$limit=10;$_SESSION['currentPagePerwalian']['page_num']=0;}
-		$str = "$str ORDER BY vdm.tahun_masuk DESC,vdm.nama_mhs ASC LIMIT $offset,$limit";
-		$this->DB->setFieldTable (array('nim','nirm','nama_mhs','tahun_masuk'));
+		$str = "$str ORDER BY vdm.k_status ASC,vdm.tahun_masuk DESC,vdm.nama_mhs ASC LIMIT $offset,$limit";
+		$this->DB->setFieldTable (array('nim','nirm','nama_mhs','tahun_masuk','idkelas','k_status'));
 		$r=$this->DB->getRecord($str,$offset+1);		
 		$this->RepeaterS->DataSource=$r;
 		$this->RepeaterS->dataBind();
@@ -113,6 +118,43 @@ class CPerwalian extends MainPageM {
 			$this->redirect('kemahasiswaan.Perwalian',true);
 		}
 	}
+    public function printOut ($sender,$param) {
+        $iddosen_wali=$_SESSION['currentPagePerwalian']['iddosen_wali'];
+        if ($iddosen_wali > 0) {
+            $this->createObj('reportakademik');
+            $this->linkOutput->Text='';
+            $this->linkOutput->NavigateUrl='#';
+            switch ($_SESSION['outputreport']) {
+                case  'summarypdf' :
+                    $messageprintout="Mohon maaf Print out pada mode summary pdf tidak kami support.";                
+                break;
+                case  'summaryexcel' :
+                    $messageprintout="Mohon maaf Print out pada mode summary excel tidak kami support.";                
+                break;
+                case  'excel2007' :
+                    $dataReport['iddosen_wali']=$iddosen_wali;
+                    $dataReport['nama_dosen']=$this->DMaster->getNamaDosenWaliByID ($iddosen_wali);
+
+                    $dataReport['linkoutput']=$this->linkOutput; 
+                    $this->report->setDataReport($dataReport); 
+                    $this->report->setMode('excel2007');
+
+                    $messageprintout="Daftar Mahasiswa Dosen Wali: <br/>";
+                    $this->report->printMahasiswaDW($this->DMaster);                
+                break;
+                case  'pdf' :
+                    $messageprintout="Mohon maaf Print out pada mode pdf belum kami support.";                
+                break;
+            }     
+            $this->lblMessagePrintout->Text=$messageprintout;
+            $this->lblPrintout->Text='Daftar Mahasiswa Perwalian';
+            $this->modalPrintOut->show();
+        }else{
+            $this->lblHeaderMessageError->Text='Mencetak Daftar Mahasiswa Dosen Wali';
+            $this->lblContentMessageError->Text="Anda tidak bisa mencetak karena Dosen Wali belum dipilih.";
+            $this->modalMessageError->Show();
+        }
+    }
 	
 }
 ?>

@@ -174,7 +174,7 @@ class CFormulirPendaftaran extends MainPageMB {
     public function checkEmail ($sender,$param) {
         $id=$sender->getId ();
         $this->idProcess = ($id=='editEmail')?'edit':'add';			
-        $email_mhs=$param->Value;
+        $email_mhs=addslashes($param->Value);
 		try {			
 			if ($email_mhs != '') {
 				if ($this->hiddenemail->Value != $email_mhs) {

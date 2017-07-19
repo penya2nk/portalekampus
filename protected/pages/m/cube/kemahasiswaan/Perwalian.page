@@ -16,7 +16,25 @@
         <i class="fa fa-cog"></i>
     </a>
     <div id="config-tool-options">
-        <h4>OPTION</h4>        
+        <h4>OPTION</h4>
+        <br/>
+        <h4 style="font-size:12px"><strong>Status:</strong></h4>
+        <ul id="skin-colors" class="clearfix">
+            <li style="font-size:10px">
+               <com:TActiveDropDownList ID="tbCmbStatus" OnCallback="Page.changeStatus" CssClass="form-control">
+					<prop:ClientSide.OnPreDispatch>
+						$('loading').show();
+					</prop:ClientSide.OnPreDispatch>
+                   <prop:ClientSide.OnLoading>
+                        $('<%=$this->tbCmbStatus->ClientId%>').disabled='disabled';
+                    </prop:ClientSide.OnLoading>
+					<prop:ClientSide.onComplete>
+						$('loading').hide();
+                        $('<%=$this->tbCmbStatus->ClientId%>').disabled='';
+					</prop:ClientSide.OnComplete>	
+				</com:TActiveDropDownList>
+            </li>            
+        </ul>
         <br/>
         <h4 style="font-size:12px"><strong>Output Report:</strong></h4>
         <ul id="skin-colors" class="clearfix">

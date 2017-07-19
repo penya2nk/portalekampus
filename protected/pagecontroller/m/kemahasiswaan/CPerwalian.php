@@ -9,7 +9,7 @@ class CPerwalian extends MainPageM {
         
 		if (!$this->IsPostBack&&!$this->IsCallback) {
             if (!isset($_SESSION['currentPagePerwalian'])||$_SESSION['currentPagePerwalian']['page_name']!='m.kemahasiswaan.perwalian') {
-				$_SESSION['currentPagePerwalian']=array('page_name'=>'m.kemahasiswaan.perwalian','page_num'=>0,'search'=>false,'iddosen_wali'=>'none');												
+				$_SESSION['currentPagePerwalian']=array('page_name'=>'m.kemahasiswaan.perwalian','page_num'=>0,'search'=>false,'iddosen_wali'=>'none','status'=>'none');												
 			}
             $_SESSION['currentPagePerwalian']['search']=false;
             $daftar_dw=$this->DMaster->getListDosenWali();
@@ -17,6 +17,12 @@ class CPerwalian extends MainPageM {
             $this->cmbDosenWali->DataSource=$daftar_dw;
             $this->cmbDosenWali->Text=$_SESSION['currentPagePerwalian']['iddosen_wali'];
             $this->cmbDosenWali->dataBind();	  
+            
+            $daftar_status=$this->DMaster->getListStatusMHS ();
+            $daftar_status['none']='SELURUH';
+            $this->tbCmbStatus->DataSource=$daftar_status;
+            $this->tbCmbStatus->Text=$_SESSION['currentPagePerwalian']['status'];
+            $this->tbCmbStatus->dataBind();
             
             $this->tbCmbOutputReport->DataSource=$this->setup->getOutputFileType();
             $this->tbCmbOutputReport->Text= $_SESSION['outputreport'];
@@ -40,6 +46,10 @@ class CPerwalian extends MainPageM {
     public function searchRecord ($sender,$param) {
 		$_SESSION['currentPagePerwalian']['search']=true;
 		$this->populateData($_SESSION['currentPagePerwalian']['search']);
+	}
+    public function changeStatus ($sender,$param) {
+		$_SESSION['currentPagePerwalian']['status']=$this->tbCmbStatus->Text;
+		$this->populateData();
 	}
 	protected function populateData ($search=false) {
         $iddosen_wali=$_SESSION['currentPagePerwalian']['iddosen_wali'];
@@ -65,8 +75,10 @@ class CPerwalian extends MainPageM {
                 break;
             }
         }else{
-            $jumlah_record=$this->DB->getCountRowsOfTable("v_datamhs vdm$str_dw",'vdm.nim');
-            $str = "SELECT nim,nirm,nama_mhs,tahun_masuk,idkelas,k_status FROM v_datamhs vdm$str_dw";
+            $status=$_SESSION['currentPagePerwalian']['status'];
+            $str_status=$status == 'none'? '' : " AND k_status='$status'";
+            $jumlah_record=$this->DB->getCountRowsOfTable("v_datamhs vdm$str_dw $str_status",'vdm.nim');
+            $str = "SELECT nim,nirm,nama_mhs,tahun_masuk,idkelas,k_status FROM v_datamhs vdm$str_dw $str_status";
         }
 		$this->RepeaterS->VirtualItemCount=$jumlah_record;		
 		$this->RepeaterS->CurrentPageIndex=$_SESSION['currentPagePerwalian']['page_num'];
@@ -121,6 +133,7 @@ class CPerwalian extends MainPageM {
     public function printOut ($sender,$param) {
         $iddosen_wali=$_SESSION['currentPagePerwalian']['iddosen_wali'];
         if ($iddosen_wali > 0) {
+            $k_status=$_SESSION['currentPagePerwalian']['status'];
             $this->createObj('reportakademik');
             $this->linkOutput->Text='';
             $this->linkOutput->NavigateUrl='#';
@@ -134,7 +147,7 @@ class CPerwalian extends MainPageM {
                 case  'excel2007' :
                     $dataReport['iddosen_wali']=$iddosen_wali;
                     $dataReport['nama_dosen']=$this->DMaster->getNamaDosenWaliByID ($iddosen_wali);
-
+                    $dataReport['k_status']=$k_status;
                     $dataReport['linkoutput']=$this->linkOutput; 
                     $this->report->setDataReport($dataReport); 
                     $this->report->setMode('excel2007');

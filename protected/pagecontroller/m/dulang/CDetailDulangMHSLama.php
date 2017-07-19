@@ -42,7 +42,7 @@ class CDetailDulangMHSLama Extends MainPageM {
 			if ($this->DB->updateRecord($str)) {
                 $status_sebelumnnya=$datamhs['k_status'];
                 $tasmt=$ta.$semester;
-				$str = "INSERT INTO dulang (iddulang,nim,tahun,idsmt,tanggal,idkelas,status_sebelumnya,k_status) VALUES (NULL,'$nim','$ta','$semester','$tasmt','$tanggal','$kelas','$status_sebelumnnya','A')";
+				$str = "INSERT INTO dulang (iddulang,nim,tahun,idsmt,tasmt,tanggal,idkelas,status_sebelumnya,k_status) VALUES (NULL,'$nim','$ta','$semester','$tasmt','$tanggal','$kelas','$status_sebelumnnya','A')";
 				$this->DB->insertRecord($str);				
 				$this->DB->query('COMMIT');
                 unset($_SESSION['currentPageDulangMHSLama']);

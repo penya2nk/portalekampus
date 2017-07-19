@@ -814,7 +814,9 @@ class Logic_ReportAkademik extends Logic_Report {
                 $sheet->getStyle("A10:G10")->applyFromArray($styleArray);
                 $sheet->getStyle("A10:G10")->getAlignment()->setWrapText(true);
                 
-                $str = "SELECT nim,nirm,nama_mhs,tahun_masuk,idkelas,k_status FROM v_datamhs vdm WHERE iddosen_wali=$iddosen_wali ORDER BY vdm.k_status ASC,vdm.tahun_masuk DESC,vdm.nama_mhs ASC";
+                $status=$this->dataReport['k_status'];
+                $str_status=$status == 'none'? '' : "AND k_status='$status'";
+                $str = "SELECT nim,nirm,nama_mhs,tahun_masuk,idkelas,k_status FROM v_datamhs vdm WHERE iddosen_wali=$iddosen_wali $str_status ORDER BY vdm.k_status ASC,vdm.tahun_masuk DESC,vdm.nama_mhs ASC";
                 $this->db->setFieldTable (array('nim','nirm','nama_mhs','tahun_masuk','idkelas','k_status'));
                 $r=$this->db->getRecord($str);	
                 $row=11;

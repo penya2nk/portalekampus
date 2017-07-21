@@ -212,6 +212,10 @@ class CTransaksiPembayaranSemesterGenap Extends MainPageK {
         unset($_SESSION['currentPagePembayaranSemesterGenap']['DataMHS']);
 		$this->redirect('pembayaran.DetailPembayaranSemesterGenap',true,array('id'=>$nim));
 	}
+    public function closeDetail ($sender,$param) {
+        unset($_SESSION['currentPagePembayaranSemesterGenap']['DataMHS']);
+        $this->redirect('pembayaran.PembayaranSemesterGenap',true);
+    }
 }
 class TotalPrice extends MainController
 {   

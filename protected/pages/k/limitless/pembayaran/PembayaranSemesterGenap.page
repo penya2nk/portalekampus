@@ -4,6 +4,7 @@
 </com:TContent>
 <com:TContent ID="moduleheaderelement">    
     <div class="heading-elements">
+        <com:THyperLink ID="linkDetailPembayaran" NavigateUrl="<%=$this->constructUrl('pembayaran.DetailPembayaranSemesterGenap',true,array('id'=>$_SESSION['currentPagePembayaranSemesterGenap']['DataMHS']['nim']))%>" Attributes.Title="Detail Pembayaran" Text="Detail Pembayaran" />
         <div class="heading-form">
             <div class="form-group">
                 <div class="input-group">                    

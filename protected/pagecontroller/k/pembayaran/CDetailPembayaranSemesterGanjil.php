@@ -10,10 +10,10 @@ class CDetailPembayaranSemesterGanjil Extends MainPageK {
         $this->createObj('Finance');
 		if (!$this->IsPostBack&&!$this->IsCallBack) {
             if (!isset($_SESSION['currentPagePembayaranSemesterGanjil'])||$_SESSION['currentPagePembayaranSemesterGanjil']['page_name']!='k.pembayaran.PembayaranSemesterGanjil') {
-				$_SESSION['currentPagePembayaranSemesterGanjil']=array('page_name'=>'k.pembayaran.PembayaranSemesterGanjil','page_num'=>0,'search'=>false,'kelas'=>'none','tahun_masuk'=>$_SESSION['tahun_masuk'],'semester'=>$_SESSION['semester'],'DataMHS'=>array());												
+				$_SESSION['currentPagePembayaranSemesterGanjil']=array('page_name'=>'k.pembayaran.PembayaranSemesterGanjil','page_num'=>0,'search'=>false,'kelas'=>'none','tahun_masuk'=>$_SESSION['tahun_masuk'],'semester'=>1,'DataMHS'=>array());												
 			}        
             try {
-                $nim=addslashes($this->request['id']);                           				
+                $nim=isset($_SESSION['currentPagePembayaranSemesterGanjil']['DataMHS']['nim'])?$_SESSION['currentPagePembayaranSemesterGanjil']['DataMHS']['nim']:addslashes($this->request['id']);                           				
                 $str = "SELECT vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.jk,vdm.tempat_lahir,vdm.tanggal_lahir,vdm.kjur,vdm.nama_ps,vdm.idkonsentrasi,k.nama_konsentrasi,vdm.tahun_masuk,vdm.semester_masuk,vdm.iddosen_wali,vdm.idkelas,vdm.k_status,sm.n_status AS status FROM v_datamhs vdm LEFT JOIN konsentrasi k ON (vdm.idkonsentrasi=k.idkonsentrasi) LEFT JOIN status_mhs sm ON (vdm.k_status=sm.k_status) WHERE vdm.nim='$nim'";
                 $this->DB->setFieldTable(array('no_formulir','nim','nirm','nama_mhs','jk','tempat_lahir','tanggal_lahir','kjur','nama_ps','idkonsentrasi','nama_konsentrasi','tahun_masuk','semester_masuk','iddosen_wali','idkelas','k_status','status'));
                 $r=$this->DB->getRecord($str);	           
@@ -151,5 +151,10 @@ class CDetailPembayaranSemesterGanjil Extends MainPageK {
 		$no_transaksi=$this->getDataKeyField($sender,$this->ListTransactionRepeater);		
 		$this->DB->deleteRecord("transaksi WHERE no_transaksi='$no_transaksi'");		
 		$this->redirect('pembayaran.DetailPembayaranSemesterGanjil',true,array('id'=>$nim));
-	}		
+	}	
+    
+    public function closeDetail ($sender,$param) {
+        unset($_SESSION['currentPagePembayaranSemesterGanjil']['DataMHS']);
+        $this->redirect('pembayaran.PembayaranSemesterGanjil',true);
+    }
 }

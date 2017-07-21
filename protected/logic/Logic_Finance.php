@@ -207,11 +207,12 @@ class Logic_Finance extends Logic_Mahasiswa {
 	public function getSKSFromSP ($tahun_sekarang,$semester_sekarang) {		
 		$kjur=$this->DataMHS['kjur'];
 		$nim=$this->DataMHS['nim'];
-		$str = "SELECT sks FROM transaksi_sp WHERE nim='$nim' AND idsmt=$semester_sekarang AND tahun=$tahun_sekarang AND kjur=$kjur";		
-		$this->db->setFieldTable(array('sks'));
+		$str = "SELECT jumlah_sks FROM transaksi WHERE nim='$nim' AND idsmt=$semester_sekarang AND tahun=$tahun_sekarang AND kjur=$kjur AND commited=1";		
+		$this->db->setFieldTable(array('jumlah_sks'));
 		$r=$this->db->getRecord($str);	
+        
 		if (isset($r[1]))
-			return $r[1]['sks'];
+			return $r[1]['jumlah_sks'];
 		else
 			return false;
 	}

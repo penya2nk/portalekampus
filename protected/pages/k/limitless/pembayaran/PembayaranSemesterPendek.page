@@ -1,10 +1,10 @@
-<%@ Title="Pembayaran - Pembayaran Semester Ganjil"%>
+<%@ Title="Pembayaran - Pembayaran Semester Pendek"%>
 <com:TContent ID="moduleheader">    
-    <i class="icon-calculator3 position-left"></i> <span class="text-semibold">Pembayaran Semester Ganjil</span>
+    <i class="icon-calculator3 position-left"></i> <span class="text-semibold">Pembayaran Semester Pendek</span>
 </com:TContent>
-<com:TContent ID="moduleheaderelement"> 
-    <div class="heading-elements">        
-        <com:THyperLink ID="linkDetailPembayaran" NavigateUrl="<%=$this->constructUrl('pembayaran.DetailPembayaranSemesterGanjil',true,array('id'=>$_SESSION['currentPagePembayaranSemesterGanjil']['DataMHS']['nim']))%>" Attributes.Title="Detail Pembayaran" Text="Detail Pembayaran" />
+<com:TContent ID="moduleheaderelement">    
+    <div class="heading-elements">
+        <com:THyperLink ID="linkDetailPembayaran" NavigateUrl="<%=$this->constructUrl('pembayaran.DetailPembayaranSemesterPendek',true,array('id'=>$_SESSION['currentPagePembayaranSemesterPendek']['DataMHS']['nim']))%>" Attributes.Title="Detail Pembayaran" Text="Detail Pembayaran" />
         <div class="heading-form">
             <div class="form-group">
                 <div class="input-group">                    
@@ -30,17 +30,17 @@
                 </div>                
             </div>
             <com:TRequiredFieldValidator ValidationGroup="filterForm" Display="Dynamic" ControlToValidate="txtNIM" FocusOnError="true" CssClass="has-error help-block" />
-            <com:TActiveCustomValidator ControlToValidate="txtNIM" Display="Dynamic" OnServerValidate="cekNIM" ValidationGroup="filterForm" CssClass="has-error help-block" />
+            <com:TActiveCustomValidator ControlToValidate="txtNIM" Display="Dynamic" OnServerValidate="cekNIM" ValidationGroup="filterForm" ErrorMessage="Nomor Formulir tidak terdaftar di Database, silahkan ganti dengan yang lain" CssClass="has-error help-block" />
         </div>
     </div>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
     <li><a href="#">PEMBAYARAN</a></li>
-    <li class="active">SEMESTER GANJIL</li>     
+    <li class="active">SEMESTER PENDEK</li>     
 </com:TContent>
 <com:TContent ID="sidebarcontent">
 <div class="sidebar sidebar-main sidebar-default sidebar-separate" style="width:330px">
-    <div class="sidebar-content" style="margin-right:5px">   
+    <div class="sidebar-content" style="margin-right:5px">        
         <div class="sidebar-category">
             <div class="category-title">
                 <span>Pencarian</span>
@@ -114,11 +114,12 @@
                             <thead>
                                 <tr class="bg-teal-700">
                                     <th scope="col">NO</th>							
-                                    <th scope="col">FAKTUR</th>
+                                    <th scope="col">NO. FAKTUR</th>
                                     <th scope="col">TANGGAL</th>
                                     <th scope="col">NIM</th>                                    
                                     <th scope="col">NAMA MAHASISWA</th>																												
-                                    <th scope="col">JUMLAH BAYAR</th>	
+                                    <th scope="col">JUMLAH BAYAR</th>
+                                    <th scope="col">JUMLAH SKS</th>
                                     <th scope="col">STATUS</th>
                                     <th width="80">AKSI</th>
                                 </tr>	
@@ -133,13 +134,14 @@
                             <td><%# $this->Data['nim']%></td>																	                            												
                             <td><%#$this->DataItem['nama_mhs']%></td>					
                             <td><%#$this->DataItem['dibayarkan']%></td>
+                            <td><%#$this->DataItem['jumlah_sks']%></td>
                             <td>
                                 <span class="<%#$this->DataItem['commited']==true?'label label-flat border-success text-success-600 position-right':'label label-danger position-right'%>"><%#$this->DataItem['commited']==true?'Done':'in progress'%></span>                               
                             </td>
                             <td>
                                 <ul class="icons-list">
                                     <li class="text-primary-600">
-                                        <a href="<%#$this->Page->constructUrl('pembayaran.DetailPembayaranSemesterGanjil',true,array('id'=>$this->DataItem['nim']))%>" title="Detail Transaksi">
+                                        <a href="<%#$this->Page->constructUrl('pembayaran.DetailPembayaranSemesterPendek',true,array('id'=>$this->DataItem['nim']))%>" title="Detail Transaksi">
                                             <i class="icon-eye"></i>
                                         </a>
                                     </li>                                    
@@ -149,7 +151,7 @@
                     </prop:ItemTemplate>							
                     <prop:FooterTemplate>
                         </table>
-                    </prop:FooterTemplate>		
+                    </prop:FooterTemplate>
                     <prop:EmptyTemplate>                       
                         <div class="panel-body">
                             <div class="alert alert-info alert-styled-left alert-bordered">

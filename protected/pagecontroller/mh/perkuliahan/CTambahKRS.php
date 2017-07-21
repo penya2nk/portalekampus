@@ -40,8 +40,11 @@ class CTambahKRS extends MainPageMHS {
                 $this->KRS->setDataMHS($datamhs);
                 $this->Finance->setDataMHS($datamhs);
                 
-                if ($idsmt==3) {                        
-                    if (!$this->Finance->getSKSFromSP ($tahun,$idsmt))throw new Exception ("Anda tidak bisa mengisi KRS karena belum melakukan pembayaran untuk Semester Pendek");																			
+                if ($idsmt==3) { 
+                    $jumlah_sks_sp=$this->Finance->getSKSFromSP($tahun,$idsmt);
+                    if (!($jumlah_sks_sp > 0)) {
+                        throw new Exception ("Anda tidak bisa mengisi KRS karena jumlah SKS hanya 0 atau transaksi pembayaran tidak tercatat di sistem.");																			
+                    }
                 }else {
                     $data=$this->Finance->getTresholdPembayaran($tahun,$idsmt,true);				                        
                     if (!$data['bool'])throw new Exception ("Anda tidak bisa mengisi KRS karena baru membayar(".$this->Finance->toRupiah($data['total_bayar'])."), harus minimal setengahnya sebesar (".$this->Finance->toRupiah($data['ambang_pembayaran']).") dari total (".$this->Finance->toRupiah($data['total_biaya']).")");
@@ -74,10 +77,10 @@ class CTambahKRS extends MainPageMHS {
                 $this->Nilai->setDataMHS($datamhs);
                 $datadulangbefore=$this->Nilai->getDataDulangBeforeCurrentSemester($idsmt,$tahun);
                 if ($datadulangbefore['k_status']=='C') {
-                    $this->KRS->DataKRS['krs']['maxSKS']=$this->setup->getSettingValue('jumlah_sks_krs_setelah_cuti');                
+                    $this->KRS->DataKRS['krs']['maxSKS']=$idsmt==3?$jumlah_sks_sp:$this->setup->getSettingValue('jumlah_sks_krs_setelah_cuti');                
                     $this->KRS->DataKRS['krs']['ipstasmtbefore']='N.A (Status Cuti)';
                 }else{
-                    $this->KRS->DataKRS['krs']['maxSKS']=$this->Nilai->getMaxSKS($tahun,$idsmt);                
+                    $this->KRS->DataKRS['krs']['maxSKS']=$idsmt==3?$jumlah_sks_sp:$this->Nilai->getMaxSKS($tahun,$idsmt);                
                     $this->KRS->DataKRS['krs']['ipstasmtbefore']=$this->Nilai->getIPS();
                 }                                                
                 

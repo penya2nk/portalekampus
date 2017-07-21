@@ -102,7 +102,7 @@ class CDetailDulangMHSBaru Extends MainPageM {
 		}
 	}
     public function closeDetailDulang ($sender,$param) {
-        unset($_SESSION['currentPageDulangMHSBaru']);
+        unset($_SESSION['currentPageDulangMHSBaru']['DataMHS']);
         $this->redirect('dulang.DulangMHSBaru',true);
     }
 }

@@ -16,6 +16,10 @@ class CDetailDulangMHSLama Extends MainPageM {
                     $this->cmbAddDosenWali->Text=$datamhs['iddosen_wali'];
                     $this->cmbAddDosenWali->dataBind();	           
                     
+                    $ta=$this->DMaster->getNamaTA($datamhs['ta']);		
+                    $semester = $this->setup->getSemester($datamhs['idsmt']);
+                    
+                    $this->lblModulHeader->Text="T.A $ta Semester $semester";
                 }else{
                     throw new Exception("No. Formulir belum ada di session.");
                 }
@@ -53,7 +57,7 @@ class CDetailDulangMHSLama Extends MainPageM {
 		}
 	}
     public function closeDetailDulang ($sender,$param) {
-        unset($_SESSION['currentPageDulangMHSLama']);
+        unset($_SESSION['currentPageDulangMHSLama']['DataMHS']);
         $this->redirect('dulang.DulangMHSLama',true);
     }
 }

@@ -10,10 +10,10 @@ class CDetailPembayaranSemesterGenap Extends MainPageK {
         $this->createObj('Finance');
 		if (!$this->IsPostBack&&!$this->IsCallBack) {
             if (!isset($_SESSION['currentPagePembayaranSemesterGenap'])||$_SESSION['currentPagePembayaranSemesterGenap']['page_name']!='k.pembayaran.PembayaranSemesterGenap') {
-				$_SESSION['currentPagePembayaranSemesterGenap']=array('page_name'=>'k.pembayaran.PembayaranSemesterGenap','page_num'=>0,'search'=>false,'kelas'=>'none','tahun_masuk'=>$_SESSION['tahun_masuk'],'semester'=>$_SESSION['semester'],'DataMHS'=>array());												
+				$_SESSION['currentPagePembayaranSemesterGenap']=array('page_name'=>'k.pembayaran.PembayaranSemesterGenap','page_num'=>0,'search'=>false,'kelas'=>'none','tahun_masuk'=>$_SESSION['tahun_masuk'],'semester'=>2,'DataMHS'=>array());												
 			}        
             try {
-                $nim=addslashes($this->request['id']);                           				
+                $nim=isset($_SESSION['currentPagePembayaranSemesterGenap']['DataMHS']['nim'])?$_SESSION['currentPagePembayaranSemesterGenap']['DataMHS']['nim']:addslashes($this->request['id']);                           				
                 $str = "SELECT vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.jk,vdm.tempat_lahir,vdm.tanggal_lahir,vdm.kjur,vdm.nama_ps,vdm.idkonsentrasi,k.nama_konsentrasi,vdm.tahun_masuk,vdm.semester_masuk,vdm.iddosen_wali,vdm.idkelas,vdm.k_status,sm.n_status AS status FROM v_datamhs vdm LEFT JOIN konsentrasi k ON (vdm.idkonsentrasi=k.idkonsentrasi) LEFT JOIN status_mhs sm ON (vdm.k_status=sm.k_status) WHERE vdm.nim='$nim'";
                 $this->DB->setFieldTable(array('no_formulir','nim','nirm','nama_mhs','jk','tempat_lahir','tanggal_lahir','kjur','nama_ps','idkonsentrasi','nama_konsentrasi','tahun_masuk','semester_masuk','iddosen_wali','idkelas','k_status','status'));
                 $r=$this->DB->getRecord($str);	           
@@ -46,7 +46,7 @@ class CDetailPembayaranSemesterGenap Extends MainPageK {
                 CDetailPembayaranSemesterGenap::$KewajibanMahasiswa=$this->Finance->getTotalBiayaMhsPeriodePembayaran ('lama');
                 $this->populateTransaksi();
             }catch (Exception $ex) {
-                $this->idProcess='view';	
+                $this->idProcess='view';
                 $this->errorMessage->Text=$ex->getMessage();
             }      
 		}	
@@ -155,4 +155,8 @@ class CDetailPembayaranSemesterGenap Extends MainPageK {
 		$this->DB->deleteRecord("transaksi WHERE no_transaksi='$no_transaksi'");		
 		$this->redirect('pembayaran.DetailPembayaranSemesterGenap',true,array('id'=>$nim));
 	}		
+    public function closeDetail ($sender,$param) {
+        unset($_SESSION['currentPagePembayaranSemesterGenap']['DataMHS']);
+        $this->redirect('pembayaran.PembayaranSemesterGenap',true);
+    }
 }

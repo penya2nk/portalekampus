@@ -3,6 +3,26 @@
         <div class="panel panel-flat border-top-info border-bottom-info">
             <div class="panel-heading">
                 <h5 class="panel-title"><i class="icon-profile"></i> Biodata Mahasiswa</h5>
+                <div class="heading-elements">
+                    <ul class="icons-list">
+                        <li><a data-action="collapse"></a></li>   
+                        <li>
+                            <com:TActiveLinkButton ID="btnCloseDetail" Attributes.data-action="closeredirect" OnClick="Page.closeDetail" ClientSide.PostState="false" Attributes.Title="Keluar dari detail">
+                               <prop:ClientSide.OnPreDispatch>
+                                    $('<%=$this->btnCloseDetail->ClientId%>').disabled='disabled';
+                                    Pace.stop();
+                                    Pace.start();                    
+                                </prop:ClientSide.OnPreDispatch>
+                               <prop:ClientSide.OnLoading>
+                                    $('<%=$this->btnCloseDetail->ClientId%>').disabled='disabled';
+                                </prop:ClientSide.OnLoading>
+                                <prop:ClientSide.onComplete>                            
+                                    $('<%=$this->btnCloseDetail->ClientId%>').disabled='';
+                                </prop:ClientSide.OnComplete>
+                            </com:TActiveLinkButton>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div class="panel-body">
                 <div class="row">

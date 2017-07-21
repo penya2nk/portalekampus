@@ -153,17 +153,22 @@
                                 <ul class="menu-list">
                                     <li<%=$this->Page->showPembayaranMahasiswaBaru==true?' class="active"':''%>>
                                         <a href="<%=$this->Page->constructUrl('pembayaran.PembayaranMahasiswaBaru',true)%>">
-                                            <i class="icon-calculator3"></i> Mahasiswa Baru <%=$_SESSION['ta']%>
+                                            <i class="icon-calculator3"></i> Mahasiswa Baru
                                         </a>
                                     </li> 
                                     <li<%=$this->Page->showPembayaranSemesterGanjil==true?' class="active"':''%>>
                                         <a href="<%=$this->Page->constructUrl('pembayaran.PembayaranSemesterGanjil',true)%>">
-                                            <i class="icon-calculator3"></i> Semester Ganjil <%=$this->Page->setup->getSettingValue('default_ta')%>
+                                            <i class="icon-calculator3"></i> Semester Ganjil
                                         </a>
                                     </li> 
                                     <li<%=$this->Page->showPembayaranSemesterGenap==true?' class="active"':''%>>
                                         <a href="<%=$this->Page->constructUrl('pembayaran.PembayaranSemesterGenap',true)%>">
-                                            <i class="icon-calculator3"></i> Semester Genap <%=$this->Page->setup->getSettingValue('default_ta')%>
+                                            <i class="icon-calculator3"></i> Semester Genap
+                                        </a>
+                                    </li>
+                                    <li<%=$this->Page->showPembayaranSemesterPendek==true?' class="active"':''%>>
+                                        <a href="<%=$this->Page->constructUrl('pembayaran.PembayaranSemesterPendek',true)%>">
+                                            <i class="icon-calculator3"></i> Semester Pendek
                                         </a>
                                     </li>
                                 </ul>

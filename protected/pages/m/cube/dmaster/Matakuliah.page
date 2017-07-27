@@ -13,7 +13,8 @@
 <link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/css/libs/nifty-component.css"/>
 </com:TContent>
 <com:TContent ID="maincontent">  
-<com:TPanel Visible="<%= $this->getAddProcess(false) %>" CssClass="row">                
+<com:TPanel Visible="<%= $this->getAddProcess(false) %>" CssClass="row"> 
+    <com:THiddenField ID="hiddenaddidkur" /> 
     <div class="col-lg-12">
         <div class="main-box">
             <header class="main-box-header clearfix">
@@ -34,7 +35,7 @@
                                     <com:TTextBox ID="txtAddKodeMatkul" Columns="6" MaxLength="6" CssClass="form-control" />
                                 </div>
                                 <div class="col-lg-10">                                
-                                    <com:TRequiredFieldValidator ID="FieldAddKodeMatkulValidator" ControlToValidate="txtAddKodeMatkul" Display="Dynamic" ErrorMessage="Isi Kode Matakuliah" ValidationGroup="addMatkul" CssClass="has-error help-block" FocusOnError="true">
+                                    <com:TRequiredFieldValidator ID="FieldAddKodeMatkulValidator" ControlToValidate="txtAddKodeMatkul" Display="Dynamic" ErrorMessage="Isi Kode Matakuliah" ValidationGroup="addmatkul" CssClass="has-error help-block" FocusOnError="true">
                                         <prop:ClientSide.OnValidationError>
                                             $('divAddKodeMatakuliah').addClassName('has-error');
                                             jQuery('#<%=$this->FieldAddKodeMatkulValidator->ClientID%>').removeAttr('style');
@@ -43,7 +44,7 @@
                                             $('divAddKodeMatakuliah').removeClassName('has-error');
                                         </prop:ClientSide.OnValidationSuccess>
                                     </com:TRequiredFieldValidator>
-                                    <com:TActiveCustomValidator ID="addKodeMatkul" ControlToValidate="txtAddKodeMatkul" Display="Dynamic" OnServerValidate="checkKodeMatkul" ValidationGroup="addMatkul" ErrorMessage="Kode Matakuliah Yang Anda Inputkan Sudah Ada ..." CssClass="has-error help-block">
+                                    <com:TActiveCustomValidator ID="addKodeMatkul" ControlToValidate="txtAddKodeMatkul" Display="Dynamic" OnServerValidate="checkKodeMatkul" ValidationGroup="addmatkul" ErrorMessage="Kode Matakuliah Yang Anda Inputkan Sudah Ada ..." CssClass="has-error help-block">
                                         <prop:ClientSide.OnValidationError>
                                             $('divAddKodeMatakuliah').addClassName('has-error');
                                             jQuery('#<%=$this->addKodeMatkul->ClientID%>').removeAttr('style');
@@ -60,7 +61,7 @@
                         <label class="col-lg-2 control-label">Nama Matakuliah :</label>
                         <div class="col-lg-4">
                             <com:TTextBox ID="txtAddNamaMatkul" CssClass="form-control" />
-                            <com:TRequiredFieldValidator ID="FieldAddNamaMatkulValidator" ControlToValidate="txtAddNamaMatkul" Display="Dynamic" ErrorMessage="Isi Nama Matakuliah" ValidationGroup="addMatkul" CssClass="has-error help-block">
+                            <com:TRequiredFieldValidator ID="FieldAddNamaMatkulValidator" ControlToValidate="txtAddNamaMatkul" Display="Dynamic" ErrorMessage="Isi Nama Matakuliah" ValidationGroup="addmatkul" CssClass="has-error help-block">
                                 <prop:ClientSide.OnValidationError>
                                     $('divAddNamaMatakuliah').addClassName('has-error');
                                     jQuery('#<%=$this->FieldAddNamaMatkulValidator->ClientID%>').removeAttr('style');
@@ -105,7 +106,7 @@
                         <label class="col-lg-2 control-label">SKS Tatap Muka :</label>
                         <div class="col-lg-4">
                             <com:TDropDownList ID="cmbAddSksTatapMuka" CssClass="form-control" Width="90px" />	
-                            <com:TRequiredFieldValidator ID="FieldAddSKSTatapMukaValidator" ControlToValidate="cmbAddSksTatapMuka" ErrorMessage="Jumlah SKS tidak boleh 0" InitialValue="0" Display="Dynamic" ValidationGroup="addMatkul" CssClass="has-error help-block">
+                            <com:TRequiredFieldValidator ID="FieldAddSKSTatapMukaValidator" ControlToValidate="cmbAddSksTatapMuka" ErrorMessage="Jumlah SKS tidak boleh 0" InitialValue="0" Display="Dynamic" ValidationGroup="addmatkul" CssClass="has-error help-block">
                                 <prop:ClientSide.OnValidationError>
                                     $('divAddSKSTatapMuka').addClassName('has-error');
                                     jQuery('#<%=$this->FieldAddSKSTatapMukaValidator->ClientID%>').removeAttr('style');
@@ -132,7 +133,7 @@
                         <label class="col-lg-2 control-label">Semester :</label>
                         <div class="col-lg-2">
                             <com:TDropDownList ID="cmbAddSemester" CssClass="form-control" />
-                            <com:TRequiredFieldValidator ID="FieldAddSemesterValidator" InitialValue="none" ControlToValidate="cmbAddSemester" ErrorMessage="Pilih semester" Display="Dynamic" ValidationGroup="addMatkul" CssClass="has-error help-block">
+                            <com:TRequiredFieldValidator ID="FieldAddSemesterValidator" InitialValue="none" ControlToValidate="cmbAddSemester" ErrorMessage="Pilih semester" Display="Dynamic" ValidationGroup="addmatkul" CssClass="has-error help-block">
                                 <prop:ClientSide.OnValidationError>
                                     $('divAddSemester').addClassName('has-error');
                                     jQuery('#<%=$this->FieldAddSemesterValidator->ClientID%>').removeAttr('style');
@@ -146,15 +147,15 @@
                     <div class="form-group" id="divAddMinimalNilai">
                         <label class="col-lg-2 control-label">Minimal Nilai :</label>
                         <div class="col-lg-3">
-                            <com:TActiveDropDownList ID="cmbAddNilai" CssClass="form-control" Width="70px">							
+                            <com:TDropDownList ID="cmbAddNilai" CssClass="form-control" Width="70px">							
                                 <com:TListItem Value="none" Text=" " />
                                 <com:TListItem Value="A" Text="A" />
                                 <com:TListItem Value="B" Text="B" />
                                 <com:TListItem Value="C" Text="C" />
                                 <com:TListItem Value="D" Text="D" />
                                 <com:TListItem Value="E" Text="E" />
-                            </com:TActiveDropDownList></td>
-                            <com:TRequiredFieldValidator ID="FieldAddMinimalNilaiValidator" InitialValue="none" ControlToValidate="cmbAddNilai" ErrorMessage="Pilih minimal nilai matakuliah" Display="Dynamic" ValidationGroup="addMatkul" CssClass="has-error help-block">
+                            </com:TDropDownList></td>
+                            <com:TRequiredFieldValidator ID="FieldAddMinimalNilaiValidator" InitialValue="none" ControlToValidate="cmbAddNilai" ErrorMessage="Pilih minimal nilai matakuliah" Display="Dynamic" ValidationGroup="addmatkul" CssClass="has-error help-block">
                                 <prop:ClientSide.OnValidationError>
                                     $('divAddMinimalNilai').addClassName('has-error');
                                     jQuery('#<%=$this->FieldAddMinimalNilaiValidator->ClientID%>').removeAttr('style');
@@ -185,7 +186,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-lg-offset-2 col-lg-10">
-                            <com:TActiveCustomButton ID="btnSave" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="addMatkul">
+                            <com:TActiveCustomButton ID="btnSave" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="addmatkul">
                                 <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
                                 <prop:ClientSide.OnPreDispatch>                                                                   
                                     $('loading').show(); 
@@ -207,6 +208,7 @@
     </div>
 </com:TPanel>
 <com:TPanel Visible="<%= $this->getEditProcess(false) %>" CssClass="row">   
+    <com:THiddenField ID="hiddeneditidkur" /> 
     <com:THiddenField ID="hiddenid" />         
     <div class="col-lg-12">
         <div class="main-box">
@@ -228,7 +230,7 @@
                                     <com:TTextBox ID="txtEditKodeMatkul" Columns="6" MaxLength="6" CssClass="form-control" />
                                 </div>
                                 <div class="col-lg-10">                                
-                                    <com:TRequiredFieldValidator ID="FieldEditKodeMatkulValidator" ControlToValidate="txtEditKodeMatkul" Display="Dynamic" ErrorMessage="Isi Kode Matakuliah" ValidationGroup="editMatkul" CssClass="has-error help-block">
+                                    <com:TRequiredFieldValidator ID="FieldEditKodeMatkulValidator" ControlToValidate="txtEditKodeMatkul" Display="Dynamic" ErrorMessage="Isi Kode Matakuliah" ValidationGroup="editmatkul" CssClass="has-error help-block">
                                         <prop:ClientSide.OnValidationError>
                                             $('divEditKodeMatakuliah').addClassName('has-error');
                                             jQuery('#<%=$this->FieldEditKodeMatkulValidator->ClientID%>').removeAttr('style');
@@ -237,7 +239,7 @@
                                             $('divEditKodeMatakuliah').removeClassName('has-error');
                                         </prop:ClientSide.OnValidationSuccess>
                                     </com:TRequiredFieldValidator>
-                                    <com:TActiveCustomValidator ID="editKodeMatkul" ControlToValidate="txtEditKodeMatkul" Display="Dynamic" OnServerValidate="checkKodeMatkul" ValidationGroup="editMatkul" ErrorMessage="Kode Matakuliah Yang Anda Inputkan Sudah Ada ..." CssClass="has-error help-block">
+                                    <com:TActiveCustomValidator ID="editKodeMatkul" ControlToValidate="txtEditKodeMatkul" Display="Dynamic" OnServerValidate="checkKodeMatkul" ValidationGroup="editmatkul" ErrorMessage="Kode Matakuliah Yang Anda Inputkan Sudah Ada ..." CssClass="has-error help-block">
                                         <prop:ClientSide.OnValidationError>
                                             $('divEditKodeMatakuliah').addClassName('has-error');
                                             jQuery('#<%=$this->editKodeMatkul->ClientID%>').removeAttr('style');
@@ -254,7 +256,7 @@
                         <label class="col-lg-2 control-label">Nama Matakuliah :</label>
                         <div class="col-lg-4">
                             <com:TTextBox ID="txtEditNamaMatkul" CssClass="form-control" />
-                            <com:TRequiredFieldValidator ID="FieldEditNamaMatkulValidator" ControlToValidate="txtEditNamaMatkul" Display="Dynamic" ErrorMessage="Isi Nama Matakuliah" ValidationGroup="editMatkul" CssClass="has-error help-block">
+                            <com:TRequiredFieldValidator ID="FieldEditNamaMatkulValidator" ControlToValidate="txtEditNamaMatkul" Display="Dynamic" ErrorMessage="Isi Nama Matakuliah" ValidationGroup="editmatkul" CssClass="has-error help-block">
                                 <prop:ClientSide.OnValidationError>
                                     $('divEditNamaMatakuliah').addClassName('has-error');
                                     jQuery('#<%=$this->FieldEditNamaMatkulValidator->ClientID%>').removeAttr('style');
@@ -299,7 +301,7 @@
                         <label class="col-lg-2 control-label">SKS Tatap Muka :</label>
                         <div class="col-lg-4">
                             <com:TDropDownList ID="cmbEditSksTatapMuka" CssClass="form-control" Width="90px" />	
-                                <com:TRequiredFieldValidator ID="FieldEditSKSTatapMukaValidator" ControlToValidate="cmbEditSksTatapMuka" ErrorMessage="Jumlah SKS tidak boleh 0" InitialValue="0" Display="Dynamic" ValidationGroup="editMatkul" CssClass="has-error help-block">
+                                <com:TRequiredFieldValidator ID="FieldEditSKSTatapMukaValidator" ControlToValidate="cmbEditSksTatapMuka" ErrorMessage="Jumlah SKS tidak boleh 0" InitialValue="0" Display="Dynamic" ValidationGroup="editmatkul" CssClass="has-error help-block">
                                 <prop:ClientSide.OnValidationError>
                                     $('divEditSKSTatapMuka').addClassName('has-error');
                                     jQuery('#<%=$this->FieldEditSKSTatapMukaValidator->ClientID%>').removeAttr('style');
@@ -326,7 +328,7 @@
                         <label class="col-lg-2 control-label">Semester :</label>
                         <div class="col-lg-2">
                             <com:TDropDownList ID="cmbEditSemester" CssClass="form-control" />
-                            <com:TRequiredFieldValidator ID="FieldEditSemesterValidator" InitialValue="none" ControlToValidate="cmbEditSemester" ErrorMessage="Pilih semester" Display="Dynamic" ValidationGroup="editMatkul" CssClass="has-error help-block">
+                            <com:TRequiredFieldValidator ID="FieldEditSemesterValidator" InitialValue="none" ControlToValidate="cmbEditSemester" ErrorMessage="Pilih semester" Display="Dynamic" ValidationGroup="editmatkul" CssClass="has-error help-block">
                                 <prop:ClientSide.OnValidationError>
                                     $('divEditSemester').addClassName('has-error');
                                     jQuery('#<%=$this->FieldEditSemesterValidator->ClientID%>').removeAttr('style');
@@ -348,7 +350,7 @@
                                 <com:TListItem Value="D" Text="D" />
                                 <com:TListItem Value="E" Text="E" />
                             </com:TDropDownList></td>
-                            <com:TRequiredFieldValidator ID="FieldEditMinimalNilaiValidator" InitialValue="none" ControlToValidate="cmbEditNilai" ErrorMessage="Pilih minimal nilai matakuliah" Display="Dynamic" ValidationGroup="editMatkul" CssClass="has-error help-block">
+                            <com:TRequiredFieldValidator ID="FieldEditMinimalNilaiValidator" InitialValue="none" ControlToValidate="cmbEditNilai" ErrorMessage="Pilih minimal nilai matakuliah" Display="Dynamic" ValidationGroup="editmatkul" CssClass="has-error help-block">
                                 <prop:ClientSide.OnValidationError>
                                     $('divEditMinimalNilai').addClassName('has-error');
                                     jQuery('#<%=$this->FieldEditMinimalNilaiValidator->ClientID%>').removeAttr('style');
@@ -379,7 +381,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-lg-offset-2 col-lg-10">
-                            <com:TActiveCustomButton ID="btnUpdate" CssClass="btn btn-primary" OnClick="updateData" ValidationGroup="editMatkul">
+                            <com:TActiveCustomButton ID="btnUpdate" CssClass="btn btn-primary" OnClick="updateData" ValidationGroup="editmatkul">
                                 <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
                                 <prop:ClientSide.OnPreDispatch>                                                                   
                                     $('loading').show(); 

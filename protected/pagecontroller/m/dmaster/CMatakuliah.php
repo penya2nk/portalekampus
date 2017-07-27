@@ -157,38 +157,35 @@ class CMatakuliah extends MainPageM {
     public function addProcess ($sender,$param) {
         $this->idProcess='add';
         
+        $this->hiddenaddidkur->Value=$this->Demik->getIDKurikulum($_SESSION['kjur']);
         $sks=Logic_Akademik::$sks;        
-        $this->cmbAddSks->DataSource=$sks;			
-        $this->cmbAddSks->Text=$result['sks'];
+        $this->cmbAddSks->DataSource=$sks;		
         $this->cmbAddSks->dataBind();        
         
         $datakonsentrasi=$this->DMaster->getListKonsentrasiProgramStudi($_SESSION['kjur']);
-        $this->cmbAddKonsentrasi->DataSource=$datakonsentrasi;			
-        $this->cmbAddKonsentrasi->Text=$result['idkonsentrasi'];
+        $this->cmbAddKonsentrasi->DataSource=$datakonsentrasi;		
         $this->cmbAddKonsentrasi->dataBind();        
         
-        $this->cmbAddSksTatapMuka->DataSource=$sks;		
-        $this->cmbAddSksTatapMuka->Text=$result['sks_tatap_muka'];		
+        $this->cmbAddSksTatapMuka->DataSource=$sks;			
         $this->cmbAddSksTatapMuka->dataBind();
         
         $this->cmbAddSksPraktikum->DataSource=$sks;		
-        $this->cmbAddSksPraktikum->Text=$result['sks_praktikum'];
         $this->cmbAddSksPraktikum->dataBind();
 
         $this->cmbAddSksPraktikLapangan->DataSource=$sks;		
-        $this->cmbAddSksPraktikLapangan->Text=$result['praktik_lapangan'];
         $this->cmbAddSksPraktikLapangan->dataBind();
         
         $this->cmbAddSemester->DataSource=  Logic_Akademik::$SemesterMatakuliah;
-        $this->cmbAddSemester->Text=$result['semester'];						
+        $this->cmbAddSemester->Text=$_SESSION['currentPageMatakuliah']['semester'];						
         $this->cmbAddSemester->dataBind();
     }
     public function checkKodeMatkul ($sender,$param) {
 		$this->idProcess=$sender->getId()=='addKodeMatkul'?'add':'edit';
-        $kmatkul=$param->Value;		
+        $idkur=$this->idProcess=='add'?$this->hiddenaddidkur->Value:$this->hiddeneditidkur->Value;
+        $kmatkul=addslashes($param->Value);		
         if ($kmatkul != '') {
             try {   
-                $kmatkul=$this->Demik->getIDKurikulum($_SESSION['kjur']).'_'.$kmatkul;
+                $kmatkul=$idkur.'_'.$kmatkul;
                 if ($this->hiddenid->Value!=$kmatkul) {                                                            
                     if ($this->DB->checkRecordIsExist('kmatkul','matakuliah',$kmatkul)) {                                
                         throw new Exception ("Kode matakuliah ($kmatkul) sudah tidak tersedia silahkan ganti dengan yang lain.");		
@@ -202,7 +199,7 @@ class CMatakuliah extends MainPageM {
     }
     public function saveData ($sender,$param) {
 		if ($this->Page->isValid) {	
-            $idkur=$this->Demik->getIDKurikulum($_SESSION['kjur']);
+            $idkur=$this->hiddenaddidkur->Value;
             $kmatkul=$this->txtAddKodeMatkul->Text;
             $kode_matkul=$idkur."_$kmatkul";
             $nama_matkul=addslashes(strtoupper($this->txtAddNamaMatkul->Text));	
@@ -235,11 +232,12 @@ class CMatakuliah extends MainPageM {
         $id=$this->getDataKeyField($sender,$this->RepeaterS);        
 		$this->hiddenid->Value=$id;        
         
-        $str = "SELECT kmatkul,nmatkul,sks,idkonsentrasi,ispilihan,islintas_prodi,semester,sks_tatap_muka,sks_praktikum,sks_praktik_lapangan,minimal_nilai,syarat_ta,aktif FROM matakuliah WHERE kmatkul='$id'";
-        $this->DB->setFieldTable(array('kmatkul','nmatkul','sks','idkonsentrasi','ispilihan','islintas_prodi','semester','sks_tatap_muka','sks_praktikum','sks_praktik_lapangan','minimal_nilai','syarat_ta','aktif'));
+        $str = "SELECT kmatkul,idkur,nmatkul,sks,idkonsentrasi,ispilihan,islintas_prodi,semester,sks_tatap_muka,sks_praktikum,sks_praktik_lapangan,minimal_nilai,syarat_ta,aktif FROM matakuliah WHERE kmatkul='$id'";
+        $this->DB->setFieldTable(array('kmatkul','idkur','nmatkul','sks','idkonsentrasi','ispilihan','islintas_prodi','semester','sks_tatap_muka','sks_praktikum','sks_praktik_lapangan','minimal_nilai','syarat_ta','aktif'));
         $r=$this->DB->getRecord($str);
         
-        $result=$r[1];        	
+        $result=$r[1];
+        $this->hiddeneditidkur->Value=$result['idkur'];
         $this->txtEditKodeMatkul->Text=$this->Demik->getKMatkul($result['kmatkul']);
         $this->txtEditNamaMatkul->Text=$result['nmatkul'];			
         
@@ -279,7 +277,7 @@ class CMatakuliah extends MainPageM {
     public function updateData ($sender,$param) {
 		if ($this->Page->isValid) {			
             $id=$this->hiddenid->Value;
-            $idkur=$this->Demik->getIDKurikulum($_SESSION['kjur']);
+            $idkur=$this->hiddeneditidkur->Value;
             $kmatkul=$this->txtEditKodeMatkul->Text;
             $kode_matkul=$idkur."_$kmatkul";
             $nama_matkul=addslashes(strtoupper($this->txtEditNamaMatkul->Text));	

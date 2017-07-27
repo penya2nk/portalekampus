@@ -301,6 +301,9 @@
                                     <li>
                                         <strong>Dosen Wali:</strong> <%#$this->Page->DMaster->getNamaDosenWaliByID($this->DataItem['iddosen_wali'])%>
                                     </li> 
+                                    <li>
+                                        <strong>Kelas:</strong> <%#$this->Page->DMaster->getNamaKelasByID($this->DataItem['idkelas'])%>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="profile-box-footer clearfix">

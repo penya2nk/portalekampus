@@ -5,7 +5,7 @@ class Logic_Akademik extends Logic_Mahasiswa {
      * daftar semester matakuliah
      * @var type 
      */
-    public static $SemesterMatakuliah = array ('none'=>' ',1=>1,2=>2,3=>3,4=>4,5=>5,6=>6,7=>7,8=>8,9=>'Matkul Pilihan Ganjil',10=>'Matkul Pilihan Genap');
+    public static $SemesterMatakuliah = array ('none'=>' ',1=>1,2=>2,3=>3,4=>4,5=>5,6=>6,7=>7,8=>8);
     /**
      * daftar semester matakuliah bentuk romawi
      * @var type 

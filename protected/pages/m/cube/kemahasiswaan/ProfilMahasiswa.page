@@ -77,17 +77,16 @@
                         </ul>
                     </div>
                 </div>
-
             </div>
         </div>
         <div class="col-lg-9 col-md-8 col-sm-8">
             <div class="main-box clearfix">
                 <div class="tabs-wrapper profile-tabs">
                     <com:TActiveMultiView  ID="MVProfilMahasiswa" OnActiveViewChanged="changeView">
-                        <com:TView ID="aktivitasmahasiswa">
+                        <com:TView ID="ipsdanipk">
                             <ul class="nav nav-tabs">
                                 <li class="active">                                
-                                    <a href="#tab-aktivitasmahasiswa" data-toggle="tab">Aktivitas Mahasiswa</a>
+                                    <a href="#tab-ipsdanipk" data-toggle="tab">IPS dan IPK</a>
                                 </li>
                                 <li>
                                     <com:TActiveLinkButton ID="btnViewDulang" Text="Daftar Ulang" CommandName="SwitchViewIndex" CommandParameter="1" ClientSide.PostState="false">
@@ -133,8 +132,52 @@
                                 </li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane fade in active" id="tab-aktivitasmahasiswa">
-                                    
+                                <div class="tab-pane fade in active" id="tab-ipsdanipk">
+                                    <div class="table-responsive">
+                                        <com:TRepeater ID="RepeaterIPSdanIPK" EnableViewState="false" OnItemCreated="itemCreatedRepeaterIPSdanIPK">      
+                                            <prop:HeaderTemplate>
+                                            <table class="table table-striped table-hover">	
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">NO</th>
+                                                        <th scope="col">T.A</th>
+                                                        <th scope="col">SEMESTER</th>
+                                                        <th scope="col">JUMLAH SKS</th>
+                                                        <th scope="col">IPS</th>
+                                                        <th scope="col">IPK</th>                                                                    					                                                                    				
+                                                    </tr>						
+                                                </thead>
+                                                <tbody>
+                                            </prop:HeaderTemplate>
+                                            <prop:ItemTemplate>
+                                                <tr>
+                                                    <td><%# $this->DataItem['no']%></td>
+                                                    <td><%#$this->DataItem['ta']%></td>
+                                                    <td><%#$this->DataItem['semester']%></td>
+                                                    <td><%# $this->DataItem['jumlah_sks']%></td>
+                                                    <td><%# $this->DataItem['ips']%></td>							
+                                                    <td><com:TLiteral ID="literalIPK" /></td>					                                                            
+                                                </tr>
+                                            </prop:ItemTemplate>  
+                                            <prop:FooterTemplate>
+                                                </tbody>
+                                                </table>
+                                            </prop:FooterTemplate>
+                                            <prop:EmptyTemplate>                                                       
+                                                <div class="row">
+                                                    <div class="main-box-body">
+                                                        <div class="alert alert-info">
+                                                            <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                                            <strong>
+                                                                Info!
+                                                            </strong>
+                                                             Tidak ada data yang bisa ditampilkan.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </prop:EmptyTemplate>
+                                        </com:TRepeater>                                        
+                                    </div>
                                 </div>
                             </div>
                         </com:TView>
@@ -142,13 +185,13 @@
                         <com:TView ID="dulangmahasiswa">
                             <ul class="nav nav-tabs">
                                 <li>
-                                    <com:TActiveLinkButton ID="btnViewDMAktivitasMahasiswa" Text="Aktivitas Mahasiswa" CommandName="SwitchViewIndex" CommandParameter="0" ClientSide.PostState="false">
+                                    <com:TActiveLinkButton ID="btnViewDMIPSdanIPK" Text="Aktivitas Mahasiswa" CommandName="SwitchViewIndex" CommandParameter="0" ClientSide.PostState="false">
                                         <prop:ClientSide.OnPreDispatch>                                                                   
                                             $('loading').show(); 
-                                            $('<%=$this->btnViewDMAktivitasMahasiswa->ClientId%>').disabled='disabled';						
+                                            $('<%=$this->btnViewDMIPSdanIPK->ClientId%>').disabled='disabled';						
                                         </prop:ClientSide.OnPreDispatch>
                                         <prop:ClientSide.OnLoading>
-                                            $('<%=$this->btnViewDMAktivitasMahasiswa->ClientId%>').disabled='disabled';						
+                                            $('<%=$this->btnViewDMIPSdanIPK->ClientId%>').disabled='disabled';						
                                         </prop:ClientSide.OnLoading>
                                         <prop:ClientSide.OnComplete>                                        
                                             $('loading').hide(); 
@@ -243,13 +286,13 @@
                         <com:TView ID="krsmahasiswa">
                             <ul class="nav nav-tabs">
                                 <li>
-                                    <com:TActiveLinkButton ID="btnViewKRSAktivitasMahasiswa" Text="Aktivitas Mahasiswa" CommandName="SwitchViewIndex" CommandParameter="0" ClientSide.PostState="false">
+                                    <com:TActiveLinkButton ID="btnViewKRSIPSdanIPK" Text="Aktivitas Mahasiswa" CommandName="SwitchViewIndex" CommandParameter="0" ClientSide.PostState="false">
                                         <prop:ClientSide.OnPreDispatch>                                                                   
                                             $('loading').show(); 
-                                            $('<%=$this->btnViewKRSAktivitasMahasiswa->ClientId%>').disabled='disabled';						
+                                            $('<%=$this->btnViewKRSIPSdanIPK->ClientId%>').disabled='disabled';						
                                         </prop:ClientSide.OnPreDispatch>
                                         <prop:ClientSide.OnLoading>
-                                            $('<%=$this->btnViewKRSAktivitasMahasiswa->ClientId%>').disabled='disabled';						
+                                            $('<%=$this->btnViewKRSIPSdanIPK->ClientId%>').disabled='disabled';						
                                         </prop:ClientSide.OnLoading>
                                         <prop:ClientSide.OnComplete>                                        
                                             $('loading').hide(); 
@@ -321,18 +364,18 @@
                                                     </prop:ItemTemplate>  
                                                     <prop:FooterTemplate>
                                                         </tbody>
-                                                            <tfoot>
-                                                            <tr>
-                                                                <td colspan="3"><strong>Jumlah SKS</strong></td>
-                                                                <td><%# CProfilMahasiswa::$totalSKS%></td>
-                                                                <td colspan="3">&nbsp;</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="3"><strong>Jumlah Matakuliah</strong></td>
-                                                                <td><%# CProfilMahasiswa::$jumlahMatkul%></td>
-                                                                <td colspan="5">&nbsp;</td>
-                                                            </tr>
-                                                            </tfoot>
+                                                        <tfoot>
+                                                        <tr>
+                                                            <td colspan="3"><strong>Jumlah SKS</strong></td>
+                                                            <td><%# CProfilMahasiswa::$totalSKS%></td>
+                                                            <td colspan="3">&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3"><strong>Jumlah Matakuliah</strong></td>
+                                                            <td><%# CProfilMahasiswa::$jumlahMatkul%></td>
+                                                            <td colspan="5">&nbsp;</td>
+                                                        </tr>
+                                                        </tfoot>
                                                         </table>
                                                     </prop:FooterTemplate>
                                                 </com:TRepeater>
@@ -362,13 +405,13 @@
                         <com:TView ID="gantinimnirm">
                             <ul class="nav nav-tabs">
                                 <li>
-                                    <com:TActiveLinkButton ID="btnViewGantiNIMNIRMAktivitasMahasiswa" Text="Aktivitas Mahasiswa" CommandName="SwitchViewIndex" CommandParameter="0" ClientSide.PostState="false">
+                                    <com:TActiveLinkButton ID="btnViewGantiNIMNIRMIPSdanIPK" Text="Aktivitas Mahasiswa" CommandName="SwitchViewIndex" CommandParameter="0" ClientSide.PostState="false">
                                         <prop:ClientSide.OnPreDispatch>                                                                   
                                             $('loading').show(); 
-                                            $('<%=$this->btnViewGantiNIMNIRMAktivitasMahasiswa->ClientId%>').disabled='disabled';						
+                                            $('<%=$this->btnViewGantiNIMNIRMIPSdanIPK->ClientId%>').disabled='disabled';						
                                         </prop:ClientSide.OnPreDispatch>
                                         <prop:ClientSide.OnLoading>
-                                            $('<%=$this->btnViewGantiNIMNIRMAktivitasMahasiswa->ClientId%>').disabled='disabled';						
+                                            $('<%=$this->btnViewGantiNIMNIRMIPSdanIPK->ClientId%>').disabled='disabled';						
                                         </prop:ClientSide.OnLoading>
                                         <prop:ClientSide.OnComplete>                                        
                                             $('loading').hide(); 

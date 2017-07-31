@@ -5,6 +5,27 @@
 <com:TContent ID="modulebreadcrumb">    
     <li class="active">DASHBOARD</li>
 </com:TContent>
+<com:TContent ID="sidebarcontent">
+<div class="sidebar sidebar-main sidebar-default sidebar-separate" style="width:330px">
+    <div class="sidebar-content" style="margin-right:5px">                    
+        <%include Application.layouts.limitless.FilterMode2%>
+    </div>
+</div>
+</com:TContent>
 <com:TContent ID="maincontent">
-    
+    <com:TPanel Visible="<%= $this->getDefaultProcess(false) %>" CssClass="row">	
+        <div class="col-lg-4">
+            <!-- Today's revenue -->
+            <div class="panel bg-blue-400">
+                <div class="panel-body">
+                    <div class="heading-elements">
+                    </div>
+                    <h3 class="no-margin"><%=$this->Finance->toRupiah(CHome::$TotalPembayaranMahasiswa)%></h3>
+                    Total Pembayaran Mahasiswa
+                    <div class="text-muted text-size-small">&nbsp;</div>
+                </div>
+            </div>
+            <!-- /today's revenue -->
+        </div>
+    </com:TPanel>
 </com:TContent>

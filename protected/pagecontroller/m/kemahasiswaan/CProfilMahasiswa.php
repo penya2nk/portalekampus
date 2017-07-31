@@ -9,7 +9,10 @@ class CProfilMahasiswa extends MainPageM {
 	* total SKS
 	*/
 	static $totalSKS=0;
-	
+    /**
+	* total M
+	*/
+	static $totalM=0;	
 	/**
 	* jumlah matakuliah
 	*/
@@ -61,7 +64,8 @@ class CProfilMahasiswa extends MainPageM {
             $activeview = $_SESSION['currentPageProfilMahasiswa']['activeviewindex'];                
             if ($activeview == $this->MVProfilMahasiswa->ActiveViewIndex) {
                 switch ($activeview) {
-                    case 0 : //aktivitas mahasiswa
+                    case 0 : //ips dan ipk
+                        $this->populateIPSdanIPK();
                     break;   
                     case 1 : //daftar ulang mahasiswa
                         $this->createObj('KRS');                    
@@ -85,8 +89,44 @@ class CProfilMahasiswa extends MainPageM {
             $this->errorMessage->Text=$ex->getMessage();
         }          
     }
-    public function getDataMHS($idx) {		        
+    public function getDataMHS($idx) {		
         return $this->Nilai->getDataMHS($idx);
+    }
+    public function itemCreatedRepeaterIPSdanIPK ($sender,$param) {
+        $item=$param->Item;
+        if ($item->ItemType === 'Item' || $item->ItemType === 'AlternatingItem') {   
+            CProfilMahasiswa::$totalM += $item->DataItem['jumlah_m'];
+            CProfilMahasiswa::$totalSKS += $item->DataItem['jumlah_sks_ada_nilai'];
+            $ipk=@ bcdiv(CProfilMahasiswa::$totalM,CProfilMahasiswa::$totalSKS,2);
+            $item->literalIPK->Text=$ipk;
+        }
+    }   
+    public function populateIPSdanIPK() {
+        $nim=$_SESSION['currentPageProfilMahasiswa']['DataMHS']['nim'];        
+        $str = "SELECT idkrs,tahun,idsmt FROM krs WHERE nim='$nim' AND sah=1 ORDER BY idkrs ASC";
+        $this->DB->setFieldTable(array('idkrs','tahun','idsmt'));        
+		$r=$this->DB->getRecord($str);                
+        
+        $result=array();
+        while(list($k,$v)=each($r)) {
+            $this->Nilai->getKHS($v['tahun'],$v['idsmt']);
+            $v['ta']=$this->DMaster->getNamaTA($v['tahun']);		
+            $v['semester'] = $this->setup->getSemester($v['idsmt']); 
+            
+            $jumlah_sks=$this->Nilai->getTotalSKS ();
+            $jumlah_m=$this->Nilai->getTotalM ();
+            $ips=$this->Nilai->getIPS();
+            
+            $ipk=0;
+            $v['jumlah_sks'] = $jumlah_sks;
+            $v['jumlah_sks_ada_nilai'] = $this->Nilai->getTotalSKSAdaNilai();
+            $v['jumlah_m']=$jumlah_m;
+            $v['ips'] = $ips;
+            $v['ipk'] = $ipk;
+            $result[$k]=$v;
+        }        
+        $this->RepeaterIPSdanIPK->DataSource=$result;
+		$this->RepeaterIPSdanIPK->dataBind();
     }
     public function populateDulang() {
         $this->KRS->setDataMHS($_SESSION['currentPageProfilMahasiswa']['DataMHS']);

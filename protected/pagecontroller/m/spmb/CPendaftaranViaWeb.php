@@ -144,6 +144,29 @@ class CPendaftaranViaWeb extends MainPageM {
             }
 		}
 	}	
+    public function changePs($sender,$param) {
+        if ($sender->getId()=='cmbAddKjur1') {
+            $this->idProcess='add';
+            if ($sender->Text == 'none') {
+                $this->cmbAddKjur2->Enabled=false;	
+                $this->cmbAddKjur2->Text='none';
+            }else{			            
+                $this->cmbAddKjur2->Enabled=true;
+                
+                $jurusan=$this->DMaster->removeKjur($_SESSION['daftar_jurusan'],$sender->Text);									            
+                $this->cmbAddKjur2->DataSource=$jurusan;
+                $this->cmbAddKjur2->dataBind();
+            }
+        }else {
+            $this->idProcess='edit';
+            $this->cmbEditKjur2->Enabled=true;	
+            $jurusan=$this->DMaster->removeKjur($_SESSION['daftar_jurusan'],$sender->Text);									            
+            $this->cmbEditKjur2->DataSource=$jurusan;
+            $this->cmbEditKjur2->dataBind();
+        }
+        
+							
+	}
 	public function updateData ($sender,$param) {
 		if ($this->IsValid) {
 			$no_formulir=$this->txtEditNoFormulir->Text;
@@ -309,76 +332,28 @@ class CPendaftaranViaWeb extends MainPageM {
 	}
 	
 	public function deleteRecord($sender,$param) {
-		$this->Pengguna->updateActivity();	
 		$no_formulir=$this->getDataKeyField($sender,$this->RepeaterS);
-		$str = "formulir_pendaftaran WHERE no_formulir='$no_formulir'";
-		if ($this->DB->deleteRecord($str) ) {
-			$this->DB->deleteRecord ("transaksi WHERE no_formulir='$no_formulir'");
-			$this->DB->query ('COMMIT');
-		}else {
-			$this->DB->query ('ROLLBACK');
-		}		
-		$this->Themes->setMode('mhs');
-		$this->Themes->hapusPhoto($no_formulir.'.jpg');
-		$this->spmb->redirect('a.m.SPMB.PendaftaranViaFO');
+        try {
+            if ($this->DB->checkRecordIsExist('no_formulir','register_mahasiswa',$no_formulir)) {
+                throw new Exception ("Tidak menghapus mahasiswa ini karena telah memiliki NIM.");
+            }
+            $str = "formulir_pendaftaran WHERE no_formulir='$no_formulir'";
+            $this->DB->query('BEGIN');
+            if ($this->DB->deleteRecord($str) ) {
+                $this->DB->deleteRecord ("transaksi WHERE no_formulir='$no_formulir'");
+                $this->DB->query ('COMMIT');
+                $this->redirect('spmb.PendaftaranViaWeb',true);
+            }else {
+                $this->DB->query ('ROLLBACK');
+            }	
+            
+        } catch (Exception $e) {
+            $this->modalMessageError->show();
+			$this->lblContentMessageError->Text=$e->getMessage();
+        }    	
 	}
-	
-	public function checkFormulir ($sender,$param) {
-		if ($this->IsValid) {			
-			try {
-				$no_formulir=trim($this->txtNoFormulir->Text);			
-				$this->checkFormulir2($no_formulir,$_SESSION['tahun_pendaftaran']);			
-				$_SESSION['addProcess']=$no_formulir;
-				$this->spmb->redirect('a.m.SPMB.PendaftaranViaFO');									
-			}catch (Exception $e) {
-				$this->errorMessage->Text=$e->getMessage();
-			}			
-		}		
-	}
-
-	public function viewRecord ($sender,$param) {
-		$this->Pengguna->updateActivity();	
-		$this->idProcess = 'view';
-		$this->disableToolbars();
-		$no_formulir=$this->getDataKeyField($sender,$this->RepeaterS);
-		$this->txtPhotoNoFormulir->Value=$no_formulir;		
-		$this->spmb->setDataMode('complete');
-		$this->spmb->setNoFormulir($no_formulir,true);	        
-		$_SESSION['currentPagePendaftaranWeb']['dataMhs']=$this->spmb->dataMhs;		
-	}
-	
-	public function doesFileExist ($sender,$param) {
-		$retval=false;
-		$uploadFileName=$this->FileUpload->getFileName();
-		if ($uploadFileName) {
-			$fileType=$this->FileUpload->getFileType();			
-			if ($fileType=='image/jpeg') {
-				$retval=true;
-			}else {
-				$sender->ErrorMessage='Hanya menerima tipe file .jpg';
-			}
-		}
-		$param->IsValid=$retval;
-	}
-	public function unggahPhoto ($sender,$param) {
-		if ($this->IsValid) {
-			$this->Pengguna->updateActivity();	
-			$this->idProcess='view';
-			$no_formulir=$this->txtPhotoNoFormulir->Value;
-			$nama_file=$this->Themes->getDirImage('bydir').$no_formulir.'.jpg';			
-			$this->FileUpload->saveAs($nama_file);
-			$this->Themes->load($nama_file);			
-			$this->Themes->resize(160,180);
-			$this->Themes->save($nama_file);
-			$this->Themes->resize(48,48);
-			$this->Themes->save($nama_file.'_thub.jpg');			
-			$this->spmb->setNoFormulir($no_formulir,true);
-			$this->spmb->redirect('a.m.SPMB.PendaftaranViaFO');
-		}
-	}
-	
+    
 	public function closeAddProcess ($sender,$param) {
-		$this->Pengguna->updateActivity();	
 		unset($_SESSION['addProcess']);
 		$this->spmb->redirect('a.m.SPMB.PendaftaranViaFO');
 	}

@@ -75,7 +75,7 @@ class CProfiles extends MainPageMHS {
         $this->literalKelasMHS->Text=$this->DMaster->getNamaKelasByID($dataMhs['idkelas']);
         $daftar_jurusan=$this->DMaster->getListProgramStudi(2);
         $this->literalKjur1->Text=$daftar_jurusan[$dataMhs['kjur1']];
-        $this->literalKjur2->Text=$daftar_jurusan[$dataMhs['kjur2']];
+        $this->literalKjur2->Text=$dataMhs['kjur2'] > 0 ?$daftar_jurusan[$dataMhs['kjur2']]:'N.A';
 		$this->literalTahunMasuk->Text=$this->DMaster->getNamaTA($dataMhs['ta']);
         $this->literalSemesterMasuk->Text=$this->setup->getSemester($dataMhs['idsmt']);
         

@@ -22,7 +22,7 @@
 <!-- /toolbar -->
 <!-- User profile -->
 <div class="row">
-    <div class="col-lg-9">
+    <div class="col-md-9">
         <div class="tabbable">
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="settings">
@@ -104,20 +104,20 @@
                             <h3>Biodata</h3>
                             <div class="form-horizontal">
                                 <div class="form-group">
-                                    <label class="col-lg-2 control-label">Nomor Formulir :</label>
-                                    <div class="col-lg-10">                            
-                                        <com:TTextBox ID="txtEditNoFormulir" Enabled="false" Columns="8" MaxLength="8" CssClass="form-control" Width="150px" />
+                                    <label class="col-md-3 control-label">Nomor Formulir :</label>
+                                    <div class="col-md-9">                            
+                                        <com:TTextBox ID="txtEditNoFormulir" Enabled="false" Columns="8" MaxLength="8" CssClass="form-control" />
                                     </div>
                                 </div>
                                 <div class="form-group" id="divEditNamaMhs">
-                                    <label class="col-lg-2 control-label">Nama Mahasiswa :</label>
-                                    <div class="col-lg-4">
+                                    <label class="col-md-3 control-label">Nama Mahasiswa :</label>
+                                    <div class="col-md-9">
                                         <com:TTextBox ID="txtEditNamaMhs" CssClass="form-control" Enabled="false" />                                                
                                     </div>
                                 </div>
                                 <div class="form-group" id="divEditTempatLahir">
-                                    <label class="col-lg-2 control-label">Tempat Lahir :</label>
-                                    <div class="col-lg-3">
+                                    <label class="col-md-3 control-label">Tempat Lahir :</label>
+                                    <div class="col-md-9">
                                         <com:TTextBox ID="txtEditTempatLahir" CssClass="form-control" />
                                         <com:TRequiredFieldValidator ID="FieldEditTempatLahirValidator" ControlToValidate="txtEditTempatLahir" Display="Dynamic" ErrorMessage="Isi Tempat Lahir" ValidationGroup="editformulir" CssClass="has-error help-block">
                                             <prop:ClientSide.OnValidationError>
@@ -131,14 +131,14 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-lg-2 control-label">Tanggal Lahir :</label>
-                                    <div class="col-lg-6">
+                                    <label class="col-md-3 control-label">Tanggal Lahir :</label>
+                                    <div class="col-md-6">
                                         <com:TCustomDatePicker ID="txtEditTanggalLahir" DateFormat="dd-MMMM-yyyy" Culture="id"  FromYear="1940" UpToYear="<%= @date('Y') %>" InputMode="DropDownList" />
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-lg-2 control-label">Jenis Kelamin :</label>
-                                    <div class="col-lg-5">
+                                    <label class="col-md-3 control-label">Jenis Kelamin :</label>
+                                    <div class="col-md-9">
                                         <com:TRadioButton ID="rdEditPria" Checked="true" GroupName="rdaddJK"/>                        
                                         <label>Pria</label>
                                         <com:TRadioButton ID="rdEditWanita" GroupName="rdaddJK"/>                        
@@ -146,8 +146,8 @@
                                     </div>
                                 </div>  
                                 <div class="form-group" id="divEditAgama">
-                                    <label class="col-md-2 control-label">Agama :</label>
-                                    <div class="col-md-2">
+                                    <label class="col-md-3 control-label">Agama :</label>
+                                    <div class="col-md-9">
                                         <com:TDropDownList ID="cmbEditAgama" CssClass="form-control" />                                                    
                                         <com:TRequiredFieldValidator ID="FieldEditAgamaValidator" InitialValue="none" ControlToValidate="cmbEditAgama" Display="Dynamic" ErrorMessage="Pilih Agama yang dianut" ValidationGroup="editformulir" FocusOnError="true" CssClass="has-error help-block">			
                                             <prop:ClientSide.OnValidationError>
@@ -161,8 +161,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group" id="divEditNamaIbuKandung">
-                                    <label class="col-lg-2 control-label">Nama Ibu Kandung :</label>
-                                    <div class="col-lg-3">
+                                    <label class="col-md-3 control-label">Nama Ibu Kandung :</label>
+                                    <div class="col-md-9">
                                         <com:TTextBox ID="txtEditNamaIbuKandung" CssClass="form-control" />
                                         <com:TRequiredFieldValidator ID="FieldEditNamaIbuKandungValidator" ControlToValidate="txtEditNamaIbuKandung" Display="Dynamic" ErrorMessage="Isi Nama Ibu Kandung" ValidationGroup="editformulir" CssClass="has-error help-block">
                                             <prop:ClientSide.OnValidationError>
@@ -176,25 +176,25 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-lg-2 control-label">Kewarganegaraan :</label>
-                                    <div class="col-lg-5">
+                                    <label class="col-md-3 control-label">Kewarganegaraan :</label>
+                                    <div class="col-md-9">
                                         <com:TRadioButton ID="rdEditWNI" Checked="true" GroupName="rdaddkewarganegaraan"/>                        
                                         <label>WNI</label>
                                         <com:TRadioButton ID="rdEditWNA" GroupName="rdaddkewarganegaraan"/>                        
                                         <label>WNA</label>
                                     </div>
                                 </div> 
-                                <div class="form-group" id="divEditNoKTP">
-                                    <label class="col-lg-2 control-label">No. KTP :</label>
-                                    <div class="col-lg-3">
-                                        <com:TTextBox ID="txtEditNoKTP" CssClass="form-control" />
-                                        <com:TRequiredFieldValidator ID="FieldEditNoKTPValidator" ControlToValidate="txtEditNoKTP" Display="Dynamic" ErrorMessage="Isi Nomor KTP" ValidationGroup="editformulir" CssClass="has-error help-block">
+                                <div class="form-group" id="divEditNIK">
+                                    <label class="col-md-3 control-label">NIK :</label>
+                                    <div class="col-md-9">
+                                        <com:TTextBox ID="txtEditNIK" CssClass="form-control" />
+                                        <com:TRequiredFieldValidator ID="FieldEditNIKValidator" ControlToValidate="txtEditNIK" Display="Dynamic" ErrorMessage="Isi Nomor Induk Kependudukan" ValidationGroup="editformulir" CssClass="has-error help-block">
                                             <prop:ClientSide.OnValidationError>
-                                                $('divEditNoKTP').addClassName('has-error');
-                                                jQuery('#<%=$this->FieldEditNoKTPValidator->ClientID%>').removeAttr('style');
+                                                $('divEditNIK').addClassName('has-error');
+                                                jQuery('#<%=$this->FieldEditNIKValidator->ClientID%>').removeAttr('style');
                                             </prop:ClientSide.OnValidationError>
                                             <prop:ClientSide.OnValidationSuccess>
-                                                $('divEditNoKTP').removeClassName('has-error');
+                                                $('divEditNIK').removeClassName('has-error');
                                             </prop:ClientSide.OnValidationSuccess>
                                         </com:TRequiredFieldValidator>
                                     </div>
@@ -203,8 +203,8 @@
                             <h3>Tempat Tinggal</h3>                
                             <div class="form-horizontal">
                                 <div class="form-group" id="divEditAlamatKTP">
-                                    <label class="col-lg-2 control-label">Alamat Rumah :</label>
-                                    <div class="col-lg-5">
+                                    <label class="col-md-3 control-label">Alamat Rumah :</label>
+                                    <div class="col-md-9">
                                         <com:TTextBox ID="txtEditAlamatKTP" CssClass="form-control" />
                                         <com:TRequiredFieldValidator ID="FieldEditAlamatKTPValidator" ControlToValidate="txtEditAlamatKTP" Display="Dynamic" ErrorMessage="Isi Alamat Tempat Tinggal" ValidationGroup="editformulir" CssClass="has-error help-block">
                                             <prop:ClientSide.OnValidationError>
@@ -218,8 +218,8 @@
                                     </div>
                                 </div>  
                                 <div class="form-group" id="divEditKelurahan">
-                                    <label class="col-lg-2 control-label">Kelurahan :</label>
-                                    <div class="col-lg-3">
+                                    <label class="col-md-3 control-label">Kelurahan :</label>
+                                    <div class="col-md-9">
                                         <com:TTextBox ID="txtEditKelurahan" CssClass="form-control" />
                                         <com:TRequiredFieldValidator ID="FieldEditKelurahanValidator" ControlToValidate="txtEditKelurahan" Display="Dynamic" ErrorMessage="Isi Kelurahan" ValidationGroup="editformulir" CssClass="has-error help-block">
                                             <prop:ClientSide.OnValidationError>
@@ -233,8 +233,8 @@
                                     </div>
                                 </div> 
                                 <div class="form-group" id="divEditKecamatan">
-                                    <label class="col-lg-2 control-label">Kecamatan :</label>
-                                    <div class="col-lg-3">
+                                    <label class="col-md-3 control-label">Kecamatan :</label>
+                                    <div class="col-md-9">
                                         <com:TTextBox ID="txtEditKecamatan" CssClass="form-control" />
                                         <com:TRequiredFieldValidator ID="FieldEditKecamatanValidator" ControlToValidate="txtEditKecamatan" Display="Dynamic" ErrorMessage="Isi Kecamatan" ValidationGroup="editformulir" CssClass="has-error help-block">
                                             <prop:ClientSide.OnValidationError>
@@ -248,14 +248,14 @@
                                     </div>
                                 </div> 
                                 <div class="form-group">
-                                    <label class="col-lg-2 control-label">Nomor Telepon Rumah :</label>
-                                    <div class="col-lg-2">
+                                    <label class="col-md-3 control-label">Nomor Telepon Rumah :</label>
+                                    <div class="col-md-9">
                                         <com:TTextBox ID="txtEditNoTelpRumah" CssClass="form-control" />                            
                                     </div>
                                 </div>  
                                 <div class="form-group" id="divEditNomorTelpHP">
-                                    <label class="col-lg-2 control-label">Nomor Telepon HP :</label>
-                                    <div class="col-lg-2">
+                                    <label class="col-md-3 control-label">Nomor Telepon HP :</label>
+                                    <div class="col-md-9">
                                         <com:TTextBox ID="txtEditNoTelpHP" CssClass="form-control" />                            
                                         <com:TRequiredFieldValidator ID="FieldEditNoTelpHPValidator" ControlToValidate="txtEditNoTelpHP" Display="Dynamic" ErrorMessage="Isi Nomor HP" ValidationGroup="editformulir" CssClass="has-error help-block">
                                             <prop:ClientSide.OnValidationError>
@@ -269,8 +269,8 @@
                                     </div>
                                 </div> 
                                 <div class="form-group" id="divEditEmail">
-                                    <label class="col-lg-2 control-label">Email :</label>
-                                    <div class="col-lg-4">
+                                    <label class="col-md-3 control-label">Email :</label>
+                                    <div class="col-md-9">
                                         <com:TTextBox ID="txtEditEmail" CssClass="form-control" />                            
                                         <com:TRequiredFieldValidator ID="FieldEditEmailValidator" ControlToValidate="txtEditEmail" Display="Dynamic" ErrorMessage="Isi Alamat Email" ValidationGroup="editformulir" CssClass="has-error help-block" FocusOnError="true">
                                             <prop:ClientSide.OnValidationError>
@@ -296,8 +296,8 @@
                             <h3>Pekerjaan</h3>
                             <div class="form-horizontal">                    
                                 <div class="form-group">
-                                    <label class="col-lg-2 control-label">Status Kepegawaian :</label>
-                                    <div class="col-lg-5">
+                                    <label class="col-md-3 control-label">Status Kepegawaian :</label>
+                                    <div class="col-md-9">
                                         <com:TRadioButton ID="rdEditTidakBekerja" Checked="true" GroupName="rdEditStatusPegawai"/>                        
                                         <label>Tidak Bekerja</label>
                                         <com:TRadioButton ID="rdEditBekerja" GroupName="rdEditStatusPegawai"/>                        
@@ -305,22 +305,22 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-lg-2 control-label">Alamat Kantor :</label>
-                                    <div class="col-lg-5">
+                                    <label class="col-md-3 control-label">Alamat Kantor :</label>
+                                    <div class="col-md-9">
                                         <com:TTextBox ID="txtEditAlamatKantor" CssClass="form-control" /> 
                                         <span class="help-block">bila status kepegawaian (pekerja) harap untuk di isi</span>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-lg-2 control-label">Nomor Telepon Kantor :</label>
-                                    <div class="col-lg-2">
+                                    <label class="col-md-3 control-label">Nomor Telepon Kantor :</label>
+                                    <div class="col-md-9">
                                         <com:TTextBox ID="txtEditNoTelpKantor" CssClass="form-control" />                            
                                         <span class="help-block">bila status kepegawaian (pekerja) harap untuk di isi</span>
                                     </div>
                                 </div> 
                                 <div class="form-group" id="divEditPekerjaanOrtu">
-                                    <label class="col-lg-2 control-label">Pekerjaan Orang Tua :</label>
-                                    <div class="col-lg-4">
+                                    <label class="col-md-3 control-label">Pekerjaan Orang Tua :</label>
+                                    <div class="col-md-9">
                                         <com:TDropDownList ID="cmbEditPekerjaanOrtu" CssClass="form-control"/>
                                         <com:TRequiredFieldValidator ID="FieldEditPekerjaanOrtuValidator" InitialValue="none" ControlToValidate="cmbEditPekerjaanOrtu" Display="Dynamic" ErrorMessage="Pilih Pekerjaan Orangtua." ValidationGroup="editformulir" CssClass="has-error help-block">
                                             <prop:ClientSide.OnValidationError>
@@ -337,8 +337,8 @@
                             <h3>Pendidikan Terakhir</h3>
                             <div class="form-horizontal">                    
                                 <div class="form-group" id="divEditPendidikanTerakhir">
-                                    <label class="col-lg-2 control-label">Pendidikan Terakhir :</label>
-                                    <div class="col-lg-4">
+                                    <label class="col-md-3 control-label">Pendidikan Terakhir :</label>
+                                    <div class="col-md-9">
                                         <com:TTextBox ID="txtEditPendidikanTerakhir" CssClass="form-control" />                            
                                         <com:TRequiredFieldValidator ID="FieldEditPendidikanTerakhirValidator" ControlToValidate="txtEditPendidikanTerakhir" Display="Dynamic" ErrorMessage="Isi Pendidikan Terakhir" ValidationGroup="editformulir" CssClass="has-error help-block">
                                             <prop:ClientSide.OnValidationError>
@@ -352,8 +352,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group" id="divEditJurusan">
-                                    <label class="col-lg-2 control-label">Jurusan :</label>
-                                    <div class="col-lg-3">
+                                    <label class="col-md-3 control-label">Jurusan :</label>
+                                    <div class="col-md-9">
                                         <com:TTextBox ID="txtEditJurusan" CssClass="form-control" />                            
                                         <com:TRequiredFieldValidator ID="FieldEditJurusanValidator" ControlToValidate="txtEditJurusan" Display="Dynamic" ErrorMessage="Isi Jurusan" ValidationGroup="editformulir" CssClass="has-error help-block">
                                             <prop:ClientSide.OnValidationError>
@@ -367,8 +367,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group" id="divEditKotaPendidikanTerakhir">
-                                    <label class="col-lg-2 control-label">Kab/Kodya/Kota :</label>
-                                    <div class="col-lg-3">
+                                    <label class="col-md-3 control-label">Kab/Kodya/Kota :</label>
+                                    <div class="col-md-9">
                                         <com:TTextBox ID="txtEditKotaPendidikanTerakhir" CssClass="form-control" />                            
                                         <com:TRequiredFieldValidator ID="FieldEditKotaPendidikanTerakhirValidator" ControlToValidate="txtEditKotaPendidikanTerakhir" Display="Dynamic" ErrorMessage="Isi Kota saat Pendidikan Terakhir" ValidationGroup="editformulir" CssClass="has-error help-block">
                                             <prop:ClientSide.OnValidationError>
@@ -382,8 +382,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group" id="divEditProvinsiPendidikanTerakhir">
-                                    <label class="col-lg-2 control-label">Provinsi :</label>
-                                    <div class="col-lg-3">
+                                    <label class="col-md-3 control-label">Provinsi :</label>
+                                    <div class="col-md-9">
                                         <com:TTextBox ID="txtEditProvinsiPendidikanTerakhir" CssClass="form-control" />                            
                                         <com:TRequiredFieldValidator ID="FieldEditProvinsiPendidikanTerakhirValidator" ControlToValidate="txtEditProvinsiPendidikanTerakhir" Display="Dynamic" ErrorMessage="Isi Provinsi" ValidationGroup="editformulir" CssClass="has-error help-block">
                                             <prop:ClientSide.OnValidationError>
@@ -397,8 +397,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group" id="divEditTahunPendidikanTerakhir">
-                                    <label class="col-lg-2 control-label">Tahun :</label>
-                                    <div class="col-lg-3">
+                                    <label class="col-md-3 control-label">Tahun :</label>
+                                    <div class="col-md-9">
                                         <com:TTextBox ID="txtEditTahunPendidikanTerakhir" CssClass="form-control" MaxLength="4" Width="70px" />                            
                                         <com:TRequiredFieldValidator ID="FieldEditTahunValidator" ControlToValidate="txtEditTahunPendidikanTerakhir" Display="Dynamic" ErrorMessage="Isi Tahun" ValidationGroup="editformulir" CssClass="has-error help-block">
                                             <prop:ClientSide.OnValidationError>
@@ -415,8 +415,8 @@
                             <h3>SLTA</h3>
                             <div class="form-horizontal">
                                 <div class="form-group" id="divEditJenisSLTA">
-                                    <label class="col-lg-2 control-label">Jenis SLTA :</label>
-                                    <div class="col-lg-2">
+                                    <label class="col-md-3 control-label">Jenis SLTA :</label>
+                                    <div class="col-md-2">
                                         <com:TDropDownList ID="cmbEditJenisSLTA" CssClass="form-control" Width="75px">
                                             <com:TListItem Text=" " Value="none" />
                                             <com:TListItem Text="SMU" Value="SMU" />
@@ -434,8 +434,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group" id="divEditAsalSLTA">
-                                    <label class="col-lg-2 control-label">Asal SLTA :</label>
-                                    <div class="col-lg-4">
+                                    <label class="col-md-3 control-label">Asal SLTA :</label>
+                                    <div class="col-md-9">
                                         <com:TTextBox ID="txtEditAsalSLTA" CssClass="form-control" />                            
                                         <com:TRequiredFieldValidator ID="FieldEditAsalSLTAValidator" ControlToValidate="txtEditAsalSLTA" Display="Dynamic" ErrorMessage="Isi Asal SLTA" ValidationGroup="editformulir" CssClass="has-error help-block">
                                             <prop:ClientSide.OnValidationError>
@@ -449,8 +449,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group" id="divEditStatusSLTA">
-                                    <label class="col-lg-2 control-label">Status SLTA :</label>
-                                    <div class="col-lg-2">
+                                    <label class="col-md-3 control-label">Status SLTA :</label>
+                                    <div class="col-md-2">
                                         <com:TDropDownList ID="cmbEditStatusSLTA" CssClass="form-control" Width="120px">
                                             <com:TListItem Text=" " Value="none" />
                                             <com:TListItem Text="Negeri" Value="NEGERI" />
@@ -468,8 +468,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group" id="divEditNomorIjazah">
-                                    <label class="col-lg-2 control-label">Nomor Ijazah :</label>
-                                    <div class="col-lg-3">
+                                    <label class="col-md-3 control-label">Nomor Ijazah :</label>
+                                    <div class="col-md-9">
                                         <com:TTextBox ID="txtEditNomorIjazah" CssClass="form-control" />                            
                                         <com:TRequiredFieldValidator ID="FieldEditNomorIjazahValidator" ControlToValidate="txtEditNomorIjazah" Display="Dynamic" ErrorMessage="Isi Nomor Ijazah" ValidationGroup="editformulir" CssClass="has-error help-block">
                                             <prop:ClientSide.OnValidationError>
@@ -486,37 +486,37 @@
                             <h3>Kelas & Program Studi</h3>
                             <div class="form-horizontal">                    
                                 <div class="form-group" id="divEditKelas">
-                                    <label class="col-lg-2 control-label">Kelas :</label>
-                                    <div class="col-lg-2">
+                                    <label class="col-md-3 control-label">Kelas :</label>
+                                    <div class="col-md-2">
                                         <p class="form-control-static"><com:TLiteral ID="literalKelasMHS" /></p>                  
                                     </div>
                                 </div>
                                 <div class="form-group" id="divEditKjur1">
-                                    <label class="col-lg-2 control-label">Program Studi (Pilihan 1) :</label>
-                                    <div class="col-lg-4">
+                                    <label class="col-md-3 control-label">Program Studi (Pilihan 1) :</label>
+                                    <div class="col-md-9">
                                         <p class="form-control-static"><com:TLiteral ID="literalKjur1" /></p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-lg-2 control-label">Program Studi (Pilihan 2) :</label>
-                                    <div class="col-lg-4">
+                                    <label class="col-md-3 control-label">Program Studi (Pilihan 2) :</label>
+                                    <div class="col-md-9">
                                         <p class="form-control-static"><com:TLiteral ID="literalKjur2" /></p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-lg-2 control-label">Tahun Masuk :</label>
-                                    <div class="col-lg-2">
+                                    <label class="col-md-3 control-label">Tahun Masuk :</label>
+                                    <div class="col-md-9">
                                         <p class="form-control-static"><com:TLiteral ID="literalTahunMasuk" /></p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-lg-2 control-label">Semester :</label>
-                                    <div class="col-lg-2">
+                                    <label class="col-md-3 control-label">Semester :</label>
+                                    <div class="col-md-2">
                                         <p class="form-control-static"><com:TLiteral ID="literalSemesterMasuk" /></p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-lg-offset-2 col-lg-10">
+                                    <div class="col-md-offset-3 col-md-9">
                                         <com:TActiveCustomButton ID="btnSaveFP" CssClass="btn btn-primary" OnClick="saveDataFP" ValidationGroup="editformulir">
                                             <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
                                             <prop:ClientSide.OnPreDispatch>                                                                   
@@ -540,27 +540,33 @@
             </div>
         </div>
     </div>
-
-    <div class="col-lg-3">
-
+    <div class="col-md-3">
         <!-- User thumbnail -->
         <div class="thumbnail">
             <div class="thumb thumb-rounded thumb-slide">
-                <img src="resources/userimages/no_photo.png" alt="">
+                <com:TActiveImage ID="imgPhotoUser" Attributes.alt="<%=$this->Page->Pengguna->getUsername()%>" CssClass="profile-img img-responsive center-block" />                            
                 <div class="caption">
                     <span>
-                        <a href="#" class="btn bg-success-400 btn-icon btn-xs" data-popup="lightbox"><i class="icon-plus2"></i></a>
-                        <a href="#" class="btn bg-success-400 btn-icon btn-xs"><i class="icon-link"></i></a>
+                        <a id="fileupload" href="#" class="btn bg-success-400 btn-icon btn-xs" data-popup="lightbox"><i class="icon-plus2"></i></a>                        
                     </span>
                 </div>
             </div>
-
             <div class="caption text-center">
                 <h6 class="text-semibold no-margin"><%=$this->Pengguna->getUsername()%> <small class="display-block">Mahasiswa</small></h6>                
+                <com:TActiveFileUpload ID="filePhotoProfile" MaxFileSize="<%=$this->setup->getMaxFileSize(2)%>" OnFileUpload="uploadPhotoProfile" Attributes.Style="display:none" />
+                <com:TActiveLabel ID="lblTipeFileError" />
             </div>
         </div>
         <!-- /user thumbnail -->
     </div>
 </div>
-<!-- /user profile -->
+<!-- /user profile -->      
+</com:TContent>
+<com:TContent ID="jsinlinecontent">
+<script type="text/javascript">
+    jQuery("#fileupload").on('click', function(e) {
+        e.preventDefault();
+       jQuery("#<%=$this->filePhotoProfile->ClientID%>:hidden").trigger('click'); 
+    });
+</script>
 </com:TContent>

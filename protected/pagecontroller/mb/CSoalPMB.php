@@ -35,8 +35,8 @@ class CSoalPMB extends MainPageMB {
                                     
                                     $str = "SELECT fp.kjur1,fp.kjur2,pp.kjur,pp.nilai FROM formulir_pendaftaran fp,peserta_ujian_pmb pup,passinggrade pp WHERE pup.no_formulir=fp.no_formulir AND pp.idjadwal_ujian=pup.idjadwal_ujian AND (pp.kjur=fp.kjur1 OR pp.kjur=fp.kjur2) AND fp.no_formulir=$no_formulir ORDER BY pp.kjur ASC";
                                     $this->DB->setFieldTable(array('kjur1','kjur2','kjur','nilai')); 
-                                    $r=$this->DB->getRecord($str);                   
-                                    print_R($r);
+                                    $r=$this->DB->getRecord($str);   
+                                    
                                     $passing_grade_1=0;
                                     $passing_grade_2=0;
                                     if (isset($r[1])) {
@@ -50,7 +50,7 @@ class CSoalPMB extends MainPageMB {
                                         }
                                     }
                                     
-                                    $str= "INSERT INTO nilai_ujian_masuk SET idnilai_ujian_masuk=NULL,no_formulir=$no_formulir,jumlah_soal=$jumlah_soal,jawaban_benar=$jawaban_benar,jawaban_salah=$jawaban_salah,soal_tidak_terjawab=$soal_tidak_terjawab,passing_grade_1=$passing_grade_1,passing_grade_2=$passing_grade_2,nilai=$nilai,ket_lulus=0";
+                                    $str= "REPLACE INTO nilai_ujian_masuk SET no_formulir=$no_formulir,jumlah_soal=$jumlah_soal,jawaban_benar=$jawaban_benar,jawaban_salah=$jawaban_salah,soal_tidak_terjawab=$soal_tidak_terjawab,passing_grade_1=$passing_grade_1,passing_grade_2=$passing_grade_2,nilai=$nilai,ket_lulus=0";
                                     $this->DB->insertRecord($str);                                   
                                 }
                                 $this->DataUjian=$dataujian;                                
@@ -202,7 +202,7 @@ class CSoalPMB extends MainPageMB {
                     }
                 }
             }
-            $str= "INSERT INTO nilai_ujian_masuk SET idnilai_ujian_masuk=NULL,no_formulir=$no_formulir,jumlah_soal=$jumlah_soal,jawaban_benar=$jawaban_benar,jawaban_salah=$jawaban_salah,soal_tidak_terjawab=$soal_tidak_terjawab,passing_grade_1=$passing_grade_1,passing_grade_2=$passing_grade_2,nilai=$nilai,ket_lulus=0";
+            $str= "REPLACE INTO nilai_ujian_masuk SET no_formulir=$no_formulir,jumlah_soal=$jumlah_soal,jawaban_benar=$jawaban_benar,jawaban_salah=$jawaban_salah,soal_tidak_terjawab=$soal_tidak_terjawab,passing_grade_1=$passing_grade_1,passing_grade_2=$passing_grade_2,nilai=$nilai,ket_lulus=0";
             $this->DB->insertRecord($str);
             $this->DB->query('COMMIT');
             $this->redirect('SoalPMB',true);

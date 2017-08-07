@@ -519,7 +519,7 @@
                                 </div>
                             </prop:EmptyTemplate>
                         </com:TActiveRepeater>   
-                        <%include Application.CustomPaging%>                    
+                        <%include Application.layouts.cube.CustomPaging%>                    
                     </div>
                 </div>
             </div>

@@ -639,7 +639,7 @@
                             <prop:ItemTemplate>
                                 <tr>
                                     <td><%#$this->DataItem['no']%></td>
-                                    <td><a href="<%#$this->Page->constructUrl('spmb.DetailFormulir',true)%>"><%#$this->DataItem['no_formulir']%></a></td>
+                                    <td><a href="<%#$this->Page->constructUrl('spmb.DetailFormulir',true,array('id'=>$this->DataItem['no_formulir']))%>"><%#$this->DataItem['no_formulir']%></a></td>
                                     <td><%#$this->DataItem['nama_mhs']%></td>
                                     <td><%#$this->DataItem['alamat_rumah']%></td>		
                                     <td><%#$this->DataItem['telp_hp']%></td>						
@@ -673,7 +673,7 @@
                                                 </span>
                                             </prop:Text>
                                         </com:TLinkButton>                                    
-                                        <com:TActiveLinkButton ID="btnDelete" ClientSide.PostState="false" CssClass="table-link danger" OnClick="Page.deleteRecord" Attributes.Title="Hapus Formulir Pendaftaran" Attributes.OnClick="if(!confirm('Anda ingin menghapus data Matakuliah ini ?')) return false;">
+                                        <com:TActiveLinkButton ID="btnDelete" ClientSide.PostState="false" CssClass="table-link danger" OnClick="Page.deleteRecord" Attributes.Title="Hapus Formulir Pendaftaran" Attributes.OnClick="if(!confirm('Anda ingin menghapus data formulir pendaftaran ini ?')) return false;">
                                             <prop:Text>
                                                 <span class="fa-stack">
                                                     <i class="fa fa-square fa-stack-2x"></i>
@@ -708,7 +708,7 @@
                                 </div>
                             </prop:EmptyTemplate>
                         </com:TActiveRepeater>
-                        <%include Application.CustomPaging%>
+                        <%include Application.layouts.cube.CustomPaging%>
                     </div>
                 </div>
             </div>
@@ -716,4 +716,5 @@
     </div>
 </com:TPanel>
 <%include Application.layouts.cube.ModalPrintOut%>
+<%include Application.layouts.cube.ModalMessageError%>
 </com:TContent>

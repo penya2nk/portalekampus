@@ -178,7 +178,7 @@
                                 </div>
                             </prop:EmptyTemplate>
                         </com:TActiveRepeater>
-                        <%include Application.CustomPaging%>
+                        <%include Application.layouts.cube.CustomPaging%>
                     </div>
                     <h3>Summary Rekapitulasi Pembayaran Semester Ganjil</h3>
                     <com:TActiveRepeater ID="RepeaterSummary" OnItemCreated="itemCreated">

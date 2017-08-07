@@ -346,7 +346,7 @@
                 <div class="main-box">                
                     <div class="main-box-body">
                         <br />
-                        <%include Application.CustomPaging%>
+                        <%include Application.layouts.cube.CustomPaging%>
                     </div>        
                 </div>
             </div>

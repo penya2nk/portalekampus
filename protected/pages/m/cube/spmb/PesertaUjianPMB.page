@@ -304,7 +304,7 @@
                                 $('loading').hide();
                             </prop:ClientSide.OnComplete>
                         </com:TActiveLinkButton>  
-                        <a href="<%=$this->Page->constructUrl('spmb.JadwaiUjianPMB',true)%>" class="btn btn-default pull-right" title="Keluar">                                        
+                        <a href="<%=$this->Page->constructUrl('spmb.JadwalUjianPMB',true)%>" class="btn btn-default pull-right" title="Keluar">                                        
                             <i class='fa  fa-times fa-lg'></i>
                         </a>                         
                      </div>

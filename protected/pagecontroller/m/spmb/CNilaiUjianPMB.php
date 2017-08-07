@@ -210,9 +210,16 @@ class CNilaiUjianPMB extends MainPageM {
                 $str = "SELECT passing_grade_1,passing_grade_2 FROM nilai_ujian_masuk WHERE idnilai_ujian_masuk=$id";
                 $this->DB->setFieldTable(array('passing_grade_1','passing_grade_2')); 
                 $r=$this->DB->getRecord($str);                   
-                if ($r[1]['passing_grade_1'] <= 0 || $r[1]['passing_grade_2'] <= 0) {
-                    throw new Exception ("Nilai Passing Grade Pil. 1 dan Pil.2 belum disetting di jadwal ujian.");	
-                }               
+                if ($r[1]['passing_grade_1'] <= 0) {
+                    throw new Exception ("Nilai Passing Grade Pil. 1 belum disetting di jadwal ujian.");	
+                }    
+                $passing_grade_2=$r[1]['passing_grade_2'];
+                $str = "SELECT kjur2 FROM formulir_pendaftaran fp JOIN nilai_ujian_masuk num ON num.no_formulir=fp.no_formulir WHERE num.idnilai_ujian_masuk=$id";
+                $this->DB->setFieldTable(array('kjur2')); 
+                $r=$this->DB->getRecord($str);     
+                if ($r[1]['kjur2'] > 0 && $passing_grade_2 <= 0){
+                    throw new Exception ("Nilai Passing Grade Pil.2 belum disetting di jadwal ujian.");	
+                }
             }catch (Exception $e) {
                 $param->IsValid=false;
                 $sender->ErrorMessage=$e->getMessage();

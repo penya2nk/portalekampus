@@ -22,7 +22,7 @@
                 <header class="main-box-header clearfix">
                     <h2 class="pull-left"><i class="fa fa-list-ul"></i> Hasil Ujian PMB</h2> 
                     <div class="filter-block pull-right">                                                   
-                        <a class="btn btn-default pull-right" href="<%=$this->constructUrl('spmb.NilaiUjian',true)%>" title="Keluar">                        
+                        <a class="btn btn-default pull-right" href="<%=$this->constructUrl('spmb.NilaiUjianPMB',true)%>" title="Keluar">                        
                             <i class='fa  fa-times fa-lg'></i>
                         </a>
                     </div>
@@ -331,7 +331,7 @@
                             <prop:ItemTemplate>
                                 <tr>
                                     <td><%#$this->DataItem['no']%></td>
-                                    <td><a href="<%#$this->Page->constructUrl('spmb.DetailFormulir',true)%>"><%#$this->DataItem['no_formulir']%></a></td>
+                                    <td><a href="<%#$this->Page->constructUrl('spmb.DetailFormulir',true,array('id'=>$this->DataItem['no_formulir']))%>"><%#$this->DataItem['no_formulir']%></a></td>
                                     <td><%#$this->DataItem['nama_mhs']%></td>
                                     <td><%#$this->Page->TGL->tanggal ('d F Y',$this->DataItem['tgl_ujian'])%></td>		
                                     <td><%#$this->DataItem['jumlah_soal']%></td>		
@@ -372,7 +372,7 @@
                                 </div>
                             </prop:EmptyTemplate>
                         </com:TActiveRepeater>
-                        <%include Application.CustomPaging%>
+                        <%include Application.layouts.cube.CustomPaging%>
                     </div>
                 </div>
             </div>

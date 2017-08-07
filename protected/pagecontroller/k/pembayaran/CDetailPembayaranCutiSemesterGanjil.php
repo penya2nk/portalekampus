@@ -169,6 +169,10 @@ class CDetailPembayaranCutiSemesterGanjil Extends MainPageK {
         unset($_SESSION['currentPagePembayaranCutiSemesterGanjil']['DataMHS']);
         $this->redirect('pembayaran.PembayaranCutiSemesterGanjil',true);
     }
+    public function closeDetail ($sender,$param) {
+        unset($_SESSION['currentPagePembayaranCutiSemesterGanjil']['DataMHS']);
+        $this->redirect('pembayaran.PembayaranCutiSemesterGanjil',true);
+    }
 }
 
 ?>

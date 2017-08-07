@@ -187,6 +187,10 @@ class CTransaksiPembayaranPiutangSemesterGanjil Extends MainPageK {
         unset($_SESSION['currentPagePembayaranPiutangSemesterGanjil']['DataMHS']);
         $this->redirect('pembayaran.DetailPembayaranPiutangSemesterGanjil',true,array('id'=>$nim));
     }
+    public function closeDetail ($sender,$param) {
+        unset($_SESSION['currentPagePembayaranPiutangSemesterGanjil']['DataMHS']);
+        $this->redirect('pembayaran.PembayaranPiutangSemesterGanjil',true);
+    }
     public function cancelTrx ($sender,$param) {	
         $datamhs=$_SESSION['currentPagePembayaranPiutangSemesterGanjil']['DataMHS']; 
         $nim=$datamhs['nim'];

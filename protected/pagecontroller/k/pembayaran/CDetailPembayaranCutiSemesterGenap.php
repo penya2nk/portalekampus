@@ -171,6 +171,10 @@ class CDetailPembayaranCutiSemesterGenap Extends MainPageK {
         unset($_SESSION['currentPagePembayaranCutiSemesterGenap']['DataMHS']);
         $this->redirect('pembayaran.PembayaranCutiSemesterGenap',true);
     }
+    public function closeDetail ($sender,$param) {
+        unset($_SESSION['currentPagePembayaranCutiSemesterGenap']['DataMHS']);
+        $this->redirect('pembayaran.PembayaranCutiSemesterGenap',true);
+    }
 }
 
 ?>

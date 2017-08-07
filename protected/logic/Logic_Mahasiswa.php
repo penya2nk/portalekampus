@@ -20,7 +20,7 @@ class Logic_Mahasiswa extends Logic_Global {
 	* getter DataMHS
     * @var $idx 
 	*/
-	public function getDataMHS ($idx) {
+	public function getDataMHS ($idx=null) {
         if ($idx === null) {
             return $this->DataMHS;
         }else{

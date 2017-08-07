@@ -150,6 +150,10 @@ class CDetailPembayaranPiutangSemesterGanjil Extends MainPageK {
         $nim=$datamhs['nim'];
 		$no_transaksi=$this->getDataKeyField($sender,$this->ListTransactionRepeater);		
 		$this->DB->deleteRecord("transaksi WHERE no_transaksi='$no_transaksi'");		
-		$this->redirect('pembayaran.DetailPembayaranSemesterGanjil',true,array('id'=>$nim));
+		$this->redirect('pembayaran.DetailPembayaranPiutangSemesterGanjil',true,array('id'=>$nim));
 	}		
+    public function closeDetail ($sender,$param) {
+        unset($_SESSION['currentPagePembayaranPiutangSemesterGenap']['DataMHS']);
+        $this->redirect('pembayaran.PembayaranPiutangSemesterGanjil',true);
+    }
 }

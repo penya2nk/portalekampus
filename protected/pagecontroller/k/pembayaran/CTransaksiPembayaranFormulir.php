@@ -181,6 +181,10 @@ class CTransaksiPembayaranFormulir Extends MainPageK {
         unset($_SESSION['currentPagePembayaranFormulir']['DataMHS']);
         $this->redirect('pembayaran.DetailPembayaranFormulir',true,array('id'=>$no_formulir));
     }
+    public function closeDetail ($sender,$param) {
+        unset($_SESSION['currentPagePembayaranFormulir']['DataMHS']);
+        $this->redirect('pembayaran.PembayaranFormulir',true);
+    }
 }
 class TotalPrice extends MainController
 {   

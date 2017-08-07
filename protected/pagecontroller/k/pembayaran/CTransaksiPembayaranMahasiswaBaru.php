@@ -181,6 +181,10 @@ class CTransaksiPembayaranMahasiswaBaru Extends MainPageK {
         unset($_SESSION['currentPagePembayaranMahasiswaBaru']['DataMHS']);
         $this->redirect('pembayaran.DetailPembayaranMahasiswaBaru',true,array('id'=>$no_formulir));
     }
+    public function closeDetail ($sender,$param) {
+        unset($_SESSION['currentPagePembayaranMahasiswaBaru']['DataMHS']);
+        $this->redirect('pembayaran.PembayaranMahasiswaBaru',true);
+    }
 }
 class TotalPrice extends MainController
 {   

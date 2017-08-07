@@ -147,4 +147,8 @@ class CDetailPembayaranMahasiswaBaru Extends MainPageK {
 		$this->DB->deleteRecord("transaksi WHERE no_transaksi='$no_transaksi'");		
 		$this->redirect('pembayaran.DetailPembayaranMahasiswaBaru',true,array('id'=>$no_formulir));
 	}		
+    public function closeDetail ($sender,$param) {
+        unset($_SESSION['currentPagePembayaranMahasiswaBaru']['DataMHS']);
+        $this->redirect('pembayaran.PembayaranMahasiswaBaru',true);
+    }
 }

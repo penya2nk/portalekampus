@@ -249,11 +249,11 @@
                     <div class="form-horizontal">
                         <div class="form-group">
                             <label class="col-lg-2 control-label">Tanggal Ujian :</label>
-                            <div class="col-lg-10">
-                                <com:TCustomDatePicker ID="cmbTanggalUjianAwal" DateFormat="dd-MMMM-yyyy" Culture="id"  FromYear="<%= $_SESSION['tahun_pendaftaran'] %>" UpToYear="<%= $_SESSION['tahun_pendaftaran'] %>" InputMode="DropDownList" ShowCalendar="false" />
+                            <com:TActivePanel ID="paneltanggalujian" CssClass="col-lg-10">
+                                <com:TActiveCustomDatePicker ID="cmbTanggalUjianAwal" DateFormat="dd-MMMM-yyyy" Culture="id"  FromYear="<%= $_SESSION['tahun_pendaftaran'] %>" UpToYear="<%= $_SESSION['tahun_pendaftaran']+1 %>" InputMode="DropDownList" ShowCalendar="false" AutoPostBack="false" />
                                 s.d 
-                                <com:TCustomDatePicker ID="cmbTanggalUjianAkhir" DateFormat="dd-MMMM-yyyy" Culture="id"  FromYear="<%= $_SESSION['tahun_pendaftaran'] %>" UpToYear="<%= $_SESSION['tahun_pendaftaran'] %>" InputMode="DropDownList" ShowCalendar="false" />
-                            </div>
+                                <com:TActiveCustomDatePicker ID="cmbTanggalUjianAkhir" DateFormat="dd-MMMM-yyyy" Culture="id"  FromYear="<%= $_SESSION['tahun_pendaftaran'] %>" UpToYear="<%= $_SESSION['tahun_pendaftaran']+1 %>" InputMode="DropDownList" ShowCalendar="false" AutoPostBack="false" />
+                            </com:TActivePanel>
                         </div>
                         <div class="form-group">
                             <div class="col-lg-offset-2 col-lg-10">

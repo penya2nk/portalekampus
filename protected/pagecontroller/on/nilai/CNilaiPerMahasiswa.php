@@ -175,6 +175,10 @@ class CNilaiPerMahasiswa extends MainPageON {
             $this->redirect('nilai.NilaiPerMahasiswa', true,array('id'=>$nim));
         }		
 	}	
+    public function closeDetail ($sender,$param) {
+        unset($_SESSION['currentPageNilaiFinal']['DataMHS']);
+        $this->redirect('nilai.NilaiPerMahasiswa',true);
+    }
 }
 
 ?>

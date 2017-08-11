@@ -64,6 +64,12 @@
                                 </div>                            
                             </div> 
                             <div class="form-group">
+                                <label class="col-sm-4 control-label"><strong>RUANG: </strong></label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static"><%= $this->Demik->InfoKelas['namaruang']%> [<%= $this->Demik->InfoKelas['kapasitas']%>]</p>
+                                </div>                            
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-4 control-label"><strong>JUMLAH PESERTA: </strong></label>
                                 <div class="col-sm-8">
                                     <p class="form-control-static"><%= $this->Demik->InfoKelas['jumlah_peserta']%></p>

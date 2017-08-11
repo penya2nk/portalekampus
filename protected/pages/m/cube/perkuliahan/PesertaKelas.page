@@ -41,7 +41,7 @@
 </com:TContent>
 <com:TContent ID="maincontent">
 <com:TPanel Visible="<%= $this->getViewProcess(false) %>" CssClass="row"> 
-    <div class="col-lg-12">
+    <div class="col-md-12">
         <div class="main-box clearfix">               
             <header class="main-box-header clearfix">
             </header>
@@ -60,7 +60,62 @@
 <com:TPanel Visible="<%= $this->getDefaultProcess() %>">
     <%include Application.layouts.cube.InfoKelas%>    
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2><i class="fa fa-angle-right"></i> Pindahkan Anggota Kelas</h2>                    
+                </header>
+                <div class="main-box-body">
+                    <div class="form-horizontal">
+                        <div class="alert alert-info">
+                            <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                            <strong>
+                                Info!
+                            </strong>
+                             Proses ini akan memindahkan seluruh peserta kelas dibawah ini, ke kelas baru yang dipilih.
+                        </div>
+                        <com:THiddenField ID="hiddenidkelasmhs" />
+                        <div class="form-group" id="divKelasTujuan">
+                            <label class="col-md-2 control-label">Kelas Tujuan :</label>
+                            <div class="col-md-10">
+                                <com:TDropDownList ID="cmbKelasTujuan" CssClass="form-control" />
+                                <com:TRequiredFieldValidator ID="FieldKelasTujuanValidator" InitialValue="none" ValidationGroup="groupKelasTujuan" Display="Dynamic" ControlToValidate="cmbKelasTujuan" ErrorMessage="Pilih kelas tujuan." FocusOnError="true" CssClass="has-error help-block">	
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divKelasTujuan').addClassName('has-error');
+                                        jQuery('#<%=$this->FieldKelasTujuanValidator->ClientID%>').removeAttr('style');                                
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divKelasTujuan').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator> 
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <com:TActiveCustomButton ID="btnPindahkan" CssClass="btn btn-info" OnClick="Page.pindahkanAnggotaKelas" ValidationGroup="groupKelasTujuan" Attributes.Title="Pindahkan">
+                                    <prop:Text>                                        
+                                        <i class="fa fa-angle-right"></i> Pindahkan                                        
+                                    </prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>         
+                                        $('loading').show();
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnPindahkan->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	
+                                        $('<%=$this->btnPindahkan->ClientId%>').disabled='';						                               						                                        
+                                        $('loading').hide();
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>  
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>	
+    <div class="row">
+        <div class="col-md-12">
             <div class="main-box clearfix">
                 <header class="main-box-header clearfix">
                     <h2><i class="fa fa-search"></i> Pencarian Data</h2>                    
@@ -68,8 +123,8 @@
                 <div class="main-box-body">
                     <div class="form-horizontal">
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">Kriteria :</label>
-                            <div class="col-lg-3">
+                            <label class="col-md-2 control-label">Kriteria :</label>
+                            <div class="col-md-3">
                                 <com:TDropDownList ID="cmbKriteria" CssClass="form-control">                                                           
                                     <com:TListItem Text="NIM" Value="nim" />
                                     <com:TListItem Text="NIRM" Value="nirm" />
@@ -78,8 +133,8 @@
                             </div>
                         </div>
                         <div class="form-group" id="divtxtKriteria">
-                            <label class="col-lg-2 control-label">Isi Kriteria :</label>
-                            <div class="col-lg-4">
+                            <label class="col-md-2 control-label">Isi Kriteria :</label>
+                            <div class="col-md-4">
                                 <com:TActiveTextBox ID="txtKriteria" CssClass="form-control" />                                                                            
                                 <com:TRequiredFieldValidator ID="spanKriteriaValidator2" ValidationGroup="filterForm" Display="Dynamic" ControlToValidate="txtKriteria" ErrorMessage="Input apa yang Anda cari, sesuai dengan kriteria yang Anda tentukan." FocusOnError="true" CssClass="has-error help-block">	
                                     <prop:ClientSide.OnValidationError>
@@ -93,7 +148,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-10">
+                            <div class="col-md-offset-2 col-md-10">
                                 <com:TActiveCustomButton ID="btnSearch" CssClass="btn btn-info"  OnClick="Page.searchRecord" ValidationGroup="filterForm" Attributes.Title="Cari">
                                     <prop:Text>                                        
                                         <i class="fa fa-search"></i> Cari                                        
@@ -117,7 +172,7 @@
         </div>
     </div>	
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-12">
             <div class="main-box clearfix">
                 <header class="main-box-header clearfix">
                      <h2 class="pull-left"><i class="fa fa-user"></i> Daftar Peserta Kelas</h2> 
@@ -142,18 +197,19 @@
                 </header>
                 <div class="main-box-body clearfix">
                     <div class="table-responsive">
-                        <com:TActiveRepeater ID="RepeaterS" DataKeyField="idkrsmatkul">
+                        <com:TActiveRepeater ID="RepeaterS" DataKeyField="idkrsmatkul" OnItemCreated="itemCreated">
                             <prop:HeaderTemplate>
                             <table class="table table-striped table-hover">
                                 <thead>
                                 <tr>
-                                    <th scope="col">NO`</th>                                    
+                                    <th scope="col">NO</th>                                    
                                     <th scope="col">NIM</th>
                                     <th scope="col">NIRM</th>
                                     <th scope="col">NAMA</th>
                                     <th scope="col">JK</th>
                                     <th scope="col">TAHUN MASUK</th>					
                                     <th scope="col">KET</th>
+                                    <th scope="col">PINDAH KE KELAS</th>
                                 </tr>	
                                 </thead>		
                                 <tbody>		
@@ -166,7 +222,21 @@
                                     <td><%# $this->DataItem['nama_mhs']%></td>
                                     <td><%# $this->DataItem['jk']%></td>
                                     <td><%# $this->DataItem['tahun_masuk']%></td>
-                                    <td><%# $this->DataItem['status']%></td>					
+                                    <td><%# $this->DataItem['status']%></td>
+                                    <td>
+                                        <com:TActiveDropDownList ID="cmbKelasTujuan" CssClass="form-control" OnCallBack="Page.pindahkanAnggotaKelasMHS">
+                                            <prop:ClientSide.OnPreDispatch>         
+                                                $('loading').show();
+                                            </prop:ClientSide.OnPreDispatch>
+                                            <prop:ClientSide.OnLoading>
+                                                $('<%=$this->cmbKelasTujuan->ClientId%>').disabled='disabled';						
+                                            </prop:ClientSide.OnLoading>
+                                            <prop:ClientSide.OnComplete>																	
+                                                $('<%=$this->cmbKelasTujuan->ClientId%>').disabled='';						                               						                                        
+                                                $('loading').hide();
+                                            </prop:ClientSide.OnComplete>
+                                        </com:TActiveDropDownList>  
+                                    </td>
                                 </tr>	
                             </prop:ItemTemplate>	                       
                             <prop:FooterTemplate>
@@ -194,4 +264,5 @@
     </div>
 </com:TPanel>
 <%include Application.layouts.cube.ModalPrintOut%>
+<%include Application.layouts.cube.ModalMessageError%>
 </com:TContent>

@@ -210,10 +210,9 @@
                                     <th scope="col">NIM</th>
                                     <th scope="col">NIRM</th>
                                     <th scope="col">NAMA</th>
-                                    <th scope="col">KELAS</th>
                                     <th scope="col">JK</th>
-                                    <th scope="col">TAHUN MASUK</th>					
-                                    <th scope="col">KET</th>
+                                    <th scope="col">TAHUN MASUK</th>
+                                    <th scope="col">KELAS</th>       
                                 </tr>	
                                 </thead>		
                                 <tbody>		
@@ -223,11 +222,16 @@
                                     <td><%# $this->DataItem['no']%></td>                                    
                                     <td><a href="<%=$this->Page->constructUrl('kemahasiswaan.ProfilMahasiswa',true,array('id'=>$this->DataItem['nim']))%>"><%#$this->DataItem['nim']%></a></td>					
                                     <td><%# $this->DataItem['nirm']%></td>
-                                    <td><%# $this->DataItem['nama_mhs']%></td>
-                                    <td><%#$this->Page->DMaster->getNamaKelasByID($this->DataItem['idkelas'])%></td>
+                                    <td>
+                                        <%# $this->DataItem['nama_mhs']%><br/>
+                                        <span class="label label-info"><%#$this->DataItem['kelas']%></span>
+                                        <span class="label label-info"><%# $this->DataItem['status']%></span>
+                                    </td>
                                     <td><%# $this->DataItem['jk']%></td>
                                     <td><%# $this->DataItem['tahun_masuk']%></td>
-                                    <td><%# $this->DataItem['status']%></td>					
+                                    <td>
+                                        <%# $this->DataItem['namakelas']%>
+                                    </td>
                                 </tr>	
                             </prop:ItemTemplate>	                       
                             <prop:FooterTemplate>

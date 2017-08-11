@@ -171,9 +171,9 @@ class CPesertaMatakuliah extends MainPageM {
         }else{ 
             $idkelas=$_SESSION['currentPagePesertaMatakuliah']['idkelas'];
             $str_kelas=($idkelas=='' || $idkelas=='none') ? '' : " AND vdm.idkelas='$idkelas'";
-            $str = "SELECT vkm.nim,vdm.nirm,vdm.nama_mhs,vdm.idkelas,vdm.jk,vdm.tahun_masuk,vkm.batal,vkm.sah FROM v_krsmhs vkm,v_datamhs vdm WHERE vkm.nim=vdm.nim AND idpenyelenggaraan='$id'$str_kelas";            
+            $str = "SELECT vkm.nim,vdm.nirm,vdm.nama_mhs,vdm.idkelas,vdm.jk,vdm.tahun_masuk,vkm.batal,vkm.sah,kmd.idkelas_mhs,km.nama_kelas,hari,jam_masuk,jam_keluar FROM v_krsmhs vkm JOIN v_datamhs vdm ON (vkm.nim=vdm.nim) JOIN kelas_mhs_detail kmd ON (vkm.idkrsmatkul=kmd.idkrsmatkul) LEFT JOIN kelas_mhs km ON (kmd.idkelas_mhs=km.idkelas_mhs) WHERE idpenyelenggaraan='$id'$str_kelas";            
             
-            $jumlah_baris=$this->DB->getCountRowsOfTable("v_krsmhs vkm,v_datamhs vdm WHERE vkm.nim=vdm.nim AND idpenyelenggaraan='$id'$str_kelas",'vdm.nim');
+            $jumlah_baris=$this->DB->getCountRowsOfTable("v_krsmhs vkm JOIN v_datamhs vdm ON (vkm.nim=vdm.nim) WHERE vkm.nim=vdm.nim AND idpenyelenggaraan='$id'$str_kelas",'vdm.nim');
         }		
 		$this->RepeaterS->CurrentPageIndex=$_SESSION['currentPagePesertaMatakuliah']['page_num'];
 		$this->RepeaterS->VirtualItemCount=$jumlah_baris;
@@ -183,16 +183,25 @@ class CPesertaMatakuliah extends MainPageM {
 			$limit=$this->RepeaterS->VirtualItemCount-$offset;
 		}
 		if ($limit < 0) {$offset=0;$limit=$this->setup->getSettingValue('default_pagesize');$_SESSION['currentPagePesertaMatakuliah']['page_num']=0;}		
-        $str = "$str ORDER BY vdm.nama_mhs ASC LIMIT $offset,$limit";
-		$this->DB->setFieldTable(array('nim','nirm','nama_mhs','idkelas','jk','tahun_masuk','batal','sah'));	
+        $str = "$str ORDER BY vdm.idkelas ASC,vdm.nama_mhs ASC LIMIT $offset,$limit";
+		$this->DB->setFieldTable(array('nim','nirm','nama_mhs','idkelas','jk','tahun_masuk','batal','sah','idkelas_mhs','nama_kelas','hari','jam_masuk','jam_keluar'));	
 		$r=$this->DB->getRecord($str,$offset+1);
         $result=array();
         while (list($k,$v)=each($r)) {
+            $kelas=$this->Page->DMaster->getNamaKelasByID($v['idkelas']);
+            $v['kelas']=$kelas;
+            if (empty($v['idkelas_mhs'])) {
+                $v['namakelas']='BELUM PILIH KELAS';
+            }else{
+                $namakelas=$kelas.'-'.chr($v['nama_kelas']+64);
+                $hari=$this->TGL->getNamaHari($v['hari']);
+                $v['namakelas']=$namakelas. ' <br/>'.$hari.' '.$v['jam_masuk'].'-'.$v['jam_keluar'];
+            }            
             $status='belum disahkan';
             if ($v['sah']==1 && $v['batal']==0) {
-                $status='sah';
+                $status='SAH';
             }elseif($v['sah']==1 && $v['batal']==1){
-                $status='batal';
+                $status='BATAL';
             }
             $v['status']=$status;
             $result[$k]=$v;

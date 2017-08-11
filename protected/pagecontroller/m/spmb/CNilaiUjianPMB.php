@@ -45,7 +45,17 @@ class CNilaiUjianPMB extends MainPageM {
     }
 	public function changeTbTahunMasuk($sender,$param) {					
 		$_SESSION['tahun_pendaftaran']=$this->tbCmbTahunMasuk->Text;        
+        $_SESSION['currentPageNilaiUjianPMB']['tgl_ujian_awal']=$this->TGL->tanggal($_SESSION['tahun_pendaftaran'].'-m-d',$_SESSION['currentPageNilaiUjianPMB']['tgl_ujian_awal']);
+        $_SESSION['currentPageNilaiUjianPMB']['tgl_ujian_akhir']=$this->TGL->tanggal($_SESSION['tahun_pendaftaran'].'-m-d',$_SESSION['currentPageNilaiUjianPMB']['tgl_ujian_akhir']);
+        
+        $this->cmbTanggalUjianAwal->Text=$this->TGL->tanggal('d-m-Y',$_SESSION['currentPageNilaiUjianPMB']['tgl_ujian_awal']);
+        $this->cmbTanggalUjianAkhir->Text=$this->TGL->tanggal('d-m-Y',$_SESSION['currentPageNilaiUjianPMB']['tgl_ujian_akhir']);
+                   
+        $this->cmbTanggalUjianAwal->FromYear=$_SESSION['tahun_pendaftaran'];
+        $this->cmbTanggalUjianAwal->UpToYear=$_SESSION['tahun_pendaftaran']+1;
+        
         $this->lblModulHeader->Text=$this->getInfoToolbar();
+        $this->paneltanggalujian->render ($param->getNewWriter());
 		$this->populateData();
 	}
 	public function changeTbPs ($sender,$param) {		
@@ -258,7 +268,7 @@ class CNilaiUjianPMB extends MainPageM {
                 $dataReport['linkoutput']=$this->linkOutput; 
                 $this->report->setDataReport($dataReport); 
                 $this->report->setMode($_SESSION['outputreport']);                
-                $this->report->printNilaiUjian($_SESSION['daftar_jurusan']);
+                $this->report->printNilaiUjian($_SESSION['daftar_jurusan'],$this->DMaster);
             break;        
             
         }

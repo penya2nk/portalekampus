@@ -144,7 +144,7 @@ class CPembagianKelas extends MainPageM {
 			$limit=$itemcount-$offset;
 		}
 		if ($limit < 0) {$offset=0;$limit=$this->setup->getSettingValue('default_pagesize');$_SESSION['currentPagePembagianKelas']['page_num']=0;}
-        $str = "$str ORDER BY hari ASC,idkelas ASC,nama_dosen ASC LIMIT $offset,$limit";				
+        $str = "$str ORDER BY idkelas ASC,hari ASC,nmatkul ASC LIMIT $offset,$limit";				
         $this->DB->setFieldTable(array('idkelas_mhs','kmatkul','nmatkul','nama_dosen','idkelas','nidn','nama_kelas','hari','jam_masuk','jam_keluar','namaruang','kapasitas'));
 		$r = $this->DB->getRecord($str,$offset+1);	
         $result = array();

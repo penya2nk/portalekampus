@@ -460,27 +460,27 @@ class Logic_ReportSPMB extends Logic_Report {
     }    
     /**
      * digunakan untuk memprint nilai ujian
-     * @param type $passinggrade
      * @param type $daftar_jurusan
+     * @param type $objDMaster
      */
-    public function printNilaiUjian ($daftar_jurusan) {
+    public function printNilaiUjian ($daftar_jurusan,$objDMaster) {
         $kjur=$this->dataReport['kjur'];        
         $tahun_masuk=$this->dataReport['tahun_masuk'];
         
         $str_kjur=$kjur=='none'?' AND (num.kjur=0 OR num.kjur IS NULL)':" AND num.kjur=$kjur";	                
-        $str = "SELECT fp.no_formulir,fp.nama_mhs,ku.tgl_ujian,ts.nama_tempat,num.kjur,num.jumlah_soal,num.jawaban_benar,num.jawaban_salah,num.nilai,fp.kjur1,fp.kjur2,num.passing_grade_1,num.passing_grade_2,num.kjur AS diterima_di_prodi FROM kartu_ujian ku JOIN formulir_pendaftaran fp ON (fp.no_formulir=ku.no_formulir) JOIN tempat_spmb ts ON (ku.idtempat_spmb=ts.idtempat_spmb) JOIN nilai_ujian_masuk num ON (ku.no_formulir=num.no_formulir) WHERE fp.ta='$tahun_masuk'$str_kjur ORDER BY nilai DESC,nama_mhs ASC";
-        $this->db->setFieldTable(array('no_formulir','nama_mhs','tgl_ujian','jumlah_soal','jawaban_benar','jawaban_salah','nilai','kjur1','kjur2','passing_grade_1','passing_grade_2','diterima_di_prodi'));				
+        $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.idkelas,ku.tgl_ujian,ts.nama_tempat,num.kjur,num.jumlah_soal,num.jawaban_benar,num.jawaban_salah,num.nilai,fp.kjur1,fp.kjur2,num.passing_grade_1,num.passing_grade_2,num.kjur AS diterima_di_prodi FROM kartu_ujian ku JOIN formulir_pendaftaran fp ON (fp.no_formulir=ku.no_formulir) JOIN tempat_spmb ts ON (ku.idtempat_spmb=ts.idtempat_spmb) JOIN nilai_ujian_masuk num ON (ku.no_formulir=num.no_formulir) WHERE fp.ta='$tahun_masuk'$str_kjur ORDER BY fp.idkelas ASC,nilai DESC,nama_mhs ASC";
+        $this->db->setFieldTable(array('no_formulir','nama_mhs','idkelas','tgl_ujian','jumlah_soal','jawaban_benar','jawaban_salah','nilai','kjur1','kjur2','passing_grade_1','passing_grade_2','diterima_di_prodi'));				
         $r = $this->db->getRecord($str);        
         
         switch ($this->getDriver()) {
             case 'excel2003' :               
             case 'excel2007' :    
-                $this->setHeaderPT('J');
+                $this->setHeaderPT('M');
                 $sheet=$this->rpt->getActiveSheet();
                 $this->rpt->getDefaultStyle()->getFont()->setName('Arial');                
                 $this->rpt->getDefaultStyle()->getFont()->setSize('9');   
                 
-                $sheet->mergeCells("A7:J7");
+                $sheet->mergeCells("A7:M7");
                 $sheet->getRowDimension(7)->setRowHeight(20);
                 $sheet->setCellValue("A7","HASIL UJIAN PMB TAHUN MASUK $tahun_masuk");                                
                 if ($kjur!= 'none'){
@@ -495,29 +495,35 @@ class Logic_ReportSPMB extends Logic_Report {
 								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
 												   'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
 							);
-                $sheet->getStyle("A7:J8")->applyFromArray($styleArray);
+                $sheet->getStyle("A7:M8")->applyFromArray($styleArray);
                 $sheet->getRowDimension(10)->setRowHeight(25);
                 
                 $sheet->getColumnDimension('B')->setWidth(15);
                 $sheet->getColumnDimension('C')->setWidth(40);
-                $sheet->getColumnDimension('D')->setWidth(20);
+                $sheet->getColumnDimension('D')->setWidth(15);
                 $sheet->getColumnDimension('E')->setWidth(15);
-                $sheet->getColumnDimension('F')->setWidth(15);                
-                $sheet->getColumnDimension('G')->setWidth(15);
-                $sheet->getColumnDimension('H')->setWidth(15);
-                $sheet->getColumnDimension('I')->setWidth(40);
+                $sheet->getColumnDimension('F')->setWidth(9);                
+                $sheet->getColumnDimension('G')->setWidth(11);
+                $sheet->getColumnDimension('H')->setWidth(10);
+                $sheet->getColumnDimension('I')->setWidth(9);
                 $sheet->getColumnDimension('J')->setWidth(40);
+                $sheet->getColumnDimension('K')->setWidth(12);
+                $sheet->getColumnDimension('L')->setWidth(40);
+                $sheet->getColumnDimension('M')->setWidth(12);
                                 
                 $sheet->setCellValue('A10','NO');				
-                $sheet->setCellValue('B10','NO. FORMULIR');
-                $sheet->setCellValue('C10','NAMA');				                        
-                $sheet->setCellValue('D10','TANGGAL UJIAN');				
-                $sheet->setCellValue('E10','JUMLAH SOAL');				
-                $sheet->setCellValue('F10','JAWABAN BENAR');				
-                $sheet->setCellValue('G10','JAWABAN SALAH');				
-                $sheet->setCellValue('H10','NILAI');				
-                $sheet->setCellValue('I10','PIL. 1');				
-                $sheet->setCellValue('J10','PIL. 2');				                                    
+                $sheet->setCellValue('B10','NO. UJIAN');
+                $sheet->setCellValue('C10','NAMA');	
+                $sheet->setCellValue('D10','KELAS');	
+                $sheet->setCellValue('E10','TANGGAL UJIAN');				
+                $sheet->setCellValue('F10','JUMLAH SOAL');				
+                $sheet->setCellValue('G10','JAWABAN BENAR');				
+                $sheet->setCellValue('H10','JAWABAN SALAH');				
+                $sheet->setCellValue('I10','NILAI');				
+                $sheet->setCellValue('J10','PILIHAN PRODI I');
+                $sheet->setCellValue('K10','KET. PRODI I');
+                $sheet->setCellValue('L10','PILIHAN PRODI II');	
+                $sheet->setCellValue('M10','KET. PRODI II');
                 
                 $styleArray=array(								
                                     'font' => array('bold' => true),
@@ -525,35 +531,34 @@ class Logic_ReportSPMB extends Logic_Report {
                                                        'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
                                     'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
                                 );																					 
-                $sheet->getStyle("A10:J10")->applyFromArray($styleArray);
-                $sheet->getStyle("A10:J10")->getAlignment()->setWrapText(true);
+                $sheet->getStyle("A10:M10")->applyFromArray($styleArray);
+                $sheet->getStyle("A10:M10")->getAlignment()->setWrapText(true);
                 $row=11;                
                 while (list($k,$v)=each($r)) { 
                     $sheet->setCellValue("A$row",$v['no']);		
                     $sheet->setCellValue("B$row",$v['no_formulir']);		
-                    $sheet->setCellValue("C$row",$v['nama_mhs']);		
-                    $sheet->setCellValue("D$row",$this->tgl->Tanggal('d F Y',$v['tgl_ujian']));		
-                    $sheet->setCellValue("E$row",$v['jumlah_soal']);		
-                    $sheet->setCellValue("F$row",$v['jawaban_benar']);		
-                    $sheet->setCellValue("G$row",$v['jawaban_salah']);		
-                    $sheet->setCellValue("H$row",$v['nilai']);		
+                    $sheet->setCellValue("C$row",$v['nama_mhs']);	
+                    $sheet->setCellValue("D$row",$objDMaster->getNamaKelasByID($v['idkelas']));
+                    $sheet->setCellValue("E$row",$this->tgl->Tanggal('d F Y',$v['tgl_ujian']));		
+                    $sheet->setCellValue("F$row",$v['jumlah_soal']);		
+                    $sheet->setCellValue("G$row",$v['jawaban_benar']);		
+                    $sheet->setCellValue("H$row",$v['jawaban_salah']);		
+                    $sheet->setCellValue("I$row",$v['nilai']);	
+                    
                     if ($kjur=='none') {
                         $pil1='N.A';
                         $bool1=false;
                         if ($v['kjur1'] > 0) {                  
-                            $nama_ps=$daftar_jurusan[$v['kjur1']];      
+                            $pil1=$daftar_jurusan[$v['kjur1']];      
                             $bool1=($v['nilai'] >= $v['passing_grade_1']);
-                            $ket=$bool1 == true ? 'LULUS' : 'GAGAL';                            
-                            $pil1="$ket ($nama_ps)";
-
+                            $ket1=$bool1 == true ? 'LULUS' : 'GAGAL';
                         }                       
                         $pil2='N.A';
                         $bool2=false;
                         if ($v['kjur2'] > 0) {
-                            $nama_ps=$daftar_jurusan[$v['kjur2']];      
+                            $pil2=$daftar_jurusan[$v['kjur2']];      
                             $bool2=($v['nilai'] >= $v['passing_grade_2']);
-                            $ket=$bool2 == true ? 'LULUS' : 'GAGAL';                            
-                            $pil2="$ket ($nama_ps)";
+                            $ket2=$bool2 == true ? 'LULUS' : 'GAGAL';     
                         }                   
                     }else{
                         $pil1='N.A';
@@ -565,13 +570,14 @@ class Logic_ReportSPMB extends Logic_Report {
                         $v['pil1']=$pil1;                
                         $pil2='N.A';
                         if ($v['kjur2'] == $v['diterima_di_prodi']) {
-                            $nama_ps=$daftar_jurusan[$v['diterima_di_prodi']];     
-                            $ket='DI TERIMA';
-                            $pil2="$ket ($nama_ps)";
+                            $pil2=$daftar_jurusan[$v['diterima_di_prodi']];     
+                            $ket2='DI TERIMA';
                         }                        
                     }
-                    $sheet->setCellValue("I$row",$pil1);		
-                    $sheet->setCellValue("J$row",$pil2);		
+                    $sheet->setCellValue("J$row",$pil1);		
+                    $sheet->setCellValue("K$row",$ket1);		
+                    $sheet->setCellValue("L$row",$pil2);
+                    $sheet->setCellValue("M$row",$ket2);
                     $row+=1;
                 }
                 $row-=1;
@@ -580,14 +586,15 @@ class Logic_ReportSPMB extends Logic_Report {
                                                        'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
                                     'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
                                 );																					 
-                $sheet->getStyle("A11:J$row")->applyFromArray($styleArray);
-                $sheet->getStyle("A11:J$row")->getAlignment()->setWrapText(true);
+                $sheet->getStyle("A11:M$row")->applyFromArray($styleArray);
+                $sheet->getStyle("A11:M$row")->getAlignment()->setWrapText(true);
                 
                 $styleArray=array(								
                                     'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_LEFT)
                                 );
                 $sheet->getStyle("C11:C$row")->applyFromArray($styleArray);
-                $sheet->getStyle("I11:J$row")->applyFromArray($styleArray);
+                $sheet->getStyle("J11:J$row")->applyFromArray($styleArray);
+                $sheet->getStyle("L11:L$row")->applyFromArray($styleArray);
                 $this->printOut("hasilujianpmb_$tahun_masuk");
             break;
         }

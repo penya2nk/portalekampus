@@ -68,7 +68,7 @@ class CTranskripKRS extends MainPageM {
         $tahun_masuk=$_SESSION['tahun_masuk'];        
         if ($search) {
             $str = "SELECT nim,nama_mhs,jk,tahun_masuk,idkonsentrasi,tahun_masuk FROM v_datamhs";			
-            $txtsearch=$this->txtKriteria->Text;
+            $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
                     $cluasa="WHERE nim='$txtsearch'";

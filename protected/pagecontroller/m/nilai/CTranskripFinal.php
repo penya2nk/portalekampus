@@ -81,7 +81,7 @@ class CTranskripFinal extends MainPageM {
         $idsmt=$_SESSION['semester'];                
         if ($search) {
             $str = "SELECT vdm.nim,vdm.nirm,vdm.nama_mhs,nomor_transkrip,predikat_kelulusan,tanggal_lulus,vdm.k_status FROM v_datamhs vdm,transkrip_asli ta WHERE ta.nim=vdm.nim";
-            $txtsearch=$this->txtKriteria->Text;
+            $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
                     $cluasa="AND ta.nim='$txtsearch'";

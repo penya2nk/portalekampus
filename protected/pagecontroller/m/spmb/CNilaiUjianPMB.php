@@ -245,6 +245,22 @@ class CNilaiUjianPMB extends MainPageM {
 			$this->redirect('spmb.NilaiUjianPMB',true);
 		}
 	}
+    public function ujianUlang ($sender,$param) {
+		$no_formulir=$this->getDataKeyField($sender,$this->RepeaterS);	
+        if ($this->DB->checkRecordIsExist('no_formulir','register_mahasiswa',$no_formulir)) {
+            $this->lblContentMessageError->Text="No. Formulir ($no_formulir) telah memiliki NIM jadi ujian PMB-nya tidak bisa diulang";
+            $this->lblHeaderMessageError->Text='Ujian Ulang PMB';
+            $this->modalMessageError->show();
+        }else{
+            $this->DB->query('BEGIN');
+            $this->DB->deleteRecord("jawaban_ujian WHERE no_formulir='$no_formulir'");
+            $this->DB->deleteRecord("nilai_ujian_masuk WHERE no_formulir='$no_formulir'");
+            $this->DB->updateRecord("UPDATE kartu_ujian SET isfinish=0 WHERE no_formulir='$no_formulir'");
+            $this->DB->query('COMMIT');
+            $this->redirect('spmb.NilaiUjianPMB',true);	
+        }            
+        	
+	}
     public function printOut ($sender,$param) {
         $this->createObj('reportspmb');
         $tahun_masuk=$_SESSION['tahun_pendaftaran'];

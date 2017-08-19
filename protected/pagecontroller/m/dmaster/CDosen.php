@@ -27,7 +27,7 @@ class CDosen extends MainPageM {
 	protected function populateData ($search=false) {
         if ($search) {
             $str = "SELECT iddosen,nidn,nipy,gelar_depan,nama_dosen,gelar_belakang,telp_hp,username,status FROM dosen";			
-            $txtsearch=$this->txtKriteria->Text;
+            $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {
                 case 'nidn' :
                     $cluasa="WHERE nidn='$txtsearch'";

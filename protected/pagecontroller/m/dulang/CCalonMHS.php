@@ -73,7 +73,7 @@ class CCalonMHS Extends MainPageM {
         $semester_masuk=$_SESSION['currentPageCalonMHS']['semester_masuk'];
         if ($search) {
             $str = "SELECT DISTINCT(fp.no_formulir),fp.nama_mhs,t.idkelas,fp.ta AS tahun_masuk,fp.idsmt AS semester_masuk,t.kjur FROM transaksi t JOIN formulir_pendaftaran fp ON (fp.no_formulir=t.no_formulir) LEFT JOIN register_mahasiswa rm ON (rm.no_formulir=t.no_formulir) WHERE t.kjur=$kjur AND fp.ta=$tahun_masuk AND fp.idsmt=$semester_masuk AND t.tahun=$tahun_masuk AND t.idsmt=$semester_masuk AND rm.no_formulir IS NULL";
-            $txtsearch=$this->txtKriteria->Text;
+            $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'no_formulir' :
                     $clausa=" AND fp.no_formulir='$txtsearch'";                    

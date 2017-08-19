@@ -321,10 +321,9 @@
                                         <th width="100"><span>JAWABAN <br/>BENAR</span></th>
                                         <th width="100"><span>JAWABAN <br/>SALAH</span></th>
                                         <th width="100"><span>NILAI</span></th>
-                                        
-                                        <th width="100"><span>PIL. 1</span></th>
-                                        <th width="100"><span>PIL. 2</span></th>
-                                        <th width="120">AKSI</th>			
+                                        <th><span>PIL. 1</span></th>
+                                        <th><span>PIL. 2</span></th>
+                                        <th width="180">AKSI</th>			
                                     </thead>
                                     <tbody>
                             </prop:HeaderTemplate>	
@@ -354,7 +353,25 @@
                                                     <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
                                                 </span>
                                             </prop:Text>
-                                        </com:TLinkButton>                                                                            
+                                        </com:TLinkButton>     
+                                        <com:TActiveLinkButton ID="btnReload" ClientSide.PostState="false" CssClass="table-link danger" OnClick="Page.ujianUlang" Attributes.Title="Ujian Ulang" Attributes.OnClick="if(!confirm('Anda ingin mahasiswa ini mengulang ujian PMB-nya ?')) return false;">
+                                            <prop:Text>
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-refresh fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </prop:Text>
+                                            <prop:ClientSide.OnPreDispatch>
+                                                $('loading').show();                                             
+                                                $('<%=$this->btnReload->ClientId%>').disabled='disabled';						
+                                            </prop:ClientSide.OnPreDispatch>
+                                            <prop:ClientSide.OnLoading>
+                                                $('<%=$this->btnReload->ClientId%>').disabled='disabled';									                            
+                                            </prop:ClientSide.OnLoading>
+                                            <prop:ClientSide.onComplete>
+                                                $('loading').hide();                                                
+                                            </prop:ClientSide.OnComplete>
+                                        </com:TActiveLinkButton>
                                     </td>		
                                 </tr>                            
                             </prop:ItemTemplate>                        
@@ -380,4 +397,5 @@
     </div>
 </com:TPanel>
 <%include Application.layouts.cube.ModalPrintOut%>
+<%include Application.layouts.cube.ModalMessageError%>
 </com:TContent>

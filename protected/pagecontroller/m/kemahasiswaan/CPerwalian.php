@@ -56,7 +56,7 @@ class CPerwalian extends MainPageM {
         $str_dw = ($iddosen_wali == 'none') ? " WHERE (iddosen_wali='' OR iddosen_wali=0)" : " WHERE iddosen_wali=$iddosen_wali";
 		if ($search) {       
             $str = "SELECT nim,nirm,nama_mhs,tahun_masuk FROM v_datamhs vdm$str_dw";
-            $txtsearch=$this->txtKriteria->Text;
+            $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
                     $clausa="AND vdm.nim='$txtsearch'";

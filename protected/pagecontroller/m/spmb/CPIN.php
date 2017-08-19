@@ -67,7 +67,7 @@ class CPIN extends MainPageM {
         $tahun_masuk=$_SESSION['tahun_pendaftaran'];    
         if ($search) {        
             $str = "SELECT pin.no_pin,pin.no_formulir,pin.idkelas,fp.nama_mhs,fp.no_formulir AS ket FROM pin LEFT JOIN formulir_pendaftaran fp ON (fp.no_formulir=pin.no_formulir) WHERE pin.tahun_masuk=$tahun_masuk AND pin.idkelas='$idkelas'";
-            $txtsearch=$this->txtKriteria->Text;
+            $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {
                 case 'no_formulir' :
                     $clausa=" AND fp.no_formulir='$txtsearch'"; 

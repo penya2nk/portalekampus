@@ -5,8 +5,8 @@ class CProfiles extends MainPageMHS {
 		parent::onLoad($param);		
         $this->showProfiles=true;        
 		if (!$this->IsPostBack&&!$this->IsCallBack) {	
-            if (!isset($_SESSION['currentPageCache'])||$_SESSION['currentPageCache']['page_name']!='m.settings.Profiles') {
-				$_SESSION['currentPageCache']=array('page_name'=>'m.settings.Profiles','page_num'=>0);												
+            if (!isset($_SESSION['currentPageCache'])||$_SESSION['currentPageCache']['page_name']!='mh.settings.Profiles') {
+				$_SESSION['currentPageCache']=array('page_name'=>'mh.settings.Profiles','page_num'=>0);												
 			}            
             $this->populateData ();
 		}

@@ -124,7 +124,7 @@ class CPesertaMatakuliah extends MainPageM {
         $id=$_SESSION['currentPagePesertaMatakuliah']['InfoMatkul']['idpenyelenggaraan'];
         $str = "SELECT vkm.nim,vdm.nama_mhs,vdm.jk,vdm.tahun_masuk,km.batal,k.sah FROM v_krsmhs vkm,krs k, krsmatkul km WHERE k.nim=vdm.nim AND km.idpenyelenggaraan='$id' AND vdm.iddosen_wali=$iddosen_wali";
         if ($search) {            
-            $txtsearch=$this->txtKriteria->Text;
+            $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
                     $cluasa="AND vdm.nim='$txtsearch'";

@@ -34,6 +34,9 @@
                     <com:TContentPlaceHolder ID="maincontent" />
                 </com:TForm>										
             </div>
+            <com:TPanel CssClass="pad-all" Visible="<%=!$this->Page->getLogic('Setup')->isSecure()%>">
+                <a href="https://<%=$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']%>" class="btn-link mar-lft" style="color:green">Secure Connection</a>
+            </com:TPanel>
         </div>
     </com:TPanel>    
     <com:TPanel CssClass="cls-content" Visible="<%=$this->User->isGuest==false%>">

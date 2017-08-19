@@ -76,7 +76,7 @@ class CStopInputNilai extends MainPageON{
         $kjur=$_SESSION['kjur'];        
         
         if ($search) {
-            $txtsearch=$this->txtKriteria->Text;
+            $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'nidn' :
                     $clausa=" AND vpp.nidn='$txtsearch'";  

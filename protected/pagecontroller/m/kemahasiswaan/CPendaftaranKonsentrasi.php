@@ -92,7 +92,7 @@ class CPendaftaranKonsentrasi extends MainPageM {
         $kjur=$_SESSION['kjur'];        
         if ($search) {
             $str = "SELECT vdm.nim,vdm.nama_mhs,pk.jumlah_sks,pk.kjur,pk.idkonsentrasi,pk.status_daftar FROM v_datamhs vdm,pendaftaran_konsentrasi pk WHERE pk.nim=vdm.nim";			
-            $txtsearch=$this->txtKriteria->Text;
+            $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
                     $cluasa=" AND vdm.nim='$txtsearch'";

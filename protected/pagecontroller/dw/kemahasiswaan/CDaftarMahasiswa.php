@@ -114,7 +114,7 @@ class CDaftarMahasiswa extends MainPageDW {
         $kjur=$_SESSION['kjur'];        
         if ($search) {
             $str = "SELECT no_formulir,nim,nirm,nama_mhs,jk,tempat_lahir,tanggal_lahir,alamat_rumah,kjur,idkonsentrasi,iddosen_wali,tahun_masuk,k_status FROM v_datamhs WHERE iddosen_wali=$iddosen_wali";			
-            $txtsearch=$this->txtKriteria->Text;
+            $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
                     $cluasa="WHERE nim='$txtsearch'";

@@ -104,7 +104,7 @@ class CDulangMHSNonAktifMassal Extends MainPageM {
            
         if ($search) {
             $str = "SELECT vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.tahun_masuk,vdm.k_status,vdm.idkelas,vdm.iddosen_wali FROM v_datamhs vdm WHERE vdm.nim NOT IN (SELECT nim FROM dulang WHERE idsmt=$idsmt AND tahun=$ta) AND vdm.kjur=$kjur AND vdm.k_status != 'K' AND vdm.k_status!='L' AND vdm.k_status!='D' AND vdm.tahun_masuk=$tahun_masuk";
-            $txtsearch=$this->txtKriteria->Text;
+            $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {
                 case 'no_formulir' :
                     $clausa="AND vdm.no_formulir='$txtsearch'";

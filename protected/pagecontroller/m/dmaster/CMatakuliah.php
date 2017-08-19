@@ -84,7 +84,7 @@ class CMatakuliah extends MainPageM {
         $idkur=$this->Demik->getIDKurikulum($kjur);
         if ($search) {
             $str = "SELECT m.kmatkul,m.nmatkul,m.sks,m.semester,m.idkonsentrasi,k.nama_konsentrasi,m.ispilihan,m.islintas_prodi,m.aktif FROM matakuliah m LEFT JOIN konsentrasi k ON (k.idkonsentrasi=m.idkonsentrasi) WHERE idkur=$idkur";			
-            $txtsearch=$this->txtKriteria->Text;
+            $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {
                 case 'kode' :
                     $cluasa="AND kmatkul='{$idkur}_$txtsearch'";

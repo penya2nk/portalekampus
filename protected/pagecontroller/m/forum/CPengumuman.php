@@ -137,15 +137,15 @@ class CPengumuman extends MainPageM {
             $userid=$this->Pengguna->getDataUser('userid');                        
             $nama_user=$this->Pengguna->getDataUser('username'); 
             
-            $file_name=$this->hiddenfile_name->Value;
-            $file_type=$this->hiddenfile_type->Value;
-            $file_size=$this->hiddenfile_size->Value;
-            $file_path=$this->hiddenfile_path->Value;
-            $file_path_temp=$this->hiddenfile_path_temp->Value;
-            $file_url=$this->hiddenfile_url->Value;
-            
-            rename ($file_path_temp,$file_path);
-            
+			$file_name=$this->hiddenfile_name->Value;
+			$file_type=$this->hiddenfile_type->Value;
+			$file_size=$this->hiddenfile_size->Value;
+			$file_path=$this->hiddenfile_path->Value;
+			$file_path_temp=$this->hiddenfile_path_temp->Value;
+			$file_url=$this->hiddenfile_url->Value;
+			if (file_exists($file_path_temp)) {
+				rename ($file_path_temp,$file_path);
+			}
             $str = "INSERT INTO pengumuman SET idpost=NULL,idkategori=$idkategori,title='$judul',content='$content',userid=$userid,tipe='m',nama_user='$nama_user',file_name='$file_name',file_type='$file_type',file_size='$file_size',file_path='$file_path',file_url='$file_url',date_added=NOW()";
             $this->DB->insertRecord($str);
             $_SESSION['currentPagePengumuman']['activeviewindex']=0;

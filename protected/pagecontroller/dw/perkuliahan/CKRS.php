@@ -116,7 +116,7 @@ class CKRS Extends MainPageDW {
 		$tahun_masuk=$_SESSION['currentPageKRS']['tahun_masuk']; 
         $str_tahun_masuk=$tahun_masuk=='none'?'':" AND vdm.tahun_masuk=$tahun_masuk";        
         if ($search) {
-            $txtsearch=$this->txtKriteria->Text;
+            $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
                     $clausa="AND vdm.nim='$txtsearch'";                                        

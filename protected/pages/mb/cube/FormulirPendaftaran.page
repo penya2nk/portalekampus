@@ -501,20 +501,9 @@
                     </div>
                     <div class="form-group">
                         <div class="col-lg-offset-2 col-lg-10">
-                            <com:TActiveCustomButton ID="btnUpdate" CssClass="btn btn-primary" OnClick="updateData" ValidationGroup="editformulir">
+                            <com:TCustomButton ID="btnUpdate" CssClass="btn btn-primary" OnClick="updateData" ValidationGroup="editformulir">
                                 <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
-                                <prop:ClientSide.OnPreDispatch>                                                                   
-                                    $('loading').show(); 
-                                    $('<%=$this->btnUpdate->ClientId%>').disabled='disabled';						
-                                </prop:ClientSide.OnPreDispatch>
-                                <prop:ClientSide.OnLoading>
-                                    $('<%=$this->btnUpdate->ClientId%>').disabled='disabled';						
-                                </prop:ClientSide.OnLoading>
-                                <prop:ClientSide.OnComplete>																	                                    						                                                                            
-                                    $('<%=$this->btnUpdate->ClientId%>').disabled='';
-                                    $('loading').hide(); 
-                                </prop:ClientSide.OnComplete>
-                            </com:TActiveCustomButton>
+                            </com:TCustomButton>
                         </div>
                     </div>     
                 </div>
@@ -999,20 +988,9 @@
                     </div>
                     <div class="form-group">
                         <div class="col-lg-offset-2 col-lg-10">
-                            <com:TActiveCustomButton ID="btnSave" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="addformulir">
+                            <com:TCustomButton ID="btnSave" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="addformulir">
                                 <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
-                                <prop:ClientSide.OnPreDispatch>                                                                   
-                                    $('loading').show(); 
-                                    $('<%=$this->btnSave->ClientId%>').disabled='disabled';						
-                                </prop:ClientSide.OnPreDispatch>
-                                <prop:ClientSide.OnLoading>
-                                    $('<%=$this->btnSave->ClientId%>').disabled='disabled';						
-                                </prop:ClientSide.OnLoading>
-                                <prop:ClientSide.OnComplete>																	                                    						                                                                            
-                                    $('<%=$this->btnSave->ClientId%>').disabled='';
-                                    $('loading').hide(); 
-                                </prop:ClientSide.OnComplete>
-                            </com:TActiveCustomButton>
+                            </com:TCustomButton>
                         </div>
                     </div>     
                 </div>

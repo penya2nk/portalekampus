@@ -19,7 +19,7 @@ class CKuesioner extends MainPageMHS {
                 
                 //check telah menjadi anggota kelas
                 if (!isset($dk[1])) {
-                    throw new Exception ("Anda tidak terdaftar dikelas manapun, silahkan terlebih dahulu dihalaman KRS.");
+                    throw new Exception ("Anda tidak terdaftar dikelas manapun, silahkan tentukan kelas terlebih dahulu dihalaman KRS.");
                 }
                 $datakelas=$dk[1];
                 //check nilainya udah di isi atau belum ?
@@ -118,38 +118,42 @@ class CKuesioner extends MainPageMHS {
     
     public function saveData ($sender,$param) {		
 		if ($this->IsValid) {
-            $idkrsmatkul=$_SESSION['currentPageKuesioner']['DataMatakuliah']['idkrsmatkul'];            
-            $idpengampu_penyelenggaraan=$_SESSION['currentPageKuesioner']['idpengampu_penyelenggaraan'];                        
-            $this->DB->beginTransaction();
-            $str="UPDATE nilai_matakuliah SET telah_isi_kuesioner=1,tanggal_isi_kuesioner=NOW() WHERE idkrsmatkul=$idkrsmatkul";
-            if ($this->DB->updateRecord($str)) {
-                $jumlahpertanyaan=$this->RepeaterS->Items->getCount();
-                $i=0;
-                foreach ($this->RepeaterS->Items as $inputan) {
-                    $item=$inputan->cmbJawaban->getNamingContainer();
-                    $idkuesioner=$this->RepeaterS->DataKeys[$item->getItemIndex()];                        
-                    $idindikator=$inputan->cmbJawaban->Text;
-                    if ($jumlahpertanyaan > $i+1) {
-                        $values = "$values (NULL,$idpengampu_penyelenggaraan,$idkrsmatkul,$idkuesioner,$idindikator),";
-                    }else{
-                        $values = "$values (NULL,$idpengampu_penyelenggaraan,$idkrsmatkul,$idkuesioner,$idindikator)";
+            $idkrsmatkul=$_SESSION['currentPageKuesioner']['DataMatakuliah']['idkrsmatkul'];       
+            if ($idkrsmatkul > 0) {
+                $idpengampu_penyelenggaraan=$_SESSION['currentPageKuesioner']['idpengampu_penyelenggaraan'];                        
+                $this->DB->beginTransaction();
+                $str="UPDATE nilai_matakuliah SET telah_isi_kuesioner=1,tanggal_isi_kuesioner=NOW() WHERE idkrsmatkul=$idkrsmatkul";
+                if ($this->DB->updateRecord($str)) {
+                    $jumlahpertanyaan=$this->RepeaterS->Items->getCount();
+                    $i=0;
+                    foreach ($this->RepeaterS->Items as $inputan) {
+                        $item=$inputan->cmbJawaban->getNamingContainer();
+                        $idkuesioner=$this->RepeaterS->DataKeys[$item->getItemIndex()];                        
+                        $idindikator=$inputan->cmbJawaban->Text;
+                        if ($jumlahpertanyaan > $i+1) {
+                            $values = "$values (NULL,$idpengampu_penyelenggaraan,$idkrsmatkul,$idkuesioner,$idindikator),";
+                        }else{
+                            $values = "$values (NULL,$idpengampu_penyelenggaraan,$idkrsmatkul,$idkuesioner,$idindikator)";
+                        }
+                        $i=$i+1;
                     }
-                    $i=$i+1;
-                }
-                $str = "INSERT INTO kuesioner_jawaban (idkuesioner_jawaban,idpengampu_penyelenggaraan,idkrsmatkul,idkuesioner,idindikator) VALUES $values";
-                $this->DB->insertRecord($str);  
-                if ($this->DB->checkRecordIsExist('idpengampu_penyelenggaraan','kuesioner_hasil',$idpengampu_penyelenggaraan)) {
-                    $this->Kuesioner->hitungKuesioner($idpengampu_penyelenggaraan,'update');
+                    $str = "INSERT INTO kuesioner_jawaban (idkuesioner_jawaban,idpengampu_penyelenggaraan,idkrsmatkul,idkuesioner,idindikator) VALUES $values";
+                    $this->DB->insertRecord($str);  
+                    if ($this->DB->checkRecordIsExist('idpengampu_penyelenggaraan','kuesioner_hasil',$idpengampu_penyelenggaraan)) {
+                        $this->Kuesioner->hitungKuesioner($idpengampu_penyelenggaraan,'update');
+                    }else{
+                        $this->Kuesioner->hitungKuesioner($idpengampu_penyelenggaraan,'insert');
+                    }
+                    $this->DB->commitTransaction();                                 
+                    unset($_SESSION['currentPageKuesioner']);
+                    $this->redirect('perkuliahan.Kuesioner',true,array('id'=>$idkrsmatkul));
                 }else{
-                    $this->Kuesioner->hitungKuesioner($idpengampu_penyelenggaraan,'insert');
+                    $this->DB->rollbackTransaction();
                 }
-                $this->DB->commitTransaction();                                 
-                unset($_SESSION['currentPageKuesioner']);
-                $this->redirect('perkuliahan.Kuesioner',true,array('id'=>$idkrsmatkul));
             }else{
-                $this->DB->rollbackTransaction();
-            }
-            
+                $this->modalMessageError->show();
+                $this->lblContentMessageError->Text="[nilai idkrsmatkul kosong]. Gunakan internet yang lebih cepat atau hubungi Sekretariat Prodi.";
+            }            
         }
 	}    
 }

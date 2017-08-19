@@ -23,6 +23,7 @@
                 <h5 class="panel-title"><i class="icon-profile position-left"></i> Masukan NIM yang akan diinputkan nilainya</h5>
             </div>
             <div class="panel-body">
+                <com:TLabel ID="errormessage" />
                 <div class="form-horizontal">
                     <div class="form-group" id="divAddNIM">
                         <label class="col-md-1 control-label"><strong>NIM: </strong></label>
@@ -69,8 +70,7 @@
                         </div>
                     </div>  
                 </div>
-            </div>
-            <com:TLabel ID="errormessage" />
+            </div>            
         </div>
     </div>    
 </com:TPanel>

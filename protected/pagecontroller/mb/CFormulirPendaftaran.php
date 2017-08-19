@@ -189,6 +189,7 @@ class CFormulirPendaftaran extends MainPageMB {
 		}	
 	}
     public function saveData ($sender,$param) {
+        $this->idProcess='add';
 		if ($this->IsValid) {
 			$no_formulir=$this->txtAddNoFormulir->Text;
 			$nama_mhs=addslashes(strtoupper(trim($this->txtAddNamaMhs->Text)));			
@@ -257,6 +258,7 @@ class CFormulirPendaftaran extends MainPageMB {
 		}
     }
 	public function updateData ($sender,$param) {
+        $this->idProcess='edit';
 		if ($this->IsValid) {
 			$no_formulir=$this->txtEditNoFormulir->Text;
 			$nama_mhs=addslashes(strtoupper(trim($this->txtEditNamaMhs->Text)));			

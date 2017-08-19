@@ -81,12 +81,14 @@
                         
                     </div>   
                 </div>
-            </div> 
-            <div class="table-responsive">
-                <div class="alert alert-warning alert-styled-left alert-bordered">
+            </div>
+            <div class="panel-body">
+                <div class="alert alert-info alert-styled-left alert-bordered">
                     <span class="text-semibold">Info!</span>
                     <com:TLabel ID="errormessage" />
                 </div> 
+            </div>
+            <div class="table-responsive">                
                 <com:TActiveRepeater ID="RepeaterS" DataKeyField="idpenyelenggaraan">
                     <prop:HeaderTemplate>
                     <table class="table table-striped table-hover">

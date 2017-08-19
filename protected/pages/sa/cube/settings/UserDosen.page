@@ -30,7 +30,7 @@
                             <com:TTextBox ID="txtEditNama" CssClass="form-control" />
                             <com:TRequiredFieldValidator ID="FieldEditNamaValidator" ControlToValidate="txtEditNama" Display="Dynamic" ErrorMessage="Isi Nama User" ValidationGroup="editUser" CssClass="has-error help-block">
                                 <prop:ClientSide.OnValidationError>
-                                    $('divEditNama').editClassName('has-error');
+                                    $('divEditNama').addClassName('has-error');
                                     jQuery('#<%=$this->FieldEditNamaValidator->ClientID%>').removeAttr('style');
                                 </prop:ClientSide.OnValidationError>
                                 <prop:ClientSide.OnValidationSuccess>
@@ -45,7 +45,7 @@
                             <com:TTextBox ID="txtEditEmail" CssClass="form-control"  />
                             <com:TRequiredFieldValidator ID="FieldEditEmailValidator" ControlToValidate="txtEditEmail" Display="Dynamic" ErrorMessage="Isi Email Pengguna" ValidationGroup="editUser" FocusOnError="true" CssClass="has-error help-block">				
                                 <prop:ClientSide.OnValidationError>
-                                    $('divEditEmail').editClassName('has-error');
+                                    $('divEditEmail').addClassName('has-error');
                                     jQuery('#<%=$this->FieldEditEmailValidator->ClientID%>').removeAttr('style');
                                 </prop:ClientSide.OnValidationError>
                                 <prop:ClientSide.OnValidationSuccess>
@@ -54,7 +54,7 @@
                             </com:TRequiredFieldValidator>
                             <com:TEmailAddressValidator ID="FieldEditFormatEmailValidator" ControlToValidate="txtEditEmail" Display="Dynamic" ErrorMessage="Format Email salah" ValidationGroup="editUser" FocusOnError="true" CheckMXRecord="false" CssClass="has-error help-block">
                                 <prop:ClientSide.OnValidationError>
-                                    $('divEditEmail').editClassName('has-error');
+                                    $('divEditEmail').addClassName('has-error');
                                     jQuery('#<%=$this->FieldEditFormatEmailValidator->ClientID%>').removeAttr('style');
                                 </prop:ClientSide.OnValidationError>
                                 <prop:ClientSide.OnValidationSuccess>
@@ -63,7 +63,7 @@
                             </com:TEmailAddressValidator>
                             <com:TActiveCustomValidator ID="editEmail" ControlToValidate="txtEditEmail" Display="Dynamic" OnServerValidate="checkEmail" ValidationGroup="editUser" ErrorMessage="Email Yang Anda Inputkan Sudah Ada" FocusOnError="true">
                                 <prop:ClientSide.OnValidationError>
-                                    $('divEditEmail').editClassName('has-error');
+                                    $('divEditEmail').addClassName('has-error');
                                     jQuery('#<%=$this->editEmail->ClientID%>').removeAttr('style');
                                 </prop:ClientSide.OnValidationError>
                                 <prop:ClientSide.OnValidationSuccess>
@@ -83,7 +83,7 @@
                                 <div class="col-lg-6">                                
                                     <com:TRequiredFieldValidator ID="FieldEditUsernameValidator" ControlToValidate="txtEditUsername" Display="Dynamic" ErrorMessage="Isi Kode Matakuliah" ValidationGroup="editUser" CssClass="has-error help-block" FocusOnError="true">
                                         <prop:ClientSide.OnValidationError>
-                                            $('divEditUsername').editClassName('has-error');
+                                            $('divEditUsername').addClassName('has-error');
                                             jQuery('#<%=$this->FieldEditUsernameValidator->ClientID%>').removeAttr('style');
                                         </prop:ClientSide.OnValidationError>
                                         <prop:ClientSide.OnValidationSuccess>
@@ -92,7 +92,7 @@
                                     </com:TRequiredFieldValidator>
                                     <com:TActiveCustomValidator ID="editUsername" ControlToValidate="txtEditUsername" Display="Dynamic" OnServerValidate="checkUsername" ValidationGroup="editUser" ErrorMessage="Kode Matakuliah Yang Anda Inputkan Sudah Ada ..." CssClass="has-error help-block">
                                         <prop:ClientSide.OnValidationError>
-                                            $('divEditUsername').editClassName('has-error');
+                                            $('divEditUsername').addClassName('has-error');
                                             jQuery('#<%=$this->editUsername->ClientID%>').removeAttr('style');
                                         </prop:ClientSide.OnValidationError>
                                         <prop:ClientSide.OnValidationSuccess>
@@ -115,7 +115,7 @@
                             <com:TTextBox ID="txtEditPassword2" CssClass="form-control" TextMode="Password" />
                             <com:TCompareValidator ID="FieldEditPassword2Validator" ControlToValidate="txtEditPassword1" ControlToCompare="txtEditPassword2" Display="Dynamic" ErrorMessage="Isi Password tidak sama" ValidationGroup="editUser" FocusOnError="true" CssClass="has-error help-block">				
                                 <prop:ClientSide.OnValidationError>
-                                    $('divEditPassword2').editClassName('has-error');
+                                    $('divEditPassword2').addClassName('has-error');
                                     jQuery('#<%=$this->FieldEditPassword2Validator->ClientID%>').removeAttr('style');
                                 </prop:ClientSide.OnValidationError>
                                 <prop:ClientSide.OnValidationSuccess>

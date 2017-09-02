@@ -1,0 +1,291 @@
+<%@ Title="Dashboard" %>
+<com:TContent ID="moduleheader">
+    <i class="fa fa-dashboard"></i> Dashboard
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li class="active"><span>DASHBOARD</span></li>
+</com:TContent>
+<com:TContent ID="csscontent">
+<style type="text/css">
+a:hover {
+    text-decoration:none;
+}
+</style>
+</com:TContent>
+<com:TContent ID="maincontent">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">                
+                <div class="main-box-body clearfix">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <br />Selamat Datang !!!
+                        </div>
+                        <div class="col-lg-4 pull-right">
+                            <div class="filter-block pull-right">
+                                <com:TActiveCustomButton ID="btnRefresh" CssClass="btn btn-primary" OnClick="refreshPage" ClientSide.PostState="false">
+                                    <prop:Text><i class="fa fa-refresh"></i> Refresh</prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->btnRefresh->ClientId%>').disabled='disabled';						                                    
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnRefresh->ClientId%>').disabled='disabled';						                                    
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                        $('<%=$this->btnRefresh->ClientId%>').disabled='';                                    
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>
+                                <a class="btn btn-primary pull-right" href="<%=$this->constructUrl('forum.Diskusi',true)%>" title="Forum Diskusi">                        
+                                    <i class='fa  fa-comment'></i> Forum Diskusi
+                                </a>
+                            </div>
+                            
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>            
+    <div class="row">
+        <div class="col-lg-3 col-sm-6 col-xs-12">
+            <a href="#" OnClick="return false;">
+                <div class="main-box infographic-box colored emerald-bg">
+                    <i class="fa fa-users"></i>
+                    <span class="headline">Jumlah MHS Aktif</span>
+                    <span class="value"><%=$_SESSION['currentPageHome']['jumlahmhsaktif']%></span>
+                </div>
+            </a>
+        </div>    
+        <div class="col-lg-3 col-sm-6 col-xs-12">
+            <a href="#" OnClick="return false;">
+                <div class="main-box infographic-box colored green-bg">
+                    <i class="fa fa-graduation-cap"></i>
+                    <span class="headline">Jumlah MHS Lulus</span>
+                    <span class="value"><%=$_SESSION['currentPageHome']['jumlahmhslulus']%></span>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-xs-12">
+            <a href="#" OnClick="return false;">
+                <div class="main-box infographic-box colored purple-bg">
+                    <i class="fa fa-minus-square"></i>
+                    <span class="headline">Jumlah MHS Cuti</span>
+                    <span class="value"><%=$_SESSION['currentPageHome']['jumlahmhscuti']%></span>
+                </div>
+            </a>
+        </div>   
+        <div class="col-lg-3 col-sm-6 col-xs-12">
+            <a href="#" OnClick="return false;">
+                <div class="main-box infographic-box colored red-bg">
+                    <i class="fa fa-thumbs-down"></i>
+                    <span class="headline">Jumlah MHS Non-Aktif</span>
+                    <span class="value"><%=$_SESSION['currentPageHome']['jumlahmhsnonaktif']%></span>
+                </div>
+            </a>
+        </div>    
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="main-box">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left">Jumlah Pendaftaran dan Penerimaan Calon Mahasiswa Baru 10 Tahun Terakhir</h2>
+                </header>
+
+                <div class="main-box-body clearfix">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div id="graph-bar" style="height: 240px; padding: 0px; position: relative;"></div>
+                        </div>
+                        <div class="col-md-3">
+                            <ul class="graph-stats">
+                                <li>
+                                    <div class="clearfix">
+                                        <div class="title pull-left">
+                                            Mendaftar
+                                        </div>
+                                        <div id="divvaluemendaftar" class="value pull-right">
+                                            <com:TLiteral ID="literalTotalPendaftaran" />
+                                        </div>
+                                    </div>
+                                    <div class="progress">
+                                        <div style="width: 100%;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="100" role="progressbar" class="progress-bar">
+                                            <span class="sr-only">100% Complete</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="clearfix">
+                                        <div class="title pull-left">
+                                            Diterima
+                                        </div>
+                                        <div id="divvaluediterima" class="value pull-right">
+                                            <com:TLiteral ID="literalTotalDulang" />
+                                        </div>
+                                    </div>
+                                    <div class="progress">
+                                        <div style="width: 100%;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="100" role="progressbar" class="progress-bar progress-bar-danger">
+                                            <span class="sr-only">100% Complete</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="clearfix">
+                                        <div class="title pull-left">
+                                            Mendaftar Tahun Ini
+                                        </div>
+                                        <div id="divvaluemendaftartahunini" class="value pull-right" title="<%=$this->TooltipMendaftar%>" data-toggle="tooltip">
+                                            <%=$this->TotalMendaftarTahunINI%> <i class="<%=($this->PersentaseMendaftarTahunINI <= 100)?'fa fa-level-down red':'fa fa-level-up green'%>"></i> 
+                                        </div>
+                                    </div>
+                                    <div class="progress">
+                                        <div style="width: <%=$this->PersentaseMendaftarTahunINI%>%;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="<%=$this->PersentaseMendaftarTahunINI%>" role="progressbar" class="progress-bar progress-bar-success">
+                                            <span class="sr-only"><%=$this->PersentaseMendaftarTahunINI%>% Complete</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="clearfix">
+                                        <div class="title pull-left">
+                                            Diterima Tahun Ini
+                                        </div>
+                                        <div id="divvaluedulangtahunini" class="value pull-right" title="17% down" data-toggle="tooltip">
+                                            <%=$this->TotalDulangTahunINI%> <i class="fa fa-level-down red"></i> 
+                                        </div>
+                                    </div>
+                                    <div class="progress">
+                                        <div style="width: <%=$this->PersentaseDulangTahunINI%>%;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="<%=$this->PersentaseDulangTahunINI%>" role="progressbar" class="progress-bar progress-bar-warning">
+                                            <span class="sr-only"><%=$this->PersentaseDulangTahunINI%>% Complete</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>	
+        </div>
+    </div>
+</com:TContent>
+<com:TContent ID="jscontent">
+<script src="<%=$this->Page->Theme->baseUrl%>/js/flot/jquery.flot.min.js"></script>
+<script src="<%=$this->Page->Theme->baseUrl%>/js/flot/jquery.flot.resize.min.js"></script>
+<script src="<%=$this->Page->Theme->baseUrl%>/js/flot/jquery.flot.time.min.js"></script>
+<script src="<%=$this->Page->Theme->baseUrl%>/js/flot/jquery.flot.threshold.min.js"></script>
+<script src="<%=$this->Page->Theme->baseUrl%>/js/flot/jquery.flot.axislabels.js"></script>
+</com:TContent>
+<com:TContent ID="jsinlinecontent">
+<script type="text/javascript">
+jQuery(document).ready(function() {
+    //CHARTS
+    if (jQuery('#graph-bar').length) {        
+        <com:TLiteral ID="datamendaftar1" />
+        <com:TLiteral ID="datamendaftar2" />
+
+        var series = new Array();
+
+        series.push({
+            data: data1,
+            bars: {
+                show : true,
+                barWidth: 24 * 60 * 60 * 120000,
+                lineWidth: 1,
+                fill: 1,
+                align: 'center'
+            },
+            label: 'Mendaftar'
+        });
+        series.push({
+            data: data2,
+            color: '#e84e40',
+            lines: {
+                show : true,
+                lineWidth: 3,
+            },
+            points: { 
+                fillColor: "#e84e40", 
+                fillColor: '#ffffff', 
+                pointWidth: 1,
+                show: true 
+            },
+            label: 'Diterima'
+        });
+
+        jQuery.plot("#graph-bar", series, {
+            colors: ['#03a9f4', '#f1c40f', '#2ecc71', '#3498db', '#9b59b6', '#95a5a6'],
+            grid: {
+                tickColor: "#f2f2f2",
+                borderWidth: 0,
+                hoverable: true,
+                clickable: true
+            },
+            legend: {
+                noColumns: 1,
+                labelBoxBorderColor: "#000000",
+                position: "ne"       
+            },
+            shadowSize: 0,
+            xaxis: {
+                mode: "time",
+                tickSize: [1, "year"],
+                tickLength: 0,
+                // axisLabel: "Date",
+                axisLabelUseCanvas: true,
+                axisLabelFontSizePixels: 12,
+                axisLabelFontFamily: 'Open Sans, sans-serif',
+                axisLabelPadding: 10
+            }
+        });
+
+        var previousPoint = null;
+        jQuery("#graph-bar").bind("plothover", function (event, pos, item) {
+            if (item) {
+                if (previousPoint != item.dataIndex) {
+
+                    previousPoint = item.dataIndex;
+
+                    jQuery("#flot-tooltip").remove();
+                    var x = item.datapoint[0],
+                    y = item.datapoint[1];
+
+                    showTooltip(item.pageX, item.pageY, item.series.label, y );
+                }
+            }
+            else {
+                jQuery("#flot-tooltip").remove();
+                previousPoint = [0,0,0];
+            }
+        });
+
+        function showTooltip(x, y, label, data) {
+            jQuery('<div id="flot-tooltip">' + '<b>' + label + ': </b><i>' + data + '</i>' + '</div>').css({
+                top: y + 5,
+                left: x + 20
+            }).appendTo("body").fadeIn(200);
+        }
+    }    
+    
+});
+
+jQuery(document).mouseover(function(){    
+    var target;
+    target = jQuery("#divvaluemendaftar");    
+    if (target.is("[style]")) {                
+        target.removeAttr("style");        
+    }
+    target = jQuery("#divvaluediterima");
+    if (target.is("[style]")) {                
+        target.removeAttr("style");        
+    }
+    target = jQuery("#divvaluemendaftartahunini");
+    if (target.is("[style]")) {                
+        target.removeAttr("style");        
+    }
+    target = jQuery("#divvaluedulangtahunini");
+    if (target.is("[style]")) {                
+        target.removeAttr("style");        
+    }
+});
+</script>
+</com:TContent>

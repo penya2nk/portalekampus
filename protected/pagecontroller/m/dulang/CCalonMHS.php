@@ -72,23 +72,23 @@ class CCalonMHS Extends MainPageM {
         $tahun_masuk=$_SESSION['tahun_masuk'];
         $semester_masuk=$_SESSION['currentPageCalonMHS']['semester_masuk'];
         if ($search) {
-            $str = "SELECT DISTINCT(fp.no_formulir),fp.nama_mhs,t.idkelas,fp.ta AS tahun_masuk,fp.idsmt AS semester_masuk,t.kjur FROM transaksi t JOIN formulir_pendaftaran fp ON (fp.no_formulir=t.no_formulir) LEFT JOIN register_mahasiswa rm ON (rm.no_formulir=t.no_formulir) WHERE t.kjur=$kjur AND fp.ta=$tahun_masuk AND fp.idsmt=$semester_masuk AND t.tahun=$tahun_masuk AND t.idsmt=$semester_masuk AND rm.no_formulir IS NULL";
+            $str = "SELECT DISTINCT(fp.no_formulir),fp.nama_mhs,fp.jk,t.idkelas,fp.ta AS tahun_masuk,fp.idsmt AS semester_masuk,t.kjur FROM transaksi t JOIN formulir_pendaftaran fp ON (fp.no_formulir=t.no_formulir) LEFT JOIN register_mahasiswa rm ON (rm.no_formulir=t.no_formulir) WHERE t.kjur=$kjur AND fp.ta=$tahun_masuk AND fp.idsmt=$semester_masuk AND t.tahun=$tahun_masuk AND t.idsmt=$semester_masuk AND rm.no_formulir IS NULL";
             $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'no_formulir' :
                     $clausa=" AND fp.no_formulir='$txtsearch'";                    
-                    $jumlah_baris=$this->DB->getCountRowsOfTable (" transaksi t JOIN formulir_pendaftaran fp ON (fp.no_formulir=t.no_formulir) LEFT JOIN register_mahasiswa rm ON (rm.no_formulir=t.no_formulir) WHERE t.kjur=$kjur AND fp.ta=$tahun_masuk AND fp.idsmt=$semester_masuk AND t.tahun=$tahun_masuk AND t.idsmt=$semester_masuk AND rm.no_formulir IS NULL$clausa",'DISTINCT(fp.no_formulir)');                    
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("transaksi t JOIN formulir_pendaftaran fp ON (fp.no_formulir=t.no_formulir) LEFT JOIN register_mahasiswa rm ON (rm.no_formulir=t.no_formulir) WHERE t.kjur=$kjur AND fp.ta=$tahun_masuk AND fp.idsmt=$semester_masuk AND t.tahun=$tahun_masuk AND t.idsmt=$semester_masuk AND rm.no_formulir IS NULL$clausa",'DISTINCT(fp.no_formulir)');                    
                     $str = "$str $clausa";
                 break;                
                 case 'nama' :
                     $clausa=" AND fp.nama_mhs LIKE '%$txtsearch%'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable (" transaksi t JOIN formulir_pendaftaran fp ON (fp.no_formulir=t.no_formulir) LEFT JOIN register_mahasiswa rm ON (rm.no_formulir=t.no_formulir) WHERE t.kjur=$kjur AND fp.ta=$tahun_masuk AND fp.idsmt=$semester_masuk AND t.tahun=$tahun_masuk AND t.idsmt=$semester_masuk AND rm.no_formulir IS NULL$clausa",'DISTINCT(fp.no_formulir)');                    
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("transaksi t JOIN formulir_pendaftaran fp ON (fp.no_formulir=t.no_formulir) LEFT JOIN register_mahasiswa rm ON (rm.no_formulir=t.no_formulir) WHERE t.kjur=$kjur AND fp.ta=$tahun_masuk AND fp.idsmt=$semester_masuk AND t.tahun=$tahun_masuk AND t.idsmt=$semester_masuk AND rm.no_formulir IS NULL$clausa",'DISTINCT(fp.no_formulir)');                    
                     $str = "$str $clausa";
                 break;
             }
         }else{            
-            $str = "SELECT DISTINCT(fp.no_formulir),fp.nama_mhs,t.idkelas,fp.ta AS tahun_masuk,fp.idsmt AS semester_masuk,t.kjur FROM transaksi t JOIN formulir_pendaftaran fp ON (fp.no_formulir=t.no_formulir) LEFT JOIN register_mahasiswa rm ON (rm.no_formulir=t.no_formulir) WHERE t.kjur=$kjur AND fp.ta=$tahun_masuk AND fp.idsmt=$semester_masuk AND t.tahun=$tahun_masuk AND t.idsmt=$semester_masuk AND rm.no_formulir IS NULL";
-            $jumlah_baris=$this->DB->getCountRowsOfTable (" transaksi t JOIN formulir_pendaftaran fp ON (fp.no_formulir=t.no_formulir) LEFT JOIN register_mahasiswa rm ON (rm.no_formulir=t.no_formulir) WHERE t.kjur=$kjur AND fp.ta=$tahun_masuk AND fp.idsmt=$semester_masuk AND t.tahun=$tahun_masuk AND t.idsmt=$semester_masuk AND rm.no_formulir IS NULL",'DISTINCT(fp.no_formulir)');
+            $str = "SELECT DISTINCT(fp.no_formulir),fp.nama_mhs,fp.jk,t.idkelas,fp.ta AS tahun_masuk,fp.idsmt AS semester_masuk,t.kjur FROM transaksi t JOIN formulir_pendaftaran fp ON (fp.no_formulir=t.no_formulir) LEFT JOIN register_mahasiswa rm ON (rm.no_formulir=t.no_formulir) WHERE t.kjur=$kjur AND fp.ta=$tahun_masuk AND fp.idsmt=$semester_masuk AND t.tahun=$tahun_masuk AND t.idsmt=$semester_masuk AND rm.no_formulir IS NULL";
+            $jumlah_baris=$this->DB->getCountRowsOfTable ("transaksi t JOIN formulir_pendaftaran fp ON (fp.no_formulir=t.no_formulir) LEFT JOIN register_mahasiswa rm ON (rm.no_formulir=t.no_formulir) WHERE t.kjur=$kjur AND fp.ta=$tahun_masuk AND fp.idsmt=$semester_masuk AND t.tahun=$tahun_masuk AND t.idsmt=$semester_masuk AND rm.no_formulir IS NULL",'DISTINCT(fp.no_formulir)');
         }
 		
 		$this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageCalonMHS']['page_num'];
@@ -99,8 +99,8 @@ class CCalonMHS Extends MainPageM {
 			$limit=$this->RepeaterS->VirtualItemCount-$offset;
 		}
 		if ($limit < 0) {$offset=0;$limit=10;$_SESSION['currentPageCalonMHS']['page_num']=0;}
-		$str = "$str ORDER BY fp.nama_mhs ASC LIMIT $offset,$limit";				        
-		$this->DB->setFieldTable(array('no_formulir','nama_mhs','idkelas','tahun_masuk','semester_masuk','kjur'));
+		$str = "$str ORDER BY t.idkelas ASC,fp.nama_mhs ASC LIMIT $offset,$limit";				        
+		$this->DB->setFieldTable(array('no_formulir','nama_mhs','jk','idkelas','tahun_masuk','semester_masuk','kjur'));
 		$r=$this->DB->getRecord($str);
         $result=array();
         while (list($k,$v)=each($r)) {            
@@ -181,5 +181,8 @@ class CCalonMHS Extends MainPageM {
             $this->redirect('dulang.DetailDulangMHSBaru',true,array('id'=>$no_formulir));
         }
 	}
+    public function printOut ($sender,$param) {
+        
+    }
 }
 ?>

@@ -66,18 +66,18 @@ class CPIN extends MainPageK {
         $idkelas=$_SESSION['currentPagePIN']['kelas'];
         $tahun_masuk=$_SESSION['tahun_masuk'];    
         if ($search) {        
-            $str = "SELECT pin.no_pin,pin.no_formulir,pin.idkelas,fp.nama_mhs,fp.no_formulir AS ket FROM pin LEFT JOIN formulir_pendaftaran fp ON (fp.no_formulir=pin.no_formulir) WHERE pin.tahun_masuk=$tahun_masuk AND pin.idkelas='$idkelas'";
+            $str = "SELECT pin.no_pin,pin.no_formulir,pin.idkelas,fp.nama_mhs,fp.no_formulir AS ket FROM pin LEFT JOIN formulir_pendaftaran fp ON (fp.no_formulir=pin.no_formulir)";
             $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {
                 case 'no_formulir' :
-                    $clausa=" AND pin.no_formulir='$txtsearch'"; 
+                    $clausa=" WHERE pin.no_formulir='$txtsearch'"; 
                 break;
                 case 'nama_mhs' :
-                    $clausa=" AND pin.nama_mhs LIKE '%$txtsearch%'";                    
+                    $clausa=" WHERE fp.nama_mhs LIKE '%$txtsearch%'";                    
                 break;
             }
             $str="$str $clausa";
-            $jumlah_baris=$this->DB->getCountRowsOfTable ("pin LEFT JOIN formulir_pendaftaran fp ON (fp.no_formulir=pin.no_formulir) WHERE tahun_masuk=$tahun_masuk AND pin.idkelas='$idkelas' $clausa",'no_pin');		
+            $jumlah_baris=$this->DB->getCountRowsOfTable ("pin LEFT JOIN formulir_pendaftaran fp ON (fp.no_formulir=pin.no_formulir)$clausa",'no_pin');		
         }else{
             $str_display='';
             if ($_SESSION['currentPagePIN']['display_record']=='terdaftar'){

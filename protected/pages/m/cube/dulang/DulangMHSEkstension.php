@@ -210,5 +210,8 @@ class DulangMHSEkstension Extends MainPageM {
 			$this->DB->query ('ROLLBACK');
 		}		
 	}
+    public function printOut ($sender,$param) {
+        
+    }
 }
 ?>

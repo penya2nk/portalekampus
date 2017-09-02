@@ -135,6 +135,7 @@
                                     <th scope="col" width="50">NO</th>
                                     <th scope="col" width="120">NO. FORMULIR</th>                                    
                                     <th scope="col">NAMA MHS</th>
+                                    <th scope="col">JK</th>
                                     <th scope="col">KELAS</th>
                                     <th scope="col">TOTAL BAYAR</th>
                                     <th scope="col" width="80">AKSI</th>					
@@ -147,6 +148,7 @@
                                     <td><%#$this->DataItem['no']%></td>                                    
                                     <td><%#$this->DataItem['no_formulir']%></td>
                                     <td><%#$this->DataItem['nama_mhs']%></td>
+                                    <td><%#$this->DataItem['jk']%></td>
                                     <td><%#$this->DataItem['nkelas']%></td>
                                     <td><%#$this->DataItem['total_bayar']%></td>
                                     <td>

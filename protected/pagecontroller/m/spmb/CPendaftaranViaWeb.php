@@ -290,7 +290,8 @@ class CPendaftaranViaWeb extends MainPageM {
         $this->cmbEditKelas->Text=$dataMhs['idkelas'];
         $this->cmbEditKelas->dataBind();
 		
-        $bool=!$this->DB->checkRecordIsExist ('no_formulir','nilai_ujian_masuk',$no_formulir);
+        
+        $bool=!$this->DB->checkRecordIsExist ('no_formulir',"nilai_ujian_masuk",$no_formulir,' AND kjur > 0');
         $daftar_jurusan=$this->DMaster->removeIdFromArray($_SESSION['daftar_jurusan'],'none');
         if ($dataMhs['kjur1'] =='') {
             $this->cmbEditKjur1->DataSource=$daftar_jurusan;

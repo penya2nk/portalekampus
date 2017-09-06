@@ -189,7 +189,7 @@
                                     <th scope="col">JUMLAH <br />MATKUL</th>
                                     <th scope="col">JUMLAH <br />SKS</th>
                                     <th scope="col">SAH</th>
-                                    <th scope="col" width="120">AKSI</th>
+                                    <th scope="col" width="150">AKSI</th>
                                 </tr>			
                                 </thead>
                                 <tbody>
@@ -210,6 +210,25 @@
                                                 <i class="fa fa-eye fa-stack-1x fa-inverse"></i>                                        
                                             </span>                                        
                                         </com:THyperLink>
+                                    <com:TActiveLinkButton ID="btnSahkan" CssClass="table-link" OnClick="Page.sahkanKRS" Attributes.Title="Sahkan KRS" ClientSide.PostState="false" CommandParameter="<%=$this->DataItem['idkrs']%>" Enabled="<%#!$this->DataItem['sah']%>">
+                                            <prop:Text>
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-check fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </prop:Text>
+                                            <prop:ClientSide.OnPreDispatch>                                                                   
+                                                $('loading').show(); 
+                                                $('<%=$this->btnSahkan->ClientId%>').disabled='disabled';						
+                                            </prop:ClientSide.OnPreDispatch>
+                                            <prop:ClientSide.OnLoading>
+                                                $('<%=$this->btnSahkan->ClientId%>').disabled='disabled';						
+                                            </prop:ClientSide.OnLoading>
+                                            <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                                $('<%=$this->btnSahkan->ClientId%>').disabled='';
+                                                $('loading').hide(); 
+                                            </prop:ClientSide.OnComplete>
+                                        </com:TActiveLinkButton>
                                         <com:TActiveLinkButton ID="btnPrintOutR" CssClass="table-link" OnClick="Page.printOut" Attributes.Title="Print KRS" ClientSide.PostState="false">
                                             <prop:Text>
                                                 <span class="fa-stack">

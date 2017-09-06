@@ -915,7 +915,7 @@
                                             </a>                                        
                                         </li> 
                                         <li>
-                                            <a href="<%=$this->Page->setup->getAddress()%>/change_log.txt">
+                                            <a href="https://github.com/mrizkir/portalekampus/commits/" target="_blank">
                                                 <i class="fa fa-file-o"></i>
                                                 <span>Change Log</span>											
                                             </a>                                        

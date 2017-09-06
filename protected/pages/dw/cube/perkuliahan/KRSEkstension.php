@@ -27,7 +27,6 @@ class KRSEkstension Extends MainPageDW {
                 $_SESSION['currentPageKRSEkstension']=array('page_name'=>'m.perkuliahan.KRSEkstension','page_num'=>0,'mode_krs'=>'sudah','iddosen_wali'=>'none','tahun_masuk'=>$_SESSION['tahun_masuk'],'DataKRS'=>array(),'DataMHS'=>array());												
             }
             $_SESSION['currentPageKRSEkstension']['search']=false;
-            $_SESSION['kjur']=2;
             $this->tbCmbPs->DataSource=$this->DMaster->removeIdFromArray($_SESSION['daftar_jurusan'],'none');
             $this->tbCmbPs->Text=$_SESSION['kjur'];			
             $this->tbCmbPs->dataBind();	
@@ -198,6 +197,11 @@ class KRSEkstension Extends MainPageDW {
             $item->literalStatus->Text=$status;                        
 		}
 	}
+    public function sahkanKRS($sender,$param) {
+        $idkrs = $sender->CommandParameter;
+        $this->KRS->sahkanKRS($idkrs);
+        $this->redirect ('perkuliahan.KRSEkstension',true);
+    }
 	public function checkNIM ($sender,$param) {
 		$nim=addslashes($param->Value);
         try {

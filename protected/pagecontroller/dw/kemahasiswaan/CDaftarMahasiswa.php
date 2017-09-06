@@ -113,23 +113,23 @@ class CDaftarMahasiswa extends MainPageDW {
         $iddosen_wali=$this->iddosen_wali;
         $kjur=$_SESSION['kjur'];        
         if ($search) {
-            $str = "SELECT no_formulir,nim,nirm,nama_mhs,jk,tempat_lahir,tanggal_lahir,alamat_rumah,kjur,idkonsentrasi,iddosen_wali,tahun_masuk,k_status FROM v_datamhs WHERE iddosen_wali=$iddosen_wali";			
+            $str = "SELECT no_formulir,nim,nirm,nama_mhs,jk,tempat_lahir,tanggal_lahir,alamat_rumah,kjur,idkonsentrasi,iddosen_wali,tahun_masuk,k_status FROM v_datamhs";			
             $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
-                    $cluasa="WHERE nim='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $cluasa",'nim');
-                    $str = "$str $cluasa";
+                    $clausa=" WHERE iddosen_wali=$iddosen_wali AND nim='$txtsearch'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs$clausa",'nim');
+                    $str = "$str $clausa";
                 break;
                 case 'nirm' :
-                    $cluasa="WHERE nirm='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $cluasa",'nim');
-                    $str = "$str $cluasa";
+                    $clausa=" WHERE iddosen_wali=$iddosen_wali AND nirm='$txtsearch'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs$clausa",'nim');
+                    $str = "$str $clausa";
                 break;
                 case 'nama' :
-                    $cluasa="WHERE nama_mhs LIKE '%$txtsearch%'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $cluasa",'nim');
-                    $str = "$str $cluasa";
+                    $clausa=" WHERE iddosen_wali=$iddosen_wali AND nama_mhs LIKE '%$txtsearch%'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs$clausa",'nim');
+                    $str = "$str $clausa";
                 break;
             }
         }else{

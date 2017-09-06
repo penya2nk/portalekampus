@@ -1,6 +1,6 @@
 <?php
-prado::using ('Application.MainPageM');
-class DetailKRSEkstension extends MainPageM {
+prado::using ('Application.MainPageDW');
+class DetailKRSEkstension extends MainPageDW {
 	/**
 	* total SKS
 	*/

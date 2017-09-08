@@ -53,7 +53,7 @@
                                            <div class="story">
                                                 <div class="story-user">
                                                     <a href="<%#$this->DataItem['urlprofiluser']%>">
-                                                        <img src="<%#$this->DataItem['photo_profile']%>" alt=""/>
+                                                        <img src="<%#$this->DataItem['photo_profile']%>" alt="<%#$this->DataItem['nama_user']%>"/>
                                                     </a>
                                                 </div>
                                                 <div class="story-content">

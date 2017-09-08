@@ -1,14 +1,13 @@
-<%@ Title="SPMB - Pendaftaran Via Web"%>
+<%@ Title="SPMB - Formulir Pendaftaran"%>
 <com:TContent ID="moduleheader">
-    <i class="fa fa-sign-in"></i> Pendaftaran Mahasiswa Baru / Pindahan Via Web<br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
+    <i class="fa fa-sign-in"></i> Formulir Pendaftaran<br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
 </com:TContent>
 <com:TContent ID="configtools">    
     <%include Application.layouts.cube.FilterMode5%>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
     <li><a href="#">SPMB</a></li>
-    <li><a href="#">PENDAFTARAN</a></li>
-    <li class="active">VIA WEB</li>
+    <li class="active">FORMULIR PENDAFTARAN</li>
 </com:TContent>
 <com:TContent ID="csscontent">
 <link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/css/libs/nifty-component.css"/>

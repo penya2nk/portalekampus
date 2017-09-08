@@ -226,7 +226,7 @@
                         <div class="main-box-body clearfix">
                             <div class="profile-box-header gray-bg clearfix">
                                 <a href="<%=$this->Page->constructUrl('kemahasiswaan.ProfilMahasiswa',true,array('id'=>$this->DataItem['nim']))%>"><img src="resources/userimages/no_photo.png" alt="" class="profile-img img-responsive" /></a>
-                                <h2><%#$this->DataItem['nama_mhs']%><small><span class="label label-info"><%#$this->Page->DMaster->getNamaStatusMHSByID($this->DataItem['k_status'])%></span></small></h2>
+                                <h2><%#$this->DataItem['nama_mhs']%><small><span class="label label-info"><%#$this->Page->DMaster->getNamaStatusMHSByID($this->DataItem['k_status'])%></span><%#$this->DataItem['iddata_konversi'] == 0? '' :' <span class="label label-warning">Pindahan</span>'%></small></h2>
                                 <div class="job-position">
                                     <strong>No. Formulir:</strong> <%#$this->DataItem['no_formulir']%> <strong>NIM:</strong> <%#$this->DataItem['nim']%> <strong>NIRM :</strong> <%#$this->DataItem['nirm']%>
                                 </div>
@@ -247,11 +247,17 @@
                                         <strong>Alamat: </strong> <%#$this->DataItem['alamat_rumah']%>
                                     </li>
                                     <li>
+                                        <strong>Program Studi:</strong> <%#$this->DataItem['njur']%>
+                                    </li>
+                                    <li>
                                         <strong>Tahun Masuk:</strong> <%#$this->DataItem['tahun_masuk']%>
-                                    </li>                                                                
+                                    </li>
+                                    <li>
+                                        <strong>Kelas:</strong> <%#$this->Page->DMaster->getNamaKelasByID($this->DataItem['idkelas'])%>
+                                    </li>
                                     <li>
                                         <strong>Dosen Wali:</strong> <%#$this->Page->DMaster->getNamaDosenWaliByID($this->DataItem['iddosen_wali'])%>
-                                    </li> 
+                                    </li>
                                 </ul>
                             </div>
                             <div class="profile-box-footer clearfix">

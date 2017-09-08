@@ -164,8 +164,8 @@ class Logic_ReportKRS extends Logic_Report {
                     $idkrs=$repeater->DataKeys[$item->getItemIndex()];
                     
                     $str = "SELECT k.idkrs,k.tgl_krs,k.nim,vdm.nama_mhs,vdm.jk,vdm.tahun_masuk,k.sah FROM krs k,v_datamhs vdm WHERE k.nim=vdm.nim AND k.idkrs=$idkrs"; 
-                    $this->DB->setFieldTable(array('idkrs','tgl_krs','nim','nama_mhs','jk','tahun_masuk','sah'));
-                    $r = $this->DB->getRecord($str);
+                    $this->db->setFieldTable(array('idkrs','tgl_krs','nim','nama_mhs','jk','tahun_masuk','sah'));
+                    $r = $this->db->getRecord($str);
                     
                     $dataMhs=$r[1];
                     

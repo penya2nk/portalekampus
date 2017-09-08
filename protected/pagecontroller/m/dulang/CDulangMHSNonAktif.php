@@ -245,7 +245,7 @@ class CDulangMHSNonAktif Extends MainPageM {
                 $this->report->setDataReport($dataReport); 
                 $this->report->setMode($_SESSION['outputreport']);
                 
-                $this->report->printDulangLULUS($this->DMaster);
+                $this->report->printDulangNONAKTIF($this->DMaster);
             break;
             case  'pdf' :
                 $messageprintout="Mohon maaf Print out pada mode pdf belum kami support.";                

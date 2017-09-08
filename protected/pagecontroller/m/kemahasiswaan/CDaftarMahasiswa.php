@@ -201,9 +201,12 @@ class CDaftarMahasiswa extends MainPageM {
             $dataMHS['nim']=$nim;
             $dataMHS['tahun_masuk']=$v['tahun_masuk'];
             $dataMHS['kjur']=$v['kjur'];
-            $dataMHS['iddata_konversi']=$this->Nilai->isMhsPindahan($nim,true);            
+            $iddata_konversi=$this->Nilai->isMhsPindahan($nim,true);
+            $dataMHS['iddata_konversi']=$iddata_konversi; 
+            $v['iddata_konversi']=$iddata_konversi;           
             $this->Nilai->setDataMHS($dataMHS);
             $v['konsentrasi']=$this->DMaster->getNamaKonsentrasiByID($v['idkonsentrasi'],$v['kjur']);
+            $v['njur']=$_SESSION['daftar_jurusan'][$v['kjur']];
             $this->Nilai->getTranskrip();
             $v['ips']=$this->Nilai->getIPSAdaNilai();
             $v['sks']=$this->Nilai->getTotalSKSAdaNilai();

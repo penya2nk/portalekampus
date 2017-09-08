@@ -223,8 +223,39 @@ class CDulangMHSLama Extends MainPageM {
 			$this->DB->query ('ROLLBACK');
 		}		
 	}
-    public function printOut ($sender,$param) {
+    public function printOut ($sender,$param) {		
+        $this->createObj('reportakademik');
+        $this->linkOutput->Text='';
+        $this->linkOutput->NavigateUrl='#';
         
+        switch ($_SESSION['outputreport']) {
+            case  'summarypdf' :
+                $messageprintout="Mohon maaf Print out pada mode summary pdf tidak kami support.";                
+            break;
+            case  'summaryexcel' :
+                $messageprintout="Mohon maaf Print out pada mode summary excel tidak kami support.";                
+            break;
+            case  'excel2007' :
+                $messageprintout="Daftar Mahasiswa Daftar Ulang Status AKTIF: <br/>";
+                $dataReport['ta']=$_SESSION['ta'];
+                $dataReport['nama_tahun']=$this->DMaster->getNamaTA($dataReport['ta']);
+                $dataReport['idsmt']=$_SESSION['semester'];
+                $dataReport['nama_semester']=$this->setup->getSemester($_SESSION['semester']);
+                $dataReport['kjur']=$_SESSION['kjur'];
+                $dataReport['nama_ps']=$_SESSION['daftar_jurusan'][$_SESSION['kjur']];
+                $dataReport['linkoutput']=$this->linkOutput;                
+                $this->report->setDataReport($dataReport); 
+                $this->report->setMode($_SESSION['outputreport']);
+                
+                $this->report->printDulangAKTIF($this->DMaster);
+            break;
+            case  'pdf' :
+                $messageprintout="Mohon maaf Print out pada mode pdf belum kami support.";                
+            break;
+        } 
+        $this->lblMessagePrintout->Text=$messageprintout;
+        $this->lblPrintout->Text='Daftar Ulang Mahasiswa AKTIF';
+        $this->modalPrintOut->show();
     }
 }
 ?>

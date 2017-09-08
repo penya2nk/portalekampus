@@ -265,11 +265,11 @@
                                             </a>                                        
                                         </li> 
                                         <li>
-                                            <a href="<%=$this->Page->setup->getAddress()%>/change_log.txt">
+                                            <a href="https://github.com/mrizkir/portalekampus/commits/" target="_blank">
                                                 <i class="fa fa-file-o"></i>
                                                 <span>Change Log</span>											
                                             </a>                                        
-                                        </li> 
+                                        </li>
                                     </com:TLiteral>
                                     <com:TLiteral Visible="<%=$this->Page->Pengguna->getTipeUser()=='m' && $this->Page->showSideBarMenu==true%>">
                                         <li<%=$this->Page->showDashboard==true?' class="active"':''%>>
@@ -574,11 +574,11 @@
                                             </a>                                        
                                         </li> 
                                         <li>
-                                            <a href="<%=$this->Page->setup->getAddress()%>/change_log.txt">
+                                            <a href="https://github.com/mrizkir/portalekampus/commits/" target="_blank">
                                                 <i class="fa fa-file-o"></i>
                                                 <span>Change Log</span>											
                                             </a>                                        
-                                        </li> 
+                                        </li>
                                     </com:TLiteral>		
                                     <com:TLiteral Visible="<%=$this->Page->Pengguna->getTipeUser()=='mh' && $this->Page->showSideBarMenu==true%>">
                                         <li<%=$this->Page->showDashboard==true?' class="active"':''%>>

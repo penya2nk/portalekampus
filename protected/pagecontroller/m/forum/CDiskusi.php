@@ -72,6 +72,13 @@ class CDiskusi extends MainPageM {
                     $photo=$profile[1]['photo_profile'];
                     $urlprofiluser=$this->constructUrl('kemahasiswaan.ProfilMahasiswa',true,array('id'=>$v['userid']));
                 break;
+                case 'm' :
+                    $str = "SELECT foto AS photo_profile FROM user WHERE userid='$userid'";
+                    $this->DB->setFieldTable (array('photo_profile'));			
+                    $profile=$this->DB->getRecord($str);	
+                    $photo=$profile[1]['photo_profile'];
+                    $urlprofiluser='#';
+                break;
                 default :
                     $urlprofiluser='#';
             }

@@ -62,14 +62,28 @@ class CDiskusi extends MainPageD {
         $result=array();
         while (list($k,$v)=each($r)) {
             $idpost=$v['idpost'];
+            $userid=$v['userid'];
+            $photo='resources/userimages/no_photo.png';
             switch ($v['tipe']) {
-                case 'mh' :                    
+                case 'mh' :   
+                    $str = "SELECT photo_profile FROM profiles_mahasiswa WHERE nim='$userid'";
+                    $this->DB->setFieldTable (array('photo_profile'));			
+                    $profile=$this->DB->getRecord($str);	
+                    $photo=$profile[1]['photo_profile'];
                     $urlprofiluser=$this->constructUrl('kemahasiswaan.ProfilMahasiswa',true,array('id'=>$v['userid']));
+                break;
+                case 'm' :
+                    $str = "SELECT foto AS photo_profile FROM user WHERE userid='$userid'";
+                    $this->DB->setFieldTable (array('photo_profile'));			
+                    $profile=$this->DB->getRecord($str);	
+                    $photo=$profile[1]['photo_profile'];
+                    $urlprofiluser='#';
                 break;
                 default :
                     $urlprofiluser='#';
             }
             $v['urlprofiluser']=$urlprofiluser;
+            $v['photo_profile']=$photo;
             $v['jumlahcomment']=$this->DB->getCountRowsOfTable("forumposts WHERE parentpost=$idpost",'idpost');
             $v['tanggal_post']=$this->page->TGL->relativeTime(date('Y-m-d H:i:s'),$v['date_added'],'lasttweet');
             $result[$k]=$v;

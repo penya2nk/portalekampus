@@ -67,7 +67,7 @@ class CTranskripKRS extends MainPageM {
         $kjur=$_SESSION['kjur'];      
         $tahun_masuk=$_SESSION['tahun_masuk'];        
         if ($search) {
-            $str = "SELECT nim,nama_mhs,jk,tahun_masuk,idkonsentrasi,tahun_masuk FROM v_datamhs";			
+            $str = "SELECT nim,nama_mhs,jk,kjur,tahun_masuk,idkonsentrasi,tahun_masuk FROM v_datamhs";			
             $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
@@ -88,7 +88,7 @@ class CTranskripKRS extends MainPageM {
             }
         }else{                        
             $jumlah_baris=$this->DB->getCountRowsOfTable("v_datamhs WHERE kjur=$kjur AND tahun_masuk=$tahun_masuk",'nim');		
-            $str = "SELECT nim,nama_mhs,jk,tahun_masuk,idkonsentrasi,tahun_masuk FROM v_datamhs WHERE kjur=$kjur AND tahun_masuk=$tahun_masuk";			
+            $str = "SELECT nim,nama_mhs,jk,kjur,tahun_masuk,idkonsentrasi,tahun_masuk FROM v_datamhs WHERE kjur=$kjur AND tahun_masuk=$tahun_masuk";			
         }		
         $this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageTranskripKRS']['page_num'];
 		$this->RepeaterS->VirtualItemCount=$jumlah_baris;
@@ -101,14 +101,14 @@ class CTranskripKRS extends MainPageM {
 		}
 		if ($limit < 0) {$offset=0;$limit=$this->setup->getSettingValue('default_pagesize');$_SESSION['currentPageTranskripKRS']['page_num']=0;}
         $str = "$str ORDER BY nama_mhs ASC LIMIT $offset,$limit";				
-        $this->DB->setFieldTable(array('nim','nama_mhs','jk','idkonsentrasi','tahun_masuk'));
+        $this->DB->setFieldTable(array('nim','nama_mhs','jk','kjur','idkonsentrasi','tahun_masuk'));
 		$r = $this->DB->getRecord($str,$offset+1);	
         $result = array();
         while (list($k,$v)=each($r)) {
             $nim=$v['nim'];
             $dataMHS['nim']=$nim;
             $dataMHS['tahun_masuk']=$v['tahun_masuk'];
-            $dataMHS['kjur']=$kjur;
+            $dataMHS['kjur']=$v['kjur'];
             $dataMHS['iddata_konversi']=$this->Nilai->isMhsPindahan($nim,true);         
             $dataMHS['idkonsentrasi']=$v['idkonsentrasi'];
             $this->Nilai->setDataMHS($dataMHS);

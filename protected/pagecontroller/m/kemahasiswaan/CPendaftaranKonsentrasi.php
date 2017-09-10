@@ -95,14 +95,14 @@ class CPendaftaranKonsentrasi extends MainPageM {
             $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
-                    $cluasa=" AND vdm.nim='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs vdm,pendaftaran_konsentrasi pk WHERE pk.nim=vdm.nim $cluasa",'vdm.nim');
-                    $str = "$str $cluasa";
+                    $clausa=" AND vdm.nim='$txtsearch'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs vdm,pendaftaran_konsentrasi pk WHERE pk.nim=vdm.nim $clausa",'vdm.nim');
+                    $str = "$str $clausa";
                 break;                
                 case 'nama' :
-                    $cluasa=" AND vdm.nama_mhs LIKE '%$txtsearch%'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs vdm,pendaftaran_konsentrasi pk WHERE pk.nim=vdm.nim $cluasa",'vdm.nim');
-                    $str = "$str $cluasa";
+                    $clausa=" AND vdm.nama_mhs LIKE '%$txtsearch%'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs vdm,pendaftaran_konsentrasi pk WHERE pk.nim=vdm.nim $clausa",'vdm.nim');
+                    $str = "$str $clausa";
                 break;
             }
         }else{           

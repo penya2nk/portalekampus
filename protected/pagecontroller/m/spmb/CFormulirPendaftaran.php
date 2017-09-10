@@ -1,16 +1,16 @@
 <?php
 prado::using ('Application.MainPageM');
-class CPendaftaranViaWeb extends MainPageM {		
+class CFormulirPendaftaran extends MainPageM {		
 	public function onLoad($param) {
 		parent::onLoad($param);			
-		$this->showPendaftaranViaWeb=true; 
+		$this->showFormulirPendaftaran=true; 
         $this->createObj('Akademik');        
 		if (!$this->IsPostBack && !$this->IsCallBack) {	
-            if (!isset($_SESSION['currentPagePendaftaranWeb'])||$_SESSION['currentPagePendaftaranWeb']['page_name']!='m.spmb.PendaftaranWeb') {
-				$_SESSION['currentPagePendaftaranWeb']=array('page_name'=>'m.spmb.PendaftaranWeb','page_num'=>0,'offset'=>0,'limit'=>0,'search'=>false,'status_dulang'=>'none');												
+            if (!isset($_SESSION['currentPageFormulirPendaftaran'])||$_SESSION['currentPageFormulirPendaftaran']['page_name']!='m.spmb.FormulirPendaftaran') {
+				$_SESSION['currentPageFormulirPendaftaran']=array('page_name'=>'m.spmb.FormulirPendaftaran','page_num'=>0,'offset'=>0,'limit'=>0,'search'=>false,'status_dulang'=>'none');												
 			}
-            $_SESSION['currentPagePendaftaranWeb']['search']=false;
-            $this->cmbDaftarUlang->Text=$_SESSION['currentPagePendaftaranWeb']['status_dulang'];
+            $_SESSION['currentPageFormulirPendaftaran']['search']=false;
+            $this->cmbDaftarUlang->Text=$_SESSION['currentPageFormulirPendaftaran']['status_dulang'];
             
             $this->RepeaterS->PageSize=$this->setup->getSettingValue('default_pagesize');
             
@@ -66,19 +66,19 @@ class CPendaftaranViaWeb extends MainPageM {
 		return $text;
 	}
 	public function searchRecord ($sender,$param) {
-		$_SESSION['currentPagePendaftaranWeb']['search']=true;
-		$this->populateData($_SESSION['currentPagePendaftaranWeb']['search']);
+		$_SESSION['currentPageFormulirPendaftaran']['search']=true;
+		$this->populateData($_SESSION['currentPageFormulirPendaftaran']['search']);
 	}
     public function changeStatusDulang ($sender,$param) {
-        $_SESSION['currentPagePendaftaranWeb']['status_dulang']=$this->cmbDaftarUlang->Text;
-        $this->populateData($_SESSION['currentPagePendaftaranWeb']['search']);
+        $_SESSION['currentPageFormulirPendaftaran']['status_dulang']=$this->cmbDaftarUlang->Text;
+        $this->populateData($_SESSION['currentPageFormulirPendaftaran']['search']);
     }
 	public function renderCallback ($sender,$param) {
 		$this->RepeaterS->render($param->NewWriter);	
 	}
 	public function Page_Changed ($sender,$param) {
-		$_SESSION['currentPagePendaftaranWeb']['page_num']=$param->NewPageIndex;
-		$this->populateData($_SESSION['currentPagePendaftaranWeb']['search']);
+		$_SESSION['currentPageFormulirPendaftaran']['page_num']=$param->NewPageIndex;
+		$this->populateData($_SESSION['currentPageFormulirPendaftaran']['search']);
 	}		
 	public function populateData ($search=false) {	
         $tahun_masuk=$_SESSION['tahun_pendaftaran'];
@@ -89,36 +89,36 @@ class CPendaftaranViaWeb extends MainPageM {
             $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {
                 case 'no_formulir' :
-                    $cluasa=" fp.no_formulir='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable("formulir_pendaftaran fp,bipend bp WHERE fp.no_formulir=bp.no_formulir AND $cluasa",'fp.no_formulir');
-                    $str = "$str WHERE $cluasa";
+                    $clausa=" fp.no_formulir='$txtsearch'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable("formulir_pendaftaran fp,bipend bp WHERE fp.no_formulir=bp.no_formulir AND $clausa",'fp.no_formulir');
+                    $str = "$str WHERE $clausa";
                 break;
                 case 'nama_mhs' :
-                    $cluasa=" fp.nama_mhs LIKE '%$txtsearch%'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable("formulir_pendaftaran fp,bipend bp WHERE fp.no_formulir=bp.no_formulir AND $cluasa",'fp.no_formulir');
-                    $str = "$str WHERE $cluasa";
+                    $clausa=" fp.nama_mhs LIKE '%$txtsearch%'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable("formulir_pendaftaran fp,bipend bp WHERE fp.no_formulir=bp.no_formulir AND $clausa",'fp.no_formulir');
+                    $str = "$str WHERE $clausa";
                 break;
             }
         }else{            
-            if ($_SESSION['currentPagePendaftaranWeb']['status_dulang'] == 'belum') {
+            if ($_SESSION['currentPageFormulirPendaftaran']['status_dulang'] == 'belum') {
                 $str_status= " AND rm.nim IS NULL";
-            }elseif ($_SESSION['currentPagePendaftaranWeb']['status_dulang'] == 'sudah') {
+            }elseif ($_SESSION['currentPageFormulirPendaftaran']['status_dulang'] == 'sudah') {
                 $str_status= " AND rm.nim IS NOT NULL";
             }
             $jumlah_baris=$this->DB->getCountRowsOfTable("formulir_pendaftaran fp JOIN bipend bp ON (fp.no_formulir=bp.no_formulir) LEFT JOIN register_mahasiswa rm ON (rm.no_formulir=fp.no_formulir) WHERE fp.ta='$tahun_masuk' AND fp.idsmt='$semester' AND fp.daftar_via='WEB' AND (fp.kjur1='$kjur' OR fp.kjur2='$kjur')$str_status",'fp.no_formulir');
             $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.jk,fp.alamat_rumah,fp.telp_hp,nomor_ijazah,IF(char_length(COALESCE(rm.nim,''))>0,'dulang','-') AS ket,rm.nim FROM formulir_pendaftaran fp JOIN bipend bp ON (fp.no_formulir=bp.no_formulir) LEFT JOIN register_mahasiswa rm ON (rm.no_formulir=fp.no_formulir) WHERE fp.ta='$tahun_masuk' AND fp.idsmt='$semester' AND fp.daftar_via='WEB' AND (fp.kjur1='$kjur' OR fp.kjur2='$kjur')$str_status";
         }	
-		$this->RepeaterS->CurrentPageIndex=$_SESSION['currentPagePendaftaranWeb']['page_num'];
+		$this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageFormulirPendaftaran']['page_num'];
 		$this->RepeaterS->VirtualItemCount=$jumlah_baris;
 		$offset=$this->RepeaterS->CurrentPageIndex*$this->RepeaterS->PageSize;
 		$limit=$this->RepeaterS->PageSize;
 		if (($offset+$limit)>$this->RepeaterS->VirtualItemCount) {
 			$limit=$this->RepeaterS->VirtualItemCount-$offset;
 		}
-		if ($limit < 0) {$offset=0;$limit=$this->setup->getSettingValue('default_pagesize');$_SESSION['currentPagePendaftaranWeb']['page_num']=0;}
+		if ($limit < 0) {$offset=0;$limit=$this->setup->getSettingValue('default_pagesize');$_SESSION['currentPageFormulirPendaftaran']['page_num']=0;}
 		$str = $str . " ORDER BY fp.nama_mhs ASC LIMIT $offset,$limit";				
-        $_SESSION['currentPagePendaftaranWeb']['offset']=$offset;
-        $_SESSION['currentPagePendaftaranWeb']['limit']=$limit;
+        $_SESSION['currentPageFormulirPendaftaran']['offset']=$offset;
+        $_SESSION['currentPageFormulirPendaftaran']['limit']=$limit;
         $this->DB->setFieldTable(array('no_formulir','nama_mhs','jk','alamat_rumah','telp_hp','nomor_ijazah','ket','nim'));				
 		$r = $this->DB->getRecord($str,$offset+1);
         
@@ -214,7 +214,7 @@ class CPendaftaranViaWeb extends MainPageM {
             }else {
                 $this->DB->query('ROLLBACK');
             }			
-            $this->redirect('spmb.PendaftaranViaWeb',true);
+            $this->redirect('spmb.FormulirPendaftaran',true);
         }
 	}
 	
@@ -343,7 +343,7 @@ class CPendaftaranViaWeb extends MainPageM {
             if ($this->DB->deleteRecord($str) ) {
                 $this->DB->deleteRecord ("transaksi WHERE no_formulir='$no_formulir'");
                 $this->DB->query ('COMMIT');
-                $this->redirect('spmb.PendaftaranViaWeb',true);
+                $this->redirect('spmb.FormulirPendaftaran',true);
             }else {
                 $this->DB->query ('ROLLBACK');
             }	
@@ -385,8 +385,8 @@ class CPendaftaranViaWeb extends MainPageM {
                         $dataReport['nama_tahun']=$nama_tahun;
                         $dataReport['nama_semester']=$nama_semester;        
                         $dataReport['daftar_via']='WEB';         
-                        $dataReport['offset']=$_SESSION['currentPagePendaftaranWeb']['offset'];         
-                        $dataReport['limit']=$_SESSION['currentPagePendaftaranWeb']['limit'];         
+                        $dataReport['offset']=$_SESSION['currentPageFormulirPendaftaran']['offset'];         
+                        $dataReport['limit']=$_SESSION['currentPageFormulirPendaftaran']['limit'];         
 
                         $messageprintout="Daftar Formulir Pendaftaran PS $nama_prodi Tahun Masuk $nama_tahun Semester $nama_semester : <br/>";
                         $dataReport['linkoutput']=$this->linkOutput;         
@@ -408,8 +408,8 @@ class CPendaftaranViaWeb extends MainPageM {
                         $dataReport['nama_tahun']=$nama_tahun;
                         $dataReport['nama_semester']=$nama_semester;        
                         $dataReport['daftar_via']='WEB';         
-                        $dataReport['offset']=$_SESSION['currentPagePendaftaranWeb']['offset'];         
-                        $dataReport['limit']=$_SESSION['currentPagePendaftaranWeb']['limit'];         
+                        $dataReport['offset']=$_SESSION['currentPageFormulirPendaftaran']['offset'];         
+                        $dataReport['limit']=$_SESSION['currentPageFormulirPendaftaran']['limit'];         
 
                         $messageprintout="Daftar Formulir Pendaftaran PS $nama_prodi Tahun Masuk $nama_tahun Semester $nama_semester : <br/>";
                         $dataReport['linkoutput']=$this->linkOutput;         

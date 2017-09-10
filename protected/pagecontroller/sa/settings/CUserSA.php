@@ -31,19 +31,19 @@ class CUserSA extends MainPageSA {
             $txtsearch=$this->txtKriteria->Text;
             switch ($this->cmbKriteria->Text) {
                 case 'username' :
-                    $cluasa="AND username='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable("user WHERE page='sa' $cluasa",'userid');		            
-                    $str = "$str $cluasa";
+                    $clausa="AND username='$txtsearch'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable("user WHERE page='sa' $clausa",'userid');		            
+                    $str = "$str $clausa";
                 break;
                 case 'nama' :
-                    $cluasa="AND nama LIKE '%$txtsearch%'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable("user WHERE page='sa' $cluasa",'userid');		            
-                    $str = "$str $cluasa";
+                    $clausa="AND nama LIKE '%$txtsearch%'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable("user WHERE page='sa' $clausa",'userid');		            
+                    $str = "$str $clausa";
                 break;
                 case 'email' :
-                    $cluasa="AND email LIKE '%$txtsearch%'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable("user WHERE page='sa' $cluasa",'userid');		            
-                    $str = "$str $cluasa";
+                    $clausa="AND email LIKE '%$txtsearch%'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable("user WHERE page='sa' $clausa",'userid');		            
+                    $str = "$str $clausa";
                 break;
             }
         }else{

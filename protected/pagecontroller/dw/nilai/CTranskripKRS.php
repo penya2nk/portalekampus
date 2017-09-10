@@ -72,19 +72,19 @@ class CTranskripKRS extends MainPageDW {
             $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
-                    $cluasa="AND nim='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $cluasa",'nim');
-                    $str = "$str $cluasa";
+                    $clausa="AND nim='$txtsearch'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $clausa",'nim');
+                    $str = "$str $clausa";
                 break;
                 case 'nirm' :
-                    $cluasa="AND nirm='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $cluasa",'nim');
-                    $str = "$str $cluasa";
+                    $clausa="AND nirm='$txtsearch'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $clausa",'nim');
+                    $str = "$str $clausa";
                 break;
                 case 'nama' :
-                    $cluasa="AND nama_mhs LIKE '%$txtsearch%'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $cluasa",'nim');
-                    $str = "$str $cluasa";
+                    $clausa="AND nama_mhs LIKE '%$txtsearch%'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $clausa",'nim');
+                    $str = "$str $clausa";
                 break;
             }
         }else{                        
@@ -113,7 +113,7 @@ class CTranskripKRS extends MainPageDW {
             $dataMHS['iddata_konversi']=$this->Nilai->isMhsPindahan($nim,true);      
             $dataMHS['idkonsentrasi']=$v['idkonsentrasi'];
             $this->Nilai->setDataMHS($dataMHS);
-            $v['konsentrasi']=$this->DMaster->getNamaKonsentrasiByID($v['idkonsentrasi'],$kjur);
+            $v['konsentrasi']=strtoupper($this->DMaster->getNamaKonsentrasiByID($v['idkonsentrasi'],$v['kjur']));
             $this->Nilai->getTranskripFromKRS();
             $v['matkul']=$this->Nilai->getTotalMatkulAdaNilai();
             $v['sks']=$this->Nilai->getTotalSKSAdaNilai();

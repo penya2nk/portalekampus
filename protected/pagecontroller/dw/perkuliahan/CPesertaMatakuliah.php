@@ -127,19 +127,19 @@ class CPesertaMatakuliah extends MainPageM {
             $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
-                    $cluasa="AND vdm.nim='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_krsmhs vkm,krs k, krsmatkul km WHERE k.nim=vdm.nim AND idpenyelenggaraan='$id' AND vdm.iddosen_wali=$iddosen_wali $cluasa",'vdm.nim');
-                    $str = "$str $cluasa";
+                    $clausa="AND vdm.nim='$txtsearch'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_krsmhs vkm,krs k, krsmatkul km WHERE k.nim=vdm.nim AND idpenyelenggaraan='$id' AND vdm.iddosen_wali=$iddosen_wali $clausa",'vdm.nim');
+                    $str = "$str $clausa";
                 break;
                 case 'nirm' :
-                    $cluasa="AND vdm.nirm='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_krsmhs vkm,krs k, krsmatkul km WHERE k.nim=vdm.nim AND km.idpenyelenggaraan='$id' AND vdm.iddosen_wali=$iddosen_wali $cluasa",'vdm.nim');
-                    $str = "$str $cluasa";
+                    $clausa="AND vdm.nirm='$txtsearch'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_krsmhs vkm,krs k, krsmatkul km WHERE k.nim=vdm.nim AND km.idpenyelenggaraan='$id' AND vdm.iddosen_wali=$iddosen_wali $clausa",'vdm.nim');
+                    $str = "$str $clausa";
                 break;
                 case 'nama' :
-                    $cluasa="AND vdm.nama_mhs LIKE '%$txtsearch%'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_krsmhs vkm,krs k, krsmatkul km WHERE k.nim=vdm.nim AND km.idpenyelenggaraan='$id' AND vdm.iddosen_wali=$iddosen_wali $cluasa",'vdm.nim');
-                    $str = "$str $cluasa";
+                    $clausa="AND vdm.nama_mhs LIKE '%$txtsearch%'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_krsmhs vkm,krs k, krsmatkul km WHERE k.nim=vdm.nim AND km.idpenyelenggaraan='$id' AND vdm.iddosen_wali=$iddosen_wali $clausa",'vdm.nim');
+                    $str = "$str $clausa";
                 break;
             }
         }else{                        

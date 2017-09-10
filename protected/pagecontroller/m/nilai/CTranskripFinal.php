@@ -84,19 +84,19 @@ class CTranskripFinal extends MainPageM {
             $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
-                    $cluasa="AND ta.nim='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs vdm,transkrip_asli ta WHERE ta.nim=vdm.nim $cluasa",'ta.nim');
-                    $str = "$str $cluasa";
+                    $clausa="AND ta.nim='$txtsearch'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs vdm,transkrip_asli ta WHERE ta.nim=vdm.nim $clausa",'ta.nim');
+                    $str = "$str $clausa";
                 break;
                 case 'nirm' :
-                    $cluasa="AND vdm.nirm='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs vdm,transkrip_asli ta WHERE ta.nim=vdm.nim $cluasa",'ta.nim');
-                    $str = "$str $cluasa";
+                    $clausa="AND vdm.nirm='$txtsearch'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs vdm,transkrip_asli ta WHERE ta.nim=vdm.nim $clausa",'ta.nim');
+                    $str = "$str $clausa";
                 break;
                 case 'nama' :
-                    $cluasa="AND vdm.nama_mhs LIKE '%$txtsearch%'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs vdm,transkrip_asli ta WHERE ta.nim=vdm.nim $cluasa",'ta.nim');
-                    $str = "$str $cluasa";
+                    $clausa="AND vdm.nama_mhs LIKE '%$txtsearch%'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs vdm,transkrip_asli ta WHERE ta.nim=vdm.nim $clausa",'ta.nim');
+                    $str = "$str $clausa";
                 break;
             }
         }else{

@@ -155,19 +155,19 @@ class CDaftarMahasiswa extends MainPageM {
             $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
-                    $cluasa="WHERE nim='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $cluasa",'nim');
-                    $str = "$str $cluasa";
+                    $clausa="WHERE nim='$txtsearch'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $clausa",'nim');
+                    $str = "$str $clausa";
                 break;
                 case 'nirm' :
-                    $cluasa="WHERE nirm='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $cluasa",'nim');
-                    $str = "$str $cluasa";
+                    $clausa="WHERE nirm='$txtsearch'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $clausa",'nim');
+                    $str = "$str $clausa";
                 break;
                 case 'nama' :
-                    $cluasa="WHERE nama_mhs LIKE '%$txtsearch%'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $cluasa",'nim');
-                    $str = "$str $cluasa";
+                    $clausa="WHERE nama_mhs LIKE '%$txtsearch%'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $clausa",'nim');
+                    $str = "$str $clausa";
                 break;
             }
         }else{

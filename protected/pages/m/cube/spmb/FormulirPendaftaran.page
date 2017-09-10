@@ -20,7 +20,7 @@
             <header class="main-box-header clearfix">
                 <h2 class="pull-left"><i class="fa fa-edit"></i> Ubah Data Pendaftaran</h2>
                 <div class="icon-box pull-right">                                       
-                    <a class="btn pull-left" href="<%=$this->constructUrl('spmb.PendaftaranViaWeb',true)%>">
+                    <a class="btn pull-left" href="<%=$this->constructUrl('spmb.FormulirPendaftaran',true)%>">
                         <i class="fa fa-times"></i>
                     </a>
                 </div>

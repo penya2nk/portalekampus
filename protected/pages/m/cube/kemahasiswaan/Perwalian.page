@@ -1,6 +1,6 @@
 <%@ Title="Kemahasiswaan - Perwalian"%>
 <com:TContent ID="moduleheader">
-    <i class="fa fa fa-arrows-h"></i> Perwalian <small><com:TActiveLabel ID="lblModulHeader" /></small>
+    <i class="fa fa-arrows-h"></i> Perwalian <small><com:TActiveLabel ID="lblModulHeader" /></small>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
     <li><a href="#">AKADEMIK</a></li>
@@ -203,8 +203,11 @@
         <div class="col-lg-12">
             <div class="main-box clearfix">
                 <header class="main-box-header clearfix">
-                    <h2 class="pull-left"><i class="fa fa fa-arrows-h"></i> Daftar Mahasiswa</h2> 
-                    <div class="filter-block pull-right">                                                   
+                    <h2 class="pull-left"><i class="fa fa-arrows-h"></i> Daftar Mahasiswa</h2> 
+                    <div class="filter-block pull-right"> 
+                        <a href="<%=$this->constructUrl('kemahasiswaan.RekapitulasiDPA',true)%>" class="btn btn-primary pull-left" title="Rekapitulasi DPA">
+                            <i class="fa fa-bar-chart-o fa-lg"></i>
+                        </a>
                         <com:TActiveLinkButton ID="btnPrintOut" OnClick="printOut" ClientSide.PostState="false" CssClass="btn btn-primary pull-left" Attributes.Title="Print Out">
                             <prop:Text><i class="fa fa-print fa-lg"></i></prop:Text>
                             <prop:ClientSide.OnPreDispatch>

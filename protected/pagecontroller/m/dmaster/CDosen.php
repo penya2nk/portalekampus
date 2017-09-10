@@ -30,19 +30,19 @@ class CDosen extends MainPageM {
             $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {
                 case 'nidn' :
-                    $cluasa="WHERE nidn='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable("dosen $cluasa",'iddosen');		            
-                    $str = "$str $cluasa";
+                    $clausa="WHERE nidn='$txtsearch'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable("dosen $clausa",'iddosen');		            
+                    $str = "$str $clausa";
                 break;
                 case 'nip' :
-                    $cluasa="WHERE nipy='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable("dosen $cluasa",'iddosen');		            
-                    $str = "$str $cluasa";
+                    $clausa="WHERE nipy='$txtsearch'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable("dosen $clausa",'iddosen');		            
+                    $str = "$str $clausa";
                 break;
                 case 'nama_dosen' :
-                    $cluasa="WHERE nama_dosen LIKE '%$txtsearch%'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable("dosen $cluasa",'iddosen');		            
-                    $str = "$str $cluasa";
+                    $clausa="WHERE nama_dosen LIKE '%$txtsearch%'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable("dosen $clausa",'iddosen');		            
+                    $str = "$str $clausa";
                 break;
             }
         }else{

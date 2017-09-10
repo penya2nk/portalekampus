@@ -42,7 +42,7 @@ class CProfilMahasiswa extends MainPageM {
             }
             $datamhs=$r[1];
             $datamhs['iddata_konversi']=$this->Nilai->isMhsPindahan($nim,true);
-            $datamhs['nama_konsentrasi']=($datamhs['idkonsentrasi']==0) ? '-':$datamhs['nama_konsentrasi'];
+            $datamhs['nama_konsentrasi']=($datamhs['idkonsentrasi']==0) ? '-':strtoupper($datamhs['nama_konsentrasi']);
 
             $nama_dosen=$this->DMaster->getNamaDosenWaliByID($datamhs['iddosen_wali']);				                    
             $datamhs['nama_dosen']=$nama_dosen;

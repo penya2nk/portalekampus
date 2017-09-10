@@ -42,7 +42,7 @@ class CProfilMahasiswa extends MainPageDW {
                 unset($_SESSION['currentPageProfilMahasiswa']);
                 throw new Exception ("Mahasiswa Dengan NIM ($nim) tidak dibawah perwalian Anda.");
             }
-            $datamhs['nama_konsentrasi']=($datamhs['idkonsentrasi']==0) ? '-':$datamhs['nama_konsentrasi'];
+            $datamhs['nama_konsentrasi']=($datamhs['idkonsentrasi']==0) ? '-':strtoupper($datamhs['nama_konsentrasi']);
 
             $nama_dosen=$this->DMaster->getNamaDosenWaliByID($datamhs['iddosen_wali']);				                    
             $datamhs['nama_dosen']=$nama_dosen;

@@ -87,14 +87,14 @@ class CMatakuliah extends MainPageM {
             $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {
                 case 'kode' :
-                    $cluasa="AND kmatkul='{$idkur}_$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable("matakuliah WHERE idkur=$idkur $cluasa",'kmatkul');		            
-                    $str = "$str $cluasa";
+                    $clausa="AND kmatkul='{$idkur}_$txtsearch'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable("matakuliah WHERE idkur=$idkur $clausa",'kmatkul');		            
+                    $str = "$str $clausa";
                 break;
                 case 'nama' :
-                    $cluasa="AND nmatkul LIKE '%$txtsearch%'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable("matakuliah WHERE idkur=$idkur $cluasa",'kmatkul');		            
-                    $str = "$str $cluasa";
+                    $clausa="AND nmatkul LIKE '%$txtsearch%'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable("matakuliah WHERE idkur=$idkur $clausa",'kmatkul');		            
+                    $str = "$str $clausa";
                 break;
             }
         }else{

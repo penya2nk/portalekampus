@@ -211,10 +211,11 @@ class Logic_Finance extends Logic_Mahasiswa {
 		$this->db->setFieldTable(array('jumlah_sks'));
 		$r=$this->db->getRecord($str);	
         
-		if (isset($r[1]))
+		if (isset($r[1])) {
 			return $r[1]['jumlah_sks'];
-		else
+        }else{
 			return false;
+        }
 	}
     /**
 	* casting ke integer	

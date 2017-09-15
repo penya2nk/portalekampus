@@ -72,18 +72,18 @@ class CTranskripKurikulum extends MainPageDW {
             $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
-                    $clausa="WHERE nim='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $clausa",'nim');
+                    $clausa="AND nim='$txtsearch'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs WHERE iddosen_wali=$iddosen_wali $clausa",'nim');
                     $str = "$str $clausa";
                 break;
                 case 'nirm' :
-                    $clausa="WHERE nirm='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $clausa",'nim');
+                    $clausa="AND nirm='$txtsearch'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs WHERE iddosen_wali=$iddosen_wali $clausa",'nim');
                     $str = "$str $clausa";
                 break;
                 case 'nama' :
-                    $clausa="WHERE nama_mhs LIKE '%$txtsearch%'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $clausa",'nim');
+                    $clausa="AND nama_mhs LIKE '%$txtsearch%'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs WHERE iddosen_wali=$iddosen_wali $clausa",'nim');
                     $str = "$str $clausa";
                 break;
             }

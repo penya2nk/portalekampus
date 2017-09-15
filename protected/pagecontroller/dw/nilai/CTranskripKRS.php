@@ -73,17 +73,17 @@ class CTranskripKRS extends MainPageDW {
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
                     $clausa="AND nim='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $clausa",'nim');
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs WHERE iddosen_wali=$iddosen_wali $clausa",'nim');
                     $str = "$str $clausa";
                 break;
                 case 'nirm' :
                     $clausa="AND nirm='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $clausa",'nim');
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs WHERE iddosen_wali=$iddosen_wali $clausa",'nim');
                     $str = "$str $clausa";
                 break;
                 case 'nama' :
                     $clausa="AND nama_mhs LIKE '%$txtsearch%'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $clausa",'nim');
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs WHERE iddosen_wali=$iddosen_wali $clausa",'nim');
                     $str = "$str $clausa";
                 break;
             }

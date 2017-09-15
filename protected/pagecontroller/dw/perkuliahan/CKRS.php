@@ -264,6 +264,7 @@ class CKRS Extends MainPageDW {
             $datamhs= $_SESSION['currentPageKRS']['DataMHS'];
             $nim=$datamhs['nim'];
             $this->Nilai->setDataMHS($datamhs);
+            $this->Finance->setDataMHS($datamhs);
             if (isset($krs['idkrs']) && $krs['sah']==0) {       
                 $idsmt=$krs['idsmt'];
                 $tahun=$krs['tahun'];                

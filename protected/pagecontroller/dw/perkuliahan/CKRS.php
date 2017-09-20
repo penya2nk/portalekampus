@@ -113,8 +113,8 @@ class CKRS Extends MainPageDW {
 		$ta=$_SESSION['ta'];
 		$semester=$_SESSION['semester'];
 		$kjur=$_SESSION['kjur'];
-		$tahun_masuk=$_SESSION['currentPageKRS']['tahun_masuk']; 
-        $str_tahun_masuk=$tahun_masuk=='none'?'':" AND vdm.tahun_masuk=$tahun_masuk";        
+		$tahun_masuk=$_SESSION['currentPageKRS']['tahun_masuk'];         
+        $str_tahun_masuk=$tahun_masuk == 'none' || $tahun_masuk == '' ? '':" AND vdm.tahun_masuk=$tahun_masuk";
         if ($search) {
             $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                

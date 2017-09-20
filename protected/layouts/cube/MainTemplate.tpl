@@ -462,6 +462,11 @@
                                                         Mahasiswa Non-Aktif
                                                     </a>
                                                 </li> 
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('dulang.DulangMHSDropOut',true)%>"<%=$this->Page->showDulangMHSDropOut==true ? ' class="active" ':''%>>
+                                                        Mahasiswa Drop Out
+                                                    </a>
+                                                </li> 
                                             </ul>
                                         </li>                                                                                                                       
                                         <li<%=$this->Page->showSubMenuAkademikPerkuliahan==true?' class="active"':''%>>

@@ -9,7 +9,7 @@ class CTranskripKurikulum extends MainPageM {
                 
 		if (!$this->IsPostBack&&!$this->IsCallBack) {			
             if (!isset($_SESSION['currentPageTranskripKurikulum'])||$_SESSION['currentPageTranskripKurikulum']['page_name']!='m.nilai.TranskripKurikulum') {
-				$_SESSION['currentPageTranskripKurikulum']=array('page_name'=>'m.nilai.TranskripKurikulum','page_num'=>0,'search'=>false);
+				$_SESSION['currentPageTranskripKurikulum']=array('page_name'=>'m.nilai.TranskripKurikulum','page_num'=>0,'search'=>false,'tahun_masuk'=>$_SESSION['ta']);
 			}          
             $_SESSION['currentPageTranskripKurikulum']['search']=false;
             $this->RepeaterS->PageSize=$this->setup->getSettingValue('default_pagesize');
@@ -20,7 +20,7 @@ class CTranskripKurikulum extends MainPageM {
             
             $tahun_masuk=$this->DMaster->removeIdFromArray($this->DMaster->getListTA(),'none');			            
 			$this->tbCmbTahunMasuk->DataSource=$tahun_masuk	;					
-			$this->tbCmbTahunMasuk->Text=$_SESSION['tahun_masuk'];						
+			$this->tbCmbTahunMasuk->Text=$_SESSION['currentPageTranskripKurikulum']['tahun_masuk'];						
 			$this->tbCmbTahunMasuk->dataBind();
             
             $this->tbCmbOutputReport->DataSource=$this->setup->getOutputFileType();
@@ -41,14 +41,14 @@ class CTranskripKurikulum extends MainPageM {
 		$this->populateData();
 	}
 	public function changeTbTahunMasuk($sender,$param) {    				
-		$_SESSION['tahun_masuk']=$this->tbCmbTahunMasuk->Text;		        
+		$_SESSION['currentPageTranskripKurikulum']['tahun_masuk']=$this->tbCmbTahunMasuk->Text;		        
         $this->lblModulHeader->Text=$this->getInfoToolbar();
 		$this->populateData();
 	}
     public function getInfoToolbar() {        
         $kjur=$_SESSION['kjur'];        
 		$ps=$_SESSION['daftar_jurusan'][$kjur];
-		$tahunmasuk=$this->DMaster->getNamaTA($_SESSION['tahun_masuk']);		
+		$tahunmasuk=$this->DMaster->getNamaTA($_SESSION['currentPageTranskripKurikulum']['tahun_masuk']);		
 		$text="Program Studi $ps Tahun Masuk $tahunmasuk";
 		return $text;
 	}
@@ -65,7 +65,7 @@ class CTranskripKurikulum extends MainPageM {
 	}
 	public function populateData($search=false) {			
         $kjur=$_SESSION['kjur'];      
-        $tahun_masuk=$_SESSION['tahun_masuk'];        
+        $tahun_masuk=$_SESSION['currentPageTranskripKurikulum']['tahun_masuk'];        
         if ($search) {
             $str = "SELECT nim,nama_mhs,jk,kjur,tahun_masuk,idkonsentrasi,tahun_masuk FROM v_datamhs";			
             $txtsearch=addslashes($this->txtKriteria->Text);

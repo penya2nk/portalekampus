@@ -109,7 +109,7 @@
         </div>
     </div>   
     <%include Application.layouts.cube.DataMHS%>
-    <com:TActiveRepeater ID="RepeaterS" OnItemCreated="itemCreated" DataKeyField="idkrsmatkul">
+    <com:TActiveRepeater ID="RepeaterS" OnItemDataBound="itemBound" DataKeyField="idkrsmatkul">
         <prop:HeaderTemplate>
             <div class="row">
                 <div class="col-lg-12">
@@ -162,7 +162,8 @@
                                             <th scope="col">NAMA</th>
                                             <th scope="col">SKS</th>
                                             <th scope="col">SMT</th>
-                                            <th scope="col">DOSEN</th>					
+                                            <th scope="col">DOSEN</th>	
+                                            <th scope="col" width="290">KELAS</th>
                                             <th scope="col">AKSI</th>					
                                         </tr>						
                                     </thead>
@@ -175,7 +176,21 @@
                                             <td><%# $this->DataItem['nmatkul']%></td>
                                             <td><%# $this->DataItem['sks']%></td>
                                             <td><%# $this->DataItem['semester']%></td>							
-                                            <td><%# $this->DataItem['nama_dosen']%> [<%# $this->DataItem['nidn']%>]</td>					
+                                            <td><%# $this->DataItem['nama_dosen']%> [<%# $this->DataItem['nidn']%>]</td>
+                                            <td>
+                                                <com:TActiveDropDownList ID="cmbKelas" Text="<%# $this->Data['iddosen']%>" OnCallBack="page.prosesKelas" CssClass="form-control">
+                                                    <prop:ClientSide.OnPreDispatch>
+                                                        $('loading').show();                                             
+                                                        $('<%=$this->cmbKelas->ClientId%>').disabled='disabled';						
+                                                    </prop:ClientSide.OnPreDispatch>
+                                                    <prop:ClientSide.OnLoading>
+                                                        $('<%=$this->cmbKelas->ClientId%>').disabled='disabled';									                            
+                                                    </prop:ClientSide.OnLoading>
+                                                    <prop:ClientSide.onComplete>
+                                                        $('loading').hide();                                                
+                                                    </prop:ClientSide.OnComplete>
+                                                </com:TActiveDropDownList>
+                                            </td>
                                             <td>
                                                 <com:TActiveLinkButton ID="btnDelete" ClientSide.PostState="false" CssClass="table-link danger" OnClick="Page.deleteRecord" Attributes.Title="Hapus Matakuliah" Attributes.OnClick="if(!confirm('Anda ingin menghapus Matakuliah ini ?')) return false;">
                                                     <prop:Text>

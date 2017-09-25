@@ -65,6 +65,10 @@ class MainPageM extends MainPage {
      */
     public $showDulangMHSEkstension=false;
     /**
+     * show sub menu akademik daftar ulang [akademik daftar ulang mahasiswa aktif]
+     */
+    public $showDulangMHSAktif=false;
+    /**
      * show sub menu akademik daftar ulang [akademik daftar ulang mahasiswa lulus]
      */
     public $showDulangMHSLulus=false;
@@ -76,6 +80,10 @@ class MainPageM extends MainPage {
      * show sub menu akademik daftar ulang [akademik daftar ulang mahasiswa drop out]
      */
     public $showDulangMHSDropOut=false;
+    /**
+     * show sub menu akademik daftar ulang [akademik daftar ulang mahasiswa keluar]
+     */
+    public $showDulangMHSKeluar=false;
     /**
      * show page PIN [spmb]
      */

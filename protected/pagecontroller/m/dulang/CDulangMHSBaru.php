@@ -111,7 +111,7 @@ class CDulangMHSBaru Extends MainPageM {
 		if ($limit < 0) {$offset=0;$limit=10;$_SESSION['currentPageDulangMHSBaru']['page_num']=0;}
 		$str = "$str ORDER BY vdm.nama_mhs ASC LIMIT $offset,$limit";				        
 		$this->DB->setFieldTable(array('no_formulir','nim','nirm','nama_mhs','iddosen_wali','tanggal'));
-		$result=$this->DB->getRecord($str);
+		$result=$this->DB->getRecord($str,$offset+1);
 		$this->RepeaterS->DataSource=$result;
 		$this->RepeaterS->dataBind();
                 

@@ -101,7 +101,7 @@ class CCalonMHS Extends MainPageM {
 		if ($limit < 0) {$offset=0;$limit=10;$_SESSION['currentPageCalonMHS']['page_num']=0;}
 		$str = "$str ORDER BY t.idkelas ASC,fp.nama_mhs ASC LIMIT $offset,$limit";				        
 		$this->DB->setFieldTable(array('no_formulir','nama_mhs','jk','idkelas','tahun_masuk','semester_masuk','kjur'));
-		$r=$this->DB->getRecord($str);
+		$r=$this->DB->getRecord($str,$offset+1);
         $result=array();
         while (list($k,$v)=each($r)) {            
             $v['nkelas']=$this->DMaster->getNamaKelasByID($v['idkelas']);
@@ -135,10 +135,11 @@ class CCalonMHS Extends MainPageM {
                     }       
                     $datamhs['nama_ps1']=$_SESSION['daftar_jurusan'][$datamhs['kjur1']];
                     $datamhs['nama_ps2']=$datamhs['kjur2'] == '' ?'N.A' : $_SESSION['daftar_jurusan'][$datamhs['kjur2']];
-                    if ($spmb['kjur']==$datamhs['kjur1'])
+                    if ($spmb['kjur']==$datamhs['kjur1']) {
                         $datamhs['diterima_ps1']='<span class="label label-info">DITERIMA</span>';
-                    else
+                    }else{
                         $datamhs['diterima_ps2']='<span class="label label-info">DITERIMA</span>';
+                    }
                     $datamhs['kjur']=$spmb['kjur'];
                     $datamhs['nkelas']=$this->DMaster->getNamaKelasByID($datamhs['idkelas']);
                     $this->Finance->setDataMHS($datamhs);                               

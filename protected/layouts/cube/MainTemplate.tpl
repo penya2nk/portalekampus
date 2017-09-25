@@ -453,6 +453,11 @@
                                                     </a>
                                                 </li>
                                                 <li>
+                                                    <a href="<%=$this->Page->constructUrl('dulang.DulangMHSAktif',true)%>"<%=$this->Page->showDulangMHSAktif==true ? ' class="active" ':''%>>
+                                                        Mahasiswa Aktif
+                                                    </a>
+                                                </li> 
+                                                <li>
                                                     <a href="<%=$this->Page->constructUrl('dulang.DulangMHSLulus',true)%>"<%=$this->Page->showDulangMHSLulus==true ? ' class="active" ':''%>>
                                                         Mahasiswa Lulus
                                                     </a>
@@ -465,6 +470,11 @@
                                                 <li>
                                                     <a href="<%=$this->Page->constructUrl('dulang.DulangMHSDropOut',true)%>"<%=$this->Page->showDulangMHSDropOut==true ? ' class="active" ':''%>>
                                                         Mahasiswa Drop Out
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('dulang.DulangMHSKeluar',true)%>"<%=$this->Page->showDulangMHSKeluar==true ? ' class="active" ':''%>>
+                                                        Mahasiswa Keluar
                                                     </a>
                                                 </li> 
                                             </ul>

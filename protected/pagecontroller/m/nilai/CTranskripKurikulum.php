@@ -67,7 +67,7 @@ class CTranskripKurikulum extends MainPageM {
         $kjur=$_SESSION['kjur'];      
         $tahun_masuk=$_SESSION['currentPageTranskripKurikulum']['tahun_masuk'];        
         if ($search) {
-            $str = "SELECT nim,nama_mhs,jk,kjur,tahun_masuk,idkonsentrasi,tahun_masuk FROM v_datamhs";			
+            $str = "SELECT nim,nama_mhs,jk,kjur,tahun_masuk,idkonsentrasi FROM v_datamhs";			
             $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
@@ -88,7 +88,7 @@ class CTranskripKurikulum extends MainPageM {
             }
         }else{                        
             $jumlah_baris=$this->DB->getCountRowsOfTable("v_datamhs WHERE kjur=$kjur AND tahun_masuk=$tahun_masuk",'nim');		
-            $str = "SELECT nim,nama_mhs,jk,kjur,tahun_masuk,idkonsentrasi,tahun_masuk FROM v_datamhs WHERE kjur=$kjur AND tahun_masuk=$tahun_masuk";			
+            $str = "SELECT nim,nama_mhs,jk,kjur,tahun_masuk,idkonsentrasi FROM v_datamhs WHERE kjur=$kjur AND tahun_masuk=$tahun_masuk";			
         }		
         $this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageTranskripKurikulum']['page_num'];
 		$this->RepeaterS->VirtualItemCount=$jumlah_baris;
@@ -149,7 +149,8 @@ class CTranskripKurikulum extends MainPageM {
 
                         $dataReport = $r[1];                    
                         $dataReport['nama_konsentrasi']=($dataReport['idkonsentrasi']==0) ? '-':$dataReport['nama_konsentrasi'];                    
-
+                        $dataReport['iddata_konversi']=$this->Nilai->isMhsPindahan($nim,true);
+                        
                         $dataReport['nama_jabatan_transkrip']=$this->setup->getSettingValue('nama_jabatan_transkrip');
                         $dataReport['nama_penandatangan_transkrip']=$this->setup->getSettingValue('nama_penandatangan_transkrip');
                         $dataReport['jabfung_penandatangan_transkrip']=$this->setup->getSettingValue('jabfung_penandatangan_transkrip');

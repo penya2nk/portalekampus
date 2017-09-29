@@ -69,13 +69,17 @@ class MainPageM extends MainPage {
      */
     public $showDulangMHSAktif=false;
     /**
-     * show sub menu akademik daftar ulang [akademik daftar ulang mahasiswa lulus]
-     */
-    public $showDulangMHSLulus=false;
-    /**
      * show sub menu akademik daftar ulang [akademik daftar ulang mahasiswa non aktif]
      */
     public $showDulangMHSNonAktif=false;
+    /**
+     * show sub menu akademik daftar ulang [akademik daftar ulang mahasiswa cuti]
+     */
+    public $showDulangMHSCuti=false;
+    /**
+     * show sub menu akademik daftar ulang [akademik daftar ulang mahasiswa lulus]
+     */
+    public $showDulangMHSLulus=false;    
     /**
      * show sub menu akademik daftar ulang [akademik daftar ulang mahasiswa drop out]
      */

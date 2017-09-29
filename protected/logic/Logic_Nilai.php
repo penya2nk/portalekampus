@@ -244,7 +244,7 @@ class Logic_Nilai extends Logic_Akademik {
                     $hm=$hm_biasa;		                    
                     $v['keterangan']='BELUM ISI KUESIONER';
                 }
-                if ($iddata_konversi) {					
+                if ($iddata_konversi > 0) {					
                     $r_konversi=$this->db->getRecord($str_konversi . "'$kmatkul'"); 				
                     if (isset($r_konversi[1])) {
                         $hm_konversi=ord(strtoupper($r_konversi[1]['n_kual']));						
@@ -259,7 +259,7 @@ class Logic_Nilai extends Logic_Akademik {
                 }
                 $am=$this->AngkaMutu[$hm];
                 $m=$am*$v['sks'];				
-            }elseif ($iddata_konversi) {
+            }elseif ($iddata_konversi > 0) {
                 $r_konversi=$this->db->getRecord($str_konversi . "'$kmatkul'");
                 if (isset($r_konversi[1])) {
                     $hm=$r_konversi[1]['n_kual'];			

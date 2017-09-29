@@ -458,15 +458,20 @@
                                                     </a>
                                                 </li> 
                                                 <li>
-                                                    <a href="<%=$this->Page->constructUrl('dulang.DulangMHSLulus',true)%>"<%=$this->Page->showDulangMHSLulus==true ? ' class="active" ':''%>>
-                                                        Mahasiswa Lulus
-                                                    </a>
-                                                </li> 
-                                                <li>
                                                     <a href="<%=$this->Page->constructUrl('dulang.DulangMHSNonAktif',true)%>"<%=$this->Page->showDulangMHSNonAktif==true ? ' class="active" ':''%>>
                                                         Mahasiswa Non-Aktif
                                                     </a>
                                                 </li> 
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('dulang.DulangMHSCuti',true)%>"<%=$this->Page->showDulangMHSCuti==true ? ' class="active" ':''%>>
+                                                        Mahasiswa Cuti
+                                                    </a>
+                                                </li>                                                 
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('dulang.DulangMHSLulus',true)%>"<%=$this->Page->showDulangMHSLulus==true ? ' class="active" ':''%>>
+                                                        Mahasiswa Lulus
+                                                    </a>
+                                                </li>                                                 
                                                 <li>
                                                     <a href="<%=$this->Page->constructUrl('dulang.DulangMHSDropOut',true)%>"<%=$this->Page->showDulangMHSDropOut==true ? ' class="active" ':''%>>
                                                         Mahasiswa Drop Out

@@ -804,7 +804,7 @@ class Logic_ReportNilai extends Logic_Report {
                     $rpt->setXY(105,$row);	
                     $rpt->Cell(65,4,$this->dataReport['jabfung_penandatangan_transkrip']. ' NIPY '.$this->dataReport['nipy_penandatangan_transkrip'],0,0,'L');
                 }
-                $this->printOut("transkripsementara_$nim");
+                $this->printOut("transkripkurikulum_$nim");
             break;
         }
         $this->setLink($this->dataReport['linkoutput'],"Transkrip Kurikulum");

@@ -149,7 +149,7 @@ class CPesertaMatakuliah extends MainPageM {
     public function populateData ($search=false) {      
         $id=$_SESSION['currentPagePesertaMatakuliah']['InfoMatkul']['idpenyelenggaraan'];        
         if ($search) {            
-            $str = "SELECT vkm.nim,vdm.nirm,vdm.nama_mhs,vdm.idkelas,vdm.jk,vdm.tahun_masuk,vkm.batal,vkm.sah FROM v_krsmhs vkm,v_datamhs vdm WHERE vkm.nim=vdm.nim AND idpenyelenggaraan='$id'";
+            $str = "SELECT vkm.nim,vdm.nirm,vdm.nama_mhs,vdm.idkelas,vdm.jk,vdm.tahun_masuk,vkm.batal,vkm.sah,kmd.idkelas_mhs,km.nama_kelas,hari,jam_masuk,jam_keluar FROM v_krsmhs vkm JOIN v_datamhs vdm ON (vkm.nim=vdm.nim) LEFT JOIN kelas_mhs_detail kmd ON (vkm.idkrsmatkul=kmd.idkrsmatkul) LEFT JOIN kelas_mhs km ON (kmd.idkelas_mhs=km.idkelas_mhs) WHERE idpenyelenggaraan='$id'";            
             $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'nim' :
@@ -171,7 +171,7 @@ class CPesertaMatakuliah extends MainPageM {
         }else{ 
             $idkelas=$_SESSION['currentPagePesertaMatakuliah']['idkelas'];
             $str_kelas=($idkelas=='' || $idkelas=='none') ? '' : " AND vdm.idkelas='$idkelas'";
-            $str = "SELECT vkm.nim,vdm.nirm,vdm.nama_mhs,vdm.idkelas,vdm.jk,vdm.tahun_masuk,vkm.batal,vkm.sah,kmd.idkelas_mhs,km.nama_kelas,hari,jam_masuk,jam_keluar FROM v_krsmhs vkm JOIN v_datamhs vdm ON (vkm.nim=vdm.nim) JOIN kelas_mhs_detail kmd ON (vkm.idkrsmatkul=kmd.idkrsmatkul) LEFT JOIN kelas_mhs km ON (kmd.idkelas_mhs=km.idkelas_mhs) WHERE idpenyelenggaraan='$id'$str_kelas";            
+            $str = "SELECT vkm.nim,vdm.nirm,vdm.nama_mhs,vdm.idkelas,vdm.jk,vdm.tahun_masuk,vkm.batal,vkm.sah,kmd.idkelas_mhs,km.nama_kelas,hari,jam_masuk,jam_keluar FROM v_krsmhs vkm JOIN v_datamhs vdm ON (vkm.nim=vdm.nim) LEFT JOIN kelas_mhs_detail kmd ON (vkm.idkrsmatkul=kmd.idkrsmatkul) LEFT JOIN kelas_mhs km ON (kmd.idkelas_mhs=km.idkelas_mhs) WHERE idpenyelenggaraan='$id'$str_kelas";            
             
             $jumlah_baris=$this->DB->getCountRowsOfTable("v_krsmhs vkm JOIN v_datamhs vdm ON (vkm.nim=vdm.nim) WHERE vkm.nim=vdm.nim AND idpenyelenggaraan='$id'$str_kelas",'vdm.nim');
         }		

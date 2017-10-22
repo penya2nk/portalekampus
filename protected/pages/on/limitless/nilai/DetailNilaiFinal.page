@@ -3,6 +3,7 @@
     <i class="icon-blog position-left"></i> <span class="text-semibold"> Detail Nilai Final</span>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
+    <li><a href="<%=$this->Page->constructUrl('Home',true)%>">HOME</a></li> 
     <li><a href="#">NILAI FINAL</a></li>
     <li class="active">DETAIL NILAI FINAL</li>
 </com:TContent>

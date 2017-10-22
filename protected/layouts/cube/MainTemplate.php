@@ -7,8 +7,10 @@ class MainTemplate extends TTemplateControl {
             $tipeuser=$this->Page->Pengguna->getTipeUser();
             $this->linkTopTASemester->NavigateUrl=$tipeuser=='sa'?$this->Page->constructUrl('settings.Variables',true):'#';
             $this->lblStatusUser->Text=$this->getStatusUser();
+            $this->loggerJS->Visible=$this->Page->setup->getSettingValue('jslogger');
             
             $this->populateThemes();
+            
 		}        
 	}
     public function populateThemes() {

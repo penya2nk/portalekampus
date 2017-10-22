@@ -3,6 +3,7 @@
     <i class="icon-file-text position-left"></i> <span class="text-semibold">Piutang Jangka Pendek</span>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
+    <li><a href="<%=$this->Page->constructUrl('Home',true)%>">HOME</a></li> 
     <li><a href="#">REPORT</a></li>
     <li><a href="#">PIUTANG</a></li>
     <li class="active">PIUTANG JANGKA PENDEK</li>

@@ -8,7 +8,7 @@ class Login extends MainPage {
 	public function onLoad($param) {		
 		parent::onLoad($param);				
 		if (!$this->IsPostBack&&!$this->IsCallBack) { 
-            $this->loggerlogin->Visible=false;            
+            $this->loggerlogin->Visible=$this->setup->getSettingValue('jslogger');            
 		}
 	}
     private function getGoingToPage () {		
@@ -33,6 +33,9 @@ class Login extends MainPage {
 			break;
 			case 'mh' :
 				$page = 'Mahasiswa';
+			break;
+            case 'al' :
+				$page = 'Alumni';
 			break;
 			case 'mb' :
 				$page = 'MahasiswaBaru';

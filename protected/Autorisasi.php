@@ -50,6 +50,14 @@ class Autorisasi extends TModule implements IUserManager {
                     $message="Mohon maaf status Anda diluar AKTIF. Hubungi Bagian Administrasi.";		
                 }
             break;
+            case 'al' :
+                $pass=md5($password);
+                if ($result['k_status']=='L') {                                        			
+                    $message="Gagal. Silahkan masukan username dan password dengan benar.";
+                }else{
+                    $message="Mohon maaf status Anda diluar LULUS. Hubungi Bagian Administrasi.";		
+                }
+            break;
             case 'dw' :
             case 'd' :
             case 'k' :

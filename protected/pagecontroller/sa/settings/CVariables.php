@@ -29,6 +29,8 @@ class CVariables extends MainPageSA {
         $this->txtJumlahBarisRepeater->Text=$this->setup->getSettingValue('default_pagesize');
         $this->txtMinimalNilaiKelulusan->Text=$this->setup->getSettingValue('minimal_nilai_kelulusan');
         
+        $this->chklogger->Checked=$this->setup->getSettingValue('jslogger');
+        
         //KRS
         $this->txtKRSJumlahSKSSetelahCuti->Text=$this->setup->getSettingValue('jumlah_sks_krs_setelah_cuti');  
         
@@ -75,6 +77,10 @@ class CVariables extends MainPageSA {
                     
                     $default_tahun_pendaftaran= $this->cmbDefaultTahunPendaftaran->Text;
                     $str = "UPDATE setting SET value='$default_tahun_pendaftaran' WHERE setting_id=56";            
+                    $this->DB->updateRecord($str);
+                    
+                    $jslogger= $this->chklogger->Checked;
+                    $str = "UPDATE setting SET value='$jslogger' WHERE setting_id=8";            
                     $this->DB->updateRecord($str);
                     
                 break;

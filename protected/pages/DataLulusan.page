@@ -1,0 +1,144 @@
+<%@ Title="Data Lulusan" %>
+<com:TContent ID="modulebreadcrumb">        
+    <li class="active">DATA LULUSAN</li>
+</com:TContent>
+<com:TContent ID="maincontent">
+<div class="panel panel-flat border-top-lg border-top-info border-bottom-info">
+    <div class="panel-heading">
+        <h5 class="panel-title"><i class="icon-search4 position-left"></i> Pencarian Data</h5>
+    </div>
+    <div class="panel-body">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-md-2 control-label">Kriteria :</label>
+                <div class="col-md-10">
+                    <com:TDropDownList ID="cmbKriteria" CssClass="form-control">
+                        <com:TListItem Text="NIM" Value="nim" />
+                        <com:TListItem Text="NIRM" Value="nirm" />
+                        <com:TListItem Text="Nama Mahasiswa" Value="nama" />
+                    </com:TDropDownList>
+                </div>
+            </div>
+            <div class="form-group" id="divtxtKriteria">
+                <label class="col-md-2 control-label">Isi Kriteria :</label>
+                <div class="col-md-10">
+                    <com:TActiveTextBox ID="txtKriteria" CssClass="form-control" />                                                                            
+                    <com:TRequiredFieldValidator ID="spanKriteriaValidator" ValidationGroup="filterForm" Display="Dynamic" ControlToValidate="txtKriteria" ErrorMessage="Input apa yang Anda cari, sesuai dengan kriteria yang Anda tentukan." FocusOnError="true" CssClass="has-error help-block">	
+                        <prop:ClientSide.OnValidationError>
+                            $('divtxtKriteria').addClassName('has-error');
+                            jQuery('#<%=$this->spanKriteriaValidator->ClientID%>').removeAttr('style');                                
+                        </prop:ClientSide.OnValidationError>
+                        <prop:ClientSide.OnValidationSuccess>
+                            $('divtxtKriteria').removeClassName('has-error');
+                        </prop:ClientSide.OnValidationSuccess>
+                    </com:TRequiredFieldValidator>                                         
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-9">
+                    <com:TActiveCustomButton ID="btnSearch" CssClass="btn btn-info btn-labeled btn-xs"  OnClick="Page.searchRecord" ValidationGroup="filterForm" Attributes.Title="Cari">
+                        <prop:Text>                                        
+                            <b><i class="icon-search4"></i></b> Cari                                        
+                        </prop:Text>
+                        <prop:ClientSide.OnPreDispatch>         
+                            Pace.stop();
+                            Pace.start(); 
+                            $('<%=$this->btnSearch->ClientId%>').disabled='disabled';
+                        </prop:ClientSide.OnPreDispatch>
+                        <prop:ClientSide.OnLoading>
+                            $('<%=$this->btnSearch->ClientId%>').disabled='disabled';						
+                        </prop:ClientSide.OnLoading>
+                        <prop:ClientSide.OnComplete>																	
+                            $('<%=$this->btnSearch->ClientId%>').disabled='';
+                        </prop:ClientSide.OnComplete>
+                    </com:TActiveCustomButton>  
+                </div>
+            </div> 
+        </div>                
+    </div>
+</div>
+
+<com:TActiveRepeater ID="RepeaterS" OnItemDataBound="setDataBound" AllowPaging="true" PageSize="10" AllowCustomPaging="true" DataKeyField="nim">    
+    <prop:ItemTemplate>	
+        <div class="panel panel-flat border-top-success border-right-success border-left-success border-bottom-success">    
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-horizontal">                            
+                            <div class="form-group">
+                                <label class="col-md-5 control-label"><strong>NIM: </strong></label>
+                                <div class="col-md-7">
+                                    <p class="form-control-static"><%#$this->DataItem['nim']%></p>
+                                </div>                            
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-5 control-label"><strong>NIRM: </strong></label>
+                                <div class="col-md-7">
+                                    <p class="form-control-static"><%#$this->DataItem['nirm']%></p>
+                                </div>                            
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-5 control-label"><strong>NAMA MHS: </strong></label>
+                                <div class="col-md-7">
+                                    <p class="form-control-static"><%#$this->DataItem['nama_mhs']%></p>
+                                </div>                            
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-5 control-label"><strong>NOMOR TRANSKRIP: </strong></label>
+                                <div class="col-md-7">
+                                    <p class="form-control-static"><%# $this->DataItem['nomor_transkrip']%></p>
+                                </div>                            
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-5 control-label"><strong>PREDIKAT KELULUSAN: </strong></label>
+                                <div class="col-md-7">
+                                    <p class="form-control-static"><%# $this->DataItem['predikat_kelulusan']%></p>
+                                </div>                            
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                             <div class="form-group">
+                                <label class="col-md-4 control-label"><strong>TANGGAL LULUS: </strong></label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static"><%# $this->page->TGL->tanggal('j F Y',$this->DataItem['tanggal_lulus'])%></p>
+                                </div>                            
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label"><strong>IPK: </strong></label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static"><com:TLiteral ID="lblIpk" /></p>
+                                </div>                            
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label"><strong>TA/SMT LULUS: </strong></label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static"><%# $this->DataItem['tasmt']%></p>
+                                </div>                            
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label"><strong>JUDUL SKRIPSI: </strong></label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static"><%#$this->DataItem['judul_skripsi']%></p>
+                                </div>                            
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>       
+    </prop:ItemTemplate>
+    <prop:EmptyTemplate>      
+        <div class="panel panel-flat border-top-success border-right-success border-left-success border-bottom-success">    
+            <div class="panel-body">
+                <div class="alert alert-info alert-styled-left alert-bordered">
+                    <span class="text-semibold">Info!</span>
+                    Belum ada data yang bisa ditampilkan.
+                </div>                
+            </div>    
+        </div>
+    </prop:EmptyTemplate>
+</com:TActiveRepeater>
+<%include Application.layouts.limitless.CustomPaging%>            
+</com:TContent>

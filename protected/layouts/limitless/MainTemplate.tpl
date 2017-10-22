@@ -297,8 +297,7 @@
     <div class="page-header-content">
         <div class="page-title">
             <h4><com:TContentPlaceHolder ID="moduleheader" /></h4>
-            <ul class="breadcrumb breadcrumb-caret position-right">
-                <li><a href="<%=$this->Page->constructUrl('Home',true)%>">HOME</a></li>            
+            <ul class="breadcrumb breadcrumb-caret position-right">                           
                 <com:TContentPlaceHolder ID="modulebreadcrumb" />
             </ul>
             <com:TContentPlaceHolder ID="modulebreadcrumbelement" />
@@ -334,7 +333,7 @@
 <script type="text/javascript" src="<%=$this->Page->Theme->baseUrl%>/assets/js/core/portalekampus.js"></script>
 <com:TContentPlaceHolder ID="jscontent" />
 <com:TContentPlaceHolder ID="jsinlinecontent" />
-<com:TJavascriptLogger />
+<com:TJavascriptLogger ID="loggerJS" />
 </body>
 </html>
 

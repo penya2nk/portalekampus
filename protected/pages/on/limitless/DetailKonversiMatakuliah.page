@@ -3,6 +3,7 @@
     <i class="icon-share3 position-left"></i> <span class="text-semibold">Detail Konversi Matakuliah</span>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">
+    <li><a href="<%=$this->Page->constructUrl('Home',true)%>">HOME</a></li> 
     <li><a href="<%=$this->constructUrl('KonversiMatakuliah',true)%>">KONVERSI MATAKULIAH</a></li>
     <li class="active"><span>DETAIL KONVERSI MATAKULIAH</span></li>
 </com:TContent>

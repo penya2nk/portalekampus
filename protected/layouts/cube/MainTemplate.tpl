@@ -965,7 +965,7 @@
 					<footer id="footer-bar" class="row">
 						<p id="footer-copyright" class="col-xs-12">                        
                             <%=$this->Application->getID()%> licensed to <%=$this->Page->setup->getSettingValue('nama_pt_alias')%> Powered by <a href="https://www.yacanet.com">Yacanet.com</a>
-                            <com:TJavascriptLogger />
+                            <com:TJavascriptLogger ID="loggerJS" />
                         </p>
 					</footer>
 				</div>

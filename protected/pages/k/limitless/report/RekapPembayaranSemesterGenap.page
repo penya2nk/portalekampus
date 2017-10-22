@@ -2,7 +2,8 @@
 <com:TContent ID="moduleheader">    
     <i class="icon-file-text position-left"></i> <span class="text-semibold">Rekapitulasi Pembayaran Semester Genap</span>
 </com:TContent>
-<com:TContent ID="modulebreadcrumb">    
+<com:TContent ID="modulebreadcrumb">   
+    <li><a href="<%=$this->Page->constructUrl('Home',true)%>">HOME</a></li> 
     <li><a href="#">REPORT</a></li>
     <li><a href="#">REKAPITULASI</a></li>
     <li class="active">PEMBAYARAN SEMESTER GENAP</li>

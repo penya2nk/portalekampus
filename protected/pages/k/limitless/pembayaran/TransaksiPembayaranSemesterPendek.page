@@ -3,6 +3,7 @@
     <i class="icon-calculator3 position-left"></i> <span class="text-semibold">Pembayaran Semester Pendek</span>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
+    <li><a href="<%=$this->Page->constructUrl('Home',true)%>">HOME</a></li> 
     <li><a href="#">PEMBAYARAN</a></li>    
     <li class="active">SEMESTER PENDEK</li>     
 </com:TContent>

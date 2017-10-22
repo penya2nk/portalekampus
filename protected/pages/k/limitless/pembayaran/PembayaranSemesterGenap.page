@@ -35,6 +35,7 @@
     </div>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
+    <li><a href="<%=$this->Page->constructUrl('Home',true)%>">HOME</a></li> 
     <li><a href="#">PEMBAYARAN</a></li>
     <li class="active">SEMESTER GENAP</li>     
 </com:TContent>

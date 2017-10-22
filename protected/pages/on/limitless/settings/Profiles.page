@@ -3,6 +3,7 @@
     <i class="icon-profile position-left"></i> <span class="text-semibold">Profiles</span>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
+    <li><a href="<%=$this->Page->constructUrl('Home',true)%>">HOME</a></li> 
     <li><a href=#">SETTING</a></li>    
     <li class="active">PROFILES</li>
 </com:TContent>

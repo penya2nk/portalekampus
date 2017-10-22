@@ -3,6 +3,7 @@
     <i class="icon-blog position-left"></i> <span class="text-semibold">Nilai Final <com:TActiveLabel ID="lblModulHeader" /></span>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
+    <li><a href="<%=$this->Page->constructUrl('Home',true)%>">HOME</a></li> 
     <li class="active">NILAI FINAL</li>
 </com:TContent>
 <com:TContent ID="sidebarcontent">

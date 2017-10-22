@@ -3,6 +3,7 @@
     <i class="icon-display4 position-left"></i> <span class="text-semibold">Dashboard</span>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
+    <li><a href="<%=$this->Page->constructUrl('Home',true)%>">HOME</a></li> 
     <li class="active">DASHBOARD</li>
 </com:TContent>
 <com:TContent ID="maincontent">

@@ -9,16 +9,17 @@
 		<allow roles="Manajemen" pages="m.*" />
         <allow roles="Keuangan" pages="k.*" />
         <allow roles="OperatorNilai" pages="on.*" />
-		<allow roles="Mahasiswa" pages="mh.*" />		
+		<allow roles="Mahasiswa" pages="mh.*" />
+        <allow roles="MahasiswaBaru" pages="mb.*" />	
+        <allow roles="Alumni" pages="al.*" />		
 		<allow roles="Dosen" pages="d.*" />		
-		<allow roles="DosenWali" pages="dw.*" />		
-		<allow roles="MahasiswaBaru" pages="mb.*" />	
+		<allow roles="DosenWali" pages="dw.*" />
 		<allow roles="OrangtuaWali" pages="ot.*" />	
 		<allow roles="Library" pages="l.*" />
-        <allow pages="Login,Logout,ResetPassword" users="*" />
+        <allow pages="Home,DataLulusan,Login,Logout,ResetPassword" users="*" />
 		<deny users="*" />		
 	</authorization>
 	<parameters>
-		<parameter id="NewUserRoles" value="SuperAdmin,Manajemen,Keuangan,OperatorNilai,Mahasiswa,Dosen,DosenWali,MahasiswaBaru,OrangtuaWali,Library" />
+		<parameter id="NewUserRoles" value="SuperAdmin,Manajemen,Keuangan,OperatorNilai,Mahasiswa,MahasiswaBaru,Alumni,Dosen,DosenWali,OrangtuaWali,Library" />
 	</parameters>
 </configuration>

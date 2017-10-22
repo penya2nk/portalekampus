@@ -3,6 +3,7 @@
     <i class="icon-width position-left"></i> <span class="text-semibold">Kartu Ujian Mahasiswa</span>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
+    <li><a href="<%=$this->Page->constructUrl('Home',true)%>">HOME</a></li> 
     <li><a href="#">AKADEMIK</a></li>  
     <li><a href="#">PERKULIAHAN</a></li>
     <li class="active">KARTU UJIAN MAHASISWA</li>     

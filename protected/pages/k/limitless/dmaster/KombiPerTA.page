@@ -3,6 +3,7 @@
     <i class="icon-calculator position-left"></i> <span class="text-semibold">Biaya Per Tahun</span>
 </com:TContent>
 <com:TContent ID="modulebreadcrumb">    
+    <li><a href="<%=$this->Page->constructUrl('Home',true)%>">HOME</a></li> 
     <li><a href="#">DATA MASTER</a></li>
     <li><a href="#">KOMPONEN BIAYA</a></li>
     <li class="active">BIAYA PER TAHUN</li>

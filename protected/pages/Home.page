@@ -1,3 +1,29 @@
-<%@ Title="Dashboard" %>
-
-
+<%@ Title="Portal Ekampus" %>
+<com:TContent ID="maincontent">
+<com:TActiveRepeater ID="RepeaterS" EnableViewState="false" OnItemDataBound="setDataBound">
+    <prop:ItemTemplate>
+        <div class="panel">
+            <div class="panel-body">
+                <div class="content-group-lg">
+                    <h3 class="text-semibold mb-5">
+                        <%#$this->DataItem['title']%>
+                    </h3>
+                    <ul class="list-inline list-inline-separate text-muted content-group">
+                        <li>By <a href="#" class="text-muted"><%#$this->DataItem['nama_user']%></a></li>
+                        <li><%#$this->DataItem['tanggal_post']%></li>
+                        <li><a href="#" class="text-muted"><%#$this->DataItem['jumlahcomment']%> komen</a></li>                            
+                    </ul>
+                    <div class="content-group">
+                        <%#$this->DataItem['content']%>
+                        <com:TLiteral ID="literalattachment">
+                            <blockquote class="no-margin panel panel-body border-left-lg border-left-warning">
+                                <a href="<%#$this->DataItem['file_url']%>"><%#$this->DataItem['file_name']%></a> [<%#$this->Page->setup->formatSizeUnits($this->DataItem['file_size'])%>]                                
+                            </blockquote>
+                        </com:TLiteral>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </prop:ItemTemplate>
+</com:TActiveRepeater>
+</com:TContent>

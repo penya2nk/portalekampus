@@ -29,7 +29,8 @@
 				<com:TListItem Value="dw" Text="Dosen Wali"/>
 				<com:TListItem Value="mh" Text="Mahasiswa"/>
 				<com:TListItem Value="mb" Text="Mahasiswa Baru"/>
-				<com:TListItem Value="ot" Text="Orang Tua Wali"/>
+                <com:TListItem Value="al" Text="Alumni"/>
+				<com:TListItem Value="ot" Text="Orang Tua Wali"/>                
             </com:TDropDownList>
             <com:TRequiredFieldValidator ControlToValidate="cmbGoingTo" Display="Dynamic" ValidationGroup="userlogin" ErrorMessage="Pilih Login Sebagai !!!" InitialValue="none" />
         </div>

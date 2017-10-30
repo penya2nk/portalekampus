@@ -137,4 +137,45 @@ class CKuesioner extends MainPageM {
         $this->Kuesioner->hitungKuesioner($idpengampu_penyelenggaraan,$sender->CommandParameter);
         $this->redirect('perkuliahan.Kuesioner', true);
     }
+    
+    public function printOut ($sender,$param) {		
+        $this->linkOutput->Text='';
+        $this->linkOutput->NavigateUrl='#';
+		switch ($_SESSION['outputreport']) {
+            case  'summarypdf' :
+                $messageprintout="Mohon maaf Print out pada mode summary pdf tidak kami support.";                
+            break;
+            case  'summaryexcel' :
+                $messageprintout="Mohon maaf Print out pada mode summary excel tidak kami support.";                
+            break;
+            case  'pdf' :
+                $messageprintout="Mohon maaf Print out pada mode pdf belum kami support.";                
+            break;
+            case  'excel2007' :
+                $tahun=$_SESSION['ta'];
+                $semester=$_SESSION['semester'];
+                $nama_tahun = $this->DMaster->getNamaTA($tahun);
+                $nama_semester = $this->setup->getSemester($semester);
+
+                $dataReport['ta']=$tahun;
+                $dataReport['tahun_masuk']=$_SESSION['currentPageKHS']['tahun_masuk'];
+                $dataReport['semester']=$semester;
+                $dataReport['nama_tahun']=$nama_tahun;
+                $dataReport['nama_semester']=$nama_semester; 
+                $dataReport['kjur']=$_SESSION['kjur'];
+                $dataReport['nama_ps']=$_SESSION['daftar_jurusan'][$_SESSION['kjur']];
+                
+                $dataReport['linkoutput']=$this->linkOutput; 
+                $objKuesioner=$this->getLogic('ReportKuesioner');
+                $objKuesioner->setDataReport($dataReport); 
+                $objKuesioner->setMode('excel2007');               
+                $objKuesioner->printSummaryKuesioner($this->Kuesioner);
+                $messageprintout="";
+                
+            break;
+        }        
+        $this->lblMessagePrintout->Text=$messageprintout;
+        $this->lblPrintout->Text='Hasil Kuesioner';
+        $this->modalPrintOut->show();
+    }
 }

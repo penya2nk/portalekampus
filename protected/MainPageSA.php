@@ -8,6 +8,18 @@ class MainPageSA extends MainPage {
      * show page tahun akademik [dmaster perkuliahan]
      */
     public $showTA=false;
+    /**
+     * show page penyelenggaraan [perkuliahan]
+     */
+    public $showPenyelenggaraan=false;
+    /**
+     * show page KRS Kelas Ekstension [perkuliahan]
+     */
+    public $showKRSEkstension=false;
+    /**
+     * show page Peserta matakuliah [perkuliahan]
+     */
+    public $showPesertaMatakuliah=false;
     /**     
      * show page variable [setting variable]
      */

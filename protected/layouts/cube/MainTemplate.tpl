@@ -197,6 +197,48 @@
                                             </ul>
                                         </li>
                                         <li class="nav-header nav-header-first hidden-sm hidden-xs">
+                                            AKADEMIK
+                                        </li>
+                                        <li<%=$this->Page->showSubMenuAkademikPerkuliahan==true?' class="active"':''%>>
+                                            <a href="#" class="dropdown-toggle">
+                                                <i class="fa fa-truck"></i>
+                                                <span>Perkuliahan</span>
+                                                <i class="fa fa-angle-right drop-icon"></i>
+                                            </a>
+                                            <ul class="submenu">
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('perkuliahan.Penyelenggaraan',true)%>"<%=$this->Page->showPenyelenggaraan==true ? ' class="active" ':''%>>
+                                                        Penyelenggaraan
+                                                    </a>
+                                                </li> 
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('perkuliahan.PembagianKelas',true)%>"<%=$this->Page->showPembagianKelas==true ? ' class="active" ':''%>>
+                                                        Pembagian Kelas
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('perkuliahan.KRS',true)%>"<%=$this->Page->showKRS==true ? ' class="active" ':''%>>
+                                                        KRS
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('perkuliahan.KRSEkstension',true)%>"<%=$this->Page->showKRSEkstension==true ? ' class="active" ':''%>>
+                                                        KRS Ekstension
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('perkuliahan.PesertaMatakuliah',true)%>"<%=$this->Page->showPesertaMatakuliah==true ? ' class="active" ':''%>>
+                                                        Peserta Matakuliah
+                                                    </a>
+                                                </li>                                                
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('perkuliahan.Kuesioner',true)%>"<%=$this->Page->showKuesioner==true ? ' class="active" ':''%>>
+                                                        Kuesioner
+                                                    </a>
+                                                </li> 
+                                            </ul>
+                                        </li>   
+                                        <li class="nav-header nav-header-first hidden-sm hidden-xs">
                                             SETTING
                                         </li>
                                         <li<%=$this->Page->showVariable==true?' class="active"':''%>>

@@ -63,11 +63,7 @@ class UserManager extends TAuthManager {
                 $str = "SELECT u.userid,u.username,u.nama,u.email,u.page,u.group_id,u.kjur,u.isdeleted,u.foto AS photo_profile,u.theme FROM user u WHERE username='$username' AND u.page='m'";
                 $this->db->setFieldTable (array('userid','username','nama','email','page','group_id','kjur','isdeleted','photo_profile','theme'));							
                 $result= $this->db->getRecord($str);	
-                if (!isset($result[1])) {
-                    $str = "SELECT su.userid,sg.groupname,su.active,su.kjur,su.theme,foto AS photo_profile FROM simak_user su,simak_group sg WHERE su.groupid=sg.groupid AND su.username='$username'";
-                    $this->db->setFieldTable (array('userid','groupname','active','kjur','theme','photo_profile'));							
-                    $result = $this->db->getRecord($str);
-                }				
+                			
 				$this->dataUser['data_user']=$result[1];							
 				$this->dataUser['data_user']['username']=$username;				
 				$this->dataUser['data_user']['page']='m';
@@ -204,14 +200,7 @@ class UserManager extends TAuthManager {
 			case 'Manajemen' :
                 $str = "SELECT u.username,u.userpassword,u.salt,u.page,u.active FROM user u WHERE username='$username' AND active=1 AND page='m'";
                 $this->db->setFieldTable (array('username','userpassword','salt','page','active'));							
-                $r = $this->db->getRecord($str);
-                if (isset($r[1])) {
-                    $result=$r;
-                }else{
-                    $str = "SELECT userid,username,userpassword,active FROM simak_user WHERE username='$username' AND active=1";
-                    $this->db->setFieldTable (array('userid','username','userpassword','active'));							
-                    $result = $this->db->getRecord($str);	
-                }
+                $result = $this->db->getRecord($str);
 			break;
 			case 'Dosen' :
                 $str = "SELECT u.username,u.userpassword,u.salt,u.page,u.active AS active  FROM user u WHERE username='$username' AND active=1 AND page='d'";
@@ -285,28 +274,7 @@ class UserManager extends TAuthManager {
 	* mendapatkan section	
 	*/
 	private function loadAclUser ($userid) {
-		$str = 'SELECT idsection,section_name FROM simak_section';
-		$this->db->setFieldTable(array('idsection','section_name')); 
-		$r=$this->db->getRecord($str);				
-		$str = "SELECT sm.module_file,su.read_,su.write_ FROM simak_module sm,simak_groupacl sg,simak_useracl su,simak_user sus WHERE sm.idmodule=sg.idmodule AND sg.idgroupacl=su.idgroupacl AND sg.groupid=sus.groupid AND sus.userid=su.userid AND su.userid='$userid' AND sm.idsection=";
-		$result=$this->db->setFieldTable(array('module_file','read_','write_'));
-		foreach ($r as $v) {
-			$idsection=$v['idsection'];
-			$str2=$str . $idsection;
-			$result=$this->db->getRecord($str2);			
-			if (isset($result[1])) {
-				$hasil=array();
-				while (list($k,$n)=each($result)) {
-					$hasil[$n['module_file'].'_read']=$n['read_'];
-					$hasil[$n['module_file'].'_write']=$n['write_'];						
-				}				
-			}else {
-				$hasil='false';
-			}
-			$acl[$v['section_name']]=$hasil;
-		}		
-		return $acl;
+        
 	}
 }
-
 ?>

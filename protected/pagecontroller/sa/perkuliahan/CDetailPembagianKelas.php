@@ -1,6 +1,6 @@
 <?php
-prado::using ('Application.MainPageM');
-class CDetailPembagianKelas extends MainPageM {	
+prado::using ('Application.MainPageSA');
+class CDetailPembagianKelas extends MainPageSA {	
 public function onLoad($param) {
 		parent::onLoad($param);		
         $this->showSubMenuAkademikPerkuliahan=true;
@@ -8,8 +8,8 @@ public function onLoad($param) {
         
         $this->createObj('Akademik');
 		if (!$this->IsPostBack&&!$this->IsCallBack) {
-            if (!isset($_SESSION['currentPagePembagianKelas'])||$_SESSION['currentPagePembagianKelas']['page_name']!='m.perkuliahan.PembagianKelas') {                
-				$_SESSION['currentPagePembagianKelas']=array('page_name'=>'m.perkuliahan.PembagianKelas','page_num'=>0,'search'=>false,'iddosen'=>'none','nama_hari'=>'none');												
+            if (!isset($_SESSION['currentPagePembagianKelas'])||$_SESSION['currentPagePembagianKelas']['page_name']!='sa.perkuliahan.PembagianKelas') {                
+				$_SESSION['currentPagePembagianKelas']=array('page_name'=>'sa.perkuliahan.PembagianKelas','page_num'=>0,'search'=>false,'iddosen'=>'none','nama_hari'=>'none');												
 			}
             $_SESSION['currentPagePembagianKelas']['search']=false;
             
@@ -132,8 +132,8 @@ public function onLoad($param) {
         $this->idProcess='edit';
         $idkelas_mhs=$this->getDataKeyField($sender, $this->RepeaterS);
         $this->hiddenid->Value=$idkelas_mhs;
-        $str = "SELECT km.hari,km.jam_masuk,km.jam_keluar,idruangkelas FROM kelas_mhs km WHERE idkelas_mhs=$idkelas_mhs";
-        $this->DB->setFieldTable(array('hari','jam_masuk','jam_keluar','idruangkelas'));
+        $str = "SELECT pp.idpenyelenggaraan,km.idpengampu_penyelenggaraan,km.hari,km.jam_masuk,km.jam_keluar,idruangkelas FROM kelas_mhs km,pengampu_penyelenggaraan pp WHERE pp.idpengampu_penyelenggaraan=km.idpengampu_penyelenggaraan AND km.idkelas_mhs=$idkelas_mhs";
+        $this->DB->setFieldTable(array('idpenyelenggaraan','idpengampu_penyelenggaraan','hari','jam_masuk','jam_keluar','idruangkelas'));
 		$r = $this->DB->getRecord($str);
         
         //load pengampu

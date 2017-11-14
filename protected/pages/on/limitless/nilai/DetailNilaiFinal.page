@@ -61,22 +61,7 @@
                                         $('<%=$this->btnPrintOut->ClientId%>').disabled='';                                             
                                     </prop:ClientSide.OnComplete>
                                 </com:TActiveLinkButton>
-                            </li>
-                            <li class="text-primary-600">
-                                <com:TActiveLinkButton ID="btnCloseDetail" ClientSide.PostState="false" OnClick="closeDetail" Attributes.data-action="closeredirect" Attributes.title="Keluar dari Detail Nilai Final">                            
-                                    <prop:ClientSide.OnPreDispatch>         
-                                        Pace.stop();
-                                        Pace.start();
-                                        $('<%=$this->btnCloseDetail->ClientId%>').disabled='disabled';         
-                                    </prop:ClientSide.OnPreDispatch>
-                                    <prop:ClientSide.OnLoading>
-                                        $('<%=$this->btnCloseDetail->ClientId%>').disabled='disabled';                     
-                                    </prop:ClientSide.OnLoading>
-                                    <prop:ClientSide.OnComplete>                                                                    
-                                        $('<%=$this->btnCloseDetail->ClientId%>').disabled='';                                                                                                                 
-                                    </prop:ClientSide.OnComplete>
-                                </com:TActiveLinkButton>                                
-                            </li>
+                            </li>                            
                         </ul>
                     </div>
                 </div>

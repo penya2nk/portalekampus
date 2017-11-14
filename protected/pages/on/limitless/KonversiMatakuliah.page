@@ -622,6 +622,7 @@
                         <thead>			
                         <tr class="bg-teal-700">
                             <th width="15">NO</th>
+                            <th>TGL. KONVERSI</th>
                             <th width="250">NAMA</th>
                             <th width="300">ALAMAT</th>
                             <th width="150">NO. TELP</th>
@@ -636,6 +637,7 @@
                     <prop:ItemTemplate>
                         <tr>
                             <td><%# $this->DataItem['no']%></td>
+                            <td><%# $this->DataItem['date_added']%></td>
                             <td><%# $this->DataItem['nama']%></td>
                             <td><%# $this->DataItem['alamat']%></td>						
                             <td><%# $this->DataItem['no_telp']%></td>

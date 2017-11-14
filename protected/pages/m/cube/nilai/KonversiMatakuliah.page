@@ -21,7 +21,7 @@
                     <div class="form-horizontal">
                         <div class="form-group">
                             <label class="col-lg-2 control-label">Kriteria :</label>
-                            <div class="col-lg-2">
+                            <div class="col-lg-10">
                                 <com:TDropDownList ID="cmbKriteria" CssClass="form-control">                                                                                               
                                     <com:TListItem Value="nama" Text="Nama Mahasiswa" />
                                 </com:TDropDownList>
@@ -29,7 +29,7 @@
                         </div>
                         <div class="form-group" id="divtxtKriteria">
                             <label class="col-lg-2 control-label">Isi Kriteria :</label>
-                            <div class="col-lg-3">
+                            <div class="col-lg-10">
                                 <com:TActiveTextBox ID="txtKriteria" CssClass="form-control" />                                                                            
                                 <com:TRequiredFieldValidator ID="spanKriteriaValidator2" ValidationGroup="filterForm" Display="Dynamic" ControlToValidate="txtKriteria" ErrorMessage="Input apa yang Anda cari, sesuai dengan kriteria yang Anda tentukan." FocusOnError="true" CssClass="has-error help-block">	
                                     <prop:ClientSide.OnValidationError>
@@ -96,12 +96,13 @@
                                 <thead>			
                                 <tr>
                                     <th width="15">NO</th>
+                                    <th>TGL. KONVERSI</th>
                                     <th width="250">NAMA</th>
                                     <th width="300">ALAMAT</th>
                                     <th>NO. TELP</th>
                                     <th>JUMLAH <br />MATAKULIAH </th>
                                     <th>JUMLAH <br />SKS</th>	
-                                     <th>NIM</th>
+                                    <th>NIM</th>
                                     <th width="70">AKSI</th>
                                 </tr>
                                 </thead>
@@ -110,6 +111,7 @@
                             <prop:ItemTemplate>
                                 <tr>
                                     <td><%# $this->DataItem['no']%></td>
+                                    <td><%# $this->DataItem['date_added']%></td>
                                     <td><%# $this->DataItem['nama']%></td>
                                     <td><%# $this->DataItem['alamat']%></td>						
                                     <td><%# $this->DataItem['no_telp']%></td>

@@ -1,6 +1,6 @@
 <?php
-prado::using ('Application.MainPageM');
-class CPengampuLain extends MainPageM {	
+prado::using ('Application.MainPageSA');
+class CPengampuLain extends MainPageSA {	
 	public function onLoad($param) {
 		parent::onLoad($param);	
 		$this->showSubMenuAkademikPerkuliahan=true;
@@ -8,8 +8,8 @@ class CPengampuLain extends MainPageM {
         
         $this->createObj('Akademik');
 		if (!$this->IsPostBack&&!$this->IsCallBack) {				
-            if (!isset($_SESSION['currentPagePengampuLain'])||$_SESSION['currentPagePengampuLain']['page_name']!='m.perkuliahan.PengampuLain') {
-				$_SESSION['currentPagePengampuLain']=array('page_name'=>'m.perkuliahan.PengampuLain','page_num'=>0,'search'=>false);
+            if (!isset($_SESSION['currentPagePengampuLain'])||$_SESSION['currentPagePengampuLain']['page_name']!='sa.perkuliahan.PengampuLain') {
+				$_SESSION['currentPagePengampuLain']=array('page_name'=>'sa.perkuliahan.PengampuLain','page_num'=>0,'search'=>false);
 			}
 			$this->populateData();
 		}			

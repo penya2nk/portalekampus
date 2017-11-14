@@ -86,8 +86,7 @@ class CTambahKRS extends MainPageSA {
 			$maxSKS=$datakrs['maxSKS'];
 			if ($jumlah > $maxSKS) throw new Exception ("Tidak bisa tambah sks lagi. Karena telah melebihi batas anda ($maxSKS)");
 			$idpenyelenggaraan=$this->getDataKeyField($sender,$this->RepeaterPenyelenggaraan);
-			//check kmatkul syarat apakah lulus		
-			$this->KRS->checkMatkulSyaratIDPenyelenggaraan($idpenyelenggaraan);
+			//check kmatkul syarat apakah lulus					
 			if (!$this->DB->checkRecordIsExist('idpenyelenggaraan','krsmatkul',$idpenyelenggaraan,' AND idkrs='.$idkrs)) { 
 				$str = "INSERT INTO krsmatkul (idkrsmatkul,idkrs,idpenyelenggaraan,batal) VALUES (NULL,'$idkrs',$idpenyelenggaraan,0)";
 				$this->DB->insertRecord($str);			

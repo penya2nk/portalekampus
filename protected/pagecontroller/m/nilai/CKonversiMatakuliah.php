@@ -69,7 +69,7 @@ class CKonversiMatakuliah extends MainPageM {
 		$tahun_masuk=$_SESSION['tahun_masuk'];		
         if ($search) {
             $txtsearch=addslashes($this->txtKriteria->Text);
-            $str = "SELECT dk2.iddata_konversi,dk2.nama,dk2.alamat,dk2.no_telp,dk.nim FROM data_konversi2 dk2 LEFT JOIN data_konversi dk ON (dk2.iddata_konversi=dk.iddata_konversi) WHERE dk2.perpanjangan=0";
+            $str = "SELECT dk2.iddata_konversi,dk2.nama,dk2.alamat,dk2.no_telp,dk.nim,dk2.date_added FROM data_konversi2 dk2 LEFT JOIN data_konversi dk ON (dk2.iddata_konversi=dk.iddata_konversi) WHERE dk2.perpanjangan=0";
             switch ($this->cmbKriteria->Text) {                                
                 case 'nama' :
                     $clausa="AND nama LIKE '%$txtsearch%'";
@@ -79,7 +79,7 @@ class CKonversiMatakuliah extends MainPageM {
             }            			
         }else{
             $jumlah_baris=$this->DB->getCountRowsOfTable("data_konversi2 WHERE kjur='$kjur' AND tahun='$tahun_masuk' AND perpanjangan=0",'iddata_konversi');
-			$str = "SELECT dk2.iddata_konversi,dk2.nama,dk2.alamat,dk2.no_telp,dk.nim FROM data_konversi2 dk2 LEFT JOIN data_konversi dk ON (dk2.iddata_konversi=dk.iddata_konversi) WHERE dk2.kjur='$kjur' AND dk2.tahun='$tahun_masuk' AND dk2.perpanjangan=0";
+			$str = "SELECT dk2.iddata_konversi,dk2.nama,dk2.alamat,dk2.no_telp,dk.nim,dk2.date_added FROM data_konversi2 dk2 LEFT JOIN data_konversi dk ON (dk2.iddata_konversi=dk.iddata_konversi) WHERE dk2.kjur='$kjur' AND dk2.tahun='$tahun_masuk' AND dk2.perpanjangan=0";
         }			
 		$this->RepeaterS->VirtualItemCount=$jumlah_baris;
 		$this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageKonversiMatakuliah']['page_num'];
@@ -89,8 +89,8 @@ class CKonversiMatakuliah extends MainPageM {
 			$limit=$this->RepeaterS->VirtualItemCount-$offset;
 		}
 		if ($limit < 0) {$offset=0;$limit=10;$_SESSION['currentPageKonversiMatakuliah']['page_num']=0;}
-		$str = $str . " ORDER BY nama ASC LIMIT $offset,$limit";		
-		$this->DB->setFieldTable(array('iddata_konversi','nama','alamat','no_telp','nim'));
+		$str = $str . " ORDER BY date_added DESC,nama ASC LIMIT $offset,$limit";		
+		$this->DB->setFieldTable(array('iddata_konversi','nama','alamat','no_telp','nim','date_added'));
 		$r = $this->DB->getRecord($str,$offset+1);
 		$result=array();        
         while (list($k,$v)=each($r)) {
@@ -98,6 +98,7 @@ class CKonversiMatakuliah extends MainPageM {
             $v['jumlahmatkul']=$this->DB->getCountRowsOfTable("nilai_konversi2 WHERE iddata_konversi=$iddata_konversi");
             $v['jumlahsks']=$this->DB->getSumRowsOfTable('sks',"v_konversi2 WHERE iddata_konversi=$iddata_konversi");
             $v['nim_alias']=$v['nim']=='' ? 'N.A' : $v['nim'];
+            $v['date_added']=$this->TGL->tanggal('d/m/Y',$v['date_added']);
             $result[$k]=$v;
         }
 		$this->RepeaterS->DataSource=$result;

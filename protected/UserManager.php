@@ -68,6 +68,8 @@ class UserManager extends TAuthManager {
 				$this->dataUser['data_user']['username']=$username;				
 				$this->dataUser['data_user']['page']='m';
 				$this->dataUser['hak_akses']=$this->loadAclUser($result[1]['userid']);
+                $userid=$this->dataUser['data_user']['userid'];
+                $this->db->updateRecord("UPDATE user SET logintime=NOW() WHERE userid=$userid");
 			break;            
 			case 'Mahasiswa' :	                
                 $str = "SELECT vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.tempat_lahir,vdm.tanggal_lahir,vdm.jk,vdm.alamat_rumah,vdm.email,vdm.kjur,vdm.idkonsentrasi,k.nama_konsentrasi,vdm.iddosen_wali,vdm.tahun_masuk,vdm.semester_masuk,vdm.nama_ps,vdm.k_status AS k_status,sm.n_status AS status,perpanjang,theme,photo_profile FROM v_datamhs vdm LEFT JOIN status_mhs sm ON (vdm.k_status=sm.k_status) LEFT JOIN konsentrasi k ON (vdm.idkonsentrasi=k.idkonsentrasi) WHERE nim='$username'";

@@ -91,6 +91,10 @@ class MainPage extends TPage {
      * show sub page [akademik kemahasiswaan]
      */
     public $showProfilMahasiswa=false;
+	/**
+     * show page daftar mahasiswa [akademik kemahasiswaan]
+     */
+    public $showDaftarMahasiswa=false;
     /**     
      * show sub menu akademik daftar ulang [akademik daftar ulang]
      */

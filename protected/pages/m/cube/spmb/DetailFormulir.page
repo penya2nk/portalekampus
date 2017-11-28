@@ -36,9 +36,21 @@
                 <div class="main-box-body clearfix">  
                     <div class="profile-details">
                         <ul class="fa-ul">
-                            <li><i class="fa-li fa fa-truck"></i>IPK: <span><%=$this->DataMHS['ipk']%></span></li>
-                            <li><i class="fa-li fa fa-comment"></i>Jumlah Matkul: <span><%=$this->DataMHS['totalmatkul']%></span></li>
-                            <li><i class="fa-li fa fa-tasks"></i>Jumlah SKS: <span><%=$this->DataMHS['totalsks']%></span></li>
+                            <li><i class="fa-li fa fa-th-list"></i>Theme :
+                                <com:TActiveDropDownList ID="cmbTheme" CssClass="form-control" OnCallback="changeTheme">
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->cmbTheme->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->cmbTheme->ClientId%>').disabled='disabled';						
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                        $('<%=$this->cmbTheme->ClientId%>').disabled='';
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveDropDownList>
+                            </li>                            
                         </ul>
                     </div>
                     <div class="profile-message-btn center-block text-center">                        
@@ -57,25 +69,6 @@
                             </prop:ClientSide.OnComplete>
                         </com:TActiveCustomButton>
                     </div>
-                    <div class="profile-details">
-                        <ul class="fa-ul">
-                            <li><i class="fa-li fa fa-th-list"></i>Theme :
-                                <com:TActiveDropDownList ID="cmbTheme" CssClass="form-control" OnCallback="changeTheme">
-                                    <prop:ClientSide.OnPreDispatch>                                                                   
-                                        $('loading').show(); 
-                                        $('<%=$this->cmbTheme->ClientId%>').disabled='disabled';						
-                                    </prop:ClientSide.OnPreDispatch>
-                                    <prop:ClientSide.OnLoading>
-                                        $('<%=$this->cmbTheme->ClientId%>').disabled='disabled';						
-                                    </prop:ClientSide.OnLoading>
-                                    <prop:ClientSide.OnComplete>																	                                    						                                                                            
-                                        $('<%=$this->cmbTheme->ClientId%>').disabled='';
-                                        $('loading').hide(); 
-                                    </prop:ClientSide.OnComplete>
-                                </com:TActiveDropDownList>
-                            </li>                            
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
@@ -86,474 +79,89 @@
                         <com:TView ID="ipsdanipk">
                             <ul class="nav nav-tabs">
                                 <li class="active">                                
-                                    <a href="#tab-ipsdanipk" data-toggle="tab">IPS dan IPK</a>
-                                </li>
-                                <li>
-                                    <com:TActiveLinkButton ID="btnViewDulang" Text="Daftar Ulang" CommandName="SwitchViewIndex" CommandParameter="1" ClientSide.PostState="false">
-                                        <prop:ClientSide.OnPreDispatch>                                                                   
-                                            $('loading').show(); 
-                                            $('<%=$this->btnViewDulang->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnPreDispatch>
-                                        <prop:ClientSide.OnLoading>
-                                            $('<%=$this->btnViewDulang->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnLoading>
-                                        <prop:ClientSide.OnComplete>                                        
-                                            $('loading').hide(); 
-                                        </prop:ClientSide.OnComplete>
-                                    </com:TActiveLinkButton>                                    
-                                </li>
-                                <li>
-                                    <com:TActiveLinkButton ID="btnViewDulangKRS" Text="KRS" CommandName="SwitchViewIndex" CommandParameter="2" ClientSide.PostState="false">
-                                        <prop:ClientSide.OnPreDispatch>                                                                   
-                                            $('loading').show(); 
-                                            $('<%=$this->btnViewDulangKRS->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnPreDispatch>
-                                        <prop:ClientSide.OnLoading>
-                                            $('<%=$this->btnViewDulangKRS->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnLoading>
-                                        <prop:ClientSide.OnComplete>                                        
-                                            $('loading').hide(); 
-                                        </prop:ClientSide.OnComplete>
-                                    </com:TActiveLinkButton>                                    
-                                </li>
-                                <li>
-                                    <com:TActiveLinkButton ID="btnViewDulangNIMDanNRIM" Text="Ganti NIM & NIRM" CommandName="SwitchViewIndex" CommandParameter="3" ClientSide.PostState="false">
-                                        <prop:ClientSide.OnPreDispatch>                                                                   
-                                            $('loading').show(); 
-                                            $('<%=$this->btnViewDulangNIMDanNRIM->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnPreDispatch>
-                                        <prop:ClientSide.OnLoading>
-                                            $('<%=$this->btnViewDulangNIMDanNRIM->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnLoading>
-                                        <prop:ClientSide.OnComplete>                                        
-                                            $('loading').hide(); 
-                                        </prop:ClientSide.OnComplete>
-                                    </com:TActiveLinkButton>                                    
+                                    <a href="#tab-ipsdanipk" data-toggle="tab">COPY DATA FORMULIR</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane fade in active" id="tab-ipsdanipk">
-                                    <div class="table-responsive">
-                                        <com:TRepeater ID="RepeaterIPSdanIPK" EnableViewState="false" OnItemCreated="itemCreatedRepeaterIPSdanIPK">      
-                                            <prop:HeaderTemplate>
-                                            <table class="table table-striped table-hover">	
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">NO</th>
-                                                        <th scope="col">T.A</th>
-                                                        <th scope="col">SEMESTER</th>
-                                                        <th scope="col">JUMLAH SKS</th>
-                                                        <th scope="col">IPS</th>
-                                                        <th scope="col">IPK</th>                                                                    					                                                                    				
-                                                    </tr>						
-                                                </thead>
-                                                <tbody>
-                                            </prop:HeaderTemplate>
-                                            <prop:ItemTemplate>
-                                                <tr>
-                                                    <td><%# $this->DataItem['no']%></td>
-                                                    <td><%#$this->DataItem['ta']%></td>
-                                                    <td><%#$this->DataItem['semester']%></td>
-                                                    <td><%# $this->DataItem['jumlah_sks']%></td>
-                                                    <td><%# $this->DataItem['ips']%></td>							
-                                                    <td><com:TLiteral ID="literalIPK" /></td>					                                                            
-                                                </tr>
-                                            </prop:ItemTemplate>  
-                                            <prop:FooterTemplate>
-                                                </tbody>
-                                                </table>
-                                            </prop:FooterTemplate>
-                                            <prop:EmptyTemplate>                                                       
+                                    <p>Melalui halaman ini Portal EKampus akan menyalin data formulir pendaftaran, nilai ujian masuk, dan lain-lainnya. Perlu diperhatikan, bahwa untuk Tahun Masuk, Semester Masuk dan Kelas melekat pada No. Formulir yang ada di PIN.</p>
+                                    <div class="form-horizontal">                                     
+                                        <div class="form-group" id="divNoFormulir">
+                                            <label class="col-lg-3 control-label">Nomor Formulir Baru:</label>
+                                            <div class="col-lg-9">
                                                 <div class="row">
-                                                    <div class="main-box-body">
-                                                        <div class="alert alert-info">
-                                                            <i class="fa fa-info-circle fa-fw fa-lg"></i>
-                                                            <strong>
-                                                                Info!
-                                                            </strong>
-                                                             Tidak ada data yang bisa ditampilkan.
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </prop:EmptyTemplate>
-                                        </com:TRepeater>                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </com:TView>
-                        
-                        <com:TView ID="dulangmahasiswa">
-                            <ul class="nav nav-tabs">
-                                <li>
-                                    <com:TActiveLinkButton ID="btnViewDMIPSdanIPK" Text="Aktivitas Mahasiswa" CommandName="SwitchViewIndex" CommandParameter="0" ClientSide.PostState="false">
-                                        <prop:ClientSide.OnPreDispatch>                                                                   
-                                            $('loading').show(); 
-                                            $('<%=$this->btnViewDMIPSdanIPK->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnPreDispatch>
-                                        <prop:ClientSide.OnLoading>
-                                            $('<%=$this->btnViewDMIPSdanIPK->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnLoading>
-                                        <prop:ClientSide.OnComplete>                                        
-                                            $('loading').hide(); 
-                                        </prop:ClientSide.OnComplete>
-                                    </com:TActiveLinkButton>                                    
-                                </li> 
-                                <li class="active">                                
-                                    <a href="#tab-dulangmahasiswa" data-toggle="tab">Daftar Ulang</a>
-                                </li>
-                                <li>
-                                    <com:TActiveLinkButton ID="btnViewDMKRS" Text="KRS" CommandName="SwitchViewIndex" CommandParameter="2" ClientSide.PostState="false">
-                                        <prop:ClientSide.OnPreDispatch>                                                                   
-                                            $('loading').show(); 
-                                            $('<%=$this->btnViewDMKRS->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnPreDispatch>
-                                        <prop:ClientSide.OnLoading>
-                                            $('<%=$this->btnViewDMKRS->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnLoading>
-                                        <prop:ClientSide.OnComplete>                                        
-                                            $('loading').hide(); 
-                                        </prop:ClientSide.OnComplete>
-                                    </com:TActiveLinkButton>                                    
-                                </li>
-                                <li>
-                                    <com:TActiveLinkButton ID="btnViewBGantiNIMDanNRIM" Text="Ganti NIM & NIRM" CommandName="SwitchViewIndex" CommandParameter="3" ClientSide.PostState="false">
-                                        <prop:ClientSide.OnPreDispatch>                                                                   
-                                            $('loading').show(); 
-                                            $('<%=$this->btnViewBGantiNIMDanNRIM->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnPreDispatch>
-                                        <prop:ClientSide.OnLoading>
-                                            $('<%=$this->btnViewBGantiNIMDanNRIM->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnLoading>
-                                        <prop:ClientSide.OnComplete>                                        
-                                            $('loading').hide(); 
-                                        </prop:ClientSide.OnComplete>
-                                    </com:TActiveLinkButton>                                    
-                                </li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane fade in active" id="tab-dulangmahasiswa">
-                                    <div class="table-responsive">
-                                        <com:TRepeater ID="RepeaterDulang" EnableViewState="false">
-                                            <prop:HeaderTemplate>			
-                                            <table class="table table-striped table-hover">
-                                                <thead>
-                                                <tr>
-                                                    <th scope="col">NO</th>					
-                                                    <th scope="col">TANGGAL</th>					
-                                                    <th scope="col">TAHUN</th>					
-                                                    <th scope="col">SEMESTER</th>
-                                                    <th scope="col">KELAS</th>
-                                                    <th scope="col">STATUS</th>                                                    
-                                                    <th scope="col">ISI KRS</th>
-                                                </tr>			
-                                                </thead>
-                                                <tbody>
-                                            </prop:HeaderTemplate>
-                                            <prop:ItemTemplate>	
-                                                <tr>
-                                                    <td><%# $this->Data['no']%></td>					
-                                                    <td><%# $this->Data['tanggal']%></td>					
-                                                    <td><%# $this->Data['tahun']%></td>
-                                                    <td><%# $this->Data['semester']%></td>
-                                                    <td><%# $this->Data['kelas']%></td>                                                    
-                                                    <td><%# $this->Data['status']%></td>                                                                                                        
-                                                    <td><%# $this->Data['isikrs']%></td>
-                                                </tr>	
-                                            </prop:ItemTemplate>				
-                                            <prop:FooterTemplate>				
-                                                </tbody>
-                                                </table>
-                                            </prop:FooterTemplate>
-                                            <prop:EmptyTemplate>                                                       
-                                                <div class="row">
-                                                    <div class="main-box-body">
-                                                        <div class="alert alert-info">
-                                                            <i class="fa fa-info-circle fa-fw fa-lg"></i>
-                                                            <strong>
-                                                                Info!
-                                                            </strong>
-                                                             Tidak ada data yang bisa ditampilkan.
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </prop:EmptyTemplate>
-                                        </com:TRepeater>                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </com:TView>
-                        
-                        <com:TView ID="krsmahasiswa">
-                            <ul class="nav nav-tabs">
-                                <li>
-                                    <com:TActiveLinkButton ID="btnViewKRSIPSdanIPK" Text="Aktivitas Mahasiswa" CommandName="SwitchViewIndex" CommandParameter="0" ClientSide.PostState="false">
-                                        <prop:ClientSide.OnPreDispatch>                                                                   
-                                            $('loading').show(); 
-                                            $('<%=$this->btnViewKRSIPSdanIPK->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnPreDispatch>
-                                        <prop:ClientSide.OnLoading>
-                                            $('<%=$this->btnViewKRSIPSdanIPK->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnLoading>
-                                        <prop:ClientSide.OnComplete>                                        
-                                            $('loading').hide(); 
-                                        </prop:ClientSide.OnComplete>
-                                    </com:TActiveLinkButton>                                    
-                                </li> 
-                                <li>
-                                    <com:TActiveLinkButton ID="btnViewKRSDulang" Text="Daftar Ulang" CommandName="SwitchViewIndex" CommandParameter="1" ClientSide.PostState="false">
-                                        <prop:ClientSide.OnPreDispatch>                                                                   
-                                            $('loading').show(); 
-                                            $('<%=$this->btnViewKRSDulang->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnPreDispatch>
-                                        <prop:ClientSide.OnLoading>
-                                            $('<%=$this->btnViewKRSDulang->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnLoading>
-                                        <prop:ClientSide.OnComplete>                                        
-                                            $('loading').hide(); 
-                                        </prop:ClientSide.OnComplete>
-                                    </com:TActiveLinkButton>                                    
-                                </li>
-                                <li class="active">                                
-                                    <a href="#tab-dulangmahasiswa" data-toggle="tab">KRS</a>
-                                </li>   
-                                <li>
-                                    <com:TActiveLinkButton ID="btnViewKRSNIMDanNRIM" Text="Ganti NIM & NIRM" CommandName="SwitchViewIndex" CommandParameter="3" ClientSide.PostState="false">
-                                        <prop:ClientSide.OnPreDispatch>                                                                   
-                                            $('loading').show(); 
-                                            $('<%=$this->btnViewKRSNIMDanNRIM->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnPreDispatch>
-                                        <prop:ClientSide.OnLoading>
-                                            $('<%=$this->btnViewKRSNIMDanNRIM->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnLoading>
-                                        <prop:ClientSide.OnComplete>                                        
-                                            $('loading').hide(); 
-                                        </prop:ClientSide.OnComplete>
-                                    </com:TActiveLinkButton>                                    
-                                </li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane fade in active" id="tab-krsmahasiswa">
-                                    <div class="table-responsive">
-                                        <com:TRepeater ID="RepeaterKRS" DataKeyField="idkrs" OnItemCreated="itemCreatedRepeaterKRS" EnableViewState="false">                                            
-                                            <prop:ItemTemplate>	
-                                                <h3>Tahun Akademik <%#$this->DataItem['ta']%> Semester <%#$this->DataItem['semester']%></h3>
-                                                <com:TRepeater ID="RepeaterKRSDetail" EnableViewState="false">
-                                                    <prop:HeaderTemplate>
-                                                        <table class="table table-striped table-hover">	
-                                                            <thead>
-                                                                <tr>
-                                                                    <th scope="col">NO</th>
-                                                                    <th scope="col">KODE</th>
-                                                                    <th scope="col">NAMA</th>
-                                                                    <th scope="col">SKS</th>
-                                                                    <th scope="col">SMT</th>
-                                                                    <th scope="col">DOSEN</th>					                                                                    				
-                                                                </tr>						
-                                                            </thead>
-                                                            <tbody>
-                                                    </prop:HeaderTemplate>
-                                                    <prop:ItemTemplate>
-                                                        <tr>
-                                                            <td><%# $this->DataItem['no']%></td>
-                                                            <td><%# $this->DataItem['kmatkul']%></td>
-                                                            <td><%# $this->DataItem['nmatkul']%></td>
-                                                            <td><%# $this->DataItem['sks']%></td>
-                                                            <td><%# $this->DataItem['semester']%></td>							
-                                                            <td><%# $this->DataItem['nama_dosen']%> [<%# $this->DataItem['nidn']%>]</td>					                                                            
-                                                        </tr>
-                                                    </prop:ItemTemplate>  
-                                                    <prop:FooterTemplate>
-                                                        </tbody>
-                                                        <tfoot>
-                                                        <tr>
-                                                            <td colspan="3"><strong>Jumlah SKS</strong></td>
-                                                            <td><%# CProfilMahasiswa::$totalSKS%></td>
-                                                            <td colspan="3">&nbsp;</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="3"><strong>Jumlah Matakuliah</strong></td>
-                                                            <td><%# CProfilMahasiswa::$jumlahMatkul%></td>
-                                                            <td colspan="5">&nbsp;</td>
-                                                        </tr>
-                                                        </tfoot>
-                                                        </table>
-                                                    </prop:FooterTemplate>
-                                                </com:TRepeater>
-                                            </prop:ItemTemplate>				
-                                            <prop:FooterTemplate>				
-                                                </tbody>
-                                                </table>
-                                            </prop:FooterTemplate>
-                                            <prop:EmptyTemplate>                                                       
-                                                <div class="row">
-                                                    <div class="main-box-body">
-                                                        <div class="alert alert-info">
-                                                            <i class="fa fa-info-circle fa-fw fa-lg"></i>
-                                                            <strong>
-                                                                Info!
-                                                            </strong>
-                                                             Tidak ada data yang bisa ditampilkan.
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </prop:EmptyTemplate>
-                                        </com:TRepeater>                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </com:TView>
-                        <com:TView ID="gantinimnirm">
-                            <ul class="nav nav-tabs">
-                                <li>
-                                    <com:TActiveLinkButton ID="btnViewGantiNIMNIRMIPSdanIPK" Text="Aktivitas Mahasiswa" CommandName="SwitchViewIndex" CommandParameter="0" ClientSide.PostState="false">
-                                        <prop:ClientSide.OnPreDispatch>                                                                   
-                                            $('loading').show(); 
-                                            $('<%=$this->btnViewGantiNIMNIRMIPSdanIPK->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnPreDispatch>
-                                        <prop:ClientSide.OnLoading>
-                                            $('<%=$this->btnViewGantiNIMNIRMIPSdanIPK->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnLoading>
-                                        <prop:ClientSide.OnComplete>                                        
-                                            $('loading').hide(); 
-                                        </prop:ClientSide.OnComplete>
-                                    </com:TActiveLinkButton>                                    
-                                </li> 
-                                <li>
-                                    <com:TActiveLinkButton ID="btnViewGantiNIMNIRMDulang" Text="Daftar Ulang" CommandName="SwitchViewIndex" CommandParameter="1" ClientSide.PostState="false">
-                                        <prop:ClientSide.OnPreDispatch>                                                                   
-                                            $('loading').show(); 
-                                            $('<%=$this->btnViewGantiNIMNIRMDulang->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnPreDispatch>
-                                        <prop:ClientSide.OnLoading>
-                                            $('<%=$this->btnViewGantiNIMNIRMDulang->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnLoading>
-                                        <prop:ClientSide.OnComplete>                                        
-                                            $('loading').hide(); 
-                                        </prop:ClientSide.OnComplete>
-                                    </com:TActiveLinkButton>                                    
-                                </li>
-                                <li>
-                                    <com:TActiveLinkButton ID="btnViewGantiNIMNIRMKRS" Text="KRS" CommandName="SwitchViewIndex" CommandParameter="2" ClientSide.PostState="false">
-                                        <prop:ClientSide.OnPreDispatch>                                                                   
-                                            $('loading').show(); 
-                                            $('<%=$this->btnViewGantiNIMNIRMKRS->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnPreDispatch>
-                                        <prop:ClientSide.OnLoading>
-                                            $('<%=$this->btnViewGantiNIMNIRMKRS->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnLoading>
-                                        <prop:ClientSide.OnComplete>                                        
-                                            $('loading').hide(); 
-                                        </prop:ClientSide.OnComplete>
-                                    </com:TActiveLinkButton>                                    
-                                </li>
-                                <li class="active">
-                                    <com:TActiveLinkButton ID="btnViewGantiNIMDanNRIM" OnClick="Page.editRecord" Text="Ganti NIM & NIRM" CommandName="SwitchViewIndex" CommandParameter="3" ClientSide.PostState="false">
-                                        <prop:ClientSide.OnPreDispatch>                                                                   
-                                            $('loading').show(); 
-                                            $('<%=$this->btnViewGantiNIMDanNRIM->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnPreDispatch>
-                                        <prop:ClientSide.OnLoading>
-                                            $('<%=$this->btnViewGantiNIMDanNRIM->ClientId%>').disabled='disabled';						
-                                        </prop:ClientSide.OnLoading>
-                                        <prop:ClientSide.OnComplete>                                        
-                                            $('loading').hide(); 
-                                        </prop:ClientSide.OnComplete>
-                                    </com:TActiveLinkButton>                                    
-                                </li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane fade in active" id="tab-krsmahasiswa">
-                                    <div class="form-horizontal">
-                                         <div class="form-group">
-                                            <label class="col-lg-2 control-label"><strong>NIM Lama: </strong></label>
-                                            <div class="col-sm-9">
-                                                <p class="form-control-static">
-                                                    <%= $this->getDataMHS('nim')%>
-                                                </p>
-                                            </div>                            
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-lg-2 control-label"><strong>NIRM Lama: </strong></label>
-                                            <div class="col-sm-9">
-                                                <p class="form-control-static">
-                                                    <%= $this->getDataMHS('nirm')%>
-                                                </p>
-                                            </div>                            
-                                        </div>
-                                        <div class="form-group" id="divEditNIM">
-                                            <label class="col-lg-2 control-label">NIM Baru:</label>
-                                            <div class="col-lg-10">
-                                                <div class="row">
-                                                    <div class="col-lg-6">                                
-                                                        <com:TTextBox ID="txtEditNIM" MaxLength="20" CssClass="form-control" Width="100px" Text="<%= $this->getDataMHS('nim')%>" />
+                                                    <div class="col-lg-6">                   
+                                                        <com:THiddenField ID="hiddennoformulir" />
+                                                        <com:TTextBox ID="txtNoFormulir" CssClass="form-control" />
                                                     </div>
                                                     <div class="col-lg-10">                                
-                                                        <com:TRequiredFieldValidator ID="FieldEditNIMValidator" ControlToValidate="txtEditNIM" Display="Dynamic" ErrorMessage="NIM tidak boleh kosong!" ValidationGroup="editNIM" CssClass="has-error help-block">
+                                                        <com:TRequiredFieldValidator ID="FieldNoFormulirValidator" ControlToValidate="txtNoFormulir" Display="Dynamic" ErrorMessage="Nomor Formulir tidak boleh kosong!" ValidationGroup="editformulir" CssClass="has-error help-block">
                                                             <prop:ClientSide.OnValidationError>
-                                                                $('divEditNIM').addClassName('has-error');
-                                                                jQuery('#<%=$this->FieldEditNIMValidator->ClientID%>').removeAttr('style');
+                                                                $('divNoFormulir').addClassName('has-error');
+                                                                jQuery('#<%=$this->FieldNoFormulirValidator->ClientID%>').removeAttr('style');
                                                             </prop:ClientSide.OnValidationError>
                                                             <prop:ClientSide.OnValidationSuccess>
-                                                                $('divEditNIM').removeClassName('has-error');
+                                                                $('divNoFormulir').removeClassName('has-error');
                                                             </prop:ClientSide.OnValidationSuccess>
                                                         </com:TRequiredFieldValidator>
-                                                        <com:TActiveCustomValidator ID="editNIM" ControlToValidate="txtEditNIM" Display="Dynamic" OnServerValidate="checkNIM" ValidationGroup="editNIM" CssClass="has-error help-block">
+                                                        <com:TActiveCustomValidator ID="editformulir" ControlToValidate="txtNoFormulir" Display="Dynamic" OnServerValidate="checkNoFormulir" ValidationGroup="editformulir" CssClass="has-error help-block">
                                                             <prop:ClientSide.OnValidationError>
-                                                                $('divEditNIM').addClassName('has-error');
-                                                                jQuery('#<%=$this->editNIM->ClientID%>').removeAttr('style');
+                                                                $('divNoFormulir').addClassName('has-error');
+                                                                jQuery('#<%=$this->editformulir->ClientID%>').removeAttr('style');
                                                             </prop:ClientSide.OnValidationError>
                                                             <prop:ClientSide.OnValidationSuccess>
-                                                                $('divEditNIM').removeClassName('has-error');
+                                                                $('divNoFormulir').removeClassName('has-error');
                                                             </prop:ClientSide.OnValidationSuccess>
                                                         </com:TActiveCustomValidator>              
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group" id="divEditNIRM">
-                                            <label class="col-lg-2 control-label">NIRM :</label>
-                                            <div class="col-lg-10">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <com:TTextBox ID="txtEditNIRM" Text="<%= $this->getDataMHS('nirm')%>" MaxLength="20" CssClass="form-control" Width="150px" />
-                                                    </div>
-                                                    <div class="col-lg-10">
-                                                        <com:TRequiredFieldValidator ID="FieldEditNIRMValidator" ControlToValidate="txtEditNIRM" Display="Dynamic" ErrorMessage="NIRM tidak boleh kosong!" ValidationGroup="editNIM" CssClass="has-error help-block">
-                                                            <prop:ClientSide.OnValidationError>
-                                                                $('divEditNIRM').addClassName('has-error');
-                                                                jQuery('#<%=$this->FieldEditNIRMValidator->ClientID%>').removeAttr('style');
-                                                            </prop:ClientSide.OnValidationError>
-                                                            <prop:ClientSide.OnValidationSuccess>
-                                                                $('divEditNIRM').removeClassName('has-error');
-                                                            </prop:ClientSide.OnValidationSuccess>
-                                                        </com:TRequiredFieldValidator>
-                                                        <com:TActiveCustomValidator ID="editNIRM" ControlToValidate="txtEditNIRM" Display="Dynamic" OnServerValidate="checkNIRM" ValidationGroup="editNIM" CssClass="has-error help-block">
-                                                            <prop:ClientSide.OnValidationError>
-                                                                $('divEditNIRM').addClassName('has-error');
-                                                                jQuery('#<%=$this->editNIRM->ClientID%>').removeAttr('style');
-                                                            </prop:ClientSide.OnValidationError>
-                                                            <prop:ClientSide.OnValidationSuccess>
-                                                                $('divEditNIRM').removeClassName('has-error');
-                                                            </prop:ClientSide.OnValidationSuccess>
-                                                        </com:TActiveCustomValidator>      
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="col-lg-offset-2 col-lg-10">
-                                                <com:TActiveCustomButton ID="btnUpdateGantiNIMNIRM" CssClass="btn btn-primary" OnClick="updateDataNIMNIRM" ValidationGroup="editNIM"  >
-                                                    <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
-                                                    <prop:ClientSide.OnPreDispatch>                                                                   
-                                                        $('loading').show(); 
-                                                        $('<%=$this->btnUpdateGantiNIMNIRM->ClientId%>').disabled='disabled';						
+                                        <div class="form-group" id="divKjur1">
+                                            <label class="col-lg-3 control-label">Program Studi (Pilihan 1) :</label>
+                                            <div class="col-lg-9">
+                                                <com:TActiveDropDownList ID="cmbKjur1" CssClass="form-control" OnCallBack="changePs">                                                    
+                                                    <prop:ClientSide.OnPreDispatch>         
+                                                        $('loading').show();
                                                     </prop:ClientSide.OnPreDispatch>
                                                     <prop:ClientSide.OnLoading>
-                                                        $('<%=$this->btnUpdateGantiNIMNIRM->ClientId%>').disabled='disabled';						
+                                                        $('<%=$this->cmbKjur1->ClientId%>').disabled='disabled';						
+                                                    </prop:ClientSide.OnLoading>
+                                                    <prop:ClientSide.OnComplete>																	
+                                                        $('<%=$this->cmbKjur1->ClientId%>').disabled='';						                               						                                        
+                                                        $('loading').hide();
+                                                    </prop:ClientSide.OnComplete>
+                                                </com:TActiveDropDownList>
+                                                <com:TRequiredFieldValidator ID="FieldKjur1Validator" InitialValue="none" ControlToValidate="cmbKjur1" Display="Dynamic" ErrorMessage="Pilih Program Studi" ValidationGroup="editformulir" FocusOnError="true" CssClass="has-error help-block">			
+                                                    <prop:ClientSide.OnValidationError>
+                                                        $('divKjur1').addClassName('has-error');
+                                                        jQuery('#<%=$this->FieldKjur1Validator->ClientID%>').removeAttr('style');
+                                                    </prop:ClientSide.OnValidationError>
+                                                    <prop:ClientSide.OnValidationSuccess>
+                                                        $('divKjur1').removeClassName('has-error');
+                                                    </prop:ClientSide.OnValidationSuccess>
+                                                </com:TRequiredFieldValidator>                  
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">Program Studi (Pilihan 2) :</label>
+                                            <div class="col-lg-9">
+                                                <com:TActiveDropDownList ID="cmbKjur2" AutoPostBack="false" CssClass="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-lg-offset-2 col-lg-10">
+                                                <com:TActiveCustomButton ID="btnCopy" CssClass="btn btn-primary" OnClick="copyFormulir" ValidationGroup="editformulir"  >
+                                                    <prop:Text><i class="fa fa-copy"></i> Copy</prop:Text>
+                                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                                        $('loading').show(); 
+                                                        $('<%=$this->btnCopy->ClientId%>').disabled='disabled';						
+                                                    </prop:ClientSide.OnPreDispatch>
+                                                    <prop:ClientSide.OnLoading>
+                                                        $('<%=$this->btnCopy->ClientId%>').disabled='disabled';						
                                                     </prop:ClientSide.OnLoading>
                                                     <prop:ClientSide.OnComplete>																	                                    						                                                                            
-                                                        $('<%=$this->btnUpdateGantiNIMNIRM->ClientId%>').disabled='';
+                                                        $('<%=$this->btnCopy->ClientId%>').disabled='';
                                                         $('loading').hide(); 
                                                     </prop:ClientSide.OnComplete>
                                                 </com:TActiveCustomButton>
@@ -562,8 +170,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </com:TView>
-                        
+                        </com:TView>                        
                     </com:TActiveMultiView>                                        
                 </div>
             </div>

@@ -44,20 +44,20 @@
                                     <p class="form-control-static"><%= $this->TGL->tanggal('l, j F Y',$this->getDataMHS('tanggal_lahir'))%></p>
                                 </div>                            
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-5">
-                        <div class="form-horizontal"> 
                             <div class="form-group">
-                                <label class="col-md-4 control-label"><strong>ALAMAT RUMAH: </strong></label>
-                                <div class="col-md-8">
+                                <label class="col-md-3 control-label"><strong>ALAMAT RUMAH: </strong></label>
+                                <div class="col-md-9">
                                     <p class="form-control-static"><%= $this->getDataMHS('alamat_rumah')%></p>
                                 </div>                            
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="form-horizontal">
                             <div class="form-group">
-                                <label class="col-md-4 control-label"><strong>NO. TELP / HP: </strong></label>
+                                <label class="col-md-4 control-label"><strong>NO. HP: </strong></label>
                                 <div class="col-md-8">
-                                    <p class="form-control-static"><%= $this->getDataMHS('telp_rumah')%> <%= $this->getDataMHS('telp_hp')%></p>
+                                    <p class="form-control-static"><%= $this->getDataMHS('telp_hp')%></p>
                                 </div>                            
                             </div>
                             <div class="form-group">
@@ -73,12 +73,23 @@
                                 </div>                            
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label"><strong>KELAS: </strong></label>
-                                <div class="col-sm-9">
+                                <label class="col-sm-4 control-label"><strong>KELAS: </strong></label>
+                                <div class="col-sm-8">
                                     <p class="form-control-static"><%= $this->getDataMHS('nkelas')%></p>
                                 </div>                            
                             </div>
-                            
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"><strong>TAHUN MASUK: </strong></label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static"><%= $this->getDataMHS('tahun_masuk')%></p>
+                                </div>                            
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"><strong>WAKTU MENDAFTAR: </strong></label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static"><%= $this->getDataMHS('waktu_mendaftar')%></p>
+                                </div>                            
+                            </div>
                         </div>
                     </div>
                 </div>

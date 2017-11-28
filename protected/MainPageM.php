@@ -31,11 +31,7 @@ class MainPageM extends MainPage {
     /**
      * show page soal PMB [datamaster]
      */
-    public $showSoalPMB=false;
-    /**
-     * show page daftar mahasiswa [akademik kemahasiswaan]
-     */
-    public $showDaftarMahasiswa=false;
+    public $showSoalPMB=false;    
     /**
      * show page pendaftaran konsentrasi [akademik kemahasiswaan]
      */

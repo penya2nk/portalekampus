@@ -117,6 +117,16 @@
                 <div class="dropdown-menu dropdown-content">
                     <div class="dropdown-content-body">
                         <div class="row">
+							<div class="col-md-3">
+                                <span class="menu-heading underlined">Kemahasiswaan</span>
+                                <ul class="menu-list">
+									<li<%=$this->Page->showDaftarMahasiswa==true ? ' class="active" ':''%>>
+										<a href="<%=$this->Page->constructUrl('kemahasiswaan.DaftarMahasiswa',true)%>">
+											Daftar Mahasiswa
+										</a>
+									</li>
+                                </ul>
+                            </div>
                             <div class="col-md-3">
                                 <span class="menu-heading underlined">Perkuliahan</span>
                                 <ul class="menu-list">

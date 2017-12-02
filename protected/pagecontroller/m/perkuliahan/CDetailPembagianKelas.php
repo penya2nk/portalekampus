@@ -132,8 +132,8 @@ public function onLoad($param) {
         $this->idProcess='edit';
         $idkelas_mhs=$this->getDataKeyField($sender, $this->RepeaterS);
         $this->hiddenid->Value=$idkelas_mhs;
-        $str = "SELECT km.hari,km.jam_masuk,km.jam_keluar,idruangkelas FROM kelas_mhs km WHERE idkelas_mhs=$idkelas_mhs";
-        $this->DB->setFieldTable(array('hari','jam_masuk','jam_keluar','idruangkelas'));
+        $str = "SELECT pp.idpenyelenggaraan,km.hari,km.jam_masuk,km.jam_keluar,idruangkelas FROM pengampu_penyelenggaraan pp,kelas_mhs km WHERE pp.idpengampu_penyelenggaraan=km.idpengampu_penyelenggaraan AND km.idkelas_mhs=$idkelas_mhs";
+        $this->DB->setFieldTable(array('idpenyelenggaraan','hari','jam_masuk','jam_keluar','idruangkelas'));
 		$r = $this->DB->getRecord($str);
         
         //load pengampu

@@ -233,8 +233,9 @@ class Logic_ReportKRS extends Logic_Report {
                     $totalSks=0;
                     $row+=5;				
                     $rpt->SetFont ('helvetica','',8);
-                    $daftarmatkul=$this->dataReport['matakuliah'];
-
+                    $str = "SELECT idpenyelenggaraan,idkrsmatkul,kmatkul,nmatkul,sks,semester,batal,nidn,nama_dosen FROM v_krsmhs WHERE idkrs=$idkrs ORDER BY semester ASC,kmatkul ASC";
+                    $this->db->setFieldTable(array('idpenyelenggaraan','idkrsmatkul','kmatkul','nmatkul','sks','semester','batal','nidn','nama_dosen'));
+                    $daftarmatkul=$this->db->getRecord($str);                    
                     foreach ($daftarmatkul as $v) {
                         if ($v['batal'] == 0) {
                             $rpt->setXY(3,$row);	

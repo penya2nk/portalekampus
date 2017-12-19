@@ -252,7 +252,7 @@
                                         <th scope="col">
                                             <input type="checkbox" class="select-all" title="Select all items" data-class="dummyclass">
                                         </th>
-                                        <th scope="col">NO</th>
+                                        <th scope="col">ID</th>
                                         <th scope="col">NAMA</th>
                                         <th scope="col">NIM</th>
                                         <th scope="col">PR/QUIZ<br/>(<%#$_SESSION['currentPageDetailEditNilai']['DataNilai']['persen_quiz']%>%)</th>                                        

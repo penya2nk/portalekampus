@@ -69,8 +69,7 @@ class CDetailKRS extends MainPageSA {
                 $r = $this->DB->getRecord($str);
                 $idkelas_mhs=isset($r[1]) ? $r[1]['idkelas_mhs'] : 'none';
                 $item->cmbKelas->DataSOurce=$result;            
-                $item->cmbKelas->DataBind();        
-                $item->cmbKelas->Enabled=!$this->DB->checkRecordIsExist('idkrsmatkul','nilai_matakuliah',$idkrsmatkul);
+                $item->cmbKelas->DataBind();                        
                 $item->cmbKelas->Text=$idkelas_mhs;
                 CDetailKRS::$totalSKS+=$item->DataItem['sks'];
                 CDetailKRS::$jumlahMatkul+=1;

@@ -55,23 +55,30 @@ class CDetailKRS extends MainPageM {
                 $str = "SELECT km.idkelas_mhs,km.nama_kelas,vpp.nama_dosen,vpp.nidn,km.idruangkelas FROM kelas_mhs km JOIN v_pengampu_penyelenggaraan vpp ON (km.idpengampu_penyelenggaraan=vpp.idpengampu_penyelenggaraan) WHERE vpp.idpenyelenggaraan=$idpenyelenggaraan AND km.idkelas='$idkelas'  ORDER BY hari ASC,idkelas ASC,nama_dosen ASC";            
                 $this->DB->setFieldTable(array('idkelas_mhs','nama_kelas','nama_dosen','nidn','idruangkelas'));
                 $r = $this->DB->getRecord($str);	
-                $result = array('none'=>' ');
+                
+                $str = "SELECT idkelas_mhs  FROM kelas_mhs_detail WHERE idkrsmatkul=$idkrsmatkul";            
+                $this->DB->setFieldTable(array('idkelas_mhs'));
+                $r_selected = $this->DB->getRecord($str);
+                
+                if (isset($r_selected[1])) {
+                    $idkelas_mhs_selected=$r_selected[1]['idkelas_mhs'];
+                    $result = array();
+                }else{
+                    $idkelas_mhs_selected='none';
+                    $result = array('none'=>' ');
+                }      
                 while (list($k,$v)=each($r)) {    
                     $idkelas_mhs=$v['idkelas_mhs'];
                     $jumlah_peserta_kelas = $this->DB->getCountRowsOfTable ("kelas_mhs_detail WHERE idkelas_mhs=$idkelas_mhs",'idkelas_mhs');
                     $kapasitas=(int)$this->DMaster->getKapasitasRuangKelas($v['idruangkelas']);
                     $keterangan=($jumlah_peserta_kelas <= $kapasitas) ? '' : ' [PENUH]';
-                    $result[$v['idkelas_mhs']]=$this->DMaster->getNamaKelasByID($idkelas).'-'.chr($v['nama_kelas']+64) . ' ['.$v['nidn'].']'.$keterangan;   
+                    $result[$idkelas]=$this->DMaster->getNamaKelasByID($idkelas).'-'.chr($v['nama_kelas']+64) . ' ['.$v['nidn'].']'.$keterangan;   
                 }
-
-                $str = "SELECT idkelas_mhs  FROM kelas_mhs_detail WHERE idkrsmatkul=$idkrsmatkul";            
-                $this->DB->setFieldTable(array('idkelas_mhs'));
-                $r = $this->DB->getRecord($str);
-                $idkelas_mhs=isset($r[1]) ? $r[1]['idkelas_mhs'] : 'none';
-                $item->cmbKelas->DataSOurce=$result;            
+                $item->cmbKelas->DataSource=$result;            
                 $item->cmbKelas->DataBind();        
                 $item->cmbKelas->Enabled=!$this->DB->checkRecordIsExist('idkrsmatkul','nilai_matakuliah',$idkrsmatkul);
-                $item->cmbKelas->Text=$idkelas_mhs;
+                $item->cmbKelas->Text=$idkelas_mhs_selected;
+                
                 CDetailKRS::$totalSKS+=$item->DataItem['sks'];
                 CDetailKRS::$jumlahMatkul+=1;
             }

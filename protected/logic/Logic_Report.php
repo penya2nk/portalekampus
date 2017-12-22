@@ -263,5 +263,3 @@ class Logic_Report extends Logic_Global {
 		}
 	}    
 }
-?>
-

@@ -75,4 +75,3 @@ class MainPageK extends MainPage {
         }
 	}   
 }
-?>

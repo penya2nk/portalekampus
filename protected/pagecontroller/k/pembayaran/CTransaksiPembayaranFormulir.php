@@ -210,4 +210,3 @@ class TotalJumlahBayar extends MainController
         $writer->write($this->Finance->toRupiah(CTransaksiPembayaranFormulir::$TotalJumlahBayar));	
 	}
 }
-?>

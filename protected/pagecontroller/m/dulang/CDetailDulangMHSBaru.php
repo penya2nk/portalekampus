@@ -106,4 +106,3 @@ class CDetailDulangMHSBaru Extends MainPageM {
         $this->redirect('dulang.DulangMHSBaru',true);
     }
 }
-?>

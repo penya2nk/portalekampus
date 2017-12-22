@@ -5,4 +5,3 @@ class Matakuliah extends CMatakuliah {
 		parent::onLoad($param);		               		
 	}     
 }
-?>

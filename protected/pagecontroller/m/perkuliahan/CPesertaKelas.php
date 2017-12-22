@@ -176,4 +176,3 @@ class CPesertaKelas extends MainPageM {
 	}
     
 }
-?>

@@ -144,4 +144,3 @@ class CPesertaUjianPMB extends MainPageM {
         $this->modalPrintOut->show();
 	}
 }
-?>

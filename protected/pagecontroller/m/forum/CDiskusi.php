@@ -159,4 +159,3 @@ class CDiskusi extends MainPageM {
         $this->redirect('forum.DetailDiskusi', true, array('id'=>$id));
     }
 }
-?>

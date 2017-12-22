@@ -179,4 +179,3 @@ class CDaftarMahasiswa extends MainPageDW {
         $this->paginationInfo->Text=$this->getInfoPaging($this->RepeaterS);
     }
 }
-?>

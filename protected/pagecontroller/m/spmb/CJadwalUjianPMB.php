@@ -184,5 +184,3 @@ class CJadwalUjianPMB extends MainPageM {
         $this->modalPrintOut->show();
 	}
 }
-
-?>

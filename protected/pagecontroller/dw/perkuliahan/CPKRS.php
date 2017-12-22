@@ -203,5 +203,3 @@ class CPKRS extends MainPageDW {
         }		
 	}	
 }
-
-?>

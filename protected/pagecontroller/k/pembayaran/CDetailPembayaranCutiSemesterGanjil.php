@@ -174,5 +174,3 @@ class CDetailPembayaranCutiSemesterGanjil Extends MainPageK {
         $this->redirect('pembayaran.PembayaranCutiSemesterGanjil',true);
     }
 }
-
-?>

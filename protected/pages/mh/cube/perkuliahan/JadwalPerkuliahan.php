@@ -5,5 +5,3 @@ class JadwalPerkuliahan extends CJadwalPerkuliahan {
 		parent::onLoad($param);		        			
 	}    
 }
-
-?>

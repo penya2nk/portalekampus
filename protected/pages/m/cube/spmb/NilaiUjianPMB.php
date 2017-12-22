@@ -5,5 +5,3 @@ class NilaiUjianPMB extends CNilaiUjianPMB {
 		parent::onLoad($param);			        
 	}
 }
-
-?>

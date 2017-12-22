@@ -5,5 +5,3 @@ class DaftarPertanyaan extends CDaftarPertanyaan {
 		parent::onLoad($param);		
     }        
 }
-
-?>

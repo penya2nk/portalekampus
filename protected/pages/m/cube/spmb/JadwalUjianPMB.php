@@ -5,5 +5,3 @@ class JadwalUjianPMB extends CJadwalUjianPMB {
 		parent::onLoad($param);		        			
 	}    
 }
-
-?>

@@ -5,4 +5,3 @@ class DetailDiskusi extends CDetailDiskusi {
 		parent::onLoad($param);		                                   
     }
 }
-?>

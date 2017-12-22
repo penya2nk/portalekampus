@@ -5,4 +5,3 @@ class ProfilMahasiswa extends CProfilMahasiswa {
 		parent::onLoad($param);						      
 	}    
 }
-?>

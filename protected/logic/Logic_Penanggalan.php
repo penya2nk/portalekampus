@@ -166,4 +166,3 @@ class Logic_Penanggalan extends Logic_Global {
         }
 	}
 }
-?>

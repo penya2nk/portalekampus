@@ -415,5 +415,3 @@ class CKRS Extends MainPageSA {
         
 	}    
 }
-
-?>

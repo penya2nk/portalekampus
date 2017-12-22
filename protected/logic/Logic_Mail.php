@@ -33,4 +33,3 @@ class Logic_Mail extends Logic_Global {
         echo $error;
     }
 }
-?>

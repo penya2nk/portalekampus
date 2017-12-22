@@ -5,5 +5,3 @@ class PembayaranCutiSemesterGanjil Extends CPembayaranCutiSemesterGanjil {
 		parent::onLoad($param);
 	}
 }
-
-?>

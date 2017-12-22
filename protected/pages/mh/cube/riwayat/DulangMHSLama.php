@@ -5,4 +5,3 @@ class DulangMHSLama Extends CDulangMHSLama {
 		parent::onLoad($param);							
     }
 }
-?>

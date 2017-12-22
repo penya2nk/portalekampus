@@ -4,6 +4,4 @@ class DetailTranskripKurikulum extends CDetailTranskripKurikulum {
 	public function onLoad($param) {
 		parent::onLoad($param);							
     }
-}	
-
-?>
+}

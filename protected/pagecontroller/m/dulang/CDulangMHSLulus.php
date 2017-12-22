@@ -261,4 +261,3 @@ class CDulangMHSLulus Extends MainPageM {
         $this->modalPrintOut->show();
     }
 }
-?>

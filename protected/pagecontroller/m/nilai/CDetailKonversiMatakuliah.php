@@ -81,6 +81,4 @@ class CDetailKonversiMatakuliah extends MainPageM {
         $this->lblPrintout->Text="Konversi Matakuliah";
         $this->modalPrintOut->show();
 	}
-}	
-
-?>
+}

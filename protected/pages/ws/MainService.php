@@ -104,4 +104,3 @@ class MainService extends TModule  {
         return $data;
 	}	
 }
-?>

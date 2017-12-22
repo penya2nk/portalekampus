@@ -258,4 +258,3 @@ class CDulangMHSLama Extends MainPageM {
         $this->modalPrintOut->show();
     }
 }
-?>

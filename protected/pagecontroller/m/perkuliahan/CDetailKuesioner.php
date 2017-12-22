@@ -204,5 +204,3 @@ class CDetailKuesioner extends MainPageM {
         $this->modalPrintOut->show();
 	}
 }
-
-?>

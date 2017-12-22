@@ -164,5 +164,3 @@ class CPenyelenggaraan extends MainPageSA {
 		
 	}
 }
-
-?>

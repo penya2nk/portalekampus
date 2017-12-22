@@ -492,4 +492,3 @@ class Logic_DMaster extends Logic_Global {
         return $dataitem;  
 	}
 }
-?>

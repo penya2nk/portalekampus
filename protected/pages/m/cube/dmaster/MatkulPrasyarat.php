@@ -5,4 +5,3 @@ class MatkulPrasyarat extends CMatkulPrasyarat {
 		parent::onLoad($param);		        
 	}
 }
-?>

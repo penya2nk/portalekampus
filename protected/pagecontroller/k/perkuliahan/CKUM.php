@@ -298,4 +298,3 @@ class CKUM extends MainPageK {
         $this->modalPrintOut->show();
     }
 }
-?>

@@ -5,4 +5,3 @@ class DulangMHSKeluar Extends CDulangMHSKeluar {
 		parent::onLoad($param);							
     }
 }
-?>

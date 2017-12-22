@@ -5,4 +5,3 @@ class PesertaUjianPMB extends CPesertaUjianPMB {
 		parent::onLoad($param);				        
     }
 }
-?>

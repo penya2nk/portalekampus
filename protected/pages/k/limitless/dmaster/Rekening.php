@@ -5,5 +5,3 @@ class Rekening Extends CRekening {
 		parent::onLoad($param);						
 	}	
 }
-
-?>

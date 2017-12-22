@@ -121,6 +121,4 @@ class DetailKHSEkstension extends MainPageDW {
         $this->lblPrintout->Text="Kartu Hasil Studi T.A $nama_tahun Semester $nama_semester";
         $this->modalPrintOut->show();
 	}
-}	
-
-?>
+}

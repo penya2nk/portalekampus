@@ -157,5 +157,3 @@ class CKuesioner extends MainPageMHS {
         }
 	}    
 }
-
-?>

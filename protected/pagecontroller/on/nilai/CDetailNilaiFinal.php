@@ -274,6 +274,4 @@ class CDetailNilaiFinal extends MainPageON {
         unset($_SESSION['currentPageNilaiFinal']['DataNilai']);
         $this->redirect('nilai.NilaiFinal',true);
     }
-}	
-
-?>
+}

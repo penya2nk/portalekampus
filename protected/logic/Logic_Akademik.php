@@ -267,4 +267,3 @@ class Logic_Akademik extends Logic_Mahasiswa {
         return $result;  
     }    
 }
-?>

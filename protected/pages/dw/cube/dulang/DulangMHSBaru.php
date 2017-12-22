@@ -5,4 +5,3 @@ class DulangMHSBaru Extends CDulangMHSBaru {
 		parent::onLoad($param);							
     }
 }
-?>

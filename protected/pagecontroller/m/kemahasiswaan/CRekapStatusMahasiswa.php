@@ -222,4 +222,3 @@ class CRekapStatusMahasiswa Extends MainPageM {
         $this->modalPrintOut->show();
     }
 }
-?>

@@ -5,5 +5,3 @@ class TambahKRS extends CTambahKRS {
 		parent::onLoad($param);		        
 	} 
 }
-
-?>

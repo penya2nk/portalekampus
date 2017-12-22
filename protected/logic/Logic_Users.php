@@ -117,4 +117,3 @@ class Logic_Users extends Logic_Global {
 		}
 	}
 }
-?>

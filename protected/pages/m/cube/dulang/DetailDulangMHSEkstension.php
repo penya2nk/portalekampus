@@ -56,4 +56,3 @@ class DetailDulangMHSEkstension Extends MainPageM {
         $this->redirect('dulang.DulangMHSEkstension',true);
     }
 }
-?>

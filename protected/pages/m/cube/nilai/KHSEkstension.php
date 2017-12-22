@@ -450,4 +450,3 @@ class KHSEkstension extends MainPageM {
         $objReport->setLink($objReport->dataReport['linkoutput'],"Summary KHS T.A $nama_tahun Semester $nama_semester");
     }
 }
-?>

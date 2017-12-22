@@ -37,4 +37,3 @@ class DetailPembayaranPiutangSemesterGanjil Extends CDetailPembayaranPiutangSeme
 		}		
 	}
 }
-?>

@@ -279,4 +279,3 @@ class UserManager extends TAuthManager {
         
 	}
 }
-?>

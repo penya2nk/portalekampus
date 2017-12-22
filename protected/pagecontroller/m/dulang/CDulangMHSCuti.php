@@ -177,4 +177,3 @@ class CDulangMHSCuti Extends MainPageM {
         $this->modalPrintOut->show();
     }
 }
-?>

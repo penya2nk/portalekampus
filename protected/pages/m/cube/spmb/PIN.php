@@ -5,5 +5,3 @@ class PIN extends CPIN {
 		parent::onLoad($param);			        
 	}
 }
-
-?>

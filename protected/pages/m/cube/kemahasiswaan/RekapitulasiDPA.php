@@ -5,4 +5,3 @@ class RekapitulasiDPA extends CRekapitulasiDPA {
 		parent::onLoad($param);
 	}
 }
-?>

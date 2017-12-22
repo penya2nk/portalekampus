@@ -5,5 +5,3 @@ class Kuesioner extends CKuesioner {
 		parent::onLoad($param);		        
 	}    
 }
-
-?>

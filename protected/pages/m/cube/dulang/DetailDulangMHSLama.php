@@ -5,4 +5,3 @@ class DetailDulangMHSLama Extends CDetailDulangMHSLama {
 		parent::onLoad($param);							
     }   
 }
-?>

@@ -100,4 +100,3 @@ class LogicFactory extends TModule {
 		}
 	}
 }
-?>

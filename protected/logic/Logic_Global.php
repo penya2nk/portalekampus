@@ -154,4 +154,3 @@ class Logic_Global extends TModule {
 		}
 	}
 }
-?>

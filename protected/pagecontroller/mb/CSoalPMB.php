@@ -212,5 +212,3 @@ class CSoalPMB extends MainPageMB {
         
     } 
 }
-
-?>

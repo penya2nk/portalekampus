@@ -974,5 +974,3 @@ class Logic_ReportSPMB extends Logic_Report {
     }
     
 }
-?>
-

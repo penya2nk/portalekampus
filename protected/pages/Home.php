@@ -33,4 +33,3 @@ class Home extends MainPageF {
         }
     }
 }
-		

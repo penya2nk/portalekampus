@@ -37,6 +37,4 @@ class CTranskripSementara extends MainPageMHS {
         $this->lblPrintout->Text='Transkrip Sementara';
         $this->modalPrintOut->show();
 	}
-}	
-
-?>
+}

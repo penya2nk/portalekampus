@@ -17,5 +17,3 @@ class CRekening Extends MainPageK {
 		$this->RepeaterS->dataBind();
 	}	
 }
-
-?>

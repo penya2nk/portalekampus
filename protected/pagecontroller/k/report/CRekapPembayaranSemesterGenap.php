@@ -226,4 +226,3 @@ class CRekapPembayaranSemesterGenap Extends MainPageK {
         $this->modalPrintOut->show();
     }
 }
-?>

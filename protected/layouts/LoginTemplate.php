@@ -3,4 +3,3 @@
 class LoginTemplate extends TTemplateControl {
 
 }
-?>

@@ -5,5 +5,3 @@ class KRS extends CKRS {
 		parent::onLoad($param);		        
 	} 
 }
-
-?>

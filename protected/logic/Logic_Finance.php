@@ -248,4 +248,3 @@ class Logic_Finance extends Logic_Mahasiswa {
 		return $rupiah;
 	}
 }
-?>

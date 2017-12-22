@@ -5,4 +5,3 @@ class DulangMHSDropOut Extends CDulangMHSDropOut {
 		parent::onLoad($param);							
     }
 }
-?>

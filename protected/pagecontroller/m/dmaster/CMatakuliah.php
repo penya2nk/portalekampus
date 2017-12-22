@@ -329,4 +329,3 @@ class CMatakuliah extends MainPageM {
         $this->modalPrintOut->show();
     }
 }
-?>

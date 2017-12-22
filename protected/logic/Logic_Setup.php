@@ -474,4 +474,3 @@ class Logic_Setup extends Logic_Global {
         return $tipe;
     }
 }
-?>

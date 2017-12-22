@@ -200,5 +200,3 @@ class CKRS extends MainPageMHS {
         $this->modalPrintOut->show();
 	}
 }
-
-?>

@@ -5,5 +5,3 @@ class DetailPembagianKelas extends CDetailPembagianKelas {
 		parent::onLoad($param);		        			
 	}    
 }
-
-?>

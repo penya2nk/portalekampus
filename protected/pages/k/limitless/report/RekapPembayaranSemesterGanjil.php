@@ -5,4 +5,3 @@ class RekapPembayaranSemesterGanjil Extends CRekapPembayaranSemesterGanjil {
 		parent::onLoad($param);							
     }
 }
-?>

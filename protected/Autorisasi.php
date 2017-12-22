@@ -95,4 +95,3 @@ class Autorisasi extends TModule implements IUserManager {
 	
 	
 }
-?>

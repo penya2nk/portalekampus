@@ -5,5 +5,3 @@ class DetailPKRS extends CDetailPKRS {
 		parent::onLoad($param);		        
 	} 
 }
-
-?>

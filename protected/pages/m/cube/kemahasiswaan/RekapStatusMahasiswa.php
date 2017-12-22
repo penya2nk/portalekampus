@@ -5,4 +5,3 @@ class RekapStatusMahasiswa Extends CRekapStatusMahasiswa {
 		parent::onLoad($param);							
     }
 }
-?>

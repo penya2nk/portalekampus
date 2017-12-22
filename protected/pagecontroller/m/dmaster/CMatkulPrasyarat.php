@@ -90,4 +90,3 @@ class CMatkulPrasyarat extends MainPageM {
 		$this->redirect('dmaster.MatkulPrasyarat',true,array('id'=>$kmatkul));
 	}
 }
-?>

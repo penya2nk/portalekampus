@@ -151,4 +151,3 @@ class CPembayaranMahasiswaBaru Extends MainPageK {
 	}
 	
 }
-?>

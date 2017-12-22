@@ -114,4 +114,3 @@ class CPesertaKelas extends MainPageD {
         $this->modalPrintOut->show();
 	}
 }
-?>

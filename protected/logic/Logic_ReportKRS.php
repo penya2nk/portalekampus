@@ -590,4 +590,3 @@ class Logic_ReportKRS extends Logic_Report {
         $this->setLink($this->dataReport['linkoutput'],"Kartu Ujian Mahasiswa T.A $nama_tahun Semester $nama_semester");
     }
 }
-?>

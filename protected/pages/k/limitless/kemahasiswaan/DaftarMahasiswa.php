@@ -5,4 +5,3 @@ class DaftarMahasiswa extends CDaftarMahasiswa {
 		parent::onLoad($param);						      
 	}    
 }
-?>

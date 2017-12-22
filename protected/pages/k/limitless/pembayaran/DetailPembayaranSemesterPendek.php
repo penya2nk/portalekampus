@@ -26,4 +26,3 @@ class DetailPembayaranSemesterPendek Extends CDetailPembayaranSemesterPendek {
         }	
 	}
 }
-?>

@@ -113,4 +113,3 @@ class CPengumuman extends MainPageMHS {
         $this->redirect('forum.DetailPengumuman', true, array('id'=>$id));
     }
 }
-?>

@@ -37,6 +37,4 @@ class CTranskripKurikulum extends MainPageMHS {
         $this->lblPrintout->Text='Transkrip Kurikulum';
         $this->modalPrintOut->show();
 	}
-}	
-
-?>
+}

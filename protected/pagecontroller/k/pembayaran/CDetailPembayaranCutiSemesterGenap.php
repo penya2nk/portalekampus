@@ -176,5 +176,3 @@ class CDetailPembayaranCutiSemesterGenap Extends MainPageK {
         $this->redirect('pembayaran.PembayaranCutiSemesterGenap',true);
     }
 }
-
-?>

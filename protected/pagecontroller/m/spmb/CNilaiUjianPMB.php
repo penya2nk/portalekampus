@@ -293,5 +293,3 @@ class CNilaiUjianPMB extends MainPageM {
         $this->modalPrintOut->show();
     }
 }
-
-?>

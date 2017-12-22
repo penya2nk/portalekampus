@@ -110,4 +110,3 @@ class CTA extends MainPageSA {
 	}
 	
 }
-?>

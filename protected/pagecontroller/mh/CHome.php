@@ -26,6 +26,4 @@ class CHome extends MainPageMHS {
         unset($_SESSION['currentPageHome']);
         $this->redirect('Home',true);
     }
-    
 }
-?>

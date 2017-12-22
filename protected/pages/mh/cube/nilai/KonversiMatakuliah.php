@@ -4,6 +4,4 @@ class KonversiMatakuliah extends CKonversiMatakuliah {
 	public function onLoad($param) {
 		parent::onLoad($param);							
     }
-}	
-
-?>
+}

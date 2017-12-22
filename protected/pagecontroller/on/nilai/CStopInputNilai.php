@@ -141,5 +141,3 @@ class CStopInputNilai extends MainPageON{
         $this->populateData($_SESSION['currentPageStopInputNilai']['search']);
 	}
 }
-
-?>

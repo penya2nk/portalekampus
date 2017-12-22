@@ -4,6 +4,4 @@ class DetailNilaiFinal extends CDetailNilaiFinal {
 	public function onLoad($param) {
 		parent::onLoad($param);				
     } 
-}	
-
-?>
+}

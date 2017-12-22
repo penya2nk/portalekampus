@@ -391,5 +391,3 @@ class Logic_ReportKuesioner extends Logic_Report {
         $this->setLink($this->dataReport['linkoutput'],"Hasil Kuesioner Dosen T.A $nama_tahun Semester $nama_semester");    
     }
 }
-?>
-

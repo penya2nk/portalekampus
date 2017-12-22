@@ -5,5 +5,3 @@ class KuesionerDetailDosen extends CKuesionerDetailDosen {
 		parent::onLoad($param);		
     }
 }
-
-?>

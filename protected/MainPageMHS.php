@@ -27,4 +27,3 @@ class MainPageMHS extends MainPage {
         }
 	}   
 }
-?>

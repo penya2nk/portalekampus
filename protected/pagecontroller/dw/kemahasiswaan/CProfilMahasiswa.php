@@ -166,4 +166,3 @@ class CProfilMahasiswa extends MainPageDW {
         $this->modalMessage->show();
     }
 }
-?>

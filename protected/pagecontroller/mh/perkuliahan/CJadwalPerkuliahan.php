@@ -95,5 +95,3 @@ class CJadwalPerkuliahan extends MainPageMHS {
         $this->redirect ('perkuliahan.DetailJadwalPerkuliahan',true);
 	}	
 }
-
-?>

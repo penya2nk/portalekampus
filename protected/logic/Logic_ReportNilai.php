@@ -2497,4 +2497,3 @@ class Logic_ReportNilai extends Logic_Report {
         $this->setLink($this->dataReport['linkoutput'],"Format Evaluasi Hasil Belajar");
     }
 }
-?>

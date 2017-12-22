@@ -85,4 +85,3 @@ class CDetailDulangMHSNonAktif Extends MainPageM {
         $this->redirect('dulang.DulangMHSNonAktif',true);
     }
 }
-?>

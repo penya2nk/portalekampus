@@ -110,4 +110,3 @@ class CDulangMHSBaru Extends MainPageDW {
         $this->paginationInfo->Text=$this->getInfoPaging($this->RepeaterS);
 	}	
 }
-?>

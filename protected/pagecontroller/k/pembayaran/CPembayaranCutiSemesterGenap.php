@@ -101,5 +101,3 @@ class CPembayaranCutiSemesterGenap Extends MainPageK {
         }					
 	}
 }
-
-?>

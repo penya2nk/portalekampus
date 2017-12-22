@@ -214,5 +214,3 @@ class DetailKRSEkstension extends MainPageM {
         $this->modalPrintOut->show();
 	}
 }
-
-?>

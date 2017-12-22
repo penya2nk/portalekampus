@@ -5,4 +5,3 @@ class UserON extends CUserON {
 		parent::onLoad($param);		               		
 	}     
 }
-?>

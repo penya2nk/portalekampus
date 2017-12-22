@@ -5,4 +5,3 @@ class UserSA extends CUserSA {
 		parent::onLoad($param);		               		
 	}     
 }
-?>

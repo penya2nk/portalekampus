@@ -5,4 +5,3 @@ class UserManajemen extends CUserManajemen {
 		parent::onLoad($param);		               		
 	}     
 }
-?>

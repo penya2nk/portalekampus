@@ -5,4 +5,3 @@ class PembayaranFormulir Extends CPembayaranFormulir {
 		parent::onLoad($param);							
     }
 }
-?>

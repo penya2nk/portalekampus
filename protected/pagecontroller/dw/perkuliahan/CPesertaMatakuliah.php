@@ -174,4 +174,3 @@ class CPesertaMatakuliah extends MainPageM {
 	}
 
 }
-?>

@@ -186,5 +186,3 @@ class CDetailPKRS extends MainPageDW {
         $this->modalPrintOut->show();
 	}
 }
-
-?>

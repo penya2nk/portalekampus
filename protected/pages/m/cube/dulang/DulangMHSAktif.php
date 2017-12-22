@@ -5,4 +5,3 @@ class DulangMHSAktif Extends CDulangMHSAktif {
 		parent::onLoad($param);							
     }
 }
-?>

@@ -335,4 +335,3 @@ class CKHS extends MainPageM {
 	}
     
 }
-?>

@@ -5,5 +5,3 @@ class Penyelenggaraan extends CPenyelenggaraan {
 		parent::onLoad($param);		        			
 	}    
 }
-
-?>

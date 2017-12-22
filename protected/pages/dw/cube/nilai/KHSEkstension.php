@@ -283,4 +283,3 @@ class KHSEkstension extends MainPageDW {
         $this->modalPrintOut->show();
 	}
 }
-?>

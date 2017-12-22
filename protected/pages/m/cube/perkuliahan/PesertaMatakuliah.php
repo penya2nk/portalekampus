@@ -5,4 +5,3 @@ class PesertaMatakuliah extends CPesertaMatakuliah {
 		parent::onLoad($param);				        
     }
 }
-?>

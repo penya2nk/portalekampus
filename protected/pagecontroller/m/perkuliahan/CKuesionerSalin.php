@@ -66,7 +66,4 @@ class CKuesionerSalin extends MainPageM {
             }
         }
 	}
-	
 }
-
-?>

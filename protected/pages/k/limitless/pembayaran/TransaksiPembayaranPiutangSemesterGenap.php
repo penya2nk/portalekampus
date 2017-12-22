@@ -36,4 +36,3 @@ class TransaksiPembayaranPiutangSemesterGenap Extends CTransaksiPembayaranPiutan
         
     }
 }
-?>

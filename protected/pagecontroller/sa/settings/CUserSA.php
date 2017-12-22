@@ -188,4 +188,3 @@ class CUserSA extends MainPageSA {
     }   
     
 }
-?>

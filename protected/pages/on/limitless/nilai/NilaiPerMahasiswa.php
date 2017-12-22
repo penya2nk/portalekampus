@@ -4,6 +4,4 @@ class NilaiPerMahasiswa extends CNilaiPerMahasiswa {
 	public function onLoad($param) {
 		parent::onLoad($param);							
     }
-}	
-
-?>
+}

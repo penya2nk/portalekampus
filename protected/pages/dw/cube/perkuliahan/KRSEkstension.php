@@ -368,5 +368,3 @@ class KRSEkstension Extends MainPageDW {
         $this->modalPrintOut->show();
 	}    
 }
-
-?>

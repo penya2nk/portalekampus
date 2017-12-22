@@ -145,6 +145,4 @@ class CImportNilai extends MainPageD {
         $this->lblPrintout->Text='Daftar Peserta Matakuliah';
         $this->modalPrintOut->show();
     }
-}	
-
-?>
+}

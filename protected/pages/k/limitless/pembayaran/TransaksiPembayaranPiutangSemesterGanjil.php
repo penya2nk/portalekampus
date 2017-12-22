@@ -36,4 +36,3 @@ class TransaksiPembayaranPiutangSemesterGanjil Extends CTransaksiPembayaranPiuta
         
     }
 }
-?>

@@ -36,4 +36,3 @@ class TransaksiPembayaranMahasiswaBaru Extends CTransaksiPembayaranMahasiswaBaru
         
     }
 }
-?>

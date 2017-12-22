@@ -302,4 +302,3 @@ class CProfilMahasiswa extends MainPageM {
 		}
 	}
 }
-?>

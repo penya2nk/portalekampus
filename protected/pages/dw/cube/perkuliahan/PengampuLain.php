@@ -5,5 +5,3 @@ class PengampuLain extends CPengampuLain {
 		parent::onLoad($param);				
 	}		
 }
-
-?>

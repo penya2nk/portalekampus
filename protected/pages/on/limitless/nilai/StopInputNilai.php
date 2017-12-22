@@ -5,5 +5,3 @@ class StopInputNilai extends CStopInputNilai {
 		parent::onLoad($param);		
     } 
 }
-
-?>

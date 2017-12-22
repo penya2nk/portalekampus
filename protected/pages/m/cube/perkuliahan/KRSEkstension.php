@@ -364,5 +364,3 @@ class KRSEkstension Extends MainPageM {
         $this->modalPrintOut->show();
 	}    
 }
-
-?>

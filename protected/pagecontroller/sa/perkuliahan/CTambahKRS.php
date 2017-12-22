@@ -130,5 +130,3 @@ class CTambahKRS extends MainPageSA {
         $this->redirect ('perkuliahan.KRS',true);
     }
 }
-
-?>

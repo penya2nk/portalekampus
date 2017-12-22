@@ -5,4 +5,3 @@ class DetailDulangMHSLulus Extends CDetailDulangMHSLulus {
 		parent::onLoad($param);							
     }   
 }
-?>

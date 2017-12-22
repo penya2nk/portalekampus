@@ -134,4 +134,3 @@ class DulangMHSEkstension Extends MainPageDW {
         $this->paginationInfo->Text=$this->getInfoPaging($this->RepeaterS);
 	}
 }
-?>

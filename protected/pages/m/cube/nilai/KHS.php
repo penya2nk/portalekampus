@@ -5,4 +5,3 @@ class KHS extends CKHS {
 		parent::onLoad($param);	 	
     }    
 }
-?>

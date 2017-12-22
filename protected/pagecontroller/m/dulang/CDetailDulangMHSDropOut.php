@@ -99,4 +99,3 @@ class CDetailDulangMHSDropOut Extends MainPageM {
         $this->redirect('dulang.DulangMHSDropOut',true);
     }
 }
-?>

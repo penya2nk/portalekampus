@@ -48,5 +48,3 @@ class CKaprodi extends MainPageSA {
 	
 	
 }
-
-?>

@@ -5,4 +5,3 @@ class Dosen extends CDosen {
 		parent::onLoad($param);		               		
 	}     
 }
-?>

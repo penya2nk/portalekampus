@@ -252,5 +252,3 @@ class CNilaiFinal extends MainPageON {
         }
 	}
 }
-
-?>

@@ -62,4 +62,3 @@ class Logic_Kuesioner extends Logic_Akademik {
     }
     
 }
-?>

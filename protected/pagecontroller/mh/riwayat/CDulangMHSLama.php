@@ -52,4 +52,3 @@ class CDulangMHSLama Extends MainPageMHS {
 		$this->RepeaterDulang->dataBind();
     }
 }
-?>

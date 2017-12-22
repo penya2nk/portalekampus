@@ -5,4 +5,3 @@ class DetailPembayaranCutiSemesterGanjil Extends CDetailPembayaranCutiSemesterGa
 		parent::onLoad($param);							
     }
 }
-?>

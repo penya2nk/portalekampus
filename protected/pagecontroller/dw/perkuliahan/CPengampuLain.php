@@ -36,5 +36,3 @@ class CPengampuLain extends MainPageDW {
 	}    
    
 }
-
-?>

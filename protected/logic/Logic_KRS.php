@@ -149,5 +149,3 @@ class Logic_KRS extends Logic_Akademik {
 		$this->db->updateRecord($str);	
 	}
 }
-?>
-		

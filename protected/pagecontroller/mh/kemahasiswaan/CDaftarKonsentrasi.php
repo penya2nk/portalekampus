@@ -46,4 +46,3 @@ class CDaftarKonsentrasi extends MainPageMHS {
         }
     }
 }
-?>

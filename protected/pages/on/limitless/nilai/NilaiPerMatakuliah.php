@@ -5,4 +5,3 @@ class NilaiPerMatakuliah extends CNilaiPerMatakuliah {
 		parent::onLoad($param);				        
     }
 }
-?>

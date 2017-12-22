@@ -214,4 +214,3 @@ class Logic_Mahasiswa extends Logic_Global {
         }	
 	}
 }
-?>

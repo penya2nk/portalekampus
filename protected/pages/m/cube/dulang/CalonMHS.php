@@ -5,4 +5,3 @@ class CalonMHS Extends CCalonMHS {
 		parent::onLoad($param);							
     }
 }
-?>

@@ -208,5 +208,3 @@ class CDaftarPertanyaan extends MainPageM {
 		
 	}
 }
-
-?>

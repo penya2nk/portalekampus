@@ -76,8 +76,4 @@ class CPembayaranSemesterGenap Extends MainPageMHS {
 
 		}		
 	}	
-	
-    
-	
 }
-?>

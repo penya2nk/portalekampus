@@ -186,4 +186,3 @@ class CCalonMHS Extends MainPageM {
         
     }
 }
-?>

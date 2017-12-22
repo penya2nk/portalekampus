@@ -5,4 +5,3 @@ class PendaftaranKonsentrasi extends CPendaftaranKonsentrasi {
 		parent::onLoad($param);						        		
 	}    
 }
-?>

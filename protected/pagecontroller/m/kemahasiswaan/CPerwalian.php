@@ -170,4 +170,3 @@ class CPerwalian extends MainPageM {
     }
 	
 }
-?>

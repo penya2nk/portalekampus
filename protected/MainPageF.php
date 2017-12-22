@@ -13,4 +13,3 @@ class MainPageF extends MainPage {
         }
 	}           
 }
-?>

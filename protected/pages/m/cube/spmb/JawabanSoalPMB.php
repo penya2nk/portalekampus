@@ -5,5 +5,3 @@ class JawabanSoalPMB extends CJawabanSoalPMB {
         parent::onLoad ($param);                    
     }    
 }
-
-?>

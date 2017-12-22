@@ -4,6 +4,4 @@ class DetailNilaiDosen extends CDetailNilaiDosen {
    	public function onLoad($param) {
 		parent::onLoad($param);							
     }
-}	
-
-?>
+}

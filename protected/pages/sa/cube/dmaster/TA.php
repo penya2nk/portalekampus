@@ -5,4 +5,3 @@ class TA extends CTA {
 		parent::onLoad ($param);		
 	}
 }
-?>

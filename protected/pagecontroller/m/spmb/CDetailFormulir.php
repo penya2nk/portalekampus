@@ -147,5 +147,3 @@ class CDetailFormulir extends MainPageM {
         }
     }
 }
-?>
-

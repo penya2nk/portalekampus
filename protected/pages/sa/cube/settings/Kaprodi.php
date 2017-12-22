@@ -5,5 +5,3 @@ class Kaprodi extends CKaprodi {
 		parent::onLoad($param);	
 	}
 }
-
-?>

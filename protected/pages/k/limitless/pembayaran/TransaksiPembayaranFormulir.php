@@ -19,4 +19,3 @@ class TransaksiPembayaranFormulir Extends CTransaksiPembayaranFormulir {
         
     }
 }
-?>

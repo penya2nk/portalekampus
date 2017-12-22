@@ -85,6 +85,4 @@ class CDetailTranskripKRS extends MainPageDW {
         $this->lblPrintout->Text='Transkrip KRS';
         $this->modalPrintOut->show();
 	}
-}	
-
-?>
+}

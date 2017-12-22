@@ -106,4 +106,3 @@ class CDetailDulangMHSKeluar Extends MainPageM {
         $this->redirect('dulang.DulangMHSKeluar',true);
     }
 }
-?>

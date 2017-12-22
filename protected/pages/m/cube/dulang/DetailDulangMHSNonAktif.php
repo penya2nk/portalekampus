@@ -5,4 +5,3 @@ class DetailDulangMHSNonAktif Extends CDetailDulangMHSNonAktif {
 		parent::onLoad($param);							
     }   
 }
-?>

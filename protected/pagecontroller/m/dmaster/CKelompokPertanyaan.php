@@ -89,4 +89,3 @@ class CKelompokPertanyaan extends MainPageM {
         
     }        
 }
-?>

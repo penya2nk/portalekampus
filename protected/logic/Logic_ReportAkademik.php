@@ -1598,5 +1598,3 @@ class Logic_ReportAkademik extends Logic_Report {
         $this->setLink($this->dataReport['linkoutput'],"Daftar Mahasiswa Daftar Ulang KELUAR");
     }
 }
-?>
-

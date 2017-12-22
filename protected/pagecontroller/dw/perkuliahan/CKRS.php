@@ -360,5 +360,3 @@ class CKRS Extends MainPageDW {
         $this->modalPrintOut->show();
 	}    
 }
-
-?>

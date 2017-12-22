@@ -235,4 +235,3 @@ class CNilaiPerMatakuliah extends MainPageON {
         }		
 	}	
 }
-?>

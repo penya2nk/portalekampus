@@ -5,5 +5,3 @@ class FormulirPendaftaran extends CFormulirPendaftaran {
 		parent::onLoad($param);			        
 	}
 }
-
-?>

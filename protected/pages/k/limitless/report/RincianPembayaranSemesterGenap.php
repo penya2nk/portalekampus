@@ -5,4 +5,3 @@ class RincianPembayaranSemesterGenap Extends CRincianPembayaranSemesterGenap {
 		parent::onLoad($param);							
     }
 }
-?>

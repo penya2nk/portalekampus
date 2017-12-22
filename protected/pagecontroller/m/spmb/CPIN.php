@@ -161,4 +161,3 @@ class CPIN extends MainPageM {
         $this->modalPrintOut->show();
      }
 }
-?>

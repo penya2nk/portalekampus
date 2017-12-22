@@ -226,4 +226,3 @@ class CRincianPembayaranSemesterGenap Extends MainPageK {
         $this->modalPrintOut->show();
     }
 }
-?>

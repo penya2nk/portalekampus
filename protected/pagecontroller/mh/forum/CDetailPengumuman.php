@@ -63,4 +63,3 @@ class CDetailPengumuman extends MainPageMHS {
         }
     }
 }
-?>

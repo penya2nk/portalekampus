@@ -318,4 +318,3 @@ class Logic_ReportFinance extends Logic_Report {
         $this->setLink($this->dataReport['linkoutput'],"Laporan Rekapitiulasi Pembayaran Semester");
     }
 }
-?>

@@ -250,4 +250,3 @@ class CDaftarMahasiswa extends MainPageK {
         $this->modalPrintOut->show();
     }
 }
-?>

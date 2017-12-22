@@ -236,5 +236,3 @@ class CTranskripFinal extends MainPageM {
         }
 	}   
 }
-
-?>

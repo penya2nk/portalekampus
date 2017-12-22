@@ -160,4 +160,3 @@ class CPengumuman extends MainPageM {
         $this->redirect('forum.DetailPengumuman', true, array('id'=>$id));
     }
 }
-?>

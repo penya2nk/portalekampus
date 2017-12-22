@@ -261,4 +261,3 @@ class CDulangMHSKeluar Extends MainPageM {
         $this->modalPrintOut->show();
     }
 }
-?>

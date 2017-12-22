@@ -4,6 +4,4 @@ class DetailTranskripFinal extends CDetailTranskripFinal {
 	public function onLoad($param) {
 		parent::onLoad($param);				
     } 
-}	
-
-?>
+}

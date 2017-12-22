@@ -455,5 +455,3 @@ class CFormulirPendaftaran extends MainPageMB {
         }
     }
 }
-
-?>

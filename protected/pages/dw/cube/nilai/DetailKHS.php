@@ -4,6 +4,4 @@ class DetailKHS extends CDetailKHS {
 	public function onLoad($param) {
 		parent::onLoad($param);							
     }
-}	
-
-?>
+}

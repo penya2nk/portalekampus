@@ -5,4 +5,3 @@ class DetailPengumuman extends CDetailPengumuman {
 		parent::onLoad($param);		                                   
     }
 }
-?>

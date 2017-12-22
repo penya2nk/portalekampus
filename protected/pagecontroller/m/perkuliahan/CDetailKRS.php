@@ -230,5 +230,3 @@ class CDetailKRS extends MainPageM {
         $this->modalPrintOut->show();
 	}
 }
-
-?>

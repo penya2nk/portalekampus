@@ -142,5 +142,3 @@ public function onLoad($param) {
         $this->modalPrintOut->show();
 	}
 }
-
-?>

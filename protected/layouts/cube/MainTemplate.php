@@ -57,4 +57,3 @@ class MainTemplate extends TTemplateControl {
     }
     
 }
-?>

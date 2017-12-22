@@ -258,4 +258,3 @@ class CDulangMHSAktif Extends MainPageM {
         $this->modalPrintOut->show();
     }
 }
-?>

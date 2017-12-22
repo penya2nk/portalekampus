@@ -5,4 +5,3 @@ class PembayaranMahasiswaBaru Extends CPembayaranMahasiswaBaru {
 		parent::onLoad($param);							
     }
 }
-?>

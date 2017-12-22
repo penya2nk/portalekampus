@@ -19,4 +19,3 @@ class MainPageMB extends MainPage {
         }
 	}   
 }
-?>

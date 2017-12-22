@@ -183,5 +183,3 @@ class CNilaiPerMahasiswa extends MainPageON {
         $this->redirect('nilai.NilaiPerMahasiswa',true);
     }
 }
-
-?>

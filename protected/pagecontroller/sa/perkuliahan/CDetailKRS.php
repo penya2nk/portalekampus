@@ -222,5 +222,3 @@ class CDetailKRS extends MainPageSA {
         $this->modalPrintOut->show();
 	}
 }
-
-?>

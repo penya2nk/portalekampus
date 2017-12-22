@@ -76,6 +76,4 @@ class CPembayaranSemesterGanjil Extends MainPageMHS {
 
 		}		
 	}	
-		
 }
-?>

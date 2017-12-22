@@ -69,6 +69,4 @@ class CDetailTranskripKurikulum extends MainPageDW {
         $this->lblPrintout->Text='Transkrip Kurikulum';
         $this->modalPrintOut->show();
 	}
-}	
-
-?>
+}

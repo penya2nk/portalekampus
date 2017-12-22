@@ -5,4 +5,3 @@ class DetailPembayaranCutiSemesterGenap Extends CDetailPembayaranCutiSemesterGen
 		parent::onLoad($param);							
     }
 }
-?>

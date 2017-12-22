@@ -5,5 +5,3 @@ class NilaiFinal extends CNilaiFinal {
 		parent::onLoad($param);		
     }        
 }
-
-?>

@@ -5,4 +5,3 @@ class KUM extends CKUM {
 		parent::onLoad($param);		                                   
     }
 }
-?>

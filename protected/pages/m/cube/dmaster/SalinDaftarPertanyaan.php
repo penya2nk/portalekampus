@@ -5,5 +5,3 @@ class SalinDaftarPertanyaan extends CSalinDaftarPertanyaan {
 		parent::onLoad($param);		        
 	}	
 }
-
-?>

@@ -67,5 +67,3 @@ class CSalinDaftarPertanyaan extends MainPageM {
 	}
 	
 }
-
-?>

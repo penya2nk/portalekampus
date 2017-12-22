@@ -5,5 +5,3 @@ class PembagianKelas extends CPembagianKelas {
 		parent::onLoad($param);		        			
 	}    
 }
-
-?>

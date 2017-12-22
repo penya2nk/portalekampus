@@ -5,5 +5,3 @@ class TranskripKurikulum extends CTranskripKurikulum {
 		parent::onLoad($param);							
     }
 }	
-
-?>

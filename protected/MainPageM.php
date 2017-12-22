@@ -142,4 +142,3 @@ class MainPageM extends MainPage {
         }
 	}
 }
-?>

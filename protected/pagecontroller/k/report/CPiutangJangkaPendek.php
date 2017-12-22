@@ -231,4 +231,3 @@ class CPiutangJangkaPendek extends MainPageK {
         $this->modalPrintOut->show();
     }
 }
-?>

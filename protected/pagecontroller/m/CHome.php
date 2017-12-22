@@ -93,4 +93,3 @@ class CHome extends MainPageM {
         $this->redirect('Home',true);
     }
 }
-?>

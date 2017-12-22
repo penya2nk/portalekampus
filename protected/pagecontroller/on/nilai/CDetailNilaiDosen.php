@@ -55,5 +55,4 @@ class CDetailNilaiDosen extends MainPageON {
         $this->linkOutput->NavigateUrl='#';
         
     }
-}	
-?>
+}

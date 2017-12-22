@@ -5,4 +5,3 @@ class Perwalian extends CPerwalian {
 		parent::onLoad($param);
 	}
 }
-?>

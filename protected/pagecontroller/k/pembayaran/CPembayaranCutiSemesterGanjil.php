@@ -101,5 +101,3 @@ class CPembayaranCutiSemesterGanjil Extends MainPageK {
         }					
 	}
 }
-
-?>

@@ -66,4 +66,3 @@ class MainPageSA extends MainPage {
         }
 	}           
 }
-?>

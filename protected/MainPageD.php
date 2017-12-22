@@ -15,4 +15,3 @@ class MainPageD extends MainPage {
         }
 	}   
 }
-?>

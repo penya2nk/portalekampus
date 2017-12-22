@@ -116,5 +116,3 @@ class CPengampuLain extends MainPageSA {
 		$this->redirect('perkuliahan.PengampuLain',true,array('id'=>$idpenyelenggaraan));
 	}	
 }
-
-?>

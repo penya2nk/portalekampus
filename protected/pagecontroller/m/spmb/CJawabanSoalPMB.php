@@ -95,5 +95,3 @@ class CJawabanSoalPMB extends MainPageM {
 		}
 	}            
 }
-
-?>

@@ -5,5 +5,3 @@ class TranskripFinal extends CTranskripFinal {
 		parent::onLoad($param);		
     }        
 }
-
-?>

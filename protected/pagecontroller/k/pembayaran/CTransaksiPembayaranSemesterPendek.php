@@ -196,4 +196,3 @@ class CTransaksiPembayaranSemesterPendek Extends MainPageK {
         $this->redirect('pembayaran.PembayaranSemesterPendek',true);
     }
 }
-?>

@@ -5,4 +5,3 @@ class KelompokPertanyaan extends CKelompokPertanyaan {
 		parent::onLoad($param);	    
 	}           
 }
-?>

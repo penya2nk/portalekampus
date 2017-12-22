@@ -172,5 +172,3 @@ class CDetailKRS extends MainPageDW {
         $this->modalPrintOut->show();
 	}
 }
-
-?>

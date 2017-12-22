@@ -37,6 +37,4 @@ class CTranskripKRS extends MainPageMHS {
         $this->lblPrintout->Text='Transkrip KRS';
         $this->modalPrintOut->show();
 	}
-}	
-
-?>
+}

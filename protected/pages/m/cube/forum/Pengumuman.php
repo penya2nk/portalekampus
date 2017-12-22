@@ -5,4 +5,3 @@ class Pengumuman extends CPengumuman {
 		parent::onLoad($param);		                                   
     }
 }
-?>

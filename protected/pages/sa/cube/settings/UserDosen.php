@@ -5,4 +5,3 @@ class UserDosen extends CUserDosen {
 		parent::onLoad($param);		               		
 	}     
 }
-?>

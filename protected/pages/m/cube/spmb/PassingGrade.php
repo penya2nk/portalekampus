@@ -5,5 +5,3 @@ class PassingGrade extends CPassingGrade {
 		parent::onLoad($param);			        
 	}
 }
-
-?>

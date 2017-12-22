@@ -37,4 +37,3 @@ class CHome extends MainPageK {
         CHome::$TotalPembayaranMahasiswa = $totalpembayaranmahasiswa;
     }
 }
-?>

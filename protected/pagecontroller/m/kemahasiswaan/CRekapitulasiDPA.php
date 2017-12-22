@@ -110,4 +110,3 @@ class CRekapitulasiDPA extends MainPageM {
 		$this->RepeaterS->dataBind();     
 	}    
 }
-?>

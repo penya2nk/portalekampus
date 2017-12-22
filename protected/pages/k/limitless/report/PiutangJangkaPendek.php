@@ -5,4 +5,3 @@ class PiutangJangkaPendek extends CPiutangJangkaPendek {
 		parent::onLoad($param);						      
 	}    
 }
-?>

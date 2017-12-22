@@ -4,6 +4,4 @@ class DetailEditNilai extends CDetailEditNilai {
    	public function onLoad($param) {
 		parent::onLoad($param);							
     }
-}	
-
-?>
+}

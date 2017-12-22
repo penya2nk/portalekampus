@@ -5,4 +5,3 @@ class DulangMHSCuti Extends CDulangMHSCuti {
 		parent::onLoad($param);							
     }
 }
-?>

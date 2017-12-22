@@ -49,4 +49,3 @@ class MainPageDW extends MainPage {
         }
 	}   
 }
-?>

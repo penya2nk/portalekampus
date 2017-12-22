@@ -5,4 +5,3 @@ class Diskusi extends CDiskusi {
 		parent::onLoad($param);		                                   
     }
 }
-?>

@@ -147,5 +147,4 @@ class CDetailEditNilai extends MainPageD {
         $this->linkOutput->NavigateUrl='#';
         
     }
-}	
-?>
+}

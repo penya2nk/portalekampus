@@ -5,4 +5,3 @@ class DulangMHSNonAktifMassal Extends CDulangMHSNonAktifMassal {
 		parent::onLoad($param);							
     }
 }
-?>

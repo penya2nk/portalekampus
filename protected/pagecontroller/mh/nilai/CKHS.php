@@ -103,4 +103,3 @@ class CKHS extends MainPageMHS {
         $this->modalPrintOut->show();
 	}
 }
-?>

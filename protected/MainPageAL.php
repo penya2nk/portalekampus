@@ -6,4 +6,3 @@ class MainPageAL extends MainPage {
         }
 	}           
 }
-?>

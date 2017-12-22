@@ -4,6 +4,4 @@ class DetailTranskripKRS extends CDetailTranskripKRS {
 	public function onLoad($param) {
 		parent::onLoad($param);									
 	}
-}	
-
-?>
+}

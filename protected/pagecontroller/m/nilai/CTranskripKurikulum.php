@@ -187,5 +187,3 @@ class CTranskripKurikulum extends MainPageM {
         $this->modalPrintOut->show();
 	}
 }
-
-?>

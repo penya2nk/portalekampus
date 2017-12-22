@@ -56,4 +56,3 @@ class Logic_Log extends Logic_Users {
 		$this->db->insertRecord($str);
 	}
 }
-?>

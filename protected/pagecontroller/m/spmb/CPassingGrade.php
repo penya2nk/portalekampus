@@ -125,5 +125,3 @@ class CPassingGrade extends MainPageM {
         $this->populateData ();
      }
 }
-
-?>

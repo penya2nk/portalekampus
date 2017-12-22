@@ -5,4 +5,3 @@ class SoalPMB extends CSoalPMB {
 		parent::onLoad($param);		        
 	}
 }
-?>

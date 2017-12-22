@@ -204,5 +204,3 @@ class CPembagianKelas extends MainPageM {
         $this->modalPrintOut->show();
 	}
 }
-
-?>

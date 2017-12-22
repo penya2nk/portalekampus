@@ -186,5 +186,3 @@ class CTranskripKRS extends MainPageDW {
         $this->modalPrintOut->show();
 	}
 }
-
-?>

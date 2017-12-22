@@ -738,5 +738,3 @@ class Logic_Nilai extends Logic_Akademik {
         return $jumlahsks;
 	}    
 }
-?>
-		

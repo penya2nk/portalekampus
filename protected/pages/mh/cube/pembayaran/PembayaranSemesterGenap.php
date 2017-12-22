@@ -5,4 +5,3 @@ class PembayaranSemesterGenap Extends CPembayaranSemesterGenap {
 		parent::onLoad($param);							
     }
 }
-?>

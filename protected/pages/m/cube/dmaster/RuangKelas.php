@@ -5,4 +5,3 @@ class RuangKelas Extends CRuangKelas {
 		parent::onLoad($param);				
     }
 }
-?>

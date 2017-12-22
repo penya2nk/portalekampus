@@ -5,5 +5,3 @@ class PKRS extends CPKRS {
 		parent::onLoad($param);		        
 	} 
 }
-
-?>

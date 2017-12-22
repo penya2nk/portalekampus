@@ -448,5 +448,3 @@ class CFormulirPendaftaran extends MainPageM {
         $this->modalPrintOut->show();
 	}
 }
-
-?>

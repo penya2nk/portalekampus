@@ -226,4 +226,3 @@ class CRekapPembayaranSemesterGanjil Extends MainPageK {
         $this->modalPrintOut->show();
     }
 }
-?>

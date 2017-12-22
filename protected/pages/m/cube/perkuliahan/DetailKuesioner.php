@@ -5,5 +5,3 @@ class DetailKuesioner extends CDetailKuesioner {
 		parent::onLoad($param);		        
 	} 
 }
-
-?>

@@ -5,4 +5,3 @@ class UserKeuangan extends CUserKeuangan {
 		parent::onLoad($param);		               		
 	}     
 }
-?>

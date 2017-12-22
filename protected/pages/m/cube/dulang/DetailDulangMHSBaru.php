@@ -48,4 +48,3 @@ class DetailDulangMHSBaru Extends CDetailDulangMHSBaru {
 		return $data;
 	}
 }
-?>

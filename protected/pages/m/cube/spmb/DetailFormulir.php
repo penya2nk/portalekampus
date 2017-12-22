@@ -5,4 +5,3 @@ class DetailFormulir extends CDetailFormulir {
 		parent::onLoad($param);						      
 	}    
 }
-?>

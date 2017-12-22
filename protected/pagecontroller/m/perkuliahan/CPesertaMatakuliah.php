@@ -246,4 +246,3 @@ class CPesertaMatakuliah extends MainPageM {
         $this->modalPrintOut->show();
      }
 }
-?>

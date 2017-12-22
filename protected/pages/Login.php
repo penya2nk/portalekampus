@@ -190,4 +190,3 @@ class Login extends MainPage {
         }
     }    
 }
-?>

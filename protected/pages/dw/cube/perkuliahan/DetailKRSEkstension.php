@@ -140,5 +140,3 @@ class DetailKRSEkstension extends MainPageDW {
         $this->modalPrintOut->show();
 	}
 }
-
-?>

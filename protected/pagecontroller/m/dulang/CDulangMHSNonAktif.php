@@ -256,4 +256,3 @@ class CDulangMHSNonAktif Extends MainPageM {
         $this->modalPrintOut->show();
     }
 }
-?>

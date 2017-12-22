@@ -126,6 +126,4 @@ class CDetailTranskripFinal extends MainPageM {
             $this->modalMessageError->show();
         }
 	}    
-}	
-
-?>
+}

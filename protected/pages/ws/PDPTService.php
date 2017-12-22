@@ -17,4 +17,3 @@ class PDPTService {
         return $value;
     }
 }
-?>

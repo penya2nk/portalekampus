@@ -5,5 +5,3 @@ class TranskripKRS extends CTranskripKRS {
 		parent::onLoad($param);		
     }
 }
-
-?>

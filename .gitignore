@@ -1,8 +1,12 @@
-/protected/runtime/
+/assets
+/exported
+/protected/lib
+/protected/runtime
 /protected/application.xml
-/exported/
-/nbproject/
 /themes/
-/framework_323/
-/assets/
 /index.php
+/.classpath
+/.project
+/.settings
+/.buildpath
+/.buildpath

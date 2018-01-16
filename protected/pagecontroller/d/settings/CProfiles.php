@@ -23,7 +23,7 @@ class CProfiles extends MainPageD {
             $theme=$this->cmbTheme->Text;
             $_SESSION['theme']=$theme;
             $userid=$this->Pengguna->getDataUser('userid');
-            $str = "UPDATE simak_user SET theme='$theme' WHERE userid=$userid";            
+            $str = "UPDATE user SET theme='$theme' WHERE userid=$userid";            
             $this->DB->updateRecord($str);
             $this->redirect('settings.Profiles',true);
         }

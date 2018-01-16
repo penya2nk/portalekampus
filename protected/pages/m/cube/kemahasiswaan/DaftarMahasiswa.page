@@ -73,11 +73,11 @@
                                 $('loading').show();
                             </prop:ClientSide.OnPreDispatch>
                             <prop:ClientSide.OnLoading>
-                                $('<%=$this->tbCmbKelas->ClientId%>').disabled='disabled';
+                                $('<%=$this->tbCmbStatus->ClientId%>').disabled='disabled';
                             </prop:ClientSide.OnLoading>
                             <prop:ClientSide.onComplete>
                                 $('loading').hide();
-                                $('<%=$this->tbCmbKelas->ClientId%>').disabled='';
+                                $('<%=$this->tbCmbStatus->ClientId%>').disabled='';
                             </prop:ClientSide.OnComplete>	
                         </com:TActiveDropDownList>
                     </div>

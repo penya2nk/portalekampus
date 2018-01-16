@@ -24,7 +24,7 @@ class CProfiles extends MainPageM {
             $theme=$this->cmbTheme->Text;
             $_SESSION['theme']=$theme;
             $userid=$this->Pengguna->getDataUser('userid');
-            $str = "UPDATE simak_user SET theme='$theme' WHERE userid=$userid";            
+            $str = "UPDATE user SET theme='$theme' WHERE userid=$userid";            
             $this->DB->updateRecord($str);
             $this->redirect('settings.Profiles',true);
         }
@@ -68,7 +68,7 @@ class CProfiles extends MainPageM {
             $this->imgPhotoUser->ImageUrl=$path; 
             $username=$this->Pengguna->getDataUser('username');
             $this->DB->updateRecord("UPDATE user SET foto='$path' WHERE username='$username'");
-            $this->DB->updateRecord("UPDATE simak_user SET foto='$path' WHERE username='$username'");
+            $this->DB->updateRecord("UPDATE user SET foto='$path' WHERE username='$username'");
             $_SESSION['foto']=$path;
         }else {                    
             //error handling

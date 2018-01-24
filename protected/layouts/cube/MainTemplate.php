@@ -41,13 +41,14 @@ class MainTemplate extends TTemplateControl {
     }
     public function getStatusUser() {
         $page = $this->Page->Pengguna->getDataUser('page');
+        $iconstatus='';
         switch ($page) {
             case 'mh' :
                 $statusmhs=$this->Page->DMaster->getNamaStatusMHSByID ($this->Page->Pengguna->getDataUser('k_status'));
-                $str='<i class="fa fa-circle"></i> '.$statusmhs;            
+                $icon='<i class="fa fa-circle"></i> '.$statusmhs;            
             break;
         }
-        return $str;
+        return $iconstatus;
     }
     public function logoutUser ($sender,$param) {
         if (!$this->User->isGuest) {

@@ -43,12 +43,14 @@ class CHome extends MainPageM {
         $totalpendaftaran=0;
         $totaldulang=0;
         $datamendaftar=$_SESSION['currentPageHome']['datamendaftar'];
+        $data1='';
         foreach ($datamendaftar as $tahun=>$jumlah) {
             $ta=$tahun-1;
             $data1=$data1."[gd($ta), $jumlah],";     
             $totalpendaftaran+=$jumlah;
         }
         $datadulang=$_SESSION['currentPageHome']['datadulang'];
+        $data2='';
         foreach ($datadulang as $tahun=>$jumlah) {
             $ta=$tahun-1;
             $data2=$data2."[gd($ta), $jumlah],";      

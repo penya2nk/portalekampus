@@ -63,10 +63,11 @@ class Logic_Users extends Logic_Global {
 	* @return datauser
 	*/
 	public function getDataUser ($id='all') {						
-		if ($id=='all')
+	    if ($id=='all') {
 			return $this->DataUser;
-		else
-			return $this->DataUser[$id];
+	    }else{
+	        return isset($this->DataUser[$id])?$this->DataUser[$id]:'N.A';
+	    }
 	}	
 	/**
 	* untuk mendapatkan userid dari user

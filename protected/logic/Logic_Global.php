@@ -52,6 +52,7 @@ class Logic_Global extends TModule {
 		}
 		$str='SELECT ';		
 		$countField = count($fieldTable);
+		$field='';
 		if ($countField <= 1) {
 			$field =$fieldTable[0];
 		}else {

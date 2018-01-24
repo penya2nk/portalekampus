@@ -170,10 +170,10 @@ class Logic_ReportNilai extends Logic_Report {
 
                     $row+=5;
                     $rpt->setXY(31,$row);			
-                    $nama_jabatan=$this->dataReport['jabfung_penandatangan_khs'];
+                    $nama_jabatan=strtoupper($this->dataReport['jabfung_penandatangan_khs']);
                     $nidn=$this->dataReport['nidn_penandatangan_khs'];
                     $rpt->Cell(60, 5, "$nama_jabatan NIDN : $nidn",0,0,'C');
-                    $rpt->Cell(80, 5, $this->dataReport['jabfung_kaprodi']. ' NIDN : '.$this->dataReport['nidn_kaprodi'],0,0,'C');
+                    $rpt->Cell(80, 5, strtoupper($this->dataReport['jabfung_kaprodi']). ' NIDN : '.$this->dataReport['nidn_kaprodi'],0,0,'C');
                 }
                 $this->printOut("khs_$nim");
             break;
@@ -360,10 +360,10 @@ class Logic_ReportNilai extends Logic_Report {
 
                             $row+=5;
                             $rpt->setXY(31,$row);			
-                            $nama_jabatan=$this->dataReport['jabfung_penandatangan_khs'];
+                            $nama_jabatan=strtoupper($this->dataReport['jabfung_penandatangan_khs']);
                             $nidn=$this->dataReport['nidn_penandatangan_khs'];
                             $rpt->Cell(60, 5, "$nama_jabatan NIDN : $nidn",0,0,'C');
-                            $rpt->Cell(80, 5, $this->dataReport['jabfung_kaprodi']. ' NIDN : '.$this->dataReport['nidn_kaprodi'],0,0,'C');
+                            $rpt->Cell(80, 5, strtoupper($this->dataReport['jabfung_kaprodi']). ' NIDN : '.$this->dataReport['nidn_kaprodi'],0,0,'C');
                         }
                     }                    
                 }
@@ -522,11 +522,11 @@ class Logic_ReportNilai extends Logic_Report {
                     
                     $row+=1;
                     $sheet->mergeCells("C$row:D$row");                    
-                    $nama_jabatan=$this->dataReport['jabfung_penandatangan_khs'];
+                    $nama_jabatan=strtoupper($this->dataReport['jabfung_penandatangan_khs']);
                     $nidn=$this->dataReport['nidn_penandatangan_khs'];
                     $sheet->setCellValue("C$row","$nama_jabatan NIDN : $nidn");
                     $sheet->mergeCells("F$row:I$row");                           
-                    $sheet->setCellValue("F$row",$this->dataReport['jabfung_kaprodi']. ' NIDN : '.$this->dataReport['nidn_kaprodi']);
+                    $sheet->setCellValue("F$row",strtoupper($this->dataReport['jabfung_kaprodi']). ' NIDN : '.$this->dataReport['nidn_kaprodi']);
                     
                     $styleArray=array(								
                                     'font' => array('bold' => true),                                    
@@ -802,7 +802,7 @@ class Logic_ReportNilai extends Logic_Report {
                     $rpt->Cell(65,4,$this->dataReport['nama_penandatangan_transkrip'],0,0,'L');
                     $row+=4;				
                     $rpt->setXY(105,$row);	
-                    $rpt->Cell(65,4,$this->dataReport['jabfung_penandatangan_transkrip']. ' NIPY '.$this->dataReport['nipy_penandatangan_transkrip'],0,0,'L');
+                    $rpt->Cell(65,4,strtoupper($this->dataReport['jabfung_penandatangan_transkrip']). ' NIPY '.$this->dataReport['nipy_penandatangan_transkrip'],0,0,'L');
                 }
                 $this->printOut("transkripkurikulum_$nim");
             break;
@@ -1071,7 +1071,7 @@ class Logic_ReportNilai extends Logic_Report {
                     $rpt->Cell(65,4,$this->dataReport['nama_penandatangan_transkrip'],0,0,'L');
                     $row+=4;				
                     $rpt->setXY(105,$row);	
-                    $rpt->Cell(65,4,$this->dataReport['jabfung_penandatangan_transkrip']. ' NIPY '.$this->dataReport['nipy_penandatangan_transkrip'],0,0,'L');
+                    $rpt->Cell(65,4,strtoupper($this->dataReport['jabfung_penandatangan_transkrip']). ' NIPY '.$this->dataReport['nipy_penandatangan_transkrip'],0,0,'L');
                 }
                 $this->printOut("transkripsementara_$nim");
             break;
@@ -1392,7 +1392,7 @@ class Logic_ReportNilai extends Logic_Report {
                     $rpt->Cell(65,4,$this->dataReport['nama_penandatangan_transkrip'],0,0,'L');
                     $row+=4;				
                     $rpt->setXY(105,$row);	
-                    $rpt->Cell(65,4,$this->dataReport['jabfung_penandatangan_transkrip']. ' NIPY '.$this->dataReport['nipy_penandatangan_transkrip'],0,0,'L');
+                    $rpt->Cell(65,4,strtoupper($this->dataReport['jabfung_penandatangan_transkrip']). ' NIPY '.$this->dataReport['nipy_penandatangan_transkrip'],0,0,'L');
                 }
                 $this->printOut("transkripkrs_$nim");
             break;
@@ -1642,8 +1642,8 @@ class Logic_ReportNilai extends Logic_Report {
 				$row+=4;				
 				$rpt->setXY(40,$row);	
 				$rpt->SetFont ('helvetica','');
-				$rpt->Cell(65,4,$biodata['jabfung_penandatangan_transkrip']. ' NIDN '.$biodata['nidn_penandatangan_transkrip'],0,0,'C');
-				$rpt->Cell(90,4,$biodata['jabfung_penandatangan_khs']. ' NIDN '.$biodata['nidn_penandatangan_khs'],0,0,'C');
+				$rpt->Cell(65,4,strtoupper($biodata['jabfung_penandatangan_transkrip']). ' NIDN '.$biodata['nidn_penandatangan_transkrip'],0,0,'C');
+				$rpt->Cell(90,4,strtoupper($biodata['jabfung_penandatangan_khs']). ' NIDN '.$biodata['nidn_penandatangan_khs'],0,0,'C');
                 
                 $this->printOut("transkripfinal_$nim");
             break;
@@ -1847,7 +1847,7 @@ class Logic_ReportNilai extends Logic_Report {
                 $sheet->setCellValue("H$row",$dosen_pengampu);			
                 
                 $row+=1;
-                $sheet->setCellValue("C$row",$this->dataReport['jabfung_penandatangan_dpna']. ' NIPY '.$this->dataReport['nipy_penandatangan_dpna']);			
+                $sheet->setCellValue("C$row",strtoupper($this->dataReport['jabfung_penandatangan_dpna']). ' NIPY '.$this->dataReport['nipy_penandatangan_dpna']);			
                 $sheet->setCellValue("F$row",$kaprodi['nama_jabatan']. ' NIPY '.$kaprodi['nipy']);			                
                 
                 $this->printOut("dpna_$kmatkul");
@@ -2052,7 +2052,7 @@ class Logic_ReportNilai extends Logic_Report {
 
                     $row+=5;
                     $rpt->setXY(40,$row);			
-                    $rpt->Cell(5, 5, $this->dataReport['jabfung_penandatangan_dpna']. ' NIPY '.$this->dataReport['nipy_penandatangan_dpna'],0,0,'C');
+                    $rpt->Cell(5, 5, strtoupper($this->dataReport['jabfung_penandatangan_dpna']). ' NIPY '.$this->dataReport['nipy_penandatangan_dpna'],0,0,'C');
                     $rpt->Cell(108, 5, $kaprodi['nama_jabatan']. ' NIPY '.$kaprodi['nipy'],0,0,'C');
                     if ($i < ($jumlahpage-1)) {
                         $rpt->AddPage('P','F4');

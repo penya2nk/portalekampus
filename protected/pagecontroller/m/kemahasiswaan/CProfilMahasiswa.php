@@ -90,7 +90,7 @@ class CProfilMahasiswa extends MainPageM {
         }          
     }
     public function getDataMHS($idx) {		
-        return $this->Nilai->getDataMHS($idx);
+        return $_SESSION['currentPageProfilMahasiswa']['DataMHS'][$idx];
     }
     public function itemCreatedRepeaterIPSdanIPK ($sender,$param) {
         $item=$param->Item;

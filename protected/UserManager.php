@@ -232,12 +232,12 @@ class UserManager extends TAuthManager {
 				$nim=$this->username;
 				$str = "SELECT nim,userpassword,k_status FROM v_datamhs WHERE nim='$nim'";
 				$this->db->setFieldTable (array('nim','userpassword','k_status'));					
-				$result = $this->db->getRecord($str);
-				if (isset($result[1])){
+				$result = $this->db->getRecord($str);				
+				if (isset($result[1])){				 
 				    $data_user=$result[1];
 				    $data_user['active']=$result[1]['k_status']=='A' ? 1:0;
 				    $data_user['page']='mh';
-                }
+                }                
 			break;			
 			case 'MahasiswaBaru' :
 				$this->db->setFieldTable (array('username','nim','userpassword'));					
@@ -284,7 +284,7 @@ class UserManager extends TAuthManager {
 			default :
 				throw new Exception ('Page ('.$this->page.') is empty ...');
 		}	
-		return $result[1];
+		return $data_user;
 	}
 	
 	/**

@@ -203,6 +203,7 @@ class CDaftarMahasiswa extends MainPageM {
             $dataMHS['kjur']=$v['kjur'];
             $iddata_konversi=$this->Nilai->isMhsPindahan($nim,true);
             $dataMHS['iddata_konversi']=$iddata_konversi; 
+            $dataMHS['idkonsentrasi']=$v['idkonsentrasi'];
             $v['iddata_konversi']=$iddata_konversi;           
             $this->Nilai->setDataMHS($dataMHS);
             $v['konsentrasi']=$this->DMaster->getNamaKonsentrasiByID($v['idkonsentrasi'],$v['kjur']);

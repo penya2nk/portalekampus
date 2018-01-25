@@ -153,13 +153,14 @@ class Logic_Nilai extends Logic_Akademik {
 				$am=0;
 				$m=0;
 				$hm='-';		
+				$keterangan='';
 				if (isset($r_nilai[1])) {
 					$hm_biasa=strtoupper($r_nilai[1]['n_kual']);  									
 					$hm=$hm_biasa;		
                     if (($cek_isikuesioner==true) && ($r_nilai[1]['telah_isi_kuesioner']==0) && ($r_nilai[1]['tahun'] >= 2015)) {
                         $hm_biasa='';  									
                         $hm=$hm_biasa;		                        
-                        $v['keterangan']='BELUM ISI KUESIONER';
+                        $keterangan='BELUM ISI KUESIONER';
                     }
 					if ($iddata_konversi) {					
 						$r_konversi=$this->db->getRecord($str_konversi . "'$kmatkul'"); 				
@@ -189,17 +190,17 @@ class Logic_Nilai extends Logic_Akademik {
 				$v['m']=$m;	                               
                 if ($v['idkonsentrasi'] == 0) {
                     if($v['islintas_prodi'] == 1){
-                        $v['keterangan']='Matkul Lintas Prodi '.$v['keterangan'];
+                        $v['keterangan']='Matkul Lintas Prodi '.$keterangan;
                         $result[$k]=$v;					
                     }elseif($v['ispilihan'] == 1) {
-                        $v['keterangan']='Matkul Pilihan '.$v['keterangan'];
+                        $v['keterangan']='Matkul Pilihan '.$keterangan;
                         $result[$k]=$v;					
                     }else {
-                        $v['keterangan']='- '.$v['keterangan'];
+                        $v['keterangan']='- '.$keterangan;
                         $result[$k]=$v;					
                     }
                 }elseif($v['idkonsentrasi'] == $idkonsentrasi){
-                    $v['keterangan']='Matkul Konsentrasi '.$v['keterangan'];
+                    $v['keterangan']='Matkul Konsentrasi '.$keterangan;
                     $result[$k]=$v;					
                 }
 			}			
@@ -665,10 +666,12 @@ class Logic_Nilai extends Logic_Akademik {
     public function getIPS() {				
         $totalSks=0;
         $dn=$this->DataNilai;
+        $countM=0;
         while (list($k,$v)=each($dn)) {
             $sks=$v['sks'];				        				            
             $totalSks += $sks;      
-            $m = (intval($sks)) * $this->AngkaMutu[$v['n_kual']]; 
+            $n_kual = isset($this->AngkaMutu[$v['n_kual']])?$this->AngkaMutu[$v['n_kual']]:0;
+            $m = (intval($sks)) * $n_kual; 
             $countM = $countM+$m;            
         }			
         if ($ips=@ bcdiv($countM,$totalSks,2) ) {							
@@ -684,6 +687,7 @@ class Logic_Nilai extends Logic_Akademik {
     public function getIPSAdaNilai() {				
         $totalSks=0;
         $dn=$this->DataNilai;
+        $countM=0;
         while (list($k,$v)=each($dn)) {
             $sks=$v['sks'];				        				
             if ($v['n_kual'] != '' && $v['n_kual'] != '-') {                            					
@@ -705,6 +709,7 @@ class Logic_Nilai extends Logic_Akademik {
     public function getIPKAdaNilai() {				
         $totalSks=0;
         $dn=$this->DataNilai;
+        $countM=0;
         while (list($k,$v)=each($dn)) {
             $sks=$v['sks'];				        				
             if ($v['n_kual'] != '' && $v['n_kual'] != '-') {                            					

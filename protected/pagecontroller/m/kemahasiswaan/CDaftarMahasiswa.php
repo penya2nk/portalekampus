@@ -164,6 +164,11 @@ class CDaftarMahasiswa extends MainPageM {
                     $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $clausa",'nim');
                     $str = "$str $clausa";
                 break;
+                case 'no_formulir' :
+                    $clausa="WHERE no_formulir='$txtsearch'";
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $clausa",'no_formulir');
+                    $str = "$str $clausa";
+                    break;
                 case 'nama' :
                     $clausa="WHERE nama_mhs LIKE '%$txtsearch%'";
                     $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs $clausa",'nim');

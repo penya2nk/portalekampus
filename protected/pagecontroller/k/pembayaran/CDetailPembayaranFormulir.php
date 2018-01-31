@@ -35,16 +35,21 @@ class CDetailPembayaranFormulir Extends MainPageK {
             }      
 		}	
 	}
-    public function getDataMHS($idx) {		        
-        return $this->Finance->getDataMHS($idx);
+    public function getDataMHS($idx) {		      
+        $datamhs=$_SESSION['currentPagePembayaranFormulir']['DataMHS'];
+        if (isset($datamhs[$idx])) {
+            return $datamhs[$idx];
+        }else{
+            return '';
+        }
+        
     }
     public function populateTransaksi() {
-        $datamhs=$_SESSION['currentPagePembayaranFormulir']['DataMHS'];
+        $datamhs=$_SESSION['currentPagePembayaranFormulir']['DataMHS'];        
         $no_formulir=$datamhs['no_formulir'];
         $tahun=$datamhs['tahun_masuk'];
-        $idsmt=$datamhs['semester_masuk'];
-        $kjur=$datamhs['kjur'];
-        $str = "SELECT no_transaksi,no_faktur,tanggal,commited,date_added FROM transaksi WHERE tahun='$tahun' AND idsmt='$idsmt' AND no_formulir='$no_formulir' AND kjur='$kjur'";
+        $idsmt=$datamhs['semester_masuk'];        
+        $str = "SELECT no_transaksi,no_faktur,tanggal,commited,date_added FROM transaksi WHERE tahun='$tahun' AND idsmt='$idsmt' AND no_formulir='$no_formulir'";
         $this->DB->setFieldTable(array('no_transaksi','no_faktur','tanggal','commited','date_added'));
         $r=$this->DB->getRecord($str);
         $result=array();
@@ -83,13 +88,12 @@ class CDetailPembayaranFormulir Extends MainPageK {
                 $this->modalMessageError->show();
             }else{
                 $no_transaksi=$this->DB->getMaxOfRecord('no_transaksi','transaksi')+1;
-                $no_faktur=$ta.$no_transaksi;
-                $ps=$datamhs['kjur'];                
+                $no_faktur=$ta.$no_transaksi;        
                 $idkelas=$datamhs['idkelas'];
                 $userid=$this->Pengguna->getDataUser('userid');
 
                 $this->DB->query ('BEGIN');
-                $str = "INSERT INTO transaksi (no_transaksi,no_faktur,kjur,tahun,idsmt,idkelas,no_formulir,tanggal,userid,date_added,date_modified) VALUES ($no_transaksi,'$no_faktur','$ps','$ta','$idsmt','$idkelas','$no_formulir',NOW(),'$userid',NOW(),NOW())";					
+                $str = "INSERT INTO transaksi (no_transaksi,no_faktur,tahun,idsmt,idkelas,no_formulir,tanggal,userid,date_added,date_modified) VALUES ($no_transaksi,'$no_faktur','$ta','$idsmt','$idkelas','$no_formulir',NOW(),'$userid',NOW(),NOW())";					
                 if ($this->DB->insertRecord($str)) {
                     $str = "SELECT idkombi,SUM(dibayarkan) AS sudah_dibayar FROM v_transaksi WHERE no_formulir=$no_formulir AND tahun=$ta AND idsmt=$idsmt AND commited=1 GROUP BY idkombi ORDER BY idkombi+1 ASC";
                     $this->DB->setFieldTable(array('idkombi','sudah_dibayar'));
@@ -106,7 +110,7 @@ class CDetailPembayaranFormulir Extends MainPageK {
                     while (list($k,$v)=each($r)) {
                         $biaya=$v['biaya'];
                         $idkombi=$v['idkombi'];
-                        $sisa_bayar=$biaya-$sudah_dibayarkan[$idkombi];
+                        $sisa_bayar=isset($sudah_dibayarkan[$idkombi])?$biaya-$sudah_dibayarkan[$idkombi]:$biaya;
                         $str = "INSERT INTO transaksi_detail (idtransaksi_detail,no_transaksi,idkombi,dibayarkan) VALUES(NULL,$no_transaksi,$idkombi,$sisa_bayar)";
                         $this->DB->insertRecord($str);
                     }

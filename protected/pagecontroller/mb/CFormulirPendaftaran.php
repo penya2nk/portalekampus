@@ -105,6 +105,7 @@ class CFormulirPendaftaran extends MainPageMB {
         $this->cmbEditKelas->DataSource=$daftarkelas;
         $this->cmbEditKelas->Text=$dataMhs['idkelas'];
         $this->cmbEditKelas->dataBind();
+        $this->cmbEditKelas->Enabled=false;
 		
         $bool=!$this->DB->checkRecordIsExist ('no_formulir','nilai_ujian_masuk',$no_formulir);
         $daftar_jurusan=$this->DMaster->removeIdFromArray($_SESSION['daftar_jurusan'],'none');
@@ -140,6 +141,8 @@ class CFormulirPendaftaran extends MainPageMB {
         $this->cmbAddPekerjaanOrtu->dataBind();		
         
         $this->cmbAddKelas->DataSource=$this->DMaster->getListKelas();
+        $this->cmbAddKelas->Text=$this->Pengguna->getDataUser('idkelas');
+        $this->cmbAddKelas->Enabled=false;
         $this->cmbAddKelas->dataBind();
         
         $this->cmbAddKjur1->DataSource=$_SESSION['daftar_jurusan'];            

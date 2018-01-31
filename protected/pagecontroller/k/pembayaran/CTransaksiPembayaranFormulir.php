@@ -66,7 +66,7 @@ class CTransaksiPembayaranFormulir Extends MainPageK {
         while (list($k,$v)=each($r)) {
             $biaya=$v['biaya'];
             $idkombi=$v['idkombi'];
-            $sudah_dibayar=$sudah_dibayarkan[$idkombi];
+            $sudah_dibayar=isset($sudah_dibayarkan[$idkombi])?$sudah_dibayarkan[$idkombi]:0;
             if ($sudah_dibayar <=$biaya) {
                 $v['biaya_alias']=$this->Finance->toRupiah($biaya);
                 $v['nama_kombi']=  strtoupper($v['nama_kombi']);            

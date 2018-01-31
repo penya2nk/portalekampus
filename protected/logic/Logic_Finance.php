@@ -121,7 +121,7 @@ class Logic_Finance extends Logic_Mahasiswa {
         $str = "SELECT td.dibayarkan FROM transaksi t,transaksi_detail td WHERE td.no_transaksi=t.no_transaksi AND t.no_formulir='$no_formulir' AND td.idkombi=1";
         $this->db->setFieldTable(array('dibayarkan'));
         $r=$this->db->getRecord($str);
-        $bool=$biaya_pendaftaran<=$r[1]['dibayarkan'];
+        $bool=isset($r[1])?$biaya_pendaftaran<=$r[1]['dibayarkan']:0;
 		if ($data) {
 			$data=array();
 			$data['total_biaya']=$$biaya_pendaftaran;

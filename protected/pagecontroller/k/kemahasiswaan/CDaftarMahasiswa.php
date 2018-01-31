@@ -5,7 +5,6 @@ class CDaftarMahasiswa extends MainPageK {
 		parent::onLoad($param);						
         $this->showSubMenuAkademikKemahasiswaan=true;
         $this->showDaftarMahasiswa=true;
-                
         $this->createObj('Nilai');
 		if (!$this->IsPostBack&&!$this->IsCallBack) {	
             if (!isset($_SESSION['currentPageDaftarMahasiswa'])||$_SESSION['currentPageDaftarMahasiswa']['page_name']!='k.kemahasiswaan.DaftarMahasiswa') {
@@ -17,13 +16,13 @@ class CDaftarMahasiswa extends MainPageK {
 			$this->tbCmbPs->DataSource=$this->DMaster->removeIdFromArray($_SESSION['daftar_jurusan'],'none');
 			$this->tbCmbPs->Text=$_SESSION['kjur'];			
 			$this->tbCmbPs->dataBind();				
-                
+			
 			$tahun_masuk=$this->DMaster->getListTA();
 			$tahun_masuk['none']='All';
-			$this->tbCmbTahunMasuk->DataSource=$tahun_masuk	;					
+			/*$this->tbCmbTahunMasuk->DataSource=$tahun_masuk	;					
 			$this->tbCmbTahunMasuk->Text=$_SESSION['tahun_masuk'];						
 			$this->tbCmbTahunMasuk->dataBind();
-            
+			
             $kelas=$this->DMaster->getListKelas();
             $kelas['none']='All';
 			$this->tbCmbKelas->DataSource=$kelas;
@@ -42,7 +41,7 @@ class CDaftarMahasiswa extends MainPageK {
             
             $this->populateSummary();
             $this->populateKonsentrasi();
-			$this->populateData();
+			$this->populateData(); */
 		}		
 	}
     public function changeTbPs ($sender,$param) {		

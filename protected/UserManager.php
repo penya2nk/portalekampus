@@ -240,13 +240,14 @@ class UserManager extends TAuthManager {
                 }                
 			break;			
 			case 'MahasiswaBaru' :
-				$this->db->setFieldTable (array('username','nim','userpassword'));					
-                $str = "SELECT no_formulir AS username,nim,no_formulir AS userpassword FROM profiles_mahasiswa WHERE no_formulir='$username'";
+				$this->db->setFieldTable (array('username','userpassword'));					
+                $str = "SELECT no_formulir AS username,no_formulir AS userpassword FROM profiles_mahasiswa WHERE no_formulir='$username'";
                 $result = $this->db->getRecord($str);	
                 if (isset($result[1])) {
                     $data_user=$result[1];
                     $data_user['userpassword']=md5($result[1]['userpassword']);
                     $data_user['active']=$result[1]['nim']==''?1:0;
+                    $data_user['page']='mb';
                 }else{
                     $str = "SELECT pin.no_formulir AS username,pin.no_formulir AS userpassword FROM transaksi t JOIN pin ON (t.no_formulir=pin.no_formulir) JOIN transaksi_detail td ON (t.no_transaksi=td.no_transaksi) WHERE pin.no_formulir=t.no_formulir AND td.idkombi=1 AND pin.no_formulir='$username'";
                     $result = $this->db->getRecord($str);
@@ -254,6 +255,7 @@ class UserManager extends TAuthManager {
                         $data_user=$result[1];
                         $data_user['userpassword']=md5($result[1]['userpassword']);
                         $data_user['active']=1;
+                        $data_user['page']='mb';
                     }                   
                 }				
 			break;

@@ -2,24 +2,27 @@
 <configuration>
 	<modules>
 		<module id="otorisasi_user" class="Application.Autorisasi" />
-		<module id="auth" class="TAuthManager" UserManager="otorisasi_user" LoginPage="Login" />
+		<module id="auth" class="TAuthManager" UserManager="otorisasi_user"
+			LoginPage="Login" />
 	</modules>
-	<authorization>        
-        <allow roles="SuperAdmin" pages="sa.*" />
+	<authorization>
+		<allow roles="SuperAdmin" pages="sa.*" />
 		<allow roles="Manajemen" pages="m.*" />
-        <allow roles="Keuangan" pages="k.*" />
-        <allow roles="OperatorNilai" pages="on.*" />
+		<allow roles="Keuangan" pages="k.*" />
+		<allow roles="OperatorNilai" pages="on.*" />
 		<allow roles="Mahasiswa" pages="mh.*" />
-        <allow roles="MahasiswaBaru" pages="mb.*" />	
-        <allow roles="Alumni" pages="al.*" />		
-		<allow roles="Dosen" pages="d.*" />		
+		<allow roles="MahasiswaBaru" pages="mb.*" />
+		<allow roles="Alumni" pages="al.*" />
+		<allow roles="Dosen" pages="d.*" />
 		<allow roles="DosenWali" pages="dw.*" />
-		<allow roles="OrangtuaWali" pages="ot.*" />	
+		<allow roles="OrangtuaWali" pages="ot.*" />
 		<allow roles="Library" pages="l.*" />
-        <allow pages="Home,DataLulusan,Login,Logout,ResetPassword" users="*" />
-		<deny users="*" />		
+		<allow pages="Home,Pendaftaran,DataLulusan,Login,Logout,ResetPassword"
+			users="*" />
+		<deny users="*" />
 	</authorization>
 	<parameters>
-		<parameter id="NewUserRoles" value="SuperAdmin,Manajemen,Keuangan,OperatorNilai,Mahasiswa,MahasiswaBaru,Alumni,Dosen,DosenWali,OrangtuaWali,Library" />
+		<parameter id="NewUserRoles"
+			value="SuperAdmin,Manajemen,Keuangan,OperatorNilai,Mahasiswa,MahasiswaBaru,Alumni,Dosen,DosenWali,OrangtuaWali,Library" />
 	</parameters>
 </configuration>

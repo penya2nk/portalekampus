@@ -1,0 +1,31 @@
+<%@ Title="Portal Ekampus - Pendaftaran" %>
+<com:TContent ID="maincontent">
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>" CssClass="row">
+	<div class="col-md-12">
+        <div class="panel panel-flat border-top-lg border-top-info border-bottom-info">            
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <div class="form-group" id="divAddNIM">
+                        <label class="col-md-2 control-label"><strong>Kelas: </strong></label>
+                        <div class="col-md-10">
+                        	<com:TActiveDropDownList ID="cmbAddKelas" OnCallback="Page.changeKelas" CssClass="form-control">
+				                <prop:ClientSide.OnPreDispatch>
+				                    $('<%=$this->cmbAddKelas->ClientId%>').disabled='disabled';
+				                    Pace.stop();
+				                    Pace.start();                    
+				                </prop:ClientSide.OnPreDispatch>
+				               <prop:ClientSide.OnLoading>
+				                    $('<%=$this->cmbAddKelas->ClientId%>').disabled='disabled';
+				                </prop:ClientSide.OnLoading>
+				                <prop:ClientSide.onComplete>                    
+				                    $('<%=$this->cmbAddKelas->ClientId%>').disabled='';
+				                </prop:ClientSide.OnComplete>	
+				            </com:TActiveDropDownList>                                 
+                        </div>                            
+                    </div>
+                </div>
+            </div>
+    	</div>
+	</div>                
+</com:TPanel>
+</com:TContent>

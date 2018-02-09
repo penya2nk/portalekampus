@@ -3,8 +3,7 @@ prado::using ('Application.MainPageF');
 class Home extends MainPageF {
 	public function onLoad($param) {		
 		parent::onLoad($param);	         
-		if (!$this->IsPostBack&&!$this->IsCallBack) {
-            
+		if (!$this->IsPostBack&&!$this->IsCallBack) {            
             $this->populateData ();
 		}
 	}

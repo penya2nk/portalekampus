@@ -123,7 +123,8 @@ class UserManager extends TAuthManager {
 			case 'Dosen' :				
 				$str = "SELECT u.userid,d.iddosen,d.nidn,d.nipy,d.nama_dosen,d.theme FROM user u,dosen d WHERE u.username=d.username AND d.username='$username'";
 				$this->db->setFieldTable(array('userid','iddosen','nidn','nipy','nama_dosen','theme'));
-				$r=$this->db->getRecord($str);				
+				$r=$this->db->getRecord($str);	
+				
 				$this->dataUser['data_user']=$r[1];
 				$this->dataUser['data_user']['username']=$username;
 				$this->dataUser['data_user']['page']='d';	                
@@ -183,37 +184,37 @@ class UserManager extends TAuthManager {
 	*/
 	public function getUser () {
         $username=$this->username;
-        $data_user=array();
+        $data_user=array('page'=>'','userpassword'=>'','active'=>1);
 		switch ($this->page) {
             case 'SuperAdmin' :
                 $str = "SELECT u.username,u.userpassword,u.salt,u.page,u.active FROM user u WHERE username='$username' AND active=1 AND page='sa'";
                 $this->db->setFieldTable (array('username','userpassword','salt','page','active'));							
                 $result = $this->db->getRecord($str);
-                $data_user=isset($result[1])?$result[1]:array();
+                $data_user=isset($result[1])?$result[1]:array('page'=>'','userpassword'=>'','active'=>1);
             break;
             case 'OperatorNilai' :
                 $str = "SELECT u.username,u.userpassword,u.salt,u.page,u.active FROM user u WHERE username='$username' AND active=1 AND page='on'";
                 $this->db->setFieldTable (array('username','userpassword','salt','page','active'));							
                 $result = $this->db->getRecord($str);
-                $data_user=isset($result[1])?$result[1]:array();
+                $data_user=isset($result[1])?$result[1]:array('page'=>'','userpassword'=>'','active'=>1);
             break;
             case 'Keuangan' :
 				$str = "SELECT u.username,u.userpassword,u.salt,u.page,u.active FROM user u WHERE username='$username' AND active=1 AND page='k'";
                 $this->db->setFieldTable (array('username','userpassword','salt','page','active'));							
                 $result = $this->db->getRecord($str);	      
-                $data_user=isset($result[1])?$result[1]:array();
+                $data_user=isset($result[1])?$result[1]:array('page'=>'','userpassword'=>'','active'=>1);
 			break;	
 			case 'Manajemen' :
                 $str = "SELECT u.username,u.userpassword,u.salt,u.page,u.active FROM user u WHERE username='$username' AND active=1 AND page='m'";
                 $this->db->setFieldTable (array('username','userpassword','salt','page','active'));							
                 $result = $this->db->getRecord($str);
-                $data_user=isset($result[1])?$result[1]:array();
+                $data_user=isset($result[1])?$result[1]:array('page'=>'','userpassword'=>'','active'=>1);
 			break;
 			case 'Dosen' :
                 $str = "SELECT u.username,u.userpassword,u.salt,u.page,u.active AS active  FROM user u WHERE username='$username' AND active=1 AND page='d'";
                 $this->db->setFieldTable (array('username','userpassword','salt','page','active'));							
                 $result = $this->db->getRecord($str);
-                $data_user=isset($result[1])?$result[1]:array();
+                $data_user=isset($result[1])?$result[1]:array('page'=>'','userpassword'=>'','active'=>1);
 			break;
 			case 'DosenWali' :
                 $str = "SELECT u.username,u.userpassword,u.salt,u.page,u.active AS active FROM user u WHERE username='$username' AND active=1 AND page='d'";
@@ -225,7 +226,7 @@ class UserManager extends TAuthManager {
                     $str = "SELECT dw.iddosen_wali,d.userpassword,d.status AS active FROM dosen_wali dw,dosen d WHERE d.iddosen=dw.iddosen AND d.username='$username'";
                     $this->db->setFieldTable (array('iddosen_wali','userpassword','active'));							
                     $result = $this->db->getRecord($str);
-                    $data_user=isset($result[1])?$result[1]:array();
+                    $data_user=isset($result[1])?$result[1]:array('page'=>'','userpassword'=>'','active'=>1);
                 }
 			break;
 			case 'Mahasiswa' :
@@ -275,13 +276,13 @@ class UserManager extends TAuthManager {
 				$this->db->setFieldTable (array('username','userpassword'));					
 				$str = "SELECT username,userpassword FROM profiles_ortu WHERE username='$username'";
 				$result = $this->db->getRecord($str);	
-				$data_user=isset($result[1])?$result[1]:array();
+				$data_user=isset($result[1])?$result[1]:array('page'=>'','userpassword'=>'','active'=>1);
 			break;
 			case 'Library' :
 				$this->db->setFieldTable (array('username','userpassword'));					
 				$str = "SELECT username,userpassword FROM lib_users WHERE username='$username'";
 				$result = $this->db->getRecord($str);		
-				$data_user=isset($result[1])?$result[1]:array();
+				$data_user=isset($result[1])?$result[1]:array('page'=>'','userpassword'=>'','active'=>1);
 			break;
 			default :
 				throw new Exception ('Page ('.$this->page.') is empty ...');

@@ -124,19 +124,23 @@ class CUserDosen extends MainPageSA {
     public function updateData ($sender,$param) {
 		if ($this->Page->isValid) {			
             $id=$this->hiddenid->Value;
+            $username_old=$this->hiddenusername->Value;
             $nama = addslashes($this->txtEditNama->Text);
             $email = addslashes($this->txtEditEmail->Text);
             $username=addslashes($this->txtEditUsername->Text);
             $status=$this->cmbEditStatus->Text;
             if ($this->txtEditPassword1->Text == '') {
                 $str = "UPDATE user SET username='$username',nama='$nama',email='$email',active='$status' WHERE userid=$id";               
+                $str_dosen = "UPDATE dosen SET username='$username' WHERE username='$username_old'";
             }else {
                 $data=$this->Pengguna->createHashPassword($this->txtEditPassword1->Text);
                 $salt=$data['salt'];
                 $password=$data['password'];
-                $str = "UPDATE user SET username='$username',userpassword='$password',salt='$salt',nama='$nama',email='$email',active='$status' WHERE userid=$id";               
+                $str = "UPDATE user SET username='$username',userpassword='$password',salt='$salt',nama='$nama',email='$email',active='$status' WHERE userid=$id";
+                $str_dosen = "UPDATE dosen SET username='$username' WHERE username='$username_old'";
             }
-            $this->DB->updateRecord($str); 
+            $this->DB->updateRecord($str);
+            $this->DB->updateRecord($str_dosen);
 			$this->redirect('settings.UserDosen',true);
 		}
 	}

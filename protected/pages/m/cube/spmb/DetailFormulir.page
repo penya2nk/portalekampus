@@ -54,7 +54,7 @@
                         </ul>
                     </div>
                     <div class="profile-message-btn center-block text-center">                        
-                        <com:TActiveCustomButton ID="btnResetPassword" CssClass="btn btn-warning" OnClick="resetPassword" ClientSide.PostState="false">
+                        <com:TActiveCustomButton ID="btnResetPassword" CssClass="btn btn-warning" OnCallback="resetPassword" ClientSide.PostState="false">
                             <prop:Text><i class="fa fa-undo"></i> Reset Password</prop:Text>
                             <prop:ClientSide.OnPreDispatch>                                                                   
                                 $('loading').show(); 
@@ -67,7 +67,27 @@
                                 $('<%=$this->btnResetPassword->ClientId%>').disabled='';
                                 $('loading').hide(); 
                             </prop:ClientSide.OnComplete>
-                        </com:TActiveCustomButton>
+                        </com:TActiveCustomButton>                                         
+                    </div>
+                    <div class="profile-details">
+                        <ul class="fa-ul">
+                            <li><i class="fa-li fa fa-th-list"></i>Reset Profil MHS :
+                                <com:TActiveCustomButton ID="btnResetProfiles" CssClass="btn btn-warning" OnCallback="resetProfiles" ClientSide.PostState="false">
+		                            <prop:Text><i class="fa fa-undo"></i> Reset Profile MHS</prop:Text>
+		                            <prop:ClientSide.OnPreDispatch>                                                                   
+		                                $('loading').show(); 
+		                                $('<%=$this->btnResetProfiles->ClientId%>').disabled='disabled';						
+		                            </prop:ClientSide.OnPreDispatch>
+		                            <prop:ClientSide.OnLoading>
+		                                $('<%=$this->btnResetProfiles->ClientId%>').disabled='disabled';						
+		                            </prop:ClientSide.OnLoading>
+		                            <prop:ClientSide.OnComplete>																	                                    						                                                                            
+		                                $('<%=$this->btnResetProfiles->ClientId%>').disabled='';
+		                                $('loading').hide(); 
+		                            </prop:ClientSide.OnComplete>
+		                        </com:TActiveCustomButton>       
+                            </li>                            
+                        </ul>
                     </div>
                 </div>
             </div>

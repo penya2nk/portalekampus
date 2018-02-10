@@ -99,7 +99,8 @@ class CFormulirPendaftaran extends MainPageM {
                     $str = "$str WHERE $clausa";
                 break;
             }
-        }else{            
+        }else{
+            $str_status='';
             if ($_SESSION['currentPageFormulirPendaftaran']['status_dulang'] == 'belum') {
                 $str_status= " AND rm.nim IS NULL";
             }elseif ($_SESSION['currentPageFormulirPendaftaran']['status_dulang'] == 'sudah') {

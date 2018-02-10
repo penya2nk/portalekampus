@@ -17,16 +17,18 @@ class CDetailFormulir extends MainPageM {
     public function changeView ($sender,$param) {                
         try {
             $no_formulir=addslashes($this->request['id']);
-            $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.jk,fp.tempat_lahir,fp.tanggal_lahir,fp.alamat_rumah,fp.kjur1,fp.kjur2,fp.ta AS tahun_masuk,fp.idkelas,ke.nkelas,pm.theme,fp.waktu_mendaftar FROM formulir_pendaftaran fp LEFT JOIN profiles_mahasiswa pm ON pm.no_formulir=fp.no_formulir LEFT JOIN kelas ke ON (fp.idkelas=ke.idkelas)  WHERE fp.no_formulir='$no_formulir'";
+            $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.jk,fp.tempat_lahir,fp.tanggal_lahir,fp.alamat_rumah,fp.telp_hp,fp.kjur1,fp.kjur2,fp.ta AS tahun_masuk,fp.idkelas,ke.nkelas,pm.theme,fp.waktu_mendaftar FROM formulir_pendaftaran fp LEFT JOIN profiles_mahasiswa pm ON pm.no_formulir=fp.no_formulir LEFT JOIN kelas ke ON (fp.idkelas=ke.idkelas)  WHERE fp.no_formulir='$no_formulir'";
             $this->DB->setFieldTable(array('no_formulir','nama_mhs','jk','tempat_lahir','tanggal_lahir','alamat_rumah','kjur1','kjur2','telp_hp','tahun_masuk','idkelas','nkelas','theme','waktu_mendaftar'));
             $r=$this->DB->getRecord($str);	           
             if (!isset($r[1])) {
                 unset($_SESSION['currentPageDetailFormulir']);
-                throw new Exception ("Mahasiswa Dengan NIM ($no_formulir) tidak terdaftar di Portal.");
+                throw new Exception ("Mahasiswa Dengan No. Formulir ($no_formulir) tidak terdaftar di Portal.");
             }
             $datamhs=$r[1];
             $datamhs['nama_ps1']=$_SESSION['daftar_jurusan'][$datamhs['kjur1']];
             $datamhs['nama_ps2']=$_SESSION['daftar_jurusan'][$datamhs['kjur2']];
+            $datamhs['diterima_ps1']='';
+            $datamhs['diterima_ps2']='';
             $datamhs['waktu_mendaftar']=$this->TGL->tanggal('d F Y',$datamhs['waktu_mendaftar']);
             //theme
             $this->cmbTheme->DataSource=$this->setup->getListThemes();
@@ -55,8 +57,9 @@ class CDetailFormulir extends MainPageM {
             $this->errorMessage->Text=$ex->getMessage();
         }          
     }
-    public function getDataMHS($idx) {		
-        return $this->Demik->getDataMHS($idx);
+    public function getDataMHS($idx) {	
+        $datamhs=$_SESSION['currentPageDetailFormulir']['DataMHS'];
+        return $datamhs[$idx];
     }
     public function resetPassword ($sender,$param) {
         $password_default = md5(1234);
@@ -65,6 +68,15 @@ class CDetailFormulir extends MainPageM {
         $this->DB->updateRecord($str);
         $this->lblInfo->Text='Reset Password Mahasiswa';
         $this->lblMessageInfo->Text='Password mahasiswa sukses direset menjadi 1234';        
+        $this->modalMessage->show();
+    }
+    public function resetProfiles ($sender,$param) {
+        $password_default = md5(1234);
+        $no_formulir=$_SESSION['currentPageDetailFormulir']['DataMHS']['no_formulir'];
+        $str = "REPLACE INTO profiles_mahasiswa SET no_formulir='$no_formulir',userpassword='$password_default',theme='cube',photo_profile='resources/photomhs/no_photo.png'";
+        $this->DB->updateRecord($str);
+        $this->lblInfo->Text='Reset Profiles Mahasiswa';
+        $this->lblMessageInfo->Text='Profiles mahasiswa sukses direset.';
         $this->modalMessage->show();
     }
     public function changeTheme ($sender,$param) {

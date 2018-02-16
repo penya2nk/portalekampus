@@ -144,7 +144,8 @@
                                             <div class="col-sm-8">
                                                 <p class="form-control-static"><b><%# $_SESSION['currentPageKRS']['DataKRS']['krs']['sah']==1?'Sah ('.$this->Page->TGL->tanggal('l,j F Y',$_SESSION['currentPageKRS']['DataKRS']['krs']['tgl_disahkan']).')':'Belum di sahkan oleh dosen wali Anda.'%></b></p>
                                             </div>                            
-                                        </div>                                                                </div>
+                                        </div>                                                                
+                                    </div>
                                 </div>          
                             </div>          
                         </div>          
@@ -183,7 +184,7 @@
                                             <td><%# $this->DataItem['semester']%></td>							
                                             <td><%# $this->DataItem['nama_dosen']%> [<%# $this->DataItem['nidn']%>]</td>					
                                             <td>
-                                                <com:TActiveDropDownList ID="cmbKelas" Text="<%# $this->Data['iddosen']%>" OnCallBack="page.prosesKelas" CssClass="form-control">
+                                                <com:TActiveDropDownList ID="cmbKelas" OnCallBack="page.prosesKelas" CssClass="form-control">
                                                     <prop:ClientSide.OnPreDispatch>
                                                         $('loading').show();                                             
                                                         $('<%=$this->cmbKelas->ClientId%>').disabled='disabled';						

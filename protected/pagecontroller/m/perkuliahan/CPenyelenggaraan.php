@@ -161,6 +161,37 @@ class CPenyelenggaraan extends MainPageM {
         }
 	}	
 	public function printOut ($sender,$param) {		
-		
+	    $this->createObj('reportakademik');
+	    $this->linkOutput->Text='';
+	    $this->linkOutput->NavigateUrl='#';
+	    switch ($_SESSION['outputreport']) {
+	        case  'summarypdf' :
+	            $messageprintout="Mohon maaf Print out pada mode summary pdf tidak kami support.";
+	            break;
+	        case  'summaryexcel' :
+	            $messageprintout="Mohon maaf Print out pada mode summary excel tidak kami support.";
+	            break;
+	        case  'excel2007' :
+	            $dataReport['kjur']=$_SESSION['kjur'];
+	            $dataReport['ta']=$_SESSION['ta'];
+	            $dataReport['idsmt']=$_SESSION['semester'];
+	            $dataReport['nama_prodi']=$_SESSION['daftar_jurusan'][$dataReport['kjur']];
+	            $dataReport['nama_tahun'] = $this->DMaster->getNamaTA($dataReport['ta']);
+	            $dataReport['nama_semester'] = $this->setup->getSemester($dataReport['idsmt']);
+	            
+	            $dataReport['linkoutput']=$this->linkOutput;
+	            $this->report->setDataReport($dataReport);
+	            $this->report->setMode($_SESSION['outputreport']);
+	            
+	            $messageprintout="Daftar Penyelenggaraan Matakuliah : <br/>";
+	            $this->report->printPenyelenggaraan($this->Demik);
+            break;
+	        case  'pdf' :
+	            $messageprintout="Mohon maaf Print out pada mode excel pdf belum kami support.";
+            break;
+	    }
+	    $this->lblMessagePrintout->Text=$messageprintout;
+	    $this->lblPrintout->Text='Daftar Penyelenggaraan Matakuliah';
+	    $this->modalPrintOut->show();
 	}
 }

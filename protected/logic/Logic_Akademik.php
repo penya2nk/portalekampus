@@ -84,6 +84,9 @@ class Logic_Akademik extends Logic_Mahasiswa {
 		}
 		return $data;
 	}
+	public function getJumlahKelas () {
+	    
+	}
     /**
      * digunakan untuk mendapatkan informasi suatu matakuliah berdasarkan idpenyelenggaraan
      * @param type $id
@@ -99,6 +102,9 @@ class Logic_Akademik extends Logic_Mahasiswa {
 				if (isset($r[1])) {
 					$r[1]['kmatkul']=$this->getKmatkul($r[1]['kmatkul']);					
 					$r[1]['jumlah_peserta']=$this->getJumlahMhsInPenyelenggaraan($id);
+					$r[1]['nidn_dosen_pengampu']=$r[1]['nidn'];
+					$r[1]['nama_dosen_pengampu']=$r[1]['nama_dosen'];
+					$r[1]['jumlah_kelas']=2;
 					$this->InfoMatkul=$r[1]; 
 				}
 			break;

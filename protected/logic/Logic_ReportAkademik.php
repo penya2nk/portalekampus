@@ -4,6 +4,104 @@ class Logic_ReportAkademik extends Logic_Report {
 	public function __construct ($db) {
 		parent::__construct ($db);	        
 	}
+	/**
+	 * digunakan untuk mencetak data mahasiswa daftar ulang keluar
+	 */
+	public function printPenyelenggaraan ($objDemik) {
+	    $idsmt=$this->dataReport['idsmt'];
+	    $ta=$this->dataReport['ta'];
+	    $kjur=$this->dataReport['kjur'];
+	    $idkur=$objDemik->getIDKurikulum($kjur);
+	    switch ($this->getDriver()) {
+	        case 'excel2003' :
+	        case 'excel2007' :
+	            $this->setHeaderPT('I');
+	            $sheet=$this->rpt->getActiveSheet();
+	            $this->rpt->getDefaultStyle()->getFont()->setName('Arial');
+	            $this->rpt->getDefaultStyle()->getFont()->setSize('9');
+	            
+	            $sheet->mergeCells("A7:I7");
+	            $sheet->mergeCells("A8:I8");
+	            $sheet->getRowDimension(7)->setRowHeight(20);
+	            $sheet->setCellValue("A7","DAFTAR PENYELENGGARAAN MATAKULIAH");
+	            $sheet->setCellValue("A8",'PROGRAM STUDI '.$this->dataReport['nama_prodi'].' T.A '.$this->dataReport['nama_tahun'].' SEMESTER '.$this->dataReport['nama_semester']);
+	            $styleArray=array(
+	                'font' => array('bold' => true,
+                    'size' => 16),
+	                'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                    'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+	            );
+	            $sheet->getStyle("A7:A7")->applyFromArray($styleArray);
+	            $sheet->getStyle("A8:A8")->applyFromArray($styleArray);
+	            
+	            $sheet->getColumnDimension('A')->setWidth(4);
+	            $sheet->getColumnDimension('B')->setWidth(11);
+	            $sheet->getColumnDimension('C')->setWidth(2);
+	            $sheet->getColumnDimension('D')->setWidth(50);
+	            $sheet->getColumnDimension('E')->setWidth(6);
+	            $sheet->getColumnDimension('F')->setWidth(6);
+	            $sheet->getColumnDimension('G')->setWidth(35);
+	            $sheet->getColumnDimension('H')->setWidth(40);
+	            $sheet->getColumnDimension('I')->setWidth(15);
+	            
+	            $sheet->setCellValue('A10','NO');
+	            $sheet->mergeCells("B10:C10");
+	            $sheet->setCellValue('B10','KODE');
+	            $sheet->setCellValue('D10','NAMA');
+	            $sheet->setCellValue('E10','SKS');
+	            $sheet->setCellValue('F10','SMT');
+	            $sheet->setCellValue('G10','DOSEN PENGAMPU UTAMA');
+	            $sheet->setCellValue('H10','DOSEN PENGAMPU');
+	            $sheet->setCellValue('I10','JUMLAH PESERTA');
+	            $sheet->getRowDimension(10)->setRowHeight(25);
+	            
+	            $styleArray=array(
+	                'font' => array('bold' => true),
+	                'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                    'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+	                'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+	            );
+	            $sheet->getStyle("A10:I10")->applyFromArray($styleArray);
+	            $sheet->getStyle("A10:I10")->getAlignment()->setWrapText(true);
+	            
+	            $str = "SELECT idpenyelenggaraan,kmatkul,nmatkul,sks,semester,iddosen FROM v_penyelenggaraan WHERE idsmt='$idsmt' AND tahun='$ta' AND kjur='$kjur' AND idkur=$idkur ORDER BY semester ASC,kmatkul ASC";
+	            $this->db->setFieldTable (array('idpenyelenggaraan','kmatkul','nmatkul','sks','semester','iddosen'));
+	            $r= $this->db->getRecord($str);
+	            $row=11;	            
+	            while (list($k,$v)=each ($r)) {
+	                $idpenyelenggaraan=$v['idpenyelenggaraan'];
+	                $jumlah_peserta=$objDemik->getJumlahMhsInPenyelenggaraan($idpenyelenggaraan);
+	                $sheet->setCellValue("A$row",$v['no']);
+	                $sheet->mergeCells("B$row:C$row");
+	                $sheet->setCellValue("B$row",$objDemik->getKMatkul($v['kmatkul']));
+	                $sheet->setCellValue("D$row",$v['nmatkul']);
+	                $sheet->setCellValue("E$row",$v['sks']);
+	                $sheet->setCellValue("F$row",$v['semester']);
+	                $sheet->setCellValue("G$row",$v['iddosen']);
+	                $sheet->setCellValue("H$row",$v['iddosen']);
+	                $sheet->setCellValue("I$row",$jumlah_peserta);
+	                $row+=1;
+	            }
+	            $row=$row-1;
+	            $styleArray=array(
+	                'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                    'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+	                'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+	            );
+	            $sheet->getStyle("A11:I$row")->applyFromArray($styleArray);
+	            $sheet->getStyle("A11:I$row")->getAlignment()->setWrapText(true);
+	            
+	            $styleArray=array(
+	                'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_LEFT)
+	            );
+	            $sheet->getStyle("D11:D$row")->applyFromArray($styleArray);
+	            $sheet->getStyle("G11:H$row")->applyFromArray($styleArray);
+	            
+	            $this->printOut('daftarpenyelenggaraan');
+	            break;
+	    }
+	    $this->setLink($this->dataReport['linkoutput'],"Daftar Penyelenggaraan Matakuliah");
+	}
     /**
      * digunakan untuk mencetak data master matakuliah
      */
@@ -1551,7 +1649,7 @@ class Logic_ReportAkademik extends Logic_Report {
                 $sheet->getColumnDimension('H')->setWidth(17);
                 $sheet->getColumnDimension('I')->setWidth(17);
                 
-                 $styleArray=array(
+                $styleArray=array(
 								'font' => array('bold' => true),
 								'alignment' => array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
 												   'vertical'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),

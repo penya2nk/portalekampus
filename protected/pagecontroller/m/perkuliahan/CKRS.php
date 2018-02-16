@@ -184,7 +184,8 @@ class CKRS Extends MainPageM {
             $this->DB->setFieldTable (array('jumlah_matkul','jumlah_sks'));
 			$r=$this->DB->getRecord($str);
             $item->literalMatkul->Text=$r[1]['jumlah_matkul'] > 0 ?$r[1]['jumlah_matkul']:0;
-            $item->literalSKS->Text=$r[1]['jumlah_sks'] > 0 ?$r[1]['jumlah_sks']:0;            
+            $item->literalSKS->Text=$r[1]['jumlah_sks'] > 0 ?$r[1]['jumlah_sks']:0;
+            $trstyle='';
             if ($item->DataItem['sah']) {                 
                 $status='<span class="label label-success">sah</span>';	
             }elseif ($_SESSION['currentPageKRS']['mode_krs'] == 'belum'){

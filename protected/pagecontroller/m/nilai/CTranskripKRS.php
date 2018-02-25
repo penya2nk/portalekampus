@@ -148,7 +148,7 @@ class CTranskripKRS extends MainPageM {
 
                         $dataReport = $r[1];                    
                         $dataReport['nama_konsentrasi']=($dataReport['idkonsentrasi']==0) ? '-':$dataReport['nama_konsentrasi'];                    
-
+                        $dataReport['nama_pt_alias']=$this->setup->getSettingValue('nama_pt_alias');
                         $dataReport['nama_jabatan_transkrip']=$this->setup->getSettingValue('nama_jabatan_transkrip');
                         $dataReport['nama_penandatangan_transkrip']=$this->setup->getSettingValue('nama_penandatangan_transkrip');
                         $dataReport['jabfung_penandatangan_transkrip']=$this->setup->getSettingValue('jabfung_penandatangan_transkrip');

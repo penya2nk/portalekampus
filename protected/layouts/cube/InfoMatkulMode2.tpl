@@ -52,9 +52,9 @@
                                 </div>                            
                             </div> 
                             <div class="form-group">
-                                <label class="col-sm-4 control-label"><strong>DOSEN PENGAJAR: </strong></label>
+                                <label class="col-sm-4 control-label"><strong>JUMLAH KELAS: </strong></label>
                                 <div class="col-sm-8">
-                                    <p class="form-control-static"><%= $this->Demik->InfoMatkul['nama_dosen']%> [<%= $this->Demik->InfoMatkul['nidn']%>]</p>
+                                    <p class="form-control-static"><%= $this->Demik->InfoMatkul['jumlah_kelas']%></p>
                                 </div>                            
                             </div> 
                             <div class="form-group">

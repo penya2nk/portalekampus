@@ -224,7 +224,7 @@ class CKHS extends MainPageM {
                         $dataReport['semester']=$semester;
                         $dataReport['nama_tahun']=$nama_tahun;
                         $dataReport['nama_semester']=$nama_semester;        
-
+                        $dataReport['nama_pt_alias']=$this->setup->getSettingValue('nama_pt_alias');
                         $dataReport['nama_jabatan_khs']=$this->setup->getSettingValue('nama_jabatan_khs');
                         $dataReport['nama_penandatangan_khs']=$this->setup->getSettingValue('nama_penandatangan_khs');
                         $dataReport['jabfung_penandatangan_khs']=$this->setup->getSettingValue('jabfung_penandatangan_khs');

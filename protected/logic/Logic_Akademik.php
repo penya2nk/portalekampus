@@ -84,8 +84,20 @@ class Logic_Akademik extends Logic_Mahasiswa {
 		}
 		return $data;
 	}
-	public function getJumlahKelas () {
-	    
+	/**
+	 * digunakan untuk mendapatkan informasi jumlah kelas berdasarkan idpenyelenggaraan
+	 * @param type $id
+	 * @param type $mode_info
+	 * @return array
+	 */
+	public function getJumlahKelas ($id,$mode_info) {
+	    $jumlah=0;
+	    switch ($mode_info) {
+	        case 'penyelenggaraan' :
+	            $jumlah=$this->DB->getCountRowsOfTable("kelas_mhsvp WHERE idsmt='$idsmt' AND tahun='$ta' AND kjur='$kjur'$clausa",'vp.idpenyelenggaraan');
+            break;
+	    }
+        return $jumlah;   
 	}
     /**
      * digunakan untuk mendapatkan informasi suatu matakuliah berdasarkan idpenyelenggaraan
@@ -104,7 +116,7 @@ class Logic_Akademik extends Logic_Mahasiswa {
 					$r[1]['jumlah_peserta']=$this->getJumlahMhsInPenyelenggaraan($id);
 					$r[1]['nidn_dosen_pengampu']=$r[1]['nidn'];
 					$r[1]['nama_dosen_pengampu']=$r[1]['nama_dosen'];
-					$r[1]['jumlah_kelas']=2;
+					$r[1]['jumlah_kelas']=$this->getJumlahKelas($id,'penyelenggaraan');
 					$this->InfoMatkul=$r[1]; 
 				}
 			break;

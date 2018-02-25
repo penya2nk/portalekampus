@@ -152,7 +152,7 @@ class Logic_ReportNilai extends Logic_Report {
 
                     $row+=5;
                     $rpt->setXY(31,$row);			
-                    $rpt->Cell(60, 5, 'A.n. Ketua STISIPOL Raja Haji',0,0,'C');			
+                    $rpt->Cell(60, 5, 'A.n. Ketua '.$this->dataReport['nama_pt_alias'],0,0,'C');			
                     $rpt->Cell(80, 5, "Ketua Program Studi",0,0,'C');		
 
                     $row+=5;
@@ -342,7 +342,7 @@ class Logic_ReportNilai extends Logic_Report {
 
                             $row+=5;
                             $rpt->setXY(31,$row);			
-                            $rpt->Cell(60, 5, 'A.n. Ketua STISIPOL Raja Haji',0,0,'C');			
+                            $rpt->Cell(60, 5, 'A.n. Ketua '.$this->dataReport['nama_pt_alias'],0,0,'C');			
                             $rpt->Cell(80, 5, "Ketua Program Studi",0,0,'C');		
 
                             $row+=5;
@@ -504,7 +504,7 @@ class Logic_ReportNilai extends Logic_Report {
                     
                     $row+=1;
                     $sheet->mergeCells("C$row:D$row");      
-                    $sheet->setCellValue("C$row",'A.n. Ketua STISIPOL Raja Haji');				                    
+                    $sheet->setCellValue("C$row",'A.n. Ketua '.$this->dataReport['nama_pt_alias']);				                    
                     $sheet->mergeCells("F$row:I$row");                           
                     $sheet->setCellValue("F$row",'Ketua Program Studi');				                    
                     
@@ -1830,7 +1830,7 @@ class Logic_ReportNilai extends Logic_Report {
                 $sheet->setCellValue("H$row","Tanjungpinang, $tanggal");			
                 
                 $row+=2;                
-                $sheet->setCellValue("C$row",'A.n. Ketua STISIPOL Raja Haji');			
+                $sheet->setCellValue("C$row",'A.n. Ketua '.$this->dataReport['nama_pt_alias']);			
                 $sheet->setCellValue("F$row","Ketua Program Studi");			
                 $sheet->setCellValue("H$row","Dosen Pengampu");			
                
@@ -2034,7 +2034,7 @@ class Logic_ReportNilai extends Logic_Report {
 
                     $row+=5;
                     $rpt->setXY(40,$row);			
-                    $rpt->Cell(3, 5, 'A.n. Ketua STISIPOL Raja Haji',0,0,'C');			
+                    $rpt->Cell(3, 5, 'A.n. Ketua '.$this->dataReport['nama_pt_alias'],0,0,'C');			
                     $rpt->Cell(115, 5, "Ketua Program Studi",0,0,'C');		
                     $rpt->Cell(15, 5, "Dosen Pengampu",0,0,'C');		
 

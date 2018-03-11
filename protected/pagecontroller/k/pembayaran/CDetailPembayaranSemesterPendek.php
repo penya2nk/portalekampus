@@ -41,6 +41,7 @@ class CDetailPembayaranSemesterPendek Extends MainPageK {
                 $_SESSION['currentPagePembayaranSemesterPendek']['DataMHS']=$datamhs;                
                 $this->checkPembayaranSemesterLalu ();
                 
+				$this->lblPanelHeader->Text=$this->DMaster->getNamaTA($_SESSION['currentPagePembayaranSemesterPendek']['DataMHS']['ta']).' SEMESTER '.$this->setup->getSemester($_SESSION['currentPagePembayaranSemesterPendek']['semester']);
                 $this->populateTransaksi();
             }catch (Exception $ex) {
                 $this->idProcess='view';
@@ -48,21 +49,29 @@ class CDetailPembayaranSemesterPendek Extends MainPageK {
             }      
 		}	
 	}
-    public function getDataMHS($idx) {		        
-        return $this->Finance->getDataMHS($idx);
+    public function getDataMHS($idx) {
+		if (isset($_SESSION['currentPagePembayaranSemesterPendek']['DataMHS'])){
+			return $_SESSION['currentPagePembayaranSemesterPendek']['DataMHS'][$idx];
+		}
     }
+	
     public function populateTransaksi() {
         $datamhs=$_SESSION['currentPagePembayaranSemesterPendek']['DataMHS'];
         $nim=$datamhs['nim'];
         $tahun=$datamhs['ta'];
         $idsmt=$_SESSION['currentPagePembayaranSemesterPendek']['semester'];
         $kjur=$datamhs['kjur'];
-        $str = "SELECT no_transaksi,no_faktur,tanggal,commited,date_added FROM transaksi WHERE tahun='$tahun' AND idsmt='$idsmt' AND nim='$nim' AND kjur='$kjur'";
-        $this->DB->setFieldTable(array('no_transaksi','no_faktur','tanggal','commited','date_added'));
+		$tahun_masuk=$datamhs['tahun_masuk'];
+		$idkelas=$datamhs['idkelas'];
+        $str = "SELECT no_transaksi,no_faktur,tanggal,jumlah_sks,commited,date_added FROM transaksi WHERE tahun='$tahun' AND idsmt='$idsmt' AND nim='$nim' AND kjur='$kjur'";
+        $this->DB->setFieldTable(array('no_transaksi','no_faktur','tanggal','jumlah_sks','commited','date_added'));
         $r=$this->DB->getRecord($str);
         $result=array();
+		
+		$biaya_sks=$this->Finance->getBiayaSKS ($tahun_masuk,$idkelas);
         while (list($k,$v)=each($r)) {
             $no_transaksi=$v['no_transaksi'];
+			$v['biaya_sks']=$biaya_sks;
             $v['total']=$this->DB->getSumRowsOfTable('dibayarkan',"transaksi_detail WHERE no_transaksi=$no_transaksi");
             $result[$k]=$v;
         }

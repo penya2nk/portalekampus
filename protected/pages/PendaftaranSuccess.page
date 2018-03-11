@@ -1,0 +1,38 @@
+<%@ Title="Portal Ekampus - Pendaftaran Mahasiswa Baru" %>
+<com:TContent ID="maincontent">
+<com:TPanel Visible="<%= $this->getViewProcess(false) %>" CssClass="panel panel-flat">        
+    <div class="panel-heading">
+        <div class="heading-elements">
+            <ul class="icons-list">                
+                <li>
+                    <a href="<%=$this->Page->constructUrl('Pendaftaran');%>" data-action="closeredirect"></a>
+                </li>
+            </ul>
+        </div>        
+    </div>
+    <div class="panel-body">
+        <div class="alert bg-warning">
+            <button type="button" class="close" data-dismiss="alert"><span>&times;</span><span class="sr-only">Close</span></button>
+            <span class="text-semibold">Error!</span> <com:TLiteral ID="errorMessage" />
+        </div>
+    </div>    
+</com:TPanel>
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>" CssClass="row">
+	<div class="col-md-12">
+        <div class="panel panel-flat border-top-lg border-top-info border-bottom-info"> 
+        	<div class="panel-heading">
+                <h5 class="panel-title"><i class="icon-calculator3 position-left"></i>  PENDAFTARAN MAHASISWA BARU UNTUK MASUK DI T.A <com:TLabel ID="lblModulHeader" /></h5>                
+                <div class="heading-elements">
+                    <div class="heading-btn">       
+                        
+                    </div>   
+                </div>
+            </div>              
+            <div class="panel-body">
+            	Proses Pendaftaran telah sukses dengan nomor registrasi <strong><com:TLiteral ID="literalNoRegistrasi" /></strong>, (MOHON UNTUK DISIMPAN). <br />silahkan melakukan Pembayaran dan Login untuk melanjutkan ke proses selanjutnya;
+            	Gunakan nomor formulir sebagai username. Nomor formulir akan diberitahu setelah melakukan pembayaran.
+            </div>
+        </div>
+	</div>                
+</com:TPanel>
+</com:TContent>

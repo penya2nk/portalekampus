@@ -115,15 +115,15 @@ class CPembayaranFormulir Extends MainPageK {
 		}		
 	}	
 	
-    public function cekNomorFormulir ($sender,$param) {		
-        $noformulir=addslashes($param->Value);		
-        if ($noformulir != '') {
+    public function cekNomorPendaftaran ($sender,$param) {		
+        $noregistrasi=addslashes($param->Value);		
+        if ($noregistrasi != '') {
             try {               
-                $str = "SELECT no_formulir FROM pin WHERE no_formulir='$noformulir'";
-                $this->DB->setFieldTable(array('no_formulir'));
+                $str = "SELECT no_pendaftaran FROM formulir_pendaftaran_temp WHERE no_pendaftaran='$noregistrasi'";
+                $this->DB->setFieldTable(array('no_pendaftaran'));
                 $r=$this->DB->getRecord($str);
                 if (!isset($r[1])) {                                
-                    throw new Exception ("Nomor Formulir ($noformulir) tidak terdaftar di Portal, silahkan ganti dengan yang lain.");		
+                    throw new Exception ("Nomor Pendaftaran ($noregistrasi) tidak terdaftar di Portal, silahkan ganti dengan yang lain.");		
                 }
             }catch (Exception $e) {
                 $param->IsValid=false;
@@ -133,8 +133,8 @@ class CPembayaranFormulir Extends MainPageK {
     }
 	public function Go($param,$sender) {	
         if ($this->IsValid) {            
-            $no_formulir=addslashes($this->txtNoFormulir->Text);
-            $this->redirect('pembayaran.DetailPembayaranFormulir',true,array('id'=>$no_formulir));
+            $no_pendaftaran=addslashes($this->txtNoPendaftaran->Text);
+            $this->redirect('pembayaran.DetailPembayaranFormulir',true,array('id'=>$no_pendaftaran));
         }
 	}
 	

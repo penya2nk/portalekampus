@@ -145,6 +145,20 @@ class CTransaksiPembayaranFormulir Extends MainPageK {
             }	
         }	
     }
+	public function checkNomorFormulir ($sender,$param) {
+		$this->idProcess=$sender->getId()=='addNomorFormulir'?'add':'edit';
+        $no_formulir=$param->Value;		
+        if ($no_faktur != '') {
+            try {                
+				if (!$this->DB->checkRecordIsExist('no_formulir','pin',$no_formulir)) {                                
+						throw new Exception ("Nomor Formulir dari ($no_formulir) tidak tersedia silahkan ganti dengan yang lain.");		
+				}                
+            }catch (Exception $e) {
+                $param->IsValid=false;
+                $sender->ErrorMessage=$e->getMessage();
+            }	
+        }	
+    }
     public function saveData ($sender,$param) {
 		if ($this->Page->isValid) {	
             $datamhs=$_SESSION['currentPagePembayaranFormulir']['DataMHS'];

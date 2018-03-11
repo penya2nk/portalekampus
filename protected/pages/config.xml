@@ -17,7 +17,7 @@
 		<allow roles="DosenWali" pages="dw.*" />
 		<allow roles="OrangtuaWali" pages="ot.*" />
 		<allow roles="Library" pages="l.*" />
-		<allow pages="Home,Pendaftaran,DataLulusan,Login,Logout,ResetPassword"
+		<allow pages="Home,Pendaftaran,PendaftaranSuccess,DataLulusan,Login,Logout,ResetPassword"
 			users="*" />
 		<deny users="*" />
 	</authorization>

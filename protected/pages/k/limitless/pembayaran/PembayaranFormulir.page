@@ -7,7 +7,7 @@
         <div class="heading-form">
             <div class="form-group">
                 <div class="input-group">                    
-                    <com:TTextBox CssClass="form-control" ID="txtNoFormulir" MaxLength="8" Attributes.PlaceHolder="No. Formulir" />                    
+                    <com:TTextBox CssClass="form-control" ID="txtNoPendaftaran" Attributes.PlaceHolder="No. Pendaftaran" />                    
                     <div class="input-group-btn">                        
                         <com:TActiveCustomButton ID="btnGo" CssClass="btn bg-slate btn-icon" OnClick="Go" Attributes.Title="Go" ValidationGroup="filterForm" >
                             <prop:Text>                                        
@@ -28,8 +28,8 @@
                     </div>                    
                 </div>                
             </div>
-            <com:TRequiredFieldValidator ValidationGroup="filterForm" Display="Dynamic" ControlToValidate="txtNoFormulir" ErrorMessage="Isi No. Formulir Mahasiswa Baru" FocusOnError="true" CssClass="has-error help-block" />
-            <com:TActiveCustomValidator ControlToValidate="txtNoFormulir" Display="Dynamic" OnServerValidate="cekNomorFormulir" ValidationGroup="filterForm" ErrorMessage="Nomor Formulir tidak terdaftar di Database, silahkan ganti dengan yang lain" CssClass="has-error help-block" />
+            <com:TRequiredFieldValidator ValidationGroup="filterForm" Display="Dynamic" ControlToValidate="txtNoPendaftaran" ErrorMessage="Isi No. Pendaftaran Mahasiswa Baru" FocusOnError="true" CssClass="has-error help-block" />
+            <com:TActiveCustomValidator ControlToValidate="txtNoPendaftaran" Display="Dynamic" OnServerValidate="cekNomorPendaftaran" ValidationGroup="filterForm" ErrorMessage="Nomor Pendaftaran tidak terdaftar di Database, silahkan ganti dengan yang lain" CssClass="has-error help-block" />
         </div>
     </div>
 </com:TContent>

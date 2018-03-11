@@ -1,8 +1,43 @@
-<%@ Title="Portal Ekampus - Pendaftaran" %>
+<%@ Title="Portal Ekampus - Pendaftaran Mahasiswa Baru" %>
 <com:TContent ID="maincontent">
 <com:TPanel Visible="<%= $this->getDefaultProcess() %>" CssClass="row">
 	<div class="col-md-12">
-        <div class="panel panel-flat border-top-lg border-top-info border-bottom-info">            
+        <div class="panel panel-flat border-top-lg border-top-info border-bottom-info">         	
+			<div class="table-responsive">
+				<table class="table">
+					<tbody>
+						<tr>
+							<td>1. Melakukan pendaftaran melalui laman https://portal.stisipolrajahaji.ac.id/index.php?page=Pendaftaran</td>
+						</tr>
+						<tr>
+							<td>
+								<ul>
+									<li>Isi form dan klik daftar.</li>
+									<li>Bukti daftar dan nomor registrasi pendaftaran dikirim ke email</li>
+								</ul>
+							</td>
+						</tr>
+						<tr>
+							<td>2. Melakukan pembayaran Rp. 450.000 melalui Bank Mandiri nomor rekening 109-0042-271999 a.n STISIPOL Raja Haji</td>
+						</tr>
+						<tr>
+							<td>3. Untuk mengaktifkan Nomor Registrasi Pendaftaran, </td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12">
+        <div class="panel panel-flat border-top-lg border-top-info border-bottom-info"> 
+        	<div class="panel-heading">
+                <h5 class="panel-title"><i class="icon-calculator3 position-left"></i>  PENDAFTARAN MAHASISWA BARU UNTUK MASUK DI T.A <com:TLabel ID="lblModulHeader" /></h5>                
+                <div class="heading-elements">
+                    <div class="heading-btn">       
+                        
+                    </div>   
+                </div>
+            </div>              
             <div class="panel-body">
                 <div class="form-horizontal">
                 	<div class="form-group" id="divAddNamaMhs">
@@ -125,8 +160,39 @@
                     <div class="form-group" id="divAddKelas">
                         <label class="col-md-2 control-label">Kelas: </label>
                         <div class="col-md-10">
-                        	<com:TDropDownList ID="cmbAddKelas" CssClass="form-control" />				                	                                 
+                        	<com:TDropDownList ID="cmbAddKelas" CssClass="form-control" />		
+                        	<com:TRequiredFieldValidator ID="FieldAddKelasValidator" InitialValue="none" ControlToValidate="cmbAddKelas" Display="Dynamic" ErrorMessage="Pilih Kelas" ValidationGroup="addformulir" FocusOnError="true" CssClass="has-error help-block">			
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddKelas').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldAddKelasValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddKelas').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>   		                	                                 
                         </div>                            
+                    </div>
+                    <div class="form-group" id="divAddPassword">
+                    	<label class="col-md-2 control-label">Password: </label>
+                    	<div class="col-md-10">
+                    		<com:TTextBox ID="txtPassword1" CssClass="form-control" TextMode="Password" />
+                    		<com:TRequiredFieldValidator ID="FieldAddPasswordValidator" ControlToValidate="txtPassword1" Display="Dynamic" ErrorMessage="Isi Password" ValidationGroup="addformulir" FocusOnError="true" CssClass="has-error help-block">			
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddPassword').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldAddPasswordValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddPassword').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                    	</div>
+                    </div>
+                    <div class="form-group" id="">
+                    	<label class="col-md-2 control-label">Re-type Password: </label>
+                    	<div class="col-md-10">                    		
+                    		<com:TTextBox ID="txtPassword2" CssClass="form-control" TextMode="Password" />
+                    		<com:TCompareValidator ID="FieldRetypePasswordValidator" ControlToValidate="txtPassword1" ControlToCompare="txtPassword2" Display="Dynamic" ErrorMessage="Isi Password tidak sama" ValidationGroup="addformulir" FocusOnError="true" CssClass="has-error help-block" />
+                    	</div>
                     </div>
                     <div class="form-group">
 		                <label class="control-label col-md-2"></label>

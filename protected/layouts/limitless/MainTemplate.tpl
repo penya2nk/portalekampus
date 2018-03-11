@@ -103,6 +103,11 @@
                     <i class="icon-square-up-right position-left"></i> SPMB <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu width-250">
+                	<li<%=$this->Page->showPendaftaranOnline==true?' class="active"':''%>>
+                        <a href="<%=$this->Page->constructUrl('spmb.PendaftaranOnline',true)%>">
+                            <i class="icon-calculator3"></i> Pendaftaran Online
+                        </a>
+                    </li>
                     <li<%=$this->Page->showPIN==true?' class="active"':''%>>
                         <a href="<%=$this->Page->constructUrl('spmb.PIN',true)%>">
                             <i class="icon-circle"></i> PIN
@@ -150,7 +155,7 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <span class="menu-heading underlined">SPMB</span>
-                                <ul class="menu-list">
+                                <ul class="menu-list">                                	
                                     <li<%=$this->Page->showPembayaranFormulir==true?' class="active"':''%>>
                                         <a href="<%=$this->Page->constructUrl('pembayaran.PembayaranFormulir',true)%>">
                                             <i class="icon-calculator3"></i> Pembayaran Formulir

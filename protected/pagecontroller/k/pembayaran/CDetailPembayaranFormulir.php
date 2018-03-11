@@ -13,20 +13,20 @@ class CDetailPembayaranFormulir Extends MainPageK {
 				$_SESSION['currentPagePembayaranFormulir']=array('page_name'=>'k.pembayaran.PembayaranFormulir','page_num'=>0,'search'=>false,'kelas'=>'none','semester_masuk'=>1,'DataMHS'=>array());												
 			}        
             try {
-                $no_formulir=addslashes($this->request['id']);
-                $str = "SELECT no_formulir,idkelas,tahun_masuk,1 AS semester_masuk FROM pin WHERE no_formulir='$no_formulir'";
-                $this->DB->setFieldTable(array('no_formulir','idkelas','tahun_masuk','semester_masuk'));
+                $no_pendaftaran=addslashes($this->request['id']);
+                $str = "SELECT no_pendaftaran,no_formulir,nama_mhs,telp_hp,email,kjur1,kjur2,idkelas,ta AS tahun_masuk,idsmt AS semester_masuk FROM formulir_pendaftaran_temp WHERE no_pendaftaran='$no_pendaftaran'";
+                $this->DB->setFieldTable(array('no_pendaftaran','no_formulir','nama_mhs','telp_hp','email','kjur1','kjur2','idkelas','tahun_masuk','semester_masuk'));
                 $r=$this->DB->getRecord($str);
                 if (!isset($r[1])) {                                
-                    throw new Exception ("Calon Mahasiswa dengan Nomor Formulir ($no_formulir) tidak terdaftar di Database, silahkan ganti dengan yang lain.");		
+                    throw new Exception ("Calon Mahasiswa dengan Nomor Pendaftaran ($no_pendaftaran) tidak terdaftar di Database, silahkan ganti dengan yang lain.");		
                 }
-                $datamhs=$r[1];                
-                $this->Finance->setDataMHS($datamhs);
-                
-                $datamhs['nkelas']=$this->DMaster->getNamaKelasByID($datamhs['idkelas']);
-                $this->Finance->setDataMHS($datamhs);                
+                $datamhs=$r[1];   
+				$datamhs['nama_ps1']=$_SESSION['daftar_jurusan'][$datamhs['kjur1']];				
+				$datamhs['nama_ps2']=$datamhs['kjur2'] > 0?$_SESSION['daftar_jurusan'][$datamhs['kjur2']]:'N.A';
+                $datamhs['nkelas']=$this->DMaster->getNamaKelasByID($datamhs['idkelas']);                      				
                 $datamhs['no_transaksi']=isset($_SESSION['currentPagePembayaranFormulir']['DataMHS']['no_transaksi']) ? $_SESSION['currentPagePembayaranFormulir']['DataMHS']['no_transaksi'] : 'none';
-                $_SESSION['currentPagePembayaranFormulir']['DataMHS']=$datamhs;                
+                $_SESSION['currentPagePembayaranFormulir']['DataMHS']=$datamhs;       
+				$this->Finance->setDataMHS($datamhs);     				
                 CDetailPembayaranFormulir::$KewajibanMahasiswa=$this->Finance->getBiayaPendaftaran ($datamhs['tahun_masuk'],$datamhs['semester_masuk'],$datamhs['idkelas']);
                 $this->populateTransaksi();
             }catch (Exception $ex) {
@@ -41,8 +41,7 @@ class CDetailPembayaranFormulir Extends MainPageK {
             return $datamhs[$idx];
         }else{
             return '';
-        }
-        
+        }        
     }
     public function populateTransaksi() {
         $datamhs=$_SESSION['currentPagePembayaranFormulir']['DataMHS'];        
@@ -136,10 +135,10 @@ class CDetailPembayaranFormulir Extends MainPageK {
 	}	
 	public function deleteRecord ($sender,$param) {	
         $datamhs=$_SESSION['currentPagePembayaranFormulir']['DataMHS']; 
-        $no_formulir=$datamhs['no_formulir'];
+        $no_pendaftaran=$datamhs['no_pendaftaran'];
 		$no_transaksi=$this->getDataKeyField($sender,$this->ListTransactionRepeater);		
 		$this->DB->deleteRecord("transaksi WHERE no_transaksi='$no_transaksi'");		
-		$this->redirect('pembayaran.DetailPembayaranFormulir',true,array('id'=>$no_formulir));
+		$this->redirect('pembayaran.DetailPembayaranFormulir',true,array('id'=>$no_pendaftaran));
 	}		
     public function closeDetail ($sender,$param) {
         unset($_SESSION['currentPagePembayaranFormulir']['DataMHS']);

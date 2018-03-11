@@ -53,7 +53,7 @@
         <div class="col-md-12">
             <div class="panel panel-flat">
                 <div class="panel-heading">
-                    <h5 class="panel-title"><i class="icon-calculator position-left"></i>  DAFTAR TRANSAKSI T.A <%=$this->DMaster->getNamaTA($_SESSION['currentPagePembayaranSemesterPendek']['DataMHS']['ta'])%> SEMESTER <%=$this->setup->getSemester($_SESSION['currentPagePembayaranSemesterPendek']['semester'])%></h5>                
+                    <h5 class="panel-title"><i class="icon-calculator position-left"></i>  DAFTAR TRANSAKSI T.A <com:TActiveLabel ID="lblPanelHeader"/></h5>                
                     <div class="heading-elements">
                         <div class="heading-btn">       
                             <com:TActiveLinkButton ID="btnAddTransaction" OnClick="addTransaction" ClientSide.PostState="false" CssClass="btn btn-info btn-icon" Attributes.Title="Tambah Transaksi">
@@ -83,7 +83,9 @@
                                 <th scope="col">NO. TRANSAKSI</th>						
                                 <th scope="col">NO. FAKTUR<br />BANK</th>
                                 <th scope="col">TANGGAL TRANSAKSI</th>			
-                                <th scope="col">TANGGAL INPUT</th>			
+                                <th scope="col">TANGGAL INPUT</th>	
+								<th scope="col">BIAYA PER SKS</th>
+								<th scope="col">JUMLAH SKS</th>	
                                 <th scope="col" class="text-right">TOTAL</th>											
                                 <th scope="col" width="120">AKSI</th>
                             </tr>
@@ -97,6 +99,8 @@
                                 <td><%#$this->DataItem['no_faktur']%></td>											
                                 <td><%=$this->Page->TGL->tanggal('l, j F Y',$this->DataItem['tanggal'])%></td>	
                                 <td><%=$this->Page->TGL->tanggal('l, j F Y',$this->DataItem['date_added'])%></td>	
+								<td class="text-right"><%#$this->Page->Finance->toRupiah($this->DataItem['biaya_sks'])%></td>					
+								<td><%#$this->DataItem['jumlah_sks']%></td>
                                 <td class="text-right"><%#$this->Page->Finance->toRupiah($this->DataItem['total'])%></td>					
                                 <td>        
                                     <ul class="icons-list">
@@ -138,7 +142,7 @@
                             </tbody>
                             <tfoot>						
                                 <tr Align="right">
-                                    <td colspan="5"><b>Total</b></td>							
+                                    <td colspan="7"><b>Total</b></td>							
                                     <td><%#$this->Page->Finance->toRupiah(CDetailPembayaranSemesterPendek::$TotalSudahBayar)%></td>
                                     <td>&nbsp;</td>
                                 </tr>

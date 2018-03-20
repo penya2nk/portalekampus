@@ -16,6 +16,7 @@ class CTransaksiPembayaranFormulir Extends MainPageK {
                     throw new Exception ("Tidak ada data No. Transaksi di Sesi ini");		
                 }  
                 $this->Finance->setDataMHS($datamhs);
+				$no_formulir=$datamhs['no_formulir'];
                 $no_transaksi=$datamhs['no_transaksi'];
                 $str = "SELECT no_faktur,tanggal FROM transaksi WHERE no_transaksi=$no_transaksi";
                 $this->DB->setFieldTable(array('no_faktur','tanggal'));
@@ -23,7 +24,12 @@ class CTransaksiPembayaranFormulir Extends MainPageK {
                 $this->hiddennofaktur->Value=$d[1]['no_faktur'];
                 $this->txtAddNomorFaktur->Text=$d[1]['no_faktur'];
                 $this->cmbAddTanggalFaktur->Text=$this->TGL->tanggal('d-m-Y',$d[1]['tanggal']);
-                $this->populateData();
+				$str = "SELECT no_pendaftaran FROM formulir_pendaftaran_temp WHERE no_formulir=$no_formulir";
+                $this->DB->setFieldTable(array('no_pendaftaran'));
+                $d=$this->DB->getRecord($str);
+                $this->txtAddNomorPendaftaran->Text=isset($d[1])?$d[1]['no_pendaftaran']:'';
+				$this->hiddennopendaftaran->Value=$this->txtAddNomorPendaftaran->Text;
+				$this->populateData();
             }catch (Exception $ex) {
                 $this->idProcess='view';	
                 $this->errorMessage->Text=$ex->getMessage();
@@ -145,14 +151,27 @@ class CTransaksiPembayaranFormulir Extends MainPageK {
             }	
         }	
     }
-	public function checkNomorFormulir ($sender,$param) {
-		$this->idProcess=$sender->getId()=='addNomorFormulir'?'add':'edit';
-        $no_formulir=$param->Value;		
-        if ($no_faktur != '') {
-            try {                
-				if (!$this->DB->checkRecordIsExist('no_formulir','pin',$no_formulir)) {                                
-						throw new Exception ("Nomor Formulir dari ($no_formulir) tidak tersedia silahkan ganti dengan yang lain.");		
-				}                
+	public function checkNomorPendaftaran ($sender,$param) {
+		$this->idProcess=$sender->getId()=='addNomorPendaftaran'?'add':'edit';
+        $no_pendaftaran=$param->Value;		
+        if ($no_pendaftaran != '') {
+            try {
+                if ($this->hiddennopendaftaran->Value != $no_pendaftaran) {
+					$tahun_masuk_formulir=$_SESSION['currentPagePembayaranFormulir']['DataMHS']['tahun_masuk'];
+					$str = "SELECT idkelas,ta FROM formulir_pendaftaran_temp WHERE no_pendaftaran=$no_pendaftaran";
+					$this->DB->setFieldTable(array('idkelas','ta'));
+					$r=$this->DB->getRecord($str);
+					
+					if (!isset($r[1])) {
+						throw new Exception ("Nomor Pendaftaran tidak tersedia silahkan ganti dengan yang lain.");	
+					}
+					if ($r[1]['idkelas']!=$_SESSION['currentPagePembayaranFormulir']['DataMHS']['idkelas']) {
+						throw new Exception ("Kelas No. Formulir ini tidak sama dengan No. Pendaftaran ($no_pendaftaran).");	
+					}	
+					if ($r[1]['ta']!=$tahun_masuk_formulir){
+							throw new Exception ("Tahun Masuk no_registrasi (".$r[1]['ta'].")  tidak sama dengan tahun masuk nomor formulir ($tahun_masuk)");
+					}					
+                }
             }catch (Exception $e) {
                 $param->IsValid=false;
                 $sender->ErrorMessage=$e->getMessage();
@@ -164,12 +183,17 @@ class CTransaksiPembayaranFormulir Extends MainPageK {
             $datamhs=$_SESSION['currentPagePembayaranFormulir']['DataMHS'];
             $no_transaksi=$datamhs['no_transaksi'];
             $no_formulir=$datamhs['no_formulir'];
-            
+			
             $no_faktur=addslashes($this->txtAddNomorFaktur->Text);            
             $tanggal=date('Y-m-d',$this->cmbAddTanggalFaktur->TimeStamp);
-            
+            $no_pendaftaran=$this->txtAddNomorPendaftaran->Text;
+			
             $str = "UPDATE transaksi SET no_faktur='$no_faktur',tanggal='$tanggal',date_modified=NOW() WHERE no_transaksi=$no_transaksi";
             $this->DB->updateRecord($str);
+			
+			$str = "UPDATE formulir_pendaftaran_temp SET no_formulir='$no_formulir' WHERE no_pendaftaran=$no_pendaftaran";
+            $this->DB->updateRecord($str);
+			
             unset($_SESSION['currentPagePembayaranFormulir']['DataMHS']);
             $this->redirect('pembayaran.DetailPembayaranFormulir',true,array('id'=>$no_formulir));
         }

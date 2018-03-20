@@ -7,7 +7,7 @@
         <div class="heading-form">
             <div class="form-group">
                 <div class="input-group">                    
-                    <com:TTextBox CssClass="form-control" ID="txtNoPendaftaran" Attributes.PlaceHolder="No. Pendaftaran" />                    
+                    <com:TTextBox CssClass="form-control" ID="txtNoFormulir" MaxLength="8" Attributes.PlaceHolder="No. Formulir" />                    
                     <div class="input-group-btn">                        
                         <com:TActiveCustomButton ID="btnGo" CssClass="btn bg-slate btn-icon" OnClick="Go" Attributes.Title="Go" ValidationGroup="filterForm" >
                             <prop:Text>                                        
@@ -28,8 +28,8 @@
                     </div>                    
                 </div>                
             </div>
-            <com:TRequiredFieldValidator ValidationGroup="filterForm" Display="Dynamic" ControlToValidate="txtNoPendaftaran" ErrorMessage="Isi No. Pendaftaran Mahasiswa Baru" FocusOnError="true" CssClass="has-error help-block" />
-            <com:TActiveCustomValidator ControlToValidate="txtNoPendaftaran" Display="Dynamic" OnServerValidate="cekNomorPendaftaran" ValidationGroup="filterForm" ErrorMessage="Nomor Pendaftaran tidak terdaftar di Database, silahkan ganti dengan yang lain" CssClass="has-error help-block" />
+            <com:TRequiredFieldValidator ValidationGroup="filterForm" Display="Dynamic" ControlToValidate="txtNoFormulir" ErrorMessage="Isi No. Formulir Mahasiswa Baru" FocusOnError="true" CssClass="has-error help-block" />
+            <com:TActiveCustomValidator ControlToValidate="txtNoFormulir" Display="Dynamic" OnServerValidate="cekNomorFormulir" ValidationGroup="filterForm" ErrorMessage="Nomor Formulir tidak terdaftar di Database, silahkan ganti dengan yang lain" CssClass="has-error help-block" />
         </div>
     </div>
 </com:TContent>
@@ -53,7 +53,8 @@
                     <label><strong>Kriteria :</strong></label>
                     <com:TDropDownList ID="cmbKriteria" CssClass="form-control">
                         <com:TListItem Text="NO. FAKTUR" Value="no_faktur" />
-                        <com:TListItem Text="NO. FORMULIR" Value="no_formulir" />                               
+                        <com:TListItem Text="NO. FORMULIR" Value="no_formulir" /> 
+						<com:TListItem Text="NO. REGISTRASI" Value="no_pendaftaran" />						
                     </com:TDropDownList>
                 </div>      
                 <div class="form-group" id="divtxtKriteria">
@@ -112,10 +113,11 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr class="bg-teal-700">
-                                    <th scope="col" width="30">NO</th>							
+                                    <th scope="col" width="20">NO</th>							
                                     <th scope="col" width="130">FAKTUR</th>
                                     <th scope="col" width="120">TANGGAL</i></th>
-                                    <th scope="col" width="130">FORMULIR</i></th>   																											
+                                    <th scope="col" width="130">FORMULIR</i></th> 
+									<th scope="col" width="130">NO. REGISTRASI</i></th> 									
                                     <th scope="col" width="140">JUMLAH BAYAR</th>
                                     <th scope="col" width="70">TA/SMT</th>
                                     <th scope="col" width="70">STATUS</th>
@@ -129,7 +131,8 @@
                             <td><%#$this->DataItem['no']%></td>					
                             <td><%#$this->DataItem['no_faktur']%></td>
                             <td><%#$this->DataItem['tanggal']%></td>
-                            <td><%# $this->Data['no_formulir']%></td>	
+                            <td><%# $this->Data['no_formulir']%></td>
+							<td><%# $this->Data['no_pendaftaran']%></td>							
                             <td><%#$this->DataItem['dibayarkan']%></td>	
                             <td><%#$this->DataItem['tasmt']%></td>
                             <td>

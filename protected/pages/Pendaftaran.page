@@ -1,33 +1,6 @@
 <%@ Title="Portal Ekampus - Pendaftaran Mahasiswa Baru" %>
 <com:TContent ID="maincontent">
-<com:TPanel Visible="<%= $this->getDefaultProcess() %>" CssClass="row">
-	<div class="col-md-12">
-        <div class="panel panel-flat border-top-lg border-top-info border-bottom-info">         	
-			<div class="table-responsive">
-				<table class="table">
-					<tbody>
-						<tr>
-							<td>1. Melakukan pendaftaran melalui laman https://portal.stisipolrajahaji.ac.id/index.php?page=Pendaftaran</td>
-						</tr>
-						<tr>
-							<td>
-								<ul>
-									<li>Isi form dan klik daftar.</li>
-									<li>Bukti daftar dan nomor registrasi pendaftaran dikirim ke email</li>
-								</ul>
-							</td>
-						</tr>
-						<tr>
-							<td>2. Melakukan pembayaran Rp. 450.000 melalui Bank Mandiri nomor rekening 109-0042-271999 a.n STISIPOL Raja Haji</td>
-						</tr>
-						<tr>
-							<td>3. Untuk mengaktifkan Nomor Registrasi Pendaftaran, </td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div>
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>" CssClass="row">	
 	<div class="col-md-12">
         <div class="panel panel-flat border-top-lg border-top-info border-bottom-info"> 
         	<div class="panel-heading">

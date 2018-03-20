@@ -1,4 +1,4 @@
-<%@ Title="SPMB - PIN"%>
+<%@ Title="SPMB - PENDAFTARAN ONLINE"%>
 <com:TContent ID="moduleheader">    
     <i class="icon-calculator3 position-left"></i> <span class="text-semibold">Pendaftaran Online</span>
 </com:TContent>
@@ -121,8 +121,8 @@
                     </prop:HeaderTemplate>	
                     <prop:ItemTemplate>
                         <tr>
-                            <td><%#$this->DataItem['no_pendaftaran']%></td>
-                            <td>
+                            <td width="70"><%#$this->DataItem['no_pendaftaran']%></td>
+                            <td class="col-md-7">
                             	<table width="100%">
                             		<tbody>
                             			<tr>
@@ -157,8 +157,6 @@
                             	</table>                            	
                             </td>
                             <td><%#$this->DataItem['no_formulir'] >0 ?$this->DataItem['no_formulir']:'N.A'%></td>
-                             
-                            
                             <td><span class="label <%#($this->DataItem['no_formulir']==0)?'label-default':'label-success'%>"><i class="<%#($this->DataItem['no_formulir']>0)?'icon-cancel-square':'icon-checkbox-checked'%>"></i></td>
                         </tr>                         
                     </prop:ItemTemplate>                        

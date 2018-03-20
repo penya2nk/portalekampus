@@ -69,14 +69,14 @@
                         <com:TListItem Value="terdaftar" Text="TERDAFTAR" />
                         <com:TListItem Value="belum_terdaftar" Text="BELUM TERDAFTAR" />
                         <prop:ClientSide.OnPreDispatch>         
-                            $('loading').show();
+                            Pace.stop();
+                            Pace.start();
                         </prop:ClientSide.OnPreDispatch>
                         <prop:ClientSide.OnLoading>
                             $('<%=$this->cmbDisplayRecord->ClientId%>').disabled='disabled';						
                         </prop:ClientSide.OnLoading>
                         <prop:ClientSide.OnComplete>																	
-                            $('<%=$this->cmbDisplayRecord->ClientId%>').disabled='';						                               						                                        
-                            $('loading').hide();
+                            $('<%=$this->cmbDisplayRecord->ClientId%>').disabled='';
                         </prop:ClientSide.OnComplete>
                     </com:TActiveDropDownList> 	
                 </div>  

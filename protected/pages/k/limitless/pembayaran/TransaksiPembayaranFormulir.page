@@ -34,31 +34,12 @@
 </com:TPanel>
 <com:TPanel Visible="<%= $this->getDefaultProcess() %>" CssClass="content"> 
     <com:THiddenField ID="hiddennofaktur" />
+	<com:THiddenField ID="hiddennopendaftaran" />
     <div class="row">    
         <div class="col-lg-12">
             <div class="panel panel-flat border-top-info border-bottom-info">
                 <div class="panel-heading">
                     <h5 class="panel-title"><i class="icon-profile"></i> Biodata Calon Mahasiswa</h5>
-                    <div class="heading-elements">
-                        <ul class="icons-list">
-                            <li><a data-action="collapse"></a></li>   
-                            <li>
-                                <com:TActiveLinkButton ID="btnCloseDetail" Attributes.data-action="closeredirect" OnClick="Page.closeDetail" ClientSide.PostState="false" Attributes.Title="Keluar dari detail">
-                                   <prop:ClientSide.OnPreDispatch>
-                                        $('<%=$this->btnCloseDetail->ClientId%>').disabled='disabled';
-                                        Pace.stop();
-                                        Pace.start();                    
-                                    </prop:ClientSide.OnPreDispatch>
-                                   <prop:ClientSide.OnLoading>
-                                        $('<%=$this->btnCloseDetail->ClientId%>').disabled='disabled';
-                                    </prop:ClientSide.OnLoading>
-                                    <prop:ClientSide.onComplete>                            
-                                        $('<%=$this->btnCloseDetail->ClientId%>').disabled='';
-                                    </prop:ClientSide.OnComplete>
-                                </com:TActiveLinkButton>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
                 <div class="panel-body">
                     <div class="row">
@@ -66,73 +47,23 @@
                             <a href="<%=$this->Page->constructUrl('kemahasiswaan.ProfilMahasiswa',true,array('id'=>$this->getDataMHS('no_formulir')))%>"><img src="<%=$this->setup->getAddress($this->getDataMHS('no_formulir'))%>" alt="" onerror="no_photo(this,'resources/userimages/no_photo.png')" /></a>                        
                         </div>                   
                         <div class="col-md-5">
-							<div class="form-horizontal">
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label"><strong>NO. PENDAFTARAN: </strong></label>
-                                    <div class="col-md-8">
-                                        <p class="form-control-static"><%= $this->getDataMHS('no_pendaftaran')%></p>
-                                    </div>                            
-                                </div>
-                            </div>
                             <div class="form-horizontal">
                                 <div class="form-group">
                                     <label class="col-md-4 control-label"><strong>NO. FORMULIR: </strong></label>
                                     <div class="col-md-8">
-                                        <p class="form-control-static"><%= $this->getDataMHS('no_formulir')>0?$this->getDataMHS('no_formulir'):'N.A'%></p>
+                                        <p class="form-control-static"><%= $this->getDataMHS('no_formulir')%></p>
                                     </div>                            
                                 </div>
-								<div class="form-group">
-									<label class="col-md-4 control-label"><strong>NAMA MHS: </strong></label>
-									<div class="col-md-8">
-										<p class="form-control-static"><%= $this->getDataMHS('nama_mhs')%></p>
-									</div>                            
-								</div>
-								<div class="form-group">
-									<label class="col-md-4 control-label"><strong>NO. HP: </strong></label>
-									<div class="col-md-8">
-										<p class="form-control-static"><%= $this->getDataMHS('telp_hp')%></p>
-									</div>                            
-								</div>
-								<div class="form-group">
-									<label class="col-md-4 control-label"><strong>EMAIL: </strong></label>
-									<div class="col-md-8">
-										<p class="form-control-static"><%= $this->getDataMHS('email')%></p>
-									</div>                            
-								</div>
                             </div>
                         </div>
                         <div class="col-md-5">
                             <div class="form-horizontal">  
-								<div class="form-group">
-									<label class="col-md-4 control-label"><strong>PROG. STUDI 1: </strong></label>
-									<div class="col-md-8">
-										<p class="form-control-static"><%= $this->getDataMHS('nama_ps1')%></p>
-									</div>                            
-								</div>
-								<div class="form-group">
-									<label class="col-md-4 control-label"><strong>PROG. STUDI 2: </strong></label>
-									<div class="col-md-8">
-										<p class="form-control-static"><%= $this->getDataMHS('nama_ps2')%></p>
-									</div>                            
-								</div>    
                                 <div class="form-group">
                                     <label class="col-md-4 control-label"><strong>KELAS: </strong></label>
                                     <div class="col-md-8">
                                         <p class="form-control-static"><%= $this->getDataMHS('nkelas')%></p>
                                     </div>                            
-                                </div>              
-								<div class="form-group">
-                                <label class="col-md-4 control-label"><strong>TAHUN MASUK: </strong></label>
-                                <div class="col-md-8">
-										<p class="form-control-static"><%= $this->getDataMHS('tahun_masuk')%></p>
-									</div>                            
-								</div>   
-								<div class="form-group">
-									<label class="col-md-4 control-label"><strong>SEMESTER MASUK: </strong></label>
-									<div class="col-md-8">
-										<p class="form-control-static"><%=$this->setup->getSemester($this->getDataMHS('semester_masuk'))%></p>
-									</div>                            
-								</div>   
+                                </div>                            
                             </div>
                         </div>
                     </div>
@@ -194,31 +125,31 @@
                     <div class="col-md-9">
                         <com:TDatePicker ID="cmbAddTanggalFaktur" DateFormat="dd-MMMM-yyyy" Culture="id"  InputMode="DropDownList" ShowCalendar="false"/>
                     </div>
-                </div>         
-				<div class="form-group" id="divAddNomorFormulir">
-                    <label class="col-md-3 control-label">No. Formulir :</label>
-                    <div class="col-md-9">
-                        <com:TTextBox ID="txtAddNomorFormulir" CssClass="form-control" />
-						<com:TRequiredFieldValidator ID="FieldAddNomorFormulir" ControlToValidate="txtAddNomorFormulir" Display="Dynamic" ErrorMessage="Isi Nomor Formulir dari PIN" ValidationGroup="addtransaksi" FocusOnError="true" CssClass="has-error help-block">			
+                </div>  
+				<div class="form-group" id="divAddNomorPendaftaran">
+                    <label class="col-md-3 control-label">Nomor Pendaftaran :</label>
+                    <div class="col-md-9">                            
+                        <com:TTextBox ID="txtAddNomorPendaftaran" CssClass="form-control" />  
+                        <com:TRequiredFieldValidator ID="FieldAddNomorPendaftaran" ControlToValidate="txtAddNomorPendaftaran" Display="Dynamic" ErrorMessage="Isi dengan Nomor Pendaftaran Online Mahasiswa Baru" ValidationGroup="addtransaksi" FocusOnError="true" CssClass="has-error help-block">			
                             <prop:ClientSide.OnValidationError>
-                                $('divAddNomorFormulir').addClassName('has-error');
-                                jQuery('#<%=$this->FieldAddNomorFormulir->ClientID%>').removeAttr('style');
+                                $('divAddNomorPendaftaran').addClassName('has-error');
+                                jQuery('#<%=$this->FieldAddNomorPendaftaran->ClientID%>').removeAttr('style');
                             </prop:ClientSide.OnValidationError>
                             <prop:ClientSide.OnValidationSuccess>
-                                $('divAddNomorFormulir').removeClassName('has-error');
+                                $('divAddNomorPendaftaran').removeClassName('has-error');
                             </prop:ClientSide.OnValidationSuccess>
                         </com:TRequiredFieldValidator>      
-                        <com:TActiveCustomValidator ID="addNomorFormulir" ControlToValidate="txtAddNomorFormulir" Display="Dynamic" OnServerValidate="checkNomorFormulir" ValidationGroup="addtransaksi" ErrorMessage="Nomor Faktur sudah ada silahkan ganti dengan yang lain" CssClass="has-error help-block">
+                        <com:TActiveCustomValidator ID="addNomorPendaftaran" ControlToValidate="txtAddNomorPendaftaran" Display="Dynamic" OnServerValidate="checkNomorPendaftaran" ValidationGroup="addtransaksi" ErrorMessage="Nomor Pendaftaran sudah ada silahkan ganti dengan yang lain" CssClass="has-error help-block">
                             <prop:ClientSide.OnValidationError>
-                                $('divAddNomorFormulir').addClassName('has-error');
-                                jQuery('#<%=$this->addNomorFormulir->ClientID%>').removeAttr('style');
+                                $('divAddNomorPendaftaran').addClassName('has-error');
+                                jQuery('#<%=$this->addNomorPendaftaran->ClientID%>').removeAttr('style');
                             </prop:ClientSide.OnValidationError>
                             <prop:ClientSide.OnValidationSuccess>
-                                $('divAddNomorFormulir').removeClassName('has-error');
+                                $('divAddNomorPendaftaran').removeClassName('has-error');
                             </prop:ClientSide.OnValidationSuccess>
                         </com:TActiveCustomValidator>
                     </div>
-                </div>
+                </div>    				
                 <div class="form-group">
                     <label class="control-label col-md-3"></label>
                     <div class="col-md-5">

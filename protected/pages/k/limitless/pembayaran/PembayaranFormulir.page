@@ -114,11 +114,12 @@
                             <thead>
                                 <tr class="bg-teal-700">
                                     <th scope="col" width="20">NO</th>							
-                                    <th scope="col" width="130">FAKTUR</th>
+                                    <th scope="col" width="120">FAKTUR</th>
                                     <th scope="col" width="120">TANGGAL</i></th>
                                     <th scope="col" width="130">FORMULIR</i></th> 
 									<th scope="col" width="130">NO. REGISTRASI</i></th> 									
-                                    <th scope="col" width="140">JUMLAH BAYAR</th>
+                                    <th scope="col" width="100">JUMLAH BAYAR</th>
+									<th scope="col" width="170">KELAS</th>
                                     <th scope="col" width="70">TA/SMT</th>
                                     <th scope="col" width="70">STATUS</th>
                                     <th width="80">AKSI</th>
@@ -134,6 +135,7 @@
                             <td><%# $this->Data['no_formulir']%></td>
 							<td><%# $this->Data['no_pendaftaran']%></td>							
                             <td><%#$this->DataItem['dibayarkan']%></td>	
+							<td><%#$this->DataItem['nama_kelas']%></td>
                             <td><%#$this->DataItem['tasmt']%></td>
                             <td>
                                 <span class="<%#$this->DataItem['commited']==true?'label label-flat border-success text-success-600 position-right':'label label-danger position-right'%>"><%#$this->DataItem['commited']==true?'Done':'in progress'%></span>                               

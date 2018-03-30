@@ -8,7 +8,7 @@ class CSoalPMB extends MainPageMB {
         $this->createObj('Akademik');
         if (!$this->IsPostBack&&!$this->IsCallBack) {	            
             try {          
-                $no_formulir=$this->Pengguna->getDataUser('username');
+                $no_formulir=$this->Pengguna->getDataUser('no_formulir');
                 $this->Demik->setDataMHS(array('no_formulir'=>$no_formulir));                
                 if ($this->Demik->isNoFormulirExist()) {
                     if ($this->Demik->isMhsRegistered(true)) {
@@ -75,7 +75,7 @@ class CSoalPMB extends MainPageMB {
         $pin=addslashes($param->Value);
         try {
             if ($pin != '') {			            
-                $no_formulir=$this->Pengguna->getDataUser('username');
+                $no_formulir=$this->Pengguna->getDataUser('no_formulir');
                 if (!$this->DB->checkRecordIsExist ('no_pin','pin',$pin," AND no_formulir='$no_formulir'")) {
                     throw new Exception ("Nomor PIN ($pin) tidak terdaftar di Portal.");
                 }     
@@ -87,7 +87,7 @@ class CSoalPMB extends MainPageMB {
     }
     public function startUjian ($sender,$param) {        
         if ($this->IsValid) {
-            $no_formulir=$this->Pengguna->getDataUser('username');
+            $no_formulir=$this->Pengguna->getDataUser('no_formulir');
             $str = "INSERT INTO kartu_ujian (no_formulir,no_ujian,tgl_ujian,idtempat_spmb) VALUES ($no_formulir,'$no_formulir',NOW(),0)";			
             $this->DB->query('BEGIN');
             if ($this->DB->insertRecord($str)) {              
@@ -101,7 +101,7 @@ class CSoalPMB extends MainPageMB {
         }
     }    
     public function populateSoal () {
-        $no_formulir=$this->Pengguna->getDataUser('username');
+        $no_formulir=$this->Pengguna->getDataUser('no_formulir');
         $str = "SELECT ju.idsoal,nama_soal,ju.idjawaban FROM jawaban_ujian ju,soal s WHERE ju.idsoal=s.idsoal AND ju.no_formulir=$no_formulir";
         $this->DB->setFieldTable(array('idsoal','nama_soal','idjawaban')); 
         $r=$this->DB->getRecord($str);	     

@@ -149,6 +149,7 @@
                                 <tr class="bg-teal-700">
                                     <th scope="col">NO</th>
                                     <th scope="col">NO. FORMULIR</th>						
+									<th scope="col">NO. REGISTRASI</th>
                                     <th scope="col">PIN</th>			
                                     <th scope="col">KELAS</th>
                                     <th scope="col">NAMA MAHASISWA</th>
@@ -160,7 +161,8 @@
                     <prop:ItemTemplate>
                         <tr>
                             <td><%#$this->DataItem['no']%></td>
-                            <td><%#$this->DataItem['no_formulir']%></td>											
+                            <td><%#$this->DataItem['no_formulir']%></td>
+							<td><%#$this->DataItem['no_pendaftaran']==''?'N.A':$this->DataItem['no_pendaftaran']%></td>									
                             <td><%#$this->DataItem['no_pin']%></td>
                             <td><%#$this->Page->DMaster->getNamaKelasByID($this->DataItem['idkelas'])%></td>
                             <td><%#($this->DataItem['nama_mhs']=='')?'N.A':$this->DataItem['nama_mhs']%></td>

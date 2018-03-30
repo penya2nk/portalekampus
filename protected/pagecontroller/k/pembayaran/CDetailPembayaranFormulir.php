@@ -21,12 +21,14 @@ class CDetailPembayaranFormulir Extends MainPageK {
                     throw new Exception ("Calon Mahasiswa dengan Nomor Formulir ($no_formulir) tidak terdaftar di Database, silahkan ganti dengan yang lain.");		
                 }
                 $datamhs=$r[1];                
-                $this->Finance->setDataMHS($datamhs);
-                
+                $this->Finance->setDataMHS($datamhs);                
                 $datamhs['nkelas']=$this->DMaster->getNamaKelasByID($datamhs['idkelas']);
                 $this->Finance->setDataMHS($datamhs);                
                 $datamhs['no_transaksi']=isset($_SESSION['currentPagePembayaranFormulir']['DataMHS']['no_transaksi']) ? $_SESSION['currentPagePembayaranFormulir']['DataMHS']['no_transaksi'] : 'none';
-                $_SESSION['currentPagePembayaranFormulir']['DataMHS']=$datamhs;                
+                $datamhs['nama_tahun_masuk']=$this->DMaster->getNamaTA($datamhs['tahun_masuk']);
+				
+				$_SESSION['currentPagePembayaranFormulir']['DataMHS']=$datamhs;          
+				
                 CDetailPembayaranFormulir::$KewajibanMahasiswa=$this->Finance->getBiayaPendaftaran ($datamhs['tahun_masuk'],$datamhs['semester_masuk'],$datamhs['idkelas']);
                 $this->populateTransaksi();
             }catch (Exception $ex) {
@@ -35,9 +37,9 @@ class CDetailPembayaranFormulir Extends MainPageK {
             }      
 		}	
 	}
-    public function getDataMHS($idx) {		      
-        $datamhs=$_SESSION['currentPagePembayaranFormulir']['DataMHS'];
-        if (isset($datamhs[$idx])) {
+    public function getDataMHS($idx) {		             
+        if (isset($_SESSION['currentPagePembayaranFormulir']['DataMHS'])) {
+			$datamhs=$_SESSION['currentPagePembayaranFormulir']['DataMHS'];
             return $datamhs[$idx];
         }else{
             return '';
@@ -49,12 +51,13 @@ class CDetailPembayaranFormulir Extends MainPageK {
         $no_formulir=$datamhs['no_formulir'];
         $tahun=$datamhs['tahun_masuk'];
         $idsmt=$datamhs['semester_masuk'];        
-        $str = "SELECT no_transaksi,no_faktur,tanggal,commited,date_added FROM transaksi WHERE tahun='$tahun' AND idsmt='$idsmt' AND no_formulir='$no_formulir'";
-        $this->DB->setFieldTable(array('no_transaksi','no_faktur','tanggal','commited','date_added'));
+        $str = "SELECT t.no_transaksi,t.no_faktur,tanggal,t.commited,fpt.no_pendaftaran,t.date_added FROM transaksi t LEFT JOIN formulir_pendaftaran_temp fpt ON (fpt.no_formulir=t.no_formulir) WHERE t.tahun='$tahun' AND t.idsmt='$idsmt' AND t.no_formulir='$no_formulir'";
+        $this->DB->setFieldTable(array('no_transaksi','no_faktur','tanggal','commited','no_pendaftaran','date_added'));
         $r=$this->DB->getRecord($str);
         $result=array();
         while (list($k,$v)=each($r)) {
             $no_transaksi=$v['no_transaksi'];
+			$v['no_pendaftaran']=$v['no_pendaftaran']>0?$v['no_pendaftaran']:'N.A';
             $v['total']=$this->DB->getSumRowsOfTable('dibayarkan',"transaksi_detail WHERE no_transaksi=$no_transaksi");
             $result[$k]=$v;
         }

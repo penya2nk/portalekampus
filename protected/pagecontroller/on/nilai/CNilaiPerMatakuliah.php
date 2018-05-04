@@ -50,7 +50,14 @@ class CNilaiPerMatakuliah extends MainPageON {
                 $this->errormessage->Text=$ex->getMessage();
             }
 		}		
+
 	}	
+    public function getInfoMatkul($idx) {        
+        if (isset($_SESSION['currentPageNilaiPerMatakuliah']['InfoMatkul'][$idx])) {
+            $item=$_SESSION['currentPageNilaiPerMatakuliah']['InfoMatkul'][$idx];
+            return $item;
+        }        
+    }
     public function getInfoToolbar() {        
         $kjur=$_SESSION['kjur'];        
 		$ps=$_SESSION['daftar_jurusan'][$kjur];
@@ -86,7 +93,7 @@ class CNilaiPerMatakuliah extends MainPageON {
         $idsmt=$_SESSION['semester'];
         $kjur=$_SESSION['kjur'];        
         $idkur=$this->Demik->getIDKurikulum($kjur);
-        
+        $clausa='';
         if ($search) {
             $txtsearch=  addslashes($this->txtKriteria->Text);           
             switch ($this->cmbKriteria->Text) {                                

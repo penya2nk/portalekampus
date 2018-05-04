@@ -187,13 +187,16 @@ class CTransaksiPembayaranFormulir Extends MainPageK {
             $no_faktur=addslashes($this->txtAddNomorFaktur->Text);            
             $tanggal=date('Y-m-d',$this->cmbAddTanggalFaktur->TimeStamp);
             $no_pendaftaran=$this->txtAddNomorPendaftaran->Text;
-			
+            
+            $this->DB->query("BEGIN");
+
             $str = "UPDATE transaksi SET no_faktur='$no_faktur',tanggal='$tanggal',date_modified=NOW() WHERE no_transaksi=$no_transaksi";
             $this->DB->updateRecord($str);
 			
 			$str = "UPDATE formulir_pendaftaran_temp SET no_formulir='$no_formulir' WHERE no_pendaftaran=$no_pendaftaran";
             $this->DB->updateRecord($str);
-			
+			$this->DB->query("COMMIT");
+            
             unset($_SESSION['currentPagePembayaranFormulir']['DataMHS']);
             $this->redirect('pembayaran.DetailPembayaranFormulir',true,array('id'=>$no_formulir));
         }
@@ -206,9 +209,16 @@ class CTransaksiPembayaranFormulir Extends MainPageK {
             
             $no_faktur=addslashes($this->txtAddNomorFaktur->Text);            
             $tanggal=date('Y-m-d',$this->cmbAddTanggalFaktur->TimeStamp);
-            
+            $no_pendaftaran=$this->txtAddNomorPendaftaran->Text;
+
+            $this->DB->query("BEGIN");
             $str = "UPDATE transaksi SET no_faktur='$no_faktur',tanggal='$tanggal',commited=1,date_modified=NOW() WHERE no_transaksi=$no_transaksi";
             $this->DB->updateRecord($str);
+
+            $str = "UPDATE formulir_pendaftaran_temp SET no_formulir='$no_formulir' WHERE no_pendaftaran=$no_pendaftaran";
+            $this->DB->updateRecord($str);
+            $this->DB->query("COMMIT");
+
             unset($_SESSION['currentPagePembayaranFormulir']['DataMHS']);
             $this->redirect('pembayaran.DetailPembayaranFormulir',true,array('id'=>$no_formulir));
         }

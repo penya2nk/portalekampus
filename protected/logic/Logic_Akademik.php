@@ -94,7 +94,7 @@ class Logic_Akademik extends Logic_Mahasiswa {
 	    $jumlah=0;
 	    switch ($mode_info) {
 	        case 'penyelenggaraan' :
-	            $jumlah=$this->DB->getCountRowsOfTable("kelas_mhsvp WHERE idsmt='$idsmt' AND tahun='$ta' AND kjur='$kjur'$clausa",'vp.idpenyelenggaraan');
+	            $jumlah=$this->db->getCountRowsOfTable("kelas_mhs km, pengampu_penyelenggaraan pp WHERE km.idpengampu_penyelenggaraan=pp.idpengampu_penyelenggaraan AND pp.idpenyelenggaraan=$id",'km.idkelas_mhs');
             break;
 	    }
         return $jumlah;   

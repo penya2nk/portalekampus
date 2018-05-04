@@ -7,8 +7,8 @@ class CPendaftaranOnline extends MainPageK {
 		$this->showPendaftaranOnline=true;
         $this->createObj('Akademik');
 		if (!$this->IsPostBack && !$this->IsCallBack) {	
-            if (!isset($_SESSION['currentPagePendaftaranOnline'])||$_SESSION['currentPagePendaftaranOnline']['page_name']!='k.spmb.PIN') {
-				$_SESSION['currentPagePendaftaranOnline']=array('page_name'=>'k.spmb.PIN','page_num'=>0,'offset'=>0,'limit'=>0,'search'=>false,'display_record'=>'all','kelas'=>'A');												
+            if (!isset($_SESSION['currentPagePendaftaranOnline'])||$_SESSION['currentPagePendaftaranOnline']['page_name']!='k.spmb.PendaftaranOnline') {
+				$_SESSION['currentPagePendaftaranOnline']=array('page_name'=>'k.spmb.PendaftaranOnline','page_num'=>0,'offset'=>0,'limit'=>0,'search'=>false,'display_record'=>'all','kelas'=>'A');												
 			}
             $_SESSION['currentPagePendaftaranOnline']['search']=false;
             $this->RepeaterS->PageSize=$this->setup->getSettingValue('default_pagesize');
@@ -67,7 +67,7 @@ class CPendaftaranOnline extends MainPageK {
         $tahun_masuk=$_SESSION['tahun_masuk'];   
 		$str_display='';		
         if ($search) {        
-            $str = "SELECT no_pendaftaran,no_formulir,nama_mhs,telp_hp,email,kjur1,kjur2,idkelas,waktu_mendaftar FROM formulir_pendaftaran_temp";
+            $str = "SELECT no_pendaftaran,no_formulir,nama_mhs,telp_hp,email,kjur1,kjur2,idkelas,waktu_mendaftar,file_bukti_bayar FROM formulir_pendaftaran_temp";
             $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {
                 case 'no_registrasi' :
@@ -85,7 +85,7 @@ class CPendaftaranOnline extends MainPageK {
             }elseif ($_SESSION['currentPagePendaftaranOnline']['display_record']=='belum_terdaftar'){
                 $str_display='AND no_formulir=0';
             }
-            $str = "SELECT no_pendaftaran,no_formulir,nama_mhs,telp_hp,email,kjur1,kjur2,idkelas,waktu_mendaftar FROM formulir_pendaftaran_temp WHERE ta=$tahun_masuk $str_display";
+            $str = "SELECT no_pendaftaran,no_formulir,nama_mhs,telp_hp,email,kjur1,kjur2,idkelas,waktu_mendaftar,file_bukti_bayar FROM formulir_pendaftaran_temp WHERE ta=$tahun_masuk $str_display";
             $jumlah_baris=$this->DB->getCountRowsOfTable ("formulir_pendaftaran_temp WHERE ta=$tahun_masuk $str_display",'no_pendaftaran');		
         }
         $this->RepeaterS->CurrentPageIndex=$_SESSION['currentPagePendaftaranOnline']['page_num'];
@@ -98,7 +98,7 @@ class CPendaftaranOnline extends MainPageK {
 		if ($limit < 0) {$offset=0;$limit=$this->setup->getSettingValue('default_pagesize');$_SESSION['currentPagePendaftaranOnline']['page_num']=0;}
 		
 		$str = "$str  $str_display ORDER BY waktu_mendaftar DESC LIMIT $offset,$limit";
-		$this->DB->setFieldTable(array('no_pendaftaran','no_formulir','nama_mhs','telp_hp','email','kjur1','kjur2','idkelas','waktu_mendaftar'));
+		$this->DB->setFieldTable(array('no_pendaftaran','no_formulir','nama_mhs','telp_hp','email','kjur1','kjur2','idkelas','waktu_mendaftar','file_bukti_bayar'));
         $r = $this->DB->getRecord($str,$offset+1);
         $this->RepeaterS->DataSource=$r;
 		$this->RepeaterS->dataBind();	

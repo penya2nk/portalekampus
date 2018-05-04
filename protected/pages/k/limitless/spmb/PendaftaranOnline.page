@@ -126,13 +126,13 @@
                             	<table width="100%">
                             		<tbody>
                             			<tr>
-                            				<td width="120">
-                            					<strong>Nama</strong> 
+                            				<td width="90">
+                            					<strong>Nama:</strong> 
                             				</td>
-                            				<td>
+                            				<td width="200">
                             					<%#$this->DataItem['nama_mhs']%>
                             				</td>
-                            				<td width="150">
+                            				<td width="90">
                             					<strong>Kelas</strong> 
                             				</td>
                             				<td>
@@ -140,13 +140,13 @@
                         					</td> 
                             			</tr>
                             			<tr>
-                            				<td width="150">
-                            					<strong>No. HP</strong> 
+                            				<td width="90">
+                            					<strong>No. HP:</strong> 
                             				</td>
-                            				<td>
+                            				<td width="200">
                             					<%#$this->DataItem['telp_hp']%>
                             				</td>
-                            				<td width="150">
+                            				<td width="90">
                             					<strong>Waktu Mendaftar</strong> 
                             				</td>
                             				<td>
@@ -154,6 +154,13 @@
                         					</td> 
                             			</tr>
                             		</tbody>
+									<tfoot>
+										<tr>
+											<td colspan="4">
+												<com:THyperLink  NavigateUrl="<%=$this->Page->setup->getAddress()%>/<%#$this->DataItem['file_bukti_bayar']%>" Text="LIAT BUKTI BAYAR" Enabled="<%#$this->DataItem['file_bukti_bayar']!=''%>"/>												
+											</td>
+										</tr>
+									</tfoot>
                             	</table>                            	
                             </td>
                             <td><%#$this->DataItem['no_formulir'] >0 ?$this->DataItem['no_formulir']:'N.A'%></td>

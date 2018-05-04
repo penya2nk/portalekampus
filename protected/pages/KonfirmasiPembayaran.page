@@ -1,0 +1,170 @@
+<%@ Title="Portal Ekampus - Pendaftaran Mahasiswa Baru" %>
+<com:TContent ID="maincontent">
+<com:TPanel Visible="<%= $this->getAddProcess(false) %>" CssClass="row">
+    <div class="col-md-12">
+        <div class="panel panel-flat border-top-info border-bottom-info">
+            <div class="panel-heading">
+                <h5 class="panel-title"><i class="icon-profile"></i> Biodata Calon Mahasiswa</h5>
+            </div>
+            <div class="panel-body">
+                <div class="row">                                   
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label"><strong>NO. PENDAFTARAN:</strong></label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static"><%= $this->getDataMHS('no_pendaftaran')%></p>
+                                </div>                            
+                            </div>                            
+                            <div class="form-group">
+                                <label class="col-md-4 control-label"><strong>NAMA MHS: </strong></label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static"><%= $this->getDataMHS('nama_mhs')%></p>
+                                </div>                            
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label"><strong>JENIS KELAMIN: </strong></label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static"><%= $this->getDataMHS('jk')%></p>
+                                </div>                            
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label"><strong>TEMPAT LAHIR: </strong></label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static"><%= $this->getDataMHS('tempat_lahir')%></p>
+                                </div>                            
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label"><strong>TANGGAL LAHIR: </strong></label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static"><%= $this->TGL->tanggal('l, j F Y',$this->getDataMHS('tanggal_lahir'))%></p>
+                                </div>                            
+                            </div>
+							<div class="form-group">
+                                <label class="col-md-4 control-label"><strong>EMAIL:</strong></label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static"><%= $this->getDataMHS('email')%></p>
+                                </div>                            
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-horizontal">                             
+                            <div class="form-group">
+                                <label class="col-md-4 control-label"><strong>NO. HP: </strong></label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static"><%= $this->getDataMHS('telp_hp')%> <%= $this->getDataMHS('telp_hp')%></p>
+                                </div>                            
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label"><strong>PROG. STUDI 1: </strong></label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static"><%= $this->getDataMHS('nama_ps_1')%></p>
+                                </div>                            
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label"><strong>PROG. STUDI 2: </strong></label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static"><%=$this->getDataMHS('nama_ps_2')%></p>
+                                </div>                            
+                            </div>                            
+                            <div class="form-group">
+                                <label class="col-md-4 control-label"><strong>KELAS: </strong></label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static"><%= $this->DMaster->getNamaKelasByID($this->getDataMHS('idkelas'))%></p>
+                                </div>                            
+                            </div>  
+							<div class="form-group">
+                                <label class="col-md-4 control-label"><strong>TAHUN AKADEMIK: </strong></label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static"><%= $this->getDataMHS('ta')%><%= $this->getDataMHS('idsmt')%></p>
+                                </div>                            
+                            </div> 
+							<div class="form-group">
+                                <label class="col-md-4 control-label"><strong>WAKTU MENDAFTAR: </strong></label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static"><%= $this->TGL->tanggal('d F Y H:m:s',$this->getDataMHS('waktu_mendaftar'))%></p>
+                                </div>                            
+                            </div>  
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>
+	<div class="col-md-12">
+        <div class="panel panel-flat border-top-lg border-top-info border-bottom-info"> 
+        	<div class="panel-heading">
+                <h5 class="panel-title"><i class="icon-coin-dollar position-left"></i>  KONFIRMASI PEMBAYARAN</h5>                
+                <div class="heading-elements">
+                    <div class="heading-btn">       
+                        
+                    </div>   
+                </div>
+            </div>              
+            <div class="panel-body">
+				<div class="form-horizontal">
+					<com:THiddenField ID="hiddenid" />
+                	<div class="form-group" id="divAddNomorPendaftaran">
+                        <label class="col-md-3 control-label">File Bukti Bayar(Image) :</label>
+                        <div class="col-md-9">
+							<com:TActiveLabel ID="lblTipeFileError" />
+                            <com:TActiveFileUpload ID="filePhoto" MaxFileSize="<%=$this->setup->getMaxFileSize(2)%>" OnFileUpload="uploadBuktiBayar" />
+						</div>
+                    </div>
+					<div class="form-group">
+                        <label class="col-md-3 control-label">&nbsp;</label>
+                        <div class="col-md-9">							
+							<com:TActiveImage ID="imgBuktiBayar" Attributes.alt="<%=$this->Page->Pengguna->getUsername()%>" CssClass="profile-img img-responsive center-block" />                                                    
+						</div>
+                    </div>
+				</div>				
+			</div>
+		</div>
+	</div>
+</com:TPanel>
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>" CssClass="row">	
+	<div class="col-md-12">
+        <div class="panel panel-flat border-top-lg border-top-info border-bottom-info"> 
+        	<div class="panel-heading">
+                <h5 class="panel-title"><i class="icon-coin-dollar position-left"></i>  KONFIRMASI PEMBAYARAN</h5>                
+                <div class="heading-elements">
+                    <div class="heading-btn">       
+                        
+                    </div>   
+                </div>
+            </div>              
+            <div class="panel-body">
+            	<div class="form-horizontal">
+                	<div class="form-group" id="divAddNomorPendaftaran">
+                        <label class="col-md-2 control-label">Nomor Pendaftaran :</label>
+                        <div class="col-md-10">
+                            <com:TTextBox ID="txtAddNomorPendaftaran" CssClass="form-control" />
+                            <com:TRequiredFieldValidator ID="FieldAddNomorPendaftaranValidator" ControlToValidate="txtAddNomorPendaftaran" Display="Dynamic" ErrorMessage="Isi Nomor Pendaftaran" ValidationGroup="addkonfirmasi" CssClass="has-error help-block" FocusOnError="true">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddNomorPendaftaran').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldAddNomorPendaftaranValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddNomorPendaftaran').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+							<com:TCustomValidator ControlToValidate="txtAddNomorPendaftaran" Display="Dynamic" OnServerValidate="cekNomorPendaftaran" ValidationGroup="addkonfirmasi" ErrorMessage="Nomor Pendaftaran tidak terdaftar di Database, silahkan ganti dengan yang lain" CssClass="has-error help-block" />
+                        </div>
+                    </div>
+					<div class="form-group">
+		                <label class="control-label col-md-2"></label>
+		                <div class="col-md-10">
+		                    <com:TCustomButton ID="btnKonfirmasi" ValidationGroup="addkonfirmasi" OnClick="loadData" CssClass="btn btn-info btn-labeled btn-xs">
+		                        <prop:Text>                                        
+		                            <b><i class="icon-coin-dollar"></i></b> Konfirmasi                                        
+		                        </prop:Text>		                       
+		                    </com:TCustomButton>
+		                </div>       
+	                </div>
+				</div>
+            </div>
+        </div>
+	</div>         
+</com:TPanel>
+</com:TContent>

@@ -1,55 +1,47 @@
 <?php
 prado::using ('Application.MainPageM');
-class CDetailFormulir extends MainPageM {
+class CDetailPendaftaranOnline extends MainPageM {
      
 	public function onLoad($param) {		
 		parent::onLoad($param);					
-        $this->showFormulirPendaftaran=true;
+        $this->showPendaftaranOnline=true;
         $this->createObj('Akademik');
         if (!$this->IsPostBack&&!$this->IsCallBack) {	
-            if (!isset($_SESSION['currentPageDetailFormulir'])||$_SESSION['currentPageDetailFormulir']['page_name']!='m.spmb.DetailFormulir') {
-				$_SESSION['currentPageDetailFormulir']=array('page_name'=>'m.spmb.DetailFormulir','page_num'=>0,'DataMHS'=>array(),'activeviewindex'=>0);												
+            if (!isset($_SESSION['currentPageDetailPendaftaranOnline'])||$_SESSION['currentPageDetailPendaftaranOnline']['page_name']!='m.spmb.DetailPendaftaranOnline') {
+				$_SESSION['currentPageDetailPendaftaranOnline']=array('page_name'=>'m.spmb.DetailPendaftaranOnline','page_num'=>0,'DataMHS'=>array(),'activeviewindex'=>0);												
 			}
 
-            $this->MVDetailFormulir->ActiveViewIndex=$_SESSION['currentPageDetailFormulir']['activeviewindex'];             
+            $this->MVDetailPendaftaranOnline->ActiveViewIndex=$_SESSION['currentPageDetailPendaftaranOnline']['activeviewindex'];             
 		}		
 	}  
     public function changeView ($sender,$param) {                
         try {
-            $no_formulir=addslashes($this->request['id']);
-            $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.jk,fp.tempat_lahir,fp.tanggal_lahir,fp.alamat_rumah,fp.telp_hp,fp.kjur1,fp.kjur2,fp.ta AS tahun_masuk,fp.idkelas,ke.nkelas,pm.theme,fp.waktu_mendaftar FROM formulir_pendaftaran fp LEFT JOIN profiles_mahasiswa pm ON pm.no_formulir=fp.no_formulir LEFT JOIN kelas ke ON (fp.idkelas=ke.idkelas)  WHERE fp.no_formulir='$no_formulir'";
-            $this->DB->setFieldTable(array('no_formulir','nama_mhs','jk','tempat_lahir','tanggal_lahir','alamat_rumah','kjur1','kjur2','telp_hp','tahun_masuk','idkelas','nkelas','theme','waktu_mendaftar'));
+            $no_pendaftaran=addslashes($this->request['id']);
+            $str  = "SELECT no_pendaftaran, no_formulir,nama_mhs,tempat_lahir,tanggal_lahir,jk,email,telp_hp,kjur1,kjur2,idkelas,ta,idsmt,waktu_mendaftar,file_bukti_bayar FROM formulir_pendaftaran_temp WHERE no_pendaftaran='$no_pendaftaran'";
+            $this->DB->setFieldTable(array('no_pendaftaran','no_formulir','nama_mhs','tempat_lahir','tanggal_lahir','jk','email','telp_hp','kjur1','kjur2','idkelas','ta','idsmt','waktu_mendaftar','file_bukti_bayar'));
             $r=$this->DB->getRecord($str);	           
             if (!isset($r[1])) {
-                unset($_SESSION['currentPageDetailFormulir']);
-                throw new Exception ("Mahasiswa Dengan No. Formulir ($no_formulir) tidak terdaftar di Portal.");
+                unset($_SESSION['currentPageDetailPendaftaranOnline']);
+                throw new Exception ("Mahasiswa Dengan No. Pendaftaran ($no_pendaftaran) tidak terdaftar di Portal.");
             }
             $datamhs=$r[1];
-            $datamhs['nama_ps1']=$_SESSION['daftar_jurusan'][$datamhs['kjur1']];
-            $datamhs['nama_ps2']=$_SESSION['daftar_jurusan'][$datamhs['kjur2']];
-            $datamhs['diterima_ps1']='';
-            $datamhs['diterima_ps2']='';
-            $datamhs['waktu_mendaftar']=$this->TGL->tanggal('d F Y',$datamhs['waktu_mendaftar']);
-            //theme
-            $this->cmbTheme->DataSource=$this->setup->getListThemes();
-            $this->cmbTheme->Text=$datamhs['theme'];
-            $this->cmbTheme->DataBind();
-            
+            $datamhs['no_formulir']=$datamhs['no_formulir']>0?$datamhs['no_formulir']:'N.A';
+            $datamhs['nama_ps_1']=$_SESSION['daftar_jurusan'][$datamhs['kjur1']];
+            $datamhs['nama_ps_2']=($r[1]['kjur2']>0)?$this->DMaster->getNamaProgramStudiByID($r[1]['kjur2']):'N.A';
+            $datamhs['waktu_mendaftar']=$this->TGL->tanggal('d F Y H:m:s',$datamhs['waktu_mendaftar']);
+                        
             $this->Demik->setDataMHS($datamhs);
-            $_SESSION['currentPageDetailFormulir']['DataMHS']=$datamhs;
-            $activeview = $_SESSION['currentPageDetailFormulir']['activeviewindex'];                
-            if ($activeview == $this->MVDetailFormulir->ActiveViewIndex) {
+            $_SESSION['currentPageDetailPendaftaranOnline']['DataMHS']=$datamhs;
+            $activeview = $_SESSION['currentPageDetailPendaftaranOnline']['activeviewindex'];                
+            if ($activeview == $this->MVDetailPendaftaranOnline->ActiveViewIndex) {
                 switch ($activeview) {
                     case 0 : 
-                        $this->hiddennoformulir->Value=$no_formulir;
-                        $jurusan=$this->DMaster->removeKjur($_SESSION['daftar_jurusan'],'none');									            
-                        $this->cmbKjur1->DataSource=$jurusan;
-                        $this->cmbKjur1->dataBind();
+                        
                     break;                  
                 }
             }else{
-                $_SESSION['currentPageDetailFormulir']['activeviewindex']=$this->MVDetailFormulir->ActiveViewIndex;
-                $this->redirect('spmb.DetailFormulir',true,array('id'=>$datamhs['no_formulir']));
+                $_SESSION['currentPageDetailPendaftaranOnline']['activeviewindex']=$this->MVDetailPendaftaranOnline->ActiveViewIndex;
+                $this->redirect('spmb.DetailPendaftaranOnline',true,array('id'=>$datamhs['no_formulir']));
             }       
             
         }catch (Exception $ex) {
@@ -58,13 +50,16 @@ class CDetailFormulir extends MainPageM {
         }          
     }
     public function getDataMHS($idx) {	
-        $datamhs=$_SESSION['currentPageDetailFormulir']['DataMHS'];
+        $datamhs=$_SESSION['currentPageDetailPendaftaranOnline']['DataMHS'];
         return $datamhs[$idx];
     }
-    public function resetPassword ($sender,$param) {
-        $password_default = md5(1234);
-        $no_formulir=$_SESSION['currentPageDetailFormulir']['DataMHS']['no_formulir'];
-        $str = "UPDATE profiles_mahasiswa SET userpassword='$password_default' WHERE no_formulir='$no_formulir'";
+    public function resetPassword ($sender,$param) {        
+        $data=$this->Pengguna->createHashPassword(1234);
+        $salt=$data['salt'];
+        $password=$data['password'];         
+        $no_pendaftaran=$_SESSION['currentPageDetailPendaftaranOnline']['DataMHS']['no_pendaftaran'];
+
+        $str = "UPDATE formulir_pendaftaran_temp SET salt='$salt',userpassword='$password' WHERE no_pendaftaran='$no_pendaftaran'";
         $this->DB->updateRecord($str);
         $this->lblInfo->Text='Reset Password Mahasiswa';
         $this->lblMessageInfo->Text='Password mahasiswa sukses direset menjadi 1234';        
@@ -72,7 +67,7 @@ class CDetailFormulir extends MainPageM {
     }
     public function resetProfiles ($sender,$param) {
         $password_default = md5(1234);
-        $no_formulir=$_SESSION['currentPageDetailFormulir']['DataMHS']['no_formulir'];
+        $no_formulir=$_SESSION['currentPageDetailPendaftaranOnline']['DataMHS']['no_formulir'];
         $str = "REPLACE INTO profiles_mahasiswa SET no_formulir='$no_formulir',userpassword='$password_default',theme='cube',photo_profile='resources/photomhs/no_photo.png'";
         $this->DB->updateRecord($str);
         $this->lblInfo->Text='Reset Profiles Mahasiswa';
@@ -82,11 +77,11 @@ class CDetailFormulir extends MainPageM {
     public function changeTheme ($sender,$param) {
         if ($this->IsValid) {
             $theme=  addslashes($sender->Text);
-            $no_formulir=$_SESSION['currentPageDetailFormulir']['DataMHS']['no_formulir'];
+            $no_formulir=$_SESSION['currentPageDetailPendaftaranOnline']['DataMHS']['no_formulir'];
             $str = "UPDATE profiles_mahasiswa SET theme='$theme' WHERE no_formulir='$no_formulir'";            
             $this->DB->updateRecord($str);            
            
-            $this->redirect('spmb.DetailFormulir',true,array('id'=>$no_formulir));
+            $this->redirect('spmb.DetailPendaftaranOnline',true,array('id'=>$no_formulir));
         }
     }
     public function checkNoFormulir ($sender,$param) {					
@@ -123,7 +118,7 @@ class CDetailFormulir extends MainPageM {
 	}
     public function copyFormulir ($sender,$param) {
         if ($this->IsValid) {
-            $old_no_formulir=$this->hiddennoformulir->Value;
+            $old_no_formulir=$this->hiddennopendaftaran->Value;
             $no_formulir=  addslashes($this->txtNoFormulir->Text);            
             $kjur1=$this->cmbKjur1->Text;            
             $kjur2=($this->cmbKjur2->Text == 'none' || $this->cmbKjur2->Text == '')?0:$this->cmbKjur2->Text;
@@ -163,7 +158,7 @@ class CDetailFormulir extends MainPageM {
                 $this->DB->query('ROLLBACK');
             }
             
-            $this->redirect('spmb.DetailFormulir',true,array('id'=>$no_formulir));
+            $this->redirect('spmb.DetailPendaftaranOnline',true,array('id'=>$no_formulir));
         }
     }
 }

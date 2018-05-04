@@ -1,0 +1,176 @@
+<%@ Title="Kemahasiswaan - Profil Mahasiswa Baru"%>
+<com:TContent ID="moduleheader">
+    <i class="fa fa-user"></i> Profil Mahasiswa Baru
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li><a href="#">SPMB</a></li>
+    <li><a href="#">PENDAFTARAN ONLINE</a></li>
+    <li class="active">PROFIL MAHASISWA BARU</li>
+</com:TContent>
+<com:TContent ID="csscontent">
+<link rel="stylesheet" type="text/css" href="<%=$this->Theme->baseUrl%>/css/libs/nifty-component.css"/>
+</com:TContent>
+<com:TContent ID="maincontent">
+<com:TPanel Visible="<%= $this->getViewProcess(false) %>" CssClass="row">                    
+    <div class="col-md-12">
+        <div class="main-box clearfix">               
+            <header class="main-box-header clearfix">
+            </header>
+            <div class="main-box-body">
+                <div class="laert alert-warning">
+                    <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                    <strong>
+                        Info!
+                    </strong>
+                     <com:TLiteral ID="errorMessage" />
+                </div>
+            </div>            
+        </div>
+    </div>
+</com:TPanel>
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>">   
+    <div class="row">
+        <div class="col-md-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left"><i class="fa fa-users"></i> Biodata Calon Mahasiswa</h2> 
+                    <div class="filter-block pull-right">                                           
+                        
+                    </div>
+                </header>
+                <div class="main-box-body clearfix">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label"><strong>NO. PENDAFTARAN: </strong></label>
+                                    <div class="col-md-9">
+                                        <p class="form-control-static"><%= $this->getDataMHS('no_pendaftaran')%></p>
+                                    </div>                            
+                                </div>  
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label"><strong>NO. FORMULIR: </strong></label>
+                                    <div class="col-md-9">
+                                        <p class="form-control-static"><%= $this->getDataMHS('no_formulir')%></p>
+                                    </div>                            
+                                </div>  
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label"><strong>NAMA MHS: </strong></label>
+                                    <div class="col-md-9">
+                                        <p class="form-control-static"><%= $this->getDataMHS('nama_mhs')%></p>
+                                    </div>                            
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label"><strong>JENIS KELAMIN: </strong></label>
+                                    <div class="col-md-9">
+                                        <p class="form-control-static"><%= $this->getDataMHS('jk')%></p>
+                                    </div>                            
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label"><strong>TEMPAT LAHIR: </strong></label>
+                                    <div class="col-md-9">
+                                        <p class="form-control-static"><%= $this->getDataMHS('tempat_lahir')%></p>
+                                    </div>                            
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label"><strong>TANGGAL LAHIR: </strong></label>
+                                    <div class="col-md-9">
+                                        <p class="form-control-static"><%= $this->TGL->tanggal('l, j F Y',$this->getDataMHS('tanggal_lahir'))%></p>
+                                    </div>                            
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label"><strong>EMAIL:</strong></label>
+                                    <div class="col-md-9">
+                                        <p class="form-control-static"><%= $this->getDataMHS('email')%></p>
+                                    </div>                            
+                                </div>
+                            </div>
+                        </div>                    
+                        <div class="col-md-6">
+                            <div class="form-horizontal">                             
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label"><strong>NO. HP: </strong></label>
+                                    <div class="col-md-8">
+                                        <p class="form-control-static"><%= $this->getDataMHS('telp_hp')%> <%= $this->getDataMHS('telp_hp')%></p>
+                                    </div>                            
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label"><strong>PROG. STUDI 1: </strong></label>
+                                    <div class="col-md-8">
+                                        <p class="form-control-static"><%= $this->getDataMHS('nama_ps_1')%></p>
+                                    </div>                            
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label"><strong>PROG. STUDI 2: </strong></label>
+                                    <div class="col-md-8">
+                                        <p class="form-control-static"><%=$this->getDataMHS('nama_ps_2')%></p>
+                                    </div>                            
+                                </div>                            
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label"><strong>KELAS: </strong></label>
+                                    <div class="col-md-8">
+                                        <p class="form-control-static"><%= $this->DMaster->getNamaKelasByID($this->getDataMHS('idkelas'))%></p>
+                                    </div>                            
+                                </div>  
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label"><strong>TAHUN AKADEMIK: </strong></label>
+                                    <div class="col-md-8">
+                                        <p class="form-control-static"><%= $this->getDataMHS('ta')%><%= $this->getDataMHS('idsmt')%></p>
+                                    </div>                            
+                                </div> 
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label"><strong>WAKTU MENDAFTAR: </strong></label>
+                                    <div class="col-md-8">
+                                        <p class="form-control-static"><%= $this->getDataMHS('waktu_mendaftar')%></p>
+                                    </div>                            
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="user-profile">
+        <div class="col-md-3 col-md-4 col-md-4">
+            <div class="main-box clearfix">                
+                <div class="main-box-body clearfix">  
+                    <div class="profile-details">
+                        
+                    </div>
+                    <div class="profile-message-btn center-block text-center">                        
+                        <com:TActiveCustomButton ID="btnResetPassword" CssClass="btn btn-warning" OnCallback="resetPassword" ClientSide.PostState="false">
+                            <prop:Text>
+                                <i class="fa fa-undo"></i> Reset Password
+                            </prop:Text>
+                            <prop:ClientSide.OnPreDispatch>                                                                   
+                                $('loading').show(); 
+                                $('<%=$this->btnResetPassword->ClientId%>').disabled='disabled';						
+                            </prop:ClientSide.OnPreDispatch>
+                            <prop:ClientSide.OnLoading>
+                                $('<%=$this->btnResetPassword->ClientId%>').disabled='disabled';						
+                            </prop:ClientSide.OnLoading>
+                            <prop:ClientSide.OnComplete>																	                                    						                                                                            
+                                $('<%=$this->btnResetPassword->ClientId%>').disabled='';
+                                $('loading').hide(); 
+                            </prop:ClientSide.OnComplete>
+                        </com:TActiveCustomButton>                                         
+                    </div>                    
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9 col-md-9 col-md-9">
+            <div class="main-box clearfix">
+                <div class="tabs-wrapper profile-tabs">
+                    <com:TActiveMultiView  ID="MVDetailPendaftaranOnline" OnActiveViewChanged="changeView">
+                        <com:TView ID="view1">
+                            
+                        </com:TView>                        
+                    </com:TActiveMultiView>                                        
+                </div>
+            </div>
+        </div>
+    </div>    
+</com:TPanel>	
+<%include Application.layouts.cube.ModalMessage%>
+</com:TContent>

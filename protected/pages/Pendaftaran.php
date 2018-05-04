@@ -59,8 +59,7 @@ class Pendaftaran extends MainPageF {
 	        $telp_hp=addslashes($this->txtAddNoTelpHP->Text);
 	        $email=addslashes($this->txtAddEmail->Text);
 	        $kjur1=$this->cmbAddKjur1->Text;
-	        $kjur2=$this->cmbAddKjur2->Text;
-	        $waktu_mendaftar=date('Y-m-d H:m:s'); 
+	        $kjur2=$this->cmbAddKjur2->Text;	        
 	        $idkelas=$this->cmbAddKelas->Text;
 	        $data=$this->Pengguna->createHashPassword($this->txtPassword1->Text);
 	        $salt=$data['salt'];

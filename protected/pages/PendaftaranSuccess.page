@@ -30,7 +30,7 @@
             </div>              
             <div class="panel-body">
             	Proses Pendaftaran telah sukses dengan nomor registrasi <strong><com:TLiteral ID="literalNoRegistrasi" /></strong>, (MOHON UNTUK DISIMPAN). <br />silahkan melakukan Pembayaran dan Login untuk melanjutkan ke proses selanjutnya;
-            	Gunakan <strong>NOMOR PENDAFTARAN</strong> sebagai username. Nomor formulir akan diberitahu setelah melakukan pembayaran.
+            	Gunakan <strong>NOMOR PENDAFTARAN</strong> sebagai username. Nomor formulir akan diberitahu setelah melakukan pembayaran (<a href="<%=$this->constructUrl('KonfirmasiPembayaran')%>">KONFIRMASI PEMBAYARAN</a>).
             </div>
         </div>
 	</div>                

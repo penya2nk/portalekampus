@@ -1,8 +1,8 @@
-assets/
-exported/
-protected/lib/
-protected/runtime/
-protected/application.xml
-themes/
+assets/*
+exported/*
+protected/lib/*
+protected/runtime/*
+protected/application.xml-*
+themes/*
 index.php
 .classpath

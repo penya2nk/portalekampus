@@ -17,8 +17,8 @@ class CDetailFormulir extends MainPageM {
     public function changeView ($sender,$param) {                
         try {
             $no_formulir=addslashes($this->request['id']);
-            $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.jk,fp.tempat_lahir,fp.tanggal_lahir,fp.alamat_rumah,fp.telp_hp,fp.kjur1,fp.kjur2,fp.ta AS tahun_masuk,fp.idkelas,ke.nkelas,pm.theme,fp.waktu_mendaftar FROM formulir_pendaftaran fp LEFT JOIN profiles_mahasiswa pm ON pm.no_formulir=fp.no_formulir LEFT JOIN kelas ke ON (fp.idkelas=ke.idkelas)  WHERE fp.no_formulir='$no_formulir'";
-            $this->DB->setFieldTable(array('no_formulir','nama_mhs','jk','tempat_lahir','tanggal_lahir','alamat_rumah','kjur1','kjur2','telp_hp','tahun_masuk','idkelas','nkelas','theme','waktu_mendaftar'));
+            $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.jk,fp.tempat_lahir,fp.tanggal_lahir,fp.alamat_rumah,fp.telp_hp,fp.kjur1,fp.kjur2,num.kjur,fp.ta AS tahun_masuk,fp.idkelas,ke.nkelas,pm.theme,fp.waktu_mendaftar FROM formulir_pendaftaran fp LEFT JOIN profiles_mahasiswa pm ON pm.no_formulir=fp.no_formulir LEFT JOIN kelas ke ON (fp.idkelas=ke.idkelas) LEFT JOIN nilai_ujian_masuk num ON (num.no_formulir=fp.no_formulir)  WHERE fp.no_formulir='$no_formulir'";
+            $this->DB->setFieldTable(array('no_formulir','nama_mhs','jk','tempat_lahir','tanggal_lahir','alamat_rumah','kjur1','kjur2','kjur','telp_hp','tahun_masuk','idkelas','nkelas','theme','waktu_mendaftar'));
             $r=$this->DB->getRecord($str);	           
             if (!isset($r[1])) {
                 unset($_SESSION['currentPageDetailFormulir']);
@@ -26,10 +26,12 @@ class CDetailFormulir extends MainPageM {
             }
             $datamhs=$r[1];
             $datamhs['nama_ps1']=$_SESSION['daftar_jurusan'][$datamhs['kjur1']];
-            $datamhs['nama_ps2']=$_SESSION['daftar_jurusan'][$datamhs['kjur2']];
-            $datamhs['diterima_ps1']='';
-            $datamhs['diterima_ps2']='';
-            $datamhs['waktu_mendaftar']=$this->TGL->tanggal('d F Y',$datamhs['waktu_mendaftar']);
+            $datamhs['nama_ps2']=$datamhs['kjur2'] > 0 ?$_SESSION['daftar_jurusan'][$datamhs['kjur2']]:'N.A';
+            $kjur1=$datamhs['kjur1'];
+            $kjur2=$datamhs['kjur2'];
+            $datamhs['diterima_ps1']=($kjur1 > 0 && $datamhs['kjur'] == $kjur1)?'<span class="label label-success">DI TERIMA</span>':'';
+            $datamhs['diterima_ps2']=($kjur2 > 0 && $datamhs['kjur'] == $kjur2)?'<span class="label label-success">DI TERIMA</span>':'';
+            $datamhs['waktu_mendaftar']=$this->TGL->tanggal('d F Y H:m:s',$datamhs['waktu_mendaftar']);
             //theme
             $this->cmbTheme->DataSource=$this->setup->getListThemes();
             $this->cmbTheme->Text=$datamhs['theme'];

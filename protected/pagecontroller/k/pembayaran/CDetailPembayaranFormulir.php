@@ -83,7 +83,11 @@ class CDetailPembayaranFormulir Extends MainPageK {
             $ta=$datamhs['tahun_masuk'];                        
             $idsmt=$datamhs['semester_masuk'];
             $this->Finance->setDataMHS($datamhs);
-            if ($this->Finance->getLunasPembayaranFormulir()) {
+            if ($this->Finance->getTotalBiayaMhsPeriodePembayaran()<=0) {
+                $nama_semester=$this->setup->getSemester($idsmt);
+                $this->lblContentMessageError->Text="Tidak bisa menambah Transaksi baru karena komponen biaya di Tahun Masuk $ta semester $nama_semester belum disetting.";
+                $this->modalMessageError->show();
+            }elseif ($this->Finance->getLunasPembayaranFormulir()) {
                 $this->lblContentMessageError->Text='Tidak bisa menambah Transaksi baru karena sudah lunas.';
                 $this->modalMessageError->show();
             }elseif ($this->DB->checkRecordIsExist('no_formulir','transaksi',$no_formulir," AND tahun='$ta' AND idsmt='$idsmt' AND commited=0")) {

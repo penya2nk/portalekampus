@@ -69,7 +69,7 @@ class CDetailTranskripKRS extends MainPageDW {
             case 'pdf' :                    
                 $messageprintout='Transkrip Sementara : ';
                 $dataReport=$_SESSION['currentPageDetailTranskripKRS']['DataMHS'];  
-
+                $dataReport['nama_pt_alias']=$this->setup->getSettingValue('nama_pt_alias');
                 $dataReport['nama_jabatan_transkrip']=$this->setup->getSettingValue('nama_jabatan_transkrip');
                 $dataReport['nama_penandatangan_transkrip']=$this->setup->getSettingValue('nama_penandatangan_transkrip');
                 $dataReport['jabfung_penandatangan_transkrip']=$this->setup->getSettingValue('jabfung_penandatangan_transkrip');

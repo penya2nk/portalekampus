@@ -178,6 +178,7 @@ class CTranskripFinal extends MainPageM {
                         
                         $dataReport = $r[1];                        
                         if ($dataReport['k_status'] == 'L') {
+                            $dataReport['nama_pt_alias']=$this->setup->getSettingValue('nama_pt_alias');
                             $dataReport['nama_konsentrasi']=($dataReport['idkonsentrasi']==0) ? '-':$dataReport['nama_konsentrasi'];
                             $dataReport['nama_jabatan_transkrip']=$this->setup->getSettingValue('nama_jabatan_transkrip');
                             $dataReport['nama_penandatangan_transkrip']=$this->setup->getSettingValue('nama_penandatangan_transkrip');

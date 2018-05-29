@@ -41,7 +41,9 @@ class CNilaiUjianPMB extends MainPageM {
 		}	
 	}    
 	public function getDataMHS($idx) {
-        return $this->Demik->getDataMHS($idx);
+        if (isset($this->Demik->DataMHS[$idx])) {
+            return $this->Demik->getDataMHS($idx);
+        }        
     }
 	public function changeTbTahunMasuk($sender,$param) {					
 		$_SESSION['tahun_pendaftaran']=$this->tbCmbTahunMasuk->Text;        
@@ -133,8 +135,15 @@ class CNilaiUjianPMB extends MainPageM {
         $_SESSION['currentPageNilaiUjianPMB']['limit']=$limit;
         $this->DB->setFieldTable(array('no_formulir','nama_mhs','tgl_ujian','jumlah_soal','jawaban_benar','jawaban_salah','nilai','kjur1','kjur2','passing_grade_1','passing_grade_2','diterima_di_prodi'));				
 		$r = $this->DB->getRecord($str,$offset+1);
-        $result=array();
+        $result=array();        
+        
         while (list($k,$v)=each($r)) { 
+            $no_formulir=$v['no_formulir'];
+            $str = "SELECT nama_kegiatan FROM peserta_ujian_pmb pup,jadwal_ujian_pmb jup WHERE jup.idjadwal_ujian=pup.idjadwal_ujian AND pup.no_formulir=$no_formulir";
+            $this->DB->setFieldTable(array('nama_kegiatan'));
+            $jadwal_ujian=$this->DB->getRecord($str);
+            $v['nama_kegiatan']=isset($jadwal_ujian[1])?$jadwal_ujian[1]['nama_kegiatan']:'N.A';
+            
             if ($kjur=='none') {
                 $pil1='N.A';
                 $bool1=false;
@@ -187,16 +196,15 @@ class CNilaiUjianPMB extends MainPageM {
     public function setKelulusan ($sender,$param) {		
 		$this->idProcess='add';
 		$no_formulir=$this->getDataKeyField($sender,$this->RepeaterS);
-        $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.tempat_lahir,fp.tanggal_lahir,fp.jk,k.nkelas,fp.kjur1,fp.kjur2,fp.ta AS tahun_masuk,fp.idsmt AS semester_masuk FROM formulir_pendaftaran fp,profiles_mahasiswa pm,kelas k WHERE fp.no_formulir=pm.no_formulir AND fp.idkelas=k.idkelas AND fp.no_formulir='$no_formulir'";
-        $this->DB->setFieldTable(array('no_formulir','nama_mhs','tempat_lahir','tanggal_lahir','jk','nkelas','kjur1','kjur2','tahun_masuk','semester_masuk'));
+        $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.tempat_lahir,fp.tanggal_lahir,fp.alamat_rumah,fp.telp_hp,fp.jk,k.nkelas,fp.kjur1,fp.kjur2,fp.ta AS tahun_masuk,fp.idsmt AS semester_masuk,fp.waktu_mendaftar FROM formulir_pendaftaran fp,profiles_mahasiswa pm,kelas k WHERE fp.no_formulir=pm.no_formulir AND fp.idkelas=k.idkelas AND fp.no_formulir='$no_formulir'";
+        $this->DB->setFieldTable(array('no_formulir','nama_mhs','tempat_lahir','tanggal_lahir','alamat_rumah','telp_hp','jk','nkelas','kjur1','kjur2','tahun_masuk','semester_masuk','waktu_mendaftar'));
         $r=$this->DB->getRecord($str);
-        $r[1]['nim']='N.A';
-        $r[1]['nirm']='N.A';
-        $pilihan2=$r[1]['kjur2']==0 ?'N.A' :$_SESSION['daftar_jurusan'][$r[1]['kjur2']];
-        $r[1]['nama_ps']='<strong>PILIHAN 1 : </strong>'.$_SESSION['daftar_jurusan'][$r[1]['kjur1']] .'<br/> <strong>PILIHAN 2 : </strong>'.$pilihan2;
-        $r[1]['nama_konsentrasi']='N.A';
-        $r[1]['nama_dosen']='N.A';
-        $r[1]['status']='N.A';          
+
+        $r[1]['nama_ps1']=$_SESSION['daftar_jurusan'][$r[1]['kjur1']];
+        $r[1]['nama_ps2']=$r[1]['kjur2']==0 ?'N.A' :$_SESSION['daftar_jurusan'][$r[1]['kjur2']];
+        $r[1]['diterima_ps1']='';
+        $r[1]['diterima_ps2']='';
+        $r[1]['waktu_mendaftar']=$this->TGL->tanggal('d F Y H:m:s',$r[1]['waktu_mendaftar']);
         
         $this->Demik->setDataMHS($r[1]);
         $str = "SELECT num.idnilai_ujian_masuk,ku.tgl_ujian,ku.tgl_selesai_ujian,ku.isfinish,num.jumlah_soal,num.jawaban_benar,num.jawaban_salah,num.soal_tidak_terjawab,num.passing_grade_1,num.passing_grade_2,num.nilai FROM kartu_ujian ku JOIN nilai_ujian_masuk num ON ku.no_formulir=num.no_formulir WHERE ku.no_formulir=$no_formulir";

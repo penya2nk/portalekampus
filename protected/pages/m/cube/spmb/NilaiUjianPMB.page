@@ -15,7 +15,7 @@
 </com:TContent>
 <com:TContent ID="maincontent">
 <com:TPanel Visible="<%= $this->getAddProcess(false) %>">
-	<%include Application.layouts.cube.DataMHS%>
+	<%include Application.layouts.cube.DataMHSBaru%>
     <div class="row">
         <div class="col-lg-12">
             <div class="main-box clearfix">
@@ -373,7 +373,10 @@
                                             </prop:ClientSide.OnComplete>
                                         </com:TActiveLinkButton>
                                     </td>		
-                                </tr>                            
+                                </tr>   
+                                <tr>
+                                    <td colspan="10"><b>Periode Ujian</b>:<%#$this->Data['nama_kegiatan']%></td>
+                                </tr>                         
                             </prop:ItemTemplate>                        
                             <prop:FooterTemplate>
                                 <tbody>

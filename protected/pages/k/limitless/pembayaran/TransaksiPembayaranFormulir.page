@@ -34,6 +34,7 @@
 </com:TPanel>
 <com:TPanel Visible="<%= $this->getDefaultProcess() %>" CssClass="content"> 
     <com:THiddenField ID="hiddennofaktur" />
+	<com:THiddenField ID="hiddennopendaftaran" />
     <div class="row">    
         <div class="col-lg-12">
             <div class="panel panel-flat border-top-info border-bottom-info">
@@ -97,7 +98,7 @@
             <div class="form-horizontal">                
                 <div class="form-group" id="divAddNomorFaktur">
                     <label class="col-md-3 control-label">Nomor Faktur Bank :</label>
-                    <div class="col-md-3">                            
+                    <div class="col-md-9">                            
                         <com:TTextBox ID="txtAddNomorFaktur" CssClass="form-control" />  
                         <com:TRequiredFieldValidator ID="FieldAddNomorFaktur" ControlToValidate="txtAddNomorFaktur" Display="Dynamic" ErrorMessage="Isi dengan Nomor Faktur dari Bank" ValidationGroup="addtransaksi" FocusOnError="true" CssClass="has-error help-block">			
                             <prop:ClientSide.OnValidationError>
@@ -124,7 +125,31 @@
                     <div class="col-md-9">
                         <com:TDatePicker ID="cmbAddTanggalFaktur" DateFormat="dd-MMMM-yyyy" Culture="id"  InputMode="DropDownList" ShowCalendar="false"/>
                     </div>
-                </div>                
+                </div>  
+				<div class="form-group" id="divAddNomorPendaftaran">
+                    <label class="col-md-3 control-label">Nomor Pendaftaran :</label>
+                    <div class="col-md-9">                            
+                        <com:TTextBox ID="txtAddNomorPendaftaran" CssClass="form-control" />  
+                        <com:TRequiredFieldValidator ID="FieldAddNomorPendaftaran" ControlToValidate="txtAddNomorPendaftaran" Display="Dynamic" ErrorMessage="Isi dengan Nomor Pendaftaran Online Mahasiswa Baru" ValidationGroup="addtransaksi" FocusOnError="true" CssClass="has-error help-block">			
+                            <prop:ClientSide.OnValidationError>
+                                $('divAddNomorPendaftaran').addClassName('has-error');
+                                jQuery('#<%=$this->FieldAddNomorPendaftaran->ClientID%>').removeAttr('style');
+                            </prop:ClientSide.OnValidationError>
+                            <prop:ClientSide.OnValidationSuccess>
+                                $('divAddNomorPendaftaran').removeClassName('has-error');
+                            </prop:ClientSide.OnValidationSuccess>
+                        </com:TRequiredFieldValidator>      
+                        <com:TActiveCustomValidator ID="addNomorPendaftaran" ControlToValidate="txtAddNomorPendaftaran" Display="Dynamic" OnServerValidate="checkNomorPendaftaran" ValidationGroup="addtransaksi" ErrorMessage="Nomor Pendaftaran sudah ada silahkan ganti dengan yang lain" CssClass="has-error help-block">
+                            <prop:ClientSide.OnValidationError>
+                                $('divAddNomorPendaftaran').addClassName('has-error');
+                                jQuery('#<%=$this->addNomorPendaftaran->ClientID%>').removeAttr('style');
+                            </prop:ClientSide.OnValidationError>
+                            <prop:ClientSide.OnValidationSuccess>
+                                $('divAddNomorPendaftaran').removeClassName('has-error');
+                            </prop:ClientSide.OnValidationSuccess>
+                        </com:TActiveCustomValidator>
+                    </div>
+                </div>    				
                 <div class="form-group">
                     <label class="control-label col-md-3"></label>
                     <div class="col-md-5">
@@ -166,66 +191,66 @@
         </div>
         <div class="table-responsive">
             <com:TActiveDataGrid
-                    CssClass="table table-striped table-hover"        
-                    ID="GridS"
-                    DataKeyField="idkombi"
-                    AutoGenerateColumns="false"        
-                    ShowFOoter="true" 
-                    OnItemCreated="itemCreated"
-                    HeaderStyle.CssClass="bg-teal-700"                    
-                    FooterStyle.CssClass="bg-orange-300"
-                    >                          
-                    <com:TActiveLiteralColumn                
-                        HeaderText="NO"            
-                        HeaderStyle.Width="30px"
-                        HeaderStyle.CssClass="text-left"
-                        ItemStyle.CssClass="text-left"
-                        DataField="no"                                    
-                        />  
-                    <com:TActiveLiteralColumn                
-                        HeaderText="KODE"            
-                        HeaderStyle.Width="30px"
-                        HeaderStyle.CssClass="text-left"
-                        ItemStyle.CssClass="left"
-                        DataField="idkombi"                                    
-                        />                                                 
-                    <com:TActiveLiteralColumn                
-                        HeaderText="REKENING"            
-                        HeaderStyle.Width="250px"
-                        HeaderStyle.CssClass="text-left"
-                        ItemStyle.CssClass="text-left"
-                        DataField="nama_kombi"   
-                        FooterText="<strong>TOTAL</strong>"
-                        />   
-                    <com:TActiveLiteralColumn
-                        ID="ColumnBiaya"
-                        HeaderText="BIAYA"            
-                        HeaderStyle.CssClass="text-right"
-                        ItemStyle.CssClass="text-right"
-                        DataField="biaya_alias"  
-                        FooterStyle.CssClass="text-right"
-                        FooterRenderer="TotalPrice"
-                        /> 
-                    <com:TActiveLiteralColumn
-                        ID="ColumnSudahBayar"
-                        HeaderText="SUDAH <br/>DIBAYAR (COMMITED)"            
-                        HeaderStyle.CssClass="text-right"
-                        ItemStyle.CssClass="text-right"
-                        DataField="sudah_dibayar_alias"  
-                        FooterStyle.CssClass="text-right"
-                        FooterRenderer="TotalSudahDibayarkan"
-                        /> 
-                    <com:TActiveBoundColumn
-                        ID="ColumnJumlahBayar"                                                           
-                        HeaderText="JUMLAH <br/>BAYAR (BELUM COMMITED)"            
-                        HeaderStyle.CssClass="text-right"
-                        ItemStyle.CssClass="text-right"
-                        DataField="jumlah_bayar_alias"  
-                        FooterStyle.CssClass="text-right"
-                        FooterRenderer="TotalJumlahBayar"
-                        />       
-                        
-                </com:TActiveDataGrid>   
+				CssClass="table table-striped table-hover"        
+				ID="GridS"
+				DataKeyField="idkombi"
+				AutoGenerateColumns="false"        
+				ShowFOoter="true" 
+				OnItemCreated="itemCreated"
+				HeaderStyle.CssClass="bg-teal-700"                    
+				FooterStyle.CssClass="bg-orange-300"
+				>                          
+				<com:TActiveLiteralColumn                
+					HeaderText="NO"            
+					HeaderStyle.Width="30px"
+					HeaderStyle.CssClass="text-left"
+					ItemStyle.CssClass="text-left"
+					DataField="no"                                    
+					/>  
+				<com:TActiveLiteralColumn                
+					HeaderText="KODE"            
+					HeaderStyle.Width="30px"
+					HeaderStyle.CssClass="text-left"
+					ItemStyle.CssClass="left"
+					DataField="idkombi"                                    
+					/>                                                 
+				<com:TActiveLiteralColumn                
+					HeaderText="REKENING"            
+					HeaderStyle.Width="250px"
+					HeaderStyle.CssClass="text-left"
+					ItemStyle.CssClass="text-left"
+					DataField="nama_kombi"   
+					FooterText="<strong>TOTAL</strong>"
+					/>   
+				<com:TActiveLiteralColumn
+					ID="ColumnBiaya"
+					HeaderText="BIAYA"            
+					HeaderStyle.CssClass="text-right"
+					ItemStyle.CssClass="text-right"
+					DataField="biaya_alias"  
+					FooterStyle.CssClass="text-right"
+					FooterRenderer="TotalPrice"
+					/> 
+				<com:TActiveLiteralColumn
+					ID="ColumnSudahBayar"
+					HeaderText="SUDAH <br/>DIBAYAR (COMMITED)"            
+					HeaderStyle.CssClass="text-right"
+					ItemStyle.CssClass="text-right"
+					DataField="sudah_dibayar_alias"  
+					FooterStyle.CssClass="text-right"
+					FooterRenderer="TotalSudahDibayarkan"
+					/> 
+				<com:TActiveBoundColumn
+					ID="ColumnJumlahBayar"                                                           
+					HeaderText="JUMLAH <br/>BAYAR (BELUM COMMITED)"            
+					HeaderStyle.CssClass="text-right"
+					ItemStyle.CssClass="text-right"
+					DataField="jumlah_bayar_alias"  
+					FooterStyle.CssClass="text-right"
+					FooterRenderer="TotalJumlahBayar"
+					/>       
+					
+			</com:TActiveDataGrid>   
         </div>        
     </div>     
 </com:TPanel>

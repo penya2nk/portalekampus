@@ -53,7 +53,8 @@
                     <label><strong>Kriteria :</strong></label>
                     <com:TDropDownList ID="cmbKriteria" CssClass="form-control">
                         <com:TListItem Text="NO. FAKTUR" Value="no_faktur" />
-                        <com:TListItem Text="NO. FORMULIR" Value="no_formulir" />                               
+                        <com:TListItem Text="NO. FORMULIR" Value="no_formulir" /> 
+						<com:TListItem Text="NO. REGISTRASI" Value="no_pendaftaran" />						
                     </com:TDropDownList>
                 </div>      
                 <div class="form-group" id="divtxtKriteria">
@@ -112,11 +113,13 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr class="bg-teal-700">
-                                    <th scope="col" width="30">NO</th>							
-                                    <th scope="col" width="130">FAKTUR</th>
+                                    <th scope="col" width="20">NO</th>							
+                                    <th scope="col" width="120">FAKTUR</th>
                                     <th scope="col" width="120">TANGGAL</i></th>
-                                    <th scope="col" width="130">FORMULIR</i></th>   																											
-                                    <th scope="col" width="140">JUMLAH BAYAR</th>
+                                    <th scope="col" width="130">FORMULIR</i></th> 
+									<th scope="col" width="130">NO. REGISTRASI</i></th> 									
+                                    <th scope="col" width="100">JUMLAH BAYAR</th>
+									<th scope="col" width="170">KELAS</th>
                                     <th scope="col" width="70">TA/SMT</th>
                                     <th scope="col" width="70">STATUS</th>
                                     <th width="80">AKSI</th>
@@ -129,8 +132,10 @@
                             <td><%#$this->DataItem['no']%></td>					
                             <td><%#$this->DataItem['no_faktur']%></td>
                             <td><%#$this->DataItem['tanggal']%></td>
-                            <td><%# $this->Data['no_formulir']%></td>	
+                            <td><%# $this->Data['no_formulir']%></td>
+							<td><%# $this->Data['no_pendaftaran']%></td>							
                             <td><%#$this->DataItem['dibayarkan']%></td>	
+							<td><%#$this->DataItem['nama_kelas']%></td>
                             <td><%#$this->DataItem['tasmt']%></td>
                             <td>
                                 <span class="<%#$this->DataItem['commited']==true?'label label-flat border-success text-success-600 position-right':'label label-danger position-right'%>"><%#$this->DataItem['commited']==true?'Done':'in progress'%></span>                               

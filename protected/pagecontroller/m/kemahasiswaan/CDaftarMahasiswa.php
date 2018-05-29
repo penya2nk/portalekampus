@@ -9,7 +9,7 @@ class CDaftarMahasiswa extends MainPageM {
         $this->createObj('Nilai');
 		if (!$this->IsPostBack&&!$this->IsCallBack) {	
             if (!isset($_SESSION['currentPageDaftarMahasiswa'])||$_SESSION['currentPageDaftarMahasiswa']['page_name']!='m.kemahasiswaan.DaftarMahasiswa') {
-				$_SESSION['currentPageDaftarMahasiswa']=array('page_name'=>'m.kemahasiswaan.DaftarMahasiswa','page_num'=>0,'search'=>false,'idkonsentrasi'=>'none','k_status'=>'none');												
+				$_SESSION['currentPageDaftarMahasiswa']=array('page_name'=>'m.kemahasiswaan.DaftarMahasiswa','page_num'=>0,'search'=>false,'idkonsentrasi'=>'none','k_status'=>'none','jenismhs'=>'none');												
 			}
             $_SESSION['currentPageDaftarMahasiswa']['search']=false;
             
@@ -35,6 +35,8 @@ class CDaftarMahasiswa extends MainPageM {
 			$this->tbCmbStatus->DataSource=$status;
 			$this->tbCmbStatus->Text=$_SESSION['currentPageDaftarMahasiswa']['k_status'];			
 			$this->tbCmbStatus->dataBind();
+            
+            $this->tbCmbJenisMHS->Text=$_SESSION['currentPageDaftarMahasiswa']['jenismhs'];
             
             $this->tbCmbOutputReport->DataSource=$this->setup->getOutputFileType();
             $this->tbCmbOutputReport->Text= $_SESSION['outputreport'];
@@ -73,6 +75,12 @@ class CDaftarMahasiswa extends MainPageM {
         $this->populateKonsentrasi();
 		$this->populateData();
 	}
+    public function changeTbJenisMHS ($sender,$param) {               
+        $_SESSION['currentPageDaftarMahasiswa']['jenismhs']=$this->tbCmbJenisMHS->Text;           
+        $this->populateSummary();
+        $this->populateKonsentrasi();
+        $this->populateData();
+    }
 	public function renderCallback ($sender,$param) {
 		$this->RepeaterS->render($param->NewWriter);	
 	}
@@ -127,15 +135,24 @@ class CDaftarMahasiswa extends MainPageM {
         $r=array();
         $i=1;
         $tahun_masuk=$_SESSION['tahun_masuk'];        
-        $str_tahun_masuk=$tahun_masuk == 'none' ?'':"AND tahun=$tahun_masuk";
         $kelas=$_SESSION['kelas'];
-        $str_kelas = $kelas == 'none'?'':" AND idkelas='$kelas'";
         $status=$_SESSION['currentPageDaftarMahasiswa']['k_status'];
-        $str_status = $status == 'none'?'':" AND k_status='$status'";
+        $jenismhs=$_SESSION['currentPageDaftarMahasiswa']['jenismhs'];
+
+        $str_tahun_masuk=$tahun_masuk == 'none' ?'':"AND rm.tahun=$tahun_masuk";        
+        $str_kelas = $kelas == 'none'?'':" AND rm.idkelas='$kelas'";        
+        $str_status = $status == 'none'?'':" AND rm.k_status='$status'";
+        if ($jenismhs=='none'){
+            $str_jenismhs='';   
+        }else{
+            $str_jenismhs = $jenismhs == 'normal'?" AND dk.iddata_konversi IS NULL":" AND d-k.iddata_konversi IS NOT NULL";    
+        }
+            
+
         while (list($k,$v)=each($datakonsentrasi)) {                        
             if ($v['kjur']==$_SESSION['kjur']){
                 $idkonsentrasi=$v['idkonsentrasi'];
-                $jumlah = $this->DB->getCountRowsOfTable("register_mahasiswa WHERE idkonsentrasi=$idkonsentrasi $str_tahun_masuk $str_kelas $str_status",'nim');
+                $jumlah = $this->DB->getCountRowsOfTable("register_mahasiswa rm LEFT JOIN data_konversi dk ON (dk.nim=rm.nim) WHERE rm.idkonsentrasi=$idkonsentrasi $str_tahun_masuk $str_kelas $str_status",'rm.nim');
                 $v['jumlah_mhs']=$jumlah > 10000 ? 'lebih dari 10.000' : $jumlah;
                 $r[$i]=$v;
                 $i+=1;
@@ -177,15 +194,22 @@ class CDaftarMahasiswa extends MainPageM {
             }
         }else{
             $tahun_masuk=$_SESSION['tahun_masuk'];        
-            $str_tahun_masuk=$tahun_masuk == 'none' ?'':"AND tahun_masuk=$tahun_masuk";
-            $idkonsentrasi=$_SESSION['currentPageDaftarMahasiswa']['idkonsentrasi'];
-            $str_konsentrasi = $idkonsentrasi == 'none'?'':" AND idkonsentrasi=$idkonsentrasi";
             $kelas=$_SESSION['kelas'];
-            $str_kelas = $kelas == 'none'?'':" AND idkelas='$kelas'";
+            $idkonsentrasi=$_SESSION['currentPageDaftarMahasiswa']['idkonsentrasi'];
             $status=$_SESSION['currentPageDaftarMahasiswa']['k_status'];
-            $str_status = $status == 'none'?'':" AND k_status='$status'";
-            $jumlah_baris=$this->DB->getCountRowsOfTable("v_datamhs WHERE kjur=$kjur $str_tahun_masuk $str_konsentrasi $str_kelas $str_status",'nim');		
-            $str = "SELECT no_formulir,nim,nirm,nama_mhs,jk,tempat_lahir,tanggal_lahir,alamat_rumah,kjur,idkonsentrasi,iddosen_wali,tahun_masuk,k_status,idkelas FROM v_datamhs WHERE kjur='$kjur' $str_tahun_masuk $str_konsentrasi $str_kelas $str_status";			
+            $jenismhs=$_SESSION['currentPageDaftarMahasiswa']['jenismhs'];
+
+            $str_tahun_masuk=$tahun_masuk == 'none' ?'':"AND vdm.tahun_masuk=$tahun_masuk";            
+            $str_konsentrasi = $idkonsentrasi == 'none'?'':" AND vdm.idkonsentrasi=$idkonsentrasi";
+            $str_kelas = $kelas == 'none'?'':" AND vdm.idkelas='$kelas'";            
+            $str_status = $status == 'none'?'':" AND vdm.k_status='$status'";
+            if ($jenismhs=='none'){
+                $str_jenismhs='';   
+            }else{
+                $str_jenismhs = $jenismhs == 'normal'?" AND dk.iddata_konversi IS NULL":" AND dk.iddata_konversi IS NOT NULL";    
+            }
+            $jumlah_baris=$this->DB->getCountRowsOfTable("v_datamhs vdm LEFT JOIN data_konversi dk ON (dk.nim=vdm.nim) WHERE vdm.kjur=$kjur $str_tahun_masuk $str_konsentrasi $str_kelas $str_status $str_jenismhs",'vdm.nim');		
+            $str = "SELECT vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.jk,vdm.tempat_lahir,vdm.tanggal_lahir,vdm.alamat_rumah,vdm.kjur,vdm.idkonsentrasi,vdm.iddosen_wali,vdm.tahun_masuk,vdm.k_status,vdm.idkelas,dk.iddata_konversi FROM v_datamhs vdm LEFT JOIN data_konversi dk ON (dk.nim=vdm.nim) WHERE vdm.kjur='$kjur' $str_tahun_masuk $str_konsentrasi $str_kelas $str_status $str_jenismhs";			
         }		
         $this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageDaftarMahasiswa']['page_num'];
 		$this->RepeaterS->VirtualItemCount=$jumlah_baris;
@@ -198,7 +222,7 @@ class CDaftarMahasiswa extends MainPageM {
 		}
 		if ($limit < 0) {$offset=0;$limit=6;$_SESSION['currentPageDaftarMahasiswa']['page_num']=0;}
         $str = "$str ORDER BY nim DESC,nama_mhs ASC LIMIT $offset,$limit";				
-        $this->DB->setFieldTable(array('no_formulir','nim','nirm','nama_mhs','jk','tempat_lahir','tanggal_lahir','alamat_rumah','kjur','idkonsentrasi','iddosen_wali','tahun_masuk','k_status','idkelas'));
+        $this->DB->setFieldTable(array('no_formulir','nim','nirm','nama_mhs','jk','tempat_lahir','tanggal_lahir','alamat_rumah','kjur','idkonsentrasi','iddosen_wali','tahun_masuk','k_status','idkelas','iddata_konversi'));
 		$r = $this->DB->getRecord($str,$offset+1);	
         $result = array();
         while (list($k,$v)=each($r)) {
@@ -206,10 +230,9 @@ class CDaftarMahasiswa extends MainPageM {
             $dataMHS['nim']=$nim;
             $dataMHS['tahun_masuk']=$v['tahun_masuk'];
             $dataMHS['kjur']=$v['kjur'];
-            $iddata_konversi=$this->Nilai->isMhsPindahan($nim,true);
+            $iddata_konversi=$v['iddata_konversi'] == '' ? 0:$v['iddata_konversi'];
             $dataMHS['iddata_konversi']=$iddata_konversi; 
-            $dataMHS['idkonsentrasi']=$v['idkonsentrasi'];
-            $v['iddata_konversi']=$iddata_konversi;           
+            $dataMHS['idkonsentrasi']=$v['idkonsentrasi'];                  
             $this->Nilai->setDataMHS($dataMHS);
             $v['konsentrasi']=$this->DMaster->getNamaKonsentrasiByID($v['idkonsentrasi'],$v['kjur']);
             $v['njur']=$_SESSION['daftar_jurusan'][$v['kjur']];

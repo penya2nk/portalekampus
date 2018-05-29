@@ -144,11 +144,11 @@ class Logic_Nilai extends Logic_Akademik {
 			$this->db->setFieldTable(array('kmatkul','nmatkul','sks','semester','idkonsentrasi','nama_konsentrasi','ispilihan','islintas_prodi'));
 			$r=$this->db->getRecord($str);			            
 			$str = "SELECT n_kual,telah_isi_kuesioner,tahun FROM v_nilai WHERE nim='$nim' AND kmatkul=";
-			$str_konversi = "SELECT n_kual FROM v_konversi2 WHERE iddata_konversi='$iddata_konversi' AND kmatkul=";
-			$this->db->setFieldTable (array('n_kual','telah_isi_kuesioner','tahun'));            
+			$str_konversi = "SELECT n_kual FROM v_konversi2 WHERE iddata_konversi='$iddata_konversi' AND kmatkul=";			            
 			while (list($k,$v)=each($r)) {	
 				$kmatkul=$v['kmatkul'];
 				$str2 = $str . "'$kmatkul' ORDER BY n_kual ASC LIMIT 1";                     
+                $this->db->setFieldTable (array('n_kual','telah_isi_kuesioner','tahun'));
 				$r_nilai=$this->db->getRecord($str2); 	                
 				$am=0;
 				$m=0;
@@ -163,6 +163,7 @@ class Logic_Nilai extends Logic_Akademik {
                         $keterangan='BELUM ISI KUESIONER';
                     }
 					if ($iddata_konversi) {					
+                        $this->db->setFieldTable (array('n_kual'));
 						$r_konversi=$this->db->getRecord($str_konversi . "'$kmatkul'"); 				
 						if (isset($r_konversi[1])) {
 							$hm_konversi=ord(strtoupper($r_konversi[1]['n_kual']));						
@@ -178,6 +179,7 @@ class Logic_Nilai extends Logic_Akademik {
 					$am=$this->AngkaMutu[$hm];
 					$m=$am*$v['sks'];				
 				}elseif ($iddata_konversi) {
+                    $this->db->setFieldTable (array('n_kual'));
 					$r_konversi=$this->db->getRecord($str_konversi . "'$kmatkul'");
 					if (isset($r_konversi[1])) {
 						$hm=$r_konversi[1]['n_kual'];			
@@ -227,12 +229,12 @@ class Logic_Nilai extends Logic_Akademik {
         $this->db->setFieldTable(array('kmatkul','nmatkul','sks','semester','idkonsentrasi','nama_konsentrasi','ispilihan','islintas_prodi'));
         $r=$this->db->getRecord($str);			            
         $str = "SELECT n_kual,telah_isi_kuesioner,tahun FROM v_nilai WHERE nim='$nim' AND kmatkul=";
-        $str_konversi = "SELECT n_kual,tahun FROM v_konversi2 WHERE iddata_konversi='$iddata_konversi' AND kmatkul=";
-        $this->db->setFieldTable (array('n_kual','telah_isi_kuesioner','tahun'));
+        $str_konversi = "SELECT n_kual,tahun FROM v_konversi2 WHERE iddata_konversi='$iddata_konversi' AND kmatkul=";        
         $result=array();
         while (list($k,$v)=each($r)) {	
             $kmatkul=$v['kmatkul'];
             $str2 = $str . "'$kmatkul' ORDER BY n_kual ASC LIMIT 1";
+            $this->db->setFieldTable (array('n_kual','telah_isi_kuesioner','tahun'));
             $r_nilai=$this->db->getRecord($str2); 	                
             $am=0;
             $m=0;
@@ -245,7 +247,8 @@ class Logic_Nilai extends Logic_Akademik {
                     $hm=$hm_biasa;		                    
                     $v['keterangan']='BELUM ISI KUESIONER';
                 }
-                if ($iddata_konversi > 0) {					
+                if ($iddata_konversi > 0) {		
+                    $this->db->setFieldTable (array('n_kual'));			
                     $r_konversi=$this->db->getRecord($str_konversi . "'$kmatkul'"); 				
                     if (isset($r_konversi[1])) {
                         $hm_konversi=ord(strtoupper($r_konversi[1]['n_kual']));						
@@ -261,6 +264,7 @@ class Logic_Nilai extends Logic_Akademik {
                 $am=$this->AngkaMutu[$hm];
                 $m=$am*$v['sks'];				
             }elseif ($iddata_konversi > 0) {
+                $this->db->setFieldTable (array('n_kual'));
                 $r_konversi=$this->db->getRecord($str_konversi . "'$kmatkul'");
                 if (isset($r_konversi[1])) {
                     $hm=$r_konversi[1]['n_kual'];			
@@ -391,6 +395,7 @@ class Logic_Nilai extends Logic_Akademik {
         }
         if ($iddata_konversi > 0) {
             $str_konversi = "SELECT kmatkul,nmatkul,sks,semester,n_kual,tahun FROM v_konversi2 WHERE iddata_konversi='$iddata_konversi'";
+            $this->db->setFieldTable(array('kmatkul','nmatkul','sks','semester','n_kual','tahun'));
             $r_nilai=$this->db->getRecord($str_konversi);
             while (list($k,$v)=each($r_nilai)) {
                 if (isset($result[$v['kmatkul']])) {

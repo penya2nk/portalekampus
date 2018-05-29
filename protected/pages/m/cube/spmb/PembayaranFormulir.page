@@ -1,0 +1,261 @@
+<%@ Title="SPMB - Pembayaran Formulir"%>
+<com:TContent ID="moduleheader">
+	<i class="fa fa-sign-in"></i> Pembayaran Formulir Mahasiswa Baru / Pindahan
+    <br/><small><com:TActiveLabel ID="lblModulHeader" /></small>
+</com:TContent>
+<com:TContent ID="configtools">    
+    <%include Application.layouts.cube.FilterMode9%>
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li><a href="#">SPMB</a></li>
+    <li><a href="#">PENDAFTARAN</a></li>
+    <li class="active">PEMBAYARAN FORMULIR</li>
+</com:TContent>
+<com:TContent ID="maincontent">
+<com:TPanel Visible="<%= $this->getEditProcess() %>" CssClass="box">	
+	<h3>Ubah Data Pembayaran Formulir <%=$this->getInfoToolbar('kelas')%></h3>		
+	<table width="100%">		
+	<tr>
+		<td width="180"><com:TLabel Text="No Formulir" ForControl="txtEditFormulir2" /></td>
+		<td>: <com:TActiveHiddenField ID="txtEditFormulir" /><%=$this->session['tahun_masuk']%><com:TActiveHiddenField ID="txtEditFormulir1" Value="<%=$this->session['tahun_masuk']%>" /><com:TActiveTextBox ID="txtEditFormulir2" Maxlength="4" Columns="4" />
+		<com:TRequiredFieldValidator  ControlToValidate="txtEditFormulir2" Display="Dynamic" ErrorMessage="Isikan No Urut Formulir" ValidationGroup="editPembayaranFormulir" CssClass="errormessages error" />										
+		<com:TActiveCustomValidator ID="editNoFormulir" ControlToValidate="txtEditFormulir2" Display="Dynamic" ValidationGroup="editPembayaranFormulir" OnServerValidate="checkNoFormulir" CssClass="errormessages error" />
+		</td>						
+	</tr>
+	<tr>
+		<td width="180"><com:TLabel Text="Nama Calon Mahasiswa" ForControl="txtEditNamaMhs" /></td>
+		<td>: <com:TActiveTextBox ID="txtEditNamaMhs" Columns="40" /> <com:TRequiredFieldValidator ControlToValidate="txtEditNamaMhs" Display="Dynamic" ErrorMessage="Isi Nama Mahasiswa." ValidationGroup="editPembayaranFormulir" CssClass="errormessages error" /></td>
+	</tr>
+	<tr>
+		<td width="180"><com:TLabel Text="Alamat Rumah" ForControl="txtEditAlamatRumah" /></td>
+		<td>: <com:TActiveTextBox ID="txtEditAlamatRumah" Columns="50" /> <com:TRequiredFieldValidator ControlToValidate="txtEditAlamatRumah" Display="Dynamic" ErrorMessage="Isi Alamat Rumah." ValidationGroup="editPembayaranFormulir" CssClass="errormessages error" /></td>
+	</tr>
+	<tr>
+		<td width="180"><com:TLabel Text="No Telepon Rumah" ForControl="txtEditNoTelpRumah" /></td>
+		<td>: <com:TActiveTextBox ID="txtEditNoTelpRumah" Columns="25" /> </td>
+	</tr>
+	<tr>
+		<td width="180"><com:TLabel Text="No Telepon HP" ForControl="txtEditNoHP" /></td>
+		<td>: <com:TActiveTextBox ID="txtEditNoHP" Columns="25" /> </td>
+	</tr>			
+	<tr>
+		<td width="180"><com:TLabel Text="Email" ForControl="txtEditEmail" /> </td>
+		<td>:
+			<com:TActiveHiddenField ID="hidenEditEmail" /> 
+			<com:TActiveTextBox ID="txtEditEmail" Columns="30" /> 
+			<com:TRequiredFieldValidator  ControlToValidate="txtEditEmail" Display="Dynamic" ErrorMessage="Isikan Email Anda" ValidationGroup="editPembayaranFormulir" CssClass="errormessages error" />				
+			<com:TActiveCustomValidator ID="editEmail" ControlToValidate="txtEditEmail" Display="Dynamic" ValidationGroup="editPembayaranFormulir" OnServerValidate="checkEmail" CssClass="errormessages error" />
+	</tr>		
+	</table>
+	<div class="box">
+	<h3>Pembayaran</h3>
+	<table width="100%">			
+		<tr>
+			<td width="180"><com:TLabel Text="No Faktur Bank" ForControl="txtEditNoFaktur" /></td><com:TActiveHiddenField ID="hiddenEditNoFaktur" />
+			<td>: <com:TActiveTextBox ID="txtEditNoFaktur" Columns="8" MaxLength="8" /> <com:TRequiredFieldValidator  ControlToValidate="txtEditNoFaktur" Display="Dynamic" ErrorMessage="Isikan No Faktur" ValidationGroup="editPembayaranFormulir" CssClass="errormessages error" />
+			<com:TActiveCustomValidator ID="editNoFaktur" ControlToValidate="txtEditNoFaktur" Display="Dynamic" ErrorMessage="Isikan No Faktur" ValidationGroup="editPembayaranFormulir" OnServerValidate="checkNoFaktur" CssClass="errormessages error" />
+			</td>
+		</tr>
+		<tr>
+		<td width="180"><com:TLabel Text="Tanggal Bayar" ForControl="txtEditTglBayar" /></td>
+			<td>: <com:TDatePicker ID="txtEditTglBayar" DateFormat="dd-MMMM-yyyy" Culture="id"  FromYear="<%=$this->session['ta']%>" UpToYear="<%=@date('Y')%>" InputMode="DropDownList" /></td>
+		</tr>
+		<tr>
+			<td width="180"><com:TLabel Text="Jumlah Pembayaran (Rp)" ForControl="txtEditJumlahBayar" /></td>
+			<td>: <com:TActiveTextBox ID="txtEditJumlahBayar" Columns="10" Attributes.OnKeyUp="formatangka(this)" /></td>
+		</tr>
+		<tr>
+			<td width="180"><com:TLabel Text="Keterangan" ForControl="txtEditKeterangan" /></td>
+			<td>&nbsp;&nbsp;<com:TActiveTextBox ID="txtEditKeterangan" Columns="30" TextMode="MultiLine" /></td>
+		</tr>
+	</table>
+	<p>
+	<com:TActiveButton ID="btnUpdate" Text="Save" OnClick="updateData" ValidationGroup="editPembayaranFormulir" CssClass="btnStyle1">
+		<prop:ClientSide.OnPreDispatch>
+			$('loading').show();
+		</prop:ClientSide.OnPreDispatch>
+		<prop:ClientSide.OnLoading>
+			$('<%=$this->btnUpdate->ClientId%>').disabled='disabled';																				
+		</prop:ClientSide.OnLoading>
+		<prop:ClientSide.onComplete>										
+			$('<%=$this->btnUpdate->ClientId%>').disabled='';																				
+			$('loading').hide();
+		</prop:ClientSide.OnComplete>	
+	</com:TActiveButton>	
+	</p>
+	</div>	
+</com:TPanel>
+<com:TPanel Visible="<%= $this->getAddProcess() %>" CssClass="box">	
+	<h3>Tambah Pembayaran Formulir <%=$this->getInfoToolbar('kelas')%></h3>		
+	<table width="100%">
+	<tr>
+		<td width="180"><com:TLabel Text="No Formulir" ForControl="txtAddFormulir2" /></td>
+		<td>: <%=$this->session['ta']%><com:TActiveHiddenField ID="txtAddFormulir1" Value="<%=$this->session['ta']%>" /><com:TActiveTextBox ID="txtAddFormulir2" Maxlength="4" Columns="4" />
+		<com:TRequiredFieldValidator  ControlToValidate="txtAddFormulir2" Display="Dynamic" ErrorMessage="Isikan No Urut Formulir" ValidationGroup="addPembayaranFormulir" CssClass="errormessages error" />										
+		<com:TActiveCustomValidator ID="addNoFormulir" ControlToValidate="txtAddFormulir2" Display="Dynamic" ValidationGroup="addPembayaranFormulir" OnServerValidate="checkNoFormulir" CssClass="errormessages error" />
+		</td>						
+	</tr>
+	<tr>
+		<td width="180"><com:TLabel Text="Nama Calon Mahasiswa" ForControl="txtAddNamaMhs" /></td>
+		<td>: <com:TActiveTextBox ID="txtAddNamaMhs" Columns="40" /> <com:TRequiredFieldValidator ControlToValidate="txtAddNamaMhs" Display="Dynamic" ErrorMessage="Isi Nama Mahasiswa." ValidationGroup="addPembayaranFormulir" CssClass="errormessages error" /></td>
+	</tr>
+	<tr>
+		<td width="180"><com:TLabel Text="Alamat Rumah" ForControl="txtAddAlamatRumah" /></td>
+		<td>: <com:TActiveTextBox ID="txtAddAlamatRumah" Columns="50" /> <com:TRequiredFieldValidator ControlToValidate="txtAddAlamatRumah" Display="Dynamic" ErrorMessage="Isi Alamat Rumah." ValidationGroup="addPembayaranFormulir" CssClass="errormessages error" /></td>
+	</tr>
+	<tr>
+		<td width="180"><com:TLabel Text="No Telepon Rumah" ForControl="txtAddNoTelpRumah" /></td>
+		<td>: <com:TActiveTextBox ID="txtAddNoTelpRumah" Columns="25" /> </td>
+	</tr>
+	<tr>
+		<td width="180"><com:TLabel Text="No Telepon HP" ForControl="txtAddNoHP" /></td>
+		<td>: <com:TActiveTextBox ID="txtAddNoHP" Columns="25" /> </td>
+	</tr>			
+	<tr>
+		<td width="180"><com:TLabel Text="Email" ForControl="txtAddEmail" /> </td>
+		<td>: <com:TActiveTextBox ID="txtAddEmail" Columns="30" /> 
+			<com:TRequiredFieldValidator  ControlToValidate="txtAddEmail" Display="Dynamic" ErrorMessage="Isikan Email Anda" ValidationGroup="addPembayaranFormulir" CssClass="errormessages error" />				
+			<com:TActiveCustomValidator ID="addEmail" ControlToValidate="txtAddEmail" Display="Dynamic" ValidationGroup="addPembayaranFormulir" OnServerValidate="checkEmail" CssClass="errormessages error" />
+	</tr>		
+	</table>
+	<div class="box">
+	<h3>Pembayaran</h3>
+	<table width="100%">			
+		<tr>
+			<td width="180"><com:TLabel Text="No Faktur Bank" ForControl="txtAddNoFaktur" /></td>
+			<td>: <com:TActiveTextBox ID="txtAddNoFaktur" Columns="10" MaxLength="8" /> 
+				<com:TRequiredFieldValidator  ControlToValidate="txtAddNoFaktur" Display="Dynamic" ErrorMessage="Isikan No Faktur" ValidationGroup="addPembayaranFormulir" CssClass="errormessages error" />
+				<com:TActiveCustomValidator ID="addNoFaktur" ControlToValidate="txtAddNoFaktur" Display="Dynamic" ErrorMessage="Isikan No Faktur" ValidationGroup="addPembayaranFormulir" OnServerValidate="checkNoFaktur" CssClass="errormessages error" />
+			</td>
+		</tr>
+		<tr>
+		<td width="180"><com:TLabel Text="Tanggal Bayar" ForControl="txtTglBayar" /></td>
+			<td>: <com:TDatePicker ID="txtTglBayar" DateFormat="dd-MMMM-yyyy" Culture="id"  FromYear="<%=$this->session['ta']%>" UpToYear="<%=$this->session['ta']+1%>" InputMode="DropDownList" /></td>
+		</tr>
+		<tr>
+			<td width="180"><com:TLabel Text="Jumlah Pembayaran (Rp)" ForControl="txtAddJumlahBayar" /></td>
+			<td>: <com:TActiveTextBox ID="txtAddJumlahBayar" Columns="10" Attributes.OnKeyUp="formatangka(this)" Text="<%=$this->spmb->Finance->toRupiah($this->session['pembayaran_spmb']['biaya_pendaftaran'])%>" /> <com:TLiteral ID="addMessageError" /></td>
+		</tr>
+		<tr>
+			<td width="180"><com:TLabel Text="Keterangan" ForControl="txtAddKeterangan" /></td>
+			<td>&nbsp;&nbsp;<com:TActiveTextBox ID="txtAddKeterangan" Columns="30" TextMode="MultiLine" /></td>
+		</tr>
+	</table>
+	<p>
+	<com:TActiveButton ID="btnAddSave" Text="Save" OnClick="saveData" ValidationGroup="addPembayaranFormulir" CssClass="btnStyle1">
+		<prop:ClientSide.OnPreDispatch>
+			$('loading').show();
+		</prop:ClientSide.OnPreDispatch>
+		<prop:ClientSide.OnLoading>
+			$('<%=$this->btnAddSave->ClientId%>').disabled='disabled';																				
+		</prop:ClientSide.OnLoading>
+		<prop:ClientSide.onComplete>			
+			$('<%=$this->btnAddSave->ClientId%>').disabled='';
+			$('loading').hide();
+		</prop:ClientSide.OnComplete>	
+	</com:TActiveButton>
+	<com:TActiveLinkButton ID="btnCloseAddProcess" Text="Close" OnClick="CloseAddProcess" ClientSide.PostState="false" CssClass="btnStyle1">
+		<prop:ClientSide.OnPreDispatch>
+			$('loading').show();
+		</prop:ClientSide.OnPreDispatch>
+		<prop:ClientSide.OnLoading>
+			$('<%=$this->btnCloseAddProcess->ClientId%>').disabled='disabled';																				
+		</prop:ClientSide.OnLoading>
+		<prop:ClientSide.onComplete>						
+			$('loading').hide();
+		</prop:ClientSide.OnComplete>	
+	</com:TActiveLinkButton>	
+	</p>
+	</div>	
+</com:TPanel>
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>">	
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left"><i class="fa fa-sign-in"></i> Daftar Transaksi</h2> 
+                </header>
+            </div>
+            <div class="main-box-body clearfix">
+                <div class="table-responsive">
+                    <com:TActiveRepeater ID="RepeaterS" DataKeyField="no_formulir" OnItemDataBound="setDataBound" AllowPaging="true" PageSize="10" AllowCustomPaging="true">
+                        <prop:HeaderTemplate>
+                            <table id="datagrid1">	
+                                <thead>
+                                    <tr>
+                                        <th scope="col" width="120">NO</th>
+                                        <th scope="col">NO. FORMULIR</th>
+                                        <th scope="col">NAMA MAHASISWA</th>
+                                        <th scope="col">ALAMAT RUMAH</th>																																		
+                                        <th scope="col">KET</th>
+                                        <th width="120">AKSI</th>
+                                    </tr>	
+                                </thead>		
+                                <tbody>							
+                        </prop:HeaderTemplate>
+                        <prop:ItemTemplate>
+                            <tr>
+                                <td><%#$this->DataItem['no']%></td>
+                                <td><%# $this->Data['no_formulir']%></td>																	
+                                <td><%#$this->DataItem['nama_mhs']%></td>						
+                                <td><%#$this->DataItem['alamat_rumah']%></td>							
+                                <td><com:TActiveImage ID="imgKet" /></td>
+                                <td align="center"><com:TLinkButton Text="Ubah" OnClick="Page.editRecord" CssClass="btnStyle2" /> <com:TActiveLinkButton ID="btnHapus" Text="Hapus" OnClick="Page.deleteRecord" Attributes.OnClick="if(!confirm('Anda yakin mau menghapus?')) return false;" ClientSide.PostState="false" CssClass="btnStyle2" /></td>
+                            </tr>
+                        </prop:ItemTemplate>
+                        <prop:FooterTemplate>
+                            </tbody>	
+                            </table>
+                        </prop:FooterTemplate>
+                    </com:TActiveRepeater>	
+                </div>
+            </div>
+        </div>
+    </div>
+	<div class="box">
+		<p class="controlbar">
+			<com:TActiveLinkButton ID="btnTambahMhs" Text="Tambah Mahasiswa" OnClick="addProcess" ClientSide.PostState="false" CssClass="btnStyle2">				
+				<prop:ClientSide.OnLoading>
+					$('<%=$this->btnTambahMhs->ClientId%>').disabled='disabled';																				
+				</prop:ClientSide.OnLoading>
+				<prop:ClientSide.onComplete>			
+					$('<%=$this->btnTambahMhs->ClientId%>').disabled='';					
+				</prop:ClientSide.OnComplete>	
+			</com:TActiveLinkButton>
+			<com:TActiveLabel ID="erroMessage" CssClass="errorMessage" />			
+		</p>
+	</div>
+	<div class="box">
+		<h3>Filter Details</h3>			
+		<table width="100%">
+			<tr>
+				<td width="150">Berdasarkan</td>
+				<td>: 
+				<com:TActiveDropDownList ID="cmbBerdasarkan" AutoPostBack="false" Attributes.OnChange="clearField('<%=$this->txtBerdasarkan->clientID%>')">				
+					<com:TListItem Value="no_formulir" Text="No Formulir" />
+					<com:TListItem Value="nama_mhs" Text="Nama Mahasiswa" />					
+				</com:TActiveDropDownList> <com:TActiveTextBox ID="txtBerdasarkan" /> 				
+				<com:TActiveButton ID="btnSearch" Text="Search" OnClick="btnSearch_Click" ValidationGroup="searchingPembayaranSPMB" CssClass="btnStyle1">
+					<prop:ClientSide.OnPreDispatch>
+						$('loading').show();
+					</prop:ClientSide.OnPreDispatch>
+					<prop:ClientSide.OnLoading>
+						$('<%=$this->btnSearch->ClientId%>').disabled='disabled';
+						$('<%=$this->cmbBerdasarkan->ClientId%>').disabled='disabled';
+						$('<%=$this->txtBerdasarkan->ClientId%>').disabled='disabled';						
+					</prop:ClientSide.OnLoading>
+					<prop:ClientSide.OnComplete>
+						$('<%=$this->btnSearch->ClientId%>').disabled='';
+						$('<%=$this->cmbBerdasarkan->ClientId%>').disabled='';
+						$('<%=$this->txtBerdasarkan->ClientId%>').disabled='';						
+						$('loading').hide();
+					</prop:ClientSide.OnComplete>
+				</com:TActiveButton>
+				<com:TRequiredFieldValidator  ControlToValidate="txtBerdasarkan" Display="Dynamic" ErrorMessage="Isi field ini..." ValidationGroup="searchingPembayaranSPMB" CssClass="errormessages error" />				
+				</td>
+			</tr>			
+		</table>
+	</div>	
+	
+</com:TPanel>
+</com:TContent>

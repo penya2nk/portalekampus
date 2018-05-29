@@ -89,6 +89,10 @@ class MainPageM extends MainPage {
      */
     public $showPIN=false;
     /**
+     * show page Pendaftaran Online [spmb]
+     */
+    public $showPendaftaranOnline=false;
+    /**
      * show page formulir pendaftaran [spmb pendaftaran]
      */
     public $showFormulirPendaftaran=false;

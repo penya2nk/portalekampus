@@ -178,6 +178,9 @@ a:hover {
 <com:TContent ID="jsinlinecontent">
 <script type="text/javascript">
 jQuery(document).ready(function() {
+    function gd(year, month, day) {
+        return new Date(year, month, day).getTime();
+    }
     //CHARTS
     if (jQuery('#graph-bar').length) {        
         <com:TLiteral ID="datamendaftar1" />

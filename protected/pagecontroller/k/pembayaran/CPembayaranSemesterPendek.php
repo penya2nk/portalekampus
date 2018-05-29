@@ -10,8 +10,7 @@ class CPembayaranSemesterPendek Extends MainPageK {
             if (!isset($_SESSION['currentPagePembayaranSemesterPendek'])||$_SESSION['currentPagePembayaranSemesterPendek']['page_name']!='k.pembayaran.PembayaranSemesterPendek') {
 				$_SESSION['currentPagePembayaranSemesterPendek']=array('page_name'=>'k.pembayaran.PembayaranSemesterPendek','page_num'=>0,'search'=>false,'ta'=>$this->setup->getSettingValue('default_ta'),'semester'=>3,'kelas'=>'none','DataMHS'=>array());												
 			}
-            $_SESSION['currentPagePembayaranSemesterPendek']['search']=false; 
-            $bool=!isset($_SESSION['currentPagePembayaranSemesterPendek']['DataMHS']['nim']);
+            $_SESSION['currentPagePembayaranSemesterPendek']['search']=false;             
             
             $daftar_ps=$this->DMaster->removeIdFromArray($_SESSION['daftar_jurusan'],'none');            
 			$this->tbCmbPs->DataSource=$daftar_ps;
@@ -19,8 +18,7 @@ class CPembayaranSemesterPendek Extends MainPageK {
 			$this->tbCmbPs->dataBind();	
             
             $ta=$_SESSION['currentPagePembayaranSemesterPendek']['ta'];
-            $this->tbCmbTA->DataSource=$this->DMaster->removeIdFromArray($this->DMaster->getListTA (),'none');
-            $this->tbCmbTA->Enabled=$bool;
+            $this->tbCmbTA->DataSource=$this->DMaster->removeIdFromArray($this->DMaster->getListTA (),'none');            
             $this->tbCmbTA->Text=$ta;
             $this->tbCmbTA->dataBind();
             
@@ -30,9 +28,16 @@ class CPembayaranSemesterPendek Extends MainPageK {
 			$this->tbCmbKelas->Text=$_SESSION['currentPagePembayaranSemesterPendek']['kelas'];			
 			$this->tbCmbKelas->dataBind();	
             
-            $this->linkDetailPembayaran->Visible=!$bool;
-            $this->txtNIM->Enabled=$bool;
-            $this->btnGo->Enabled=$bool;
+			if (isset($_SESSION['currentPagePembayaranSemesterPendek']['DataMHS']['nim'])) {
+				$this->linkDetailPembayaran->Visible=true;
+				$this->linkDetailPembayaran->NavigateUrl=$this->constructUrl('pembayaran.DetailPembayaranSemesterPendek',true,array('id'=>$_SESSION['currentPagePembayaranSemesterPendek']['DataMHS']['nim']));
+				$this->txtNIM->Enabled=false;
+				$this->btnGo->Enabled=false;
+				$this->tbCmbTA->Enabled=false;
+			}else{
+				$this->linkDetailPembayaran->Visible=false;
+			}
+            
             $this->populateData();
             $this->setInfoToolbar();
 		}	

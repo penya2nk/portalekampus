@@ -72,7 +72,7 @@ class CDulangMHSBaru Extends MainPageM {
         $tahun_masuk=$_SESSION['tahun_masuk'];
         $semester_masuk=$_SESSION['currentPageDulangMHSBaru']['semester_masuk'];  
         if ($search) {
-            $str = "SELECT vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.iddosen_wali,d.tanggal FROM v_datamhs vdm,dulang d WHERE vdm.nim=d.nim AND vdm.tahun_masuk='$tahun_masuk' AND vdm.semester_masuk='$semester_masuk' AND d.tahun=$tahun_masuk AND d.idsmt=$semester_masuk AND vdm.kjur='$kjur' AND d.k_status='A'";
+            $str = "SELECT vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.iddosen_wali,d.tanggal,d.idkelas FROM v_datamhs vdm,dulang d WHERE vdm.nim=d.nim AND vdm.tahun_masuk='$tahun_masuk' AND vdm.semester_masuk='$semester_masuk' AND d.tahun=$tahun_masuk AND d.idsmt=$semester_masuk AND vdm.kjur='$kjur' AND d.k_status='A'";
             $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'no_formulir' :
@@ -97,7 +97,7 @@ class CDulangMHSBaru Extends MainPageM {
                 break;
             }
         }else{                   
-            $str = "SELECT vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.iddosen_wali,d.tanggal FROM v_datamhs vdm,dulang d WHERE vdm.nim=d.nim AND vdm.tahun_masuk='$tahun_masuk' AND vdm.semester_masuk='$semester_masuk' AND d.tahun=$tahun_masuk AND d.idsmt=$semester_masuk AND vdm.kjur='$kjur' AND d.k_status='A'";
+            $str = "SELECT vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.iddosen_wali,d.tanggal,d.idkelas FROM v_datamhs vdm,dulang d WHERE vdm.nim=d.nim AND vdm.tahun_masuk='$tahun_masuk' AND vdm.semester_masuk='$semester_masuk' AND d.tahun=$tahun_masuk AND d.idsmt=$semester_masuk AND vdm.kjur='$kjur' AND d.k_status='A'";
             $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs vdm,dulang d WHERE vdm.nim=d.nim AND vdm.tahun_masuk='$tahun_masuk' AND vdm.semester_masuk='$semester_masuk' AND kjur='$kjur'",'vdm.nim');
         }
 		
@@ -110,7 +110,7 @@ class CDulangMHSBaru Extends MainPageM {
 		}
 		if ($limit < 0) {$offset=0;$limit=10;$_SESSION['currentPageDulangMHSBaru']['page_num']=0;}
 		$str = "$str ORDER BY vdm.nama_mhs ASC LIMIT $offset,$limit";				        
-		$this->DB->setFieldTable(array('no_formulir','nim','nirm','nama_mhs','iddosen_wali','tanggal'));
+		$this->DB->setFieldTable(array('no_formulir','nim','nirm','nama_mhs','iddosen_wali','tanggal','idkelas'));
 		$result=$this->DB->getRecord($str,$offset+1);
 		$this->RepeaterS->DataSource=$result;
 		$this->RepeaterS->dataBind();
@@ -122,8 +122,8 @@ class CDulangMHSBaru Extends MainPageM {
         if ($no_formulir != '') {
             try {
                 if (!isset($_SESSION['currentPageDulangMHSBaru']['DataMHS']['no_formulir'])) {
-                    $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.tempat_lahir,fp.tanggal_lahir,fp.jk,fp.alamat_rumah,fp.telp_rumah,fp.telp_kantor,fp.telp_hp,pm.email,fp.kjur1,fp.kjur2,idkelas,fp.ta AS tahun_masuk,fp.idsmt AS semester_masuk FROM formulir_pendaftaran fp,profiles_mahasiswa pm WHERE fp.no_formulir=pm.no_formulir AND fp.no_formulir='$no_formulir'";
-                    $this->DB->setFieldTable(array('no_formulir','nama_mhs','tempat_lahir','tanggal_lahir','jk','alamat_rumah','telp_rumah','telp_kantor','telp_hp','email','kjur1','kjur2','idkelas','tahun_masuk','semester_masuk'));
+                    $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.tempat_lahir,fp.tanggal_lahir,fp.jk,fp.alamat_rumah,fp.telp_rumah,fp.telp_kantor,fp.telp_hp,pm.email,fp.kjur1,fp.kjur2,idkelas,fp.ta AS tahun_masuk,fp.idsmt AS semester_masuk,waktu_mendaftar FROM formulir_pendaftaran fp,profiles_mahasiswa pm WHERE fp.no_formulir=pm.no_formulir AND fp.no_formulir='$no_formulir'";
+                    $this->DB->setFieldTable(array('no_formulir','nama_mhs','tempat_lahir','tanggal_lahir','jk','alamat_rumah','telp_rumah','telp_kantor','telp_hp','email','kjur1','kjur2','idkelas','tahun_masuk','semester_masuk','waktu_mendaftar'));
                     $r=$this->DB->getRecord($str);
                     if (!isset($r[1])) {                                
                         throw new Exception ("Calon Mahasiswa dengan Nomor Formulir ($no_formulir) tidak terdaftar di Database, silahkan ganti dengan yang lain.");		
@@ -134,14 +134,19 @@ class CDulangMHSBaru Extends MainPageM {
                     if (!$spmb=$this->Finance->isLulusSPMB(true)) {
                         throw new Exception ("Calon Mahasiswa dengan Nomor Formulir ($no_formulir) tidak lulus dalam SPMB.");		
                     }       
-                    $datamhs['nama_ps1']=$_SESSION['daftar_jurusan'][$datamhs['kjur1']];
-                    $datamhs['nama_ps2']=$datamhs['kjur2'] == '' ?'N.A' : $_SESSION['daftar_jurusan'][$datamhs['kjur2']];
-                    if ($spmb['kjur']==$datamhs['kjur1'])
+                    $datamhs['nama_ps1']=$_SESSION['daftar_jurusan'][$datamhs['kjur1']];                    
+                    $datamhs['nama_ps2']=$datamhs['kjur2'] == 0 ?'N.A' : $_SESSION['daftar_jurusan'][$datamhs['kjur2']];                    
+                    if ($spmb['kjur']==$datamhs['kjur1']) {
                         $datamhs['diterima_ps1']='<span class="label label-info">DITERIMA</span>';
-                    else
+                        $datamhs['diterima_ps2']='<span class="label label-warning">TIDAK DITERIMA</span>';
+                    }else{
                         $datamhs['diterima_ps2']='<span class="label label-info">DITERIMA</span>';
+                        $datamhs['diterima_ps1']='<span class="label label-warning">TIDAK DITERIMA</span>';
+                    }
                     $datamhs['kjur']=$spmb['kjur'];
                     $datamhs['nkelas']=$this->DMaster->getNamaKelasByID($datamhs['idkelas']);
+                    $datamhs['perpanjang']=false;
+                    $datamhs['waktu_mendaftar']=$this->TGL->tanggal('d F Y H:m:s',$datamhs['waktu_mendaftar']);
                     $this->Finance->setDataMHS($datamhs);                               
                     if ($this->Finance->isMhsRegistered()){
                         throw new Exception ("Calon Mahasiswa a.n ".$datamhs['nama_mhs']." dengan no formulir $no_formulir sudah terdaftar di P.S ".$_SESSION['daftar_jurusan'][$datamhs['kjur']]);
@@ -150,7 +155,7 @@ class CDulangMHSBaru Extends MainPageM {
                     if (!$data['bool']) {
                         throw new Exception ("Calon Mahasiswa a.n ".$this->Finance->dataMhs['nama_mhs']."($no_formulir) tidak bisa daftar ulang karena baru membayar(".$this->Finance->toRupiah($data['total_bayar'])."), harus minimal setengahnya sebesar (".$this->Finance->toRupiah($data['ambang_pembayaran']).") dari total (".$this->Finance->toRupiah($data['total_biaya']).")");
                     }
-                    $_SESSION['currentPageDulangMHSBaru']['DataMHS']=$datamhs;
+                    $_SESSION['currentPageDulangMHSBaru']['DataMHS']=$datamhs;                    
                 }
             }catch (Exception $e) {
                 $param->IsValid=false;

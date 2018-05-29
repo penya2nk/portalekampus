@@ -5,7 +5,7 @@ class Logic_Finance extends Logic_Mahasiswa {
 		parent::__construct ($db);				
 	}
     /**
-	* digunakan untuk mendapatkan biaya pendaftaran berdasarkan tahun dan idsmt		
+	* digunakan untuk mendapatkan biaya pendaftaran berdasarkan tahun, idsmt, dan kelas	
 	*/
 	public function getBiayaPendaftaran ($tahun,$idsmt,$idkelas) {
         $str = "SELECT biaya FROM kombi_per_ta WHERE idkombi=1 AND tahun=$tahun AND idsmt=$idsmt AND idkelas='$idkelas'";						
@@ -18,10 +18,23 @@ class Logic_Finance extends Logic_Mahasiswa {
 		}        			
 	}
     /**
-	* digunakan untuk mendapatkan biaya cuti berdasarkan tahun dan idsmt		
+	* digunakan untuk mendapatkan biaya cuti berdasarkan tahun, idsmt, dan kelas	
 	*/
 	public function getBiayaCuti ($tahun,$idsmt,$idkelas) {
         $str = "SELECT biaya FROM kombi_per_ta WHERE idkombi=12 AND tahun=$tahun AND idsmt=$idsmt AND idkelas='$idkelas'";						
+		$this->db->setFieldTable(array('biaya'));
+		$result=$this->db->getRecord($str);
+		if (isset($result[1])) {
+			return $result[1]['biaya'];	
+		}else {
+			return 0;
+		}        			
+	}
+	/**
+	* digunakan untuk mendapatkan biaya sks berdasarkan tahun, idsmt, dan kelas	
+	*/
+	public function getBiayaSKS ($tahun,$idkelas) {
+        $str = "SELECT biaya FROM kombi_per_ta WHERE idkombi=14 AND tahun=$tahun AND idkelas='$idkelas'";						
 		$this->db->setFieldTable(array('biaya'));
 		$result=$this->db->getRecord($str);
 		if (isset($result[1])) {

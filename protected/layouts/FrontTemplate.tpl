@@ -31,7 +31,8 @@
                 <div class="breadcrumb-line breadcrumb-line-component">
                     <ul class="breadcrumb">
                         <li><a href="<%=$this->Page->constructUrl('Home')%>"><i class="icon-home2 position-left"></i> Home</a></li>							
-                        <li><a href="<%=$this->Page->constructUrl('Pendaftaran')%>"><i class="icon-user position-left"></i> Pendaftaran</a></li>
+                        <li><a href="<%=$this->Page->constructUrl('Pendaftaran')%>"><i class="icon-user position-left"></i> Pendaftaran Mahasiswa Baru</a></li>
+						<li><a href="<%=$this->Page->constructUrl('KonfirmasiPembayaran')%>"><i class="icon-coin-dollar position-left"></i> Konfirmasi Pembayaran</a></li>
                         <com:TContentPlaceHolder ID="modulebreadcrumb" />
                     </ul>
                     <ul class="breadcrumb-elements">

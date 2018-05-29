@@ -85,6 +85,27 @@
             </li>            
         </ul>
         <br/>
+        <h4 style="font-size:12px"><strong>Jenis Mahasiswa:</strong></h4>
+        <ul id="skin-colors" class="clearfix">
+            <li style="font-size:10px">
+                <com:TActiveDropDownList ID="tbCmbJenisMHS" OnCallback="Page.changeTbJenisMHS" CssClass="form-control">             
+                    <com:TListItem Text="All" Value="none" />
+                    <com:TListItem Text="NORMAL" Value="normal" />
+                    <com:TListItem Text="AMPULAN" Value="ampulan" />                    
+                    <prop:ClientSide.OnPreDispatch>
+                        $('loading').show();
+                    </prop:ClientSide.OnPreDispatch>
+                    <prop:ClientSide.OnLoading>
+                        $('<%=$this->tbCmbJenisMHS->ClientId%>').disabled='disabled';
+                    </prop:ClientSide.OnLoading>
+                    <prop:ClientSide.onComplete>
+                        $('loading').hide();
+                        $('<%=$this->tbCmbJenisMHS->ClientId%>').disabled='';
+                    </prop:ClientSide.OnComplete>   
+                </com:TActiveDropDownList>  
+            </li>            
+        </ul>
+        <br/>
         <h4 style="font-size:12px"><strong>Output Report:</strong></h4>
         <ul id="skin-colors" class="clearfix">
             <li style="font-size:10px">
@@ -101,7 +122,7 @@
 					</prop:ClientSide.OnComplete>	
 				</com:TActiveDropDownList>
             </li>            
-        </ul>
+        </ul>       
     </div>
 </div>
 </com:TContent>

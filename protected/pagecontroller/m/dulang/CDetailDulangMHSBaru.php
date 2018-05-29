@@ -28,8 +28,11 @@ class CDetailDulangMHSBaru Extends MainPageM {
             }
 		}	
 	}
-    public function getDataMHS($idx) {		        
-        return $this->Demik->getDataMHS($idx);
+    public function getDataMHS($idx) {	
+        if (isset($_SESSION['currentPageDulangMHSBaru']['DataMHS'])){
+            $datamhs=$_SESSION['currentPageDulangMHSBaru']['DataMHS'];          
+            return $datamhs[$idx];
+        }        
     }
     public function checkNIM ($sender,$param) {					
 		$nim=$param->Value;		

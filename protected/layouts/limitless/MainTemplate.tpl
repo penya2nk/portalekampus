@@ -98,7 +98,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="dropdown<%=$this->Page->showDMaster==true?' active':''%> visible">
+            <li class="dropdown<%=$this->Page->showMenuSPMB==true?' active':''%> visible">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="icon-square-up-right position-left"></i> SPMB <span class="caret"></span>
                 </a>

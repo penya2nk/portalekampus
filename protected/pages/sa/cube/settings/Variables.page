@@ -9,19 +9,19 @@
 <com:TContent ID="maincontent">
 <com:TPanel Visible="<%= $this->getDefaultProcess() %>">   
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-12">
             <div class="main-box">
                 <header class="main-box-header clearfix">
                     <h2 class="pull-left"><i class="fa fa-cogs"></i> Setting Umum</h2>                 
                 </header>
                 <div class="main-box-body clearfix">
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-md-6">
                             <div class="form-horizontal">
                                 <div class="form-group" id="divDefaultTahunPendaftaran">
-                                    <label class="col-lg-4 control-label">Default Tahun Pendaftaran :</label>
-                                    <div class="col-lg-5">                                
-                                        <com:TDropDownList ID="cmbDefaultTahunPendaftaran" CssClass="form-control" Width="120px" />
+                                    <label class="col-md-4 control-label">Default Tahun Pendaftaran :</label>
+                                    <div class="col-md-8">                                
+                                        <com:TDropDownList ID="cmbDefaultTahunPendaftaran" CssClass="form-control" />
                                         <com:TRequiredFieldValidator ID="FieldDefaultTahunPendaftaranValidator" ValidationGroup="settinggeneral" Display="Dynamic" ControlToValidate="cmbDefaultTahunPendaftaran" ErrorMessage="Pilih Tahun Pendaftaran" CssClass="has-error help-block">	
                                             <prop:ClientSide.OnValidationError>
                                                 $('divDefaultTahunPendaftaran').addClassName('has-error');
@@ -34,9 +34,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group" id="divDefaultTahunAkademik">
-                                    <label class="col-lg-4 control-label">Default Tahun Akademik :</label>
-                                    <div class="col-lg-5">                                
-                                        <com:TDropDownList ID="cmbDefaultTahunAkademik" CssClass="form-control" Width="120px" />
+                                    <label class="col-md-4 control-label">Default Tahun Akademik :</label>
+                                    <div class="col-md-8">                                
+                                        <com:TDropDownList ID="cmbDefaultTahunAkademik" CssClass="form-control"/>
                                         <com:TRequiredFieldValidator ID="FieldDefaultTahunAkademikValidator" ValidationGroup="settinggeneral" Display="Dynamic" ControlToValidate="cmbDefaultTahunAkademik" ErrorMessage="Pilih Tahun Akademik" CssClass="has-error help-block">	
                                             <prop:ClientSide.OnValidationError>
                                                 $('divDefaultTahunAkademik').addClassName('has-error');
@@ -49,9 +49,9 @@
                                     </div>
                                 </div>                                            
                                 <div class="form-group" id="divDefaultSemester">
-                                    <label class="col-lg-4 control-label">Default Semester :</label>
-                                    <div class="col-lg-5">                                
-                                        <com:TDropDownList ID="cmbDefaultSemester" CssClass="form-control" Width="120px" />
+                                    <label class="col-md-4 control-label">Default Semester :</label>
+                                    <div class="col-md-8">                                
+                                        <com:TDropDownList ID="cmbDefaultSemester" CssClass="form-control"/>
                                         <com:TRequiredFieldValidator ID="FieldDefaultSemesterValidator" ValidationGroup="settinggeneral" Display="Dynamic" ControlToValidate="cmbDefaultSemester" ErrorMessage="Pilih Tahun Akademik" CssClass="has-error help-block">	
                                             <prop:ClientSide.OnValidationError>
                                                 $('divDefaultSemester').addClassName('has-error');
@@ -62,14 +62,29 @@
                                             </prop:ClientSide.OnValidationSuccess>
                                         </com:TRequiredFieldValidator>     
                                     </div>
+                                </div>
+                                <div class="form-group" id="divDefaultProdi">
+                                    <label class="col-md-4 control-label">Default Prodi :</label>
+                                    <div class="col-md-8">                                
+                                        <com:TDropDownList ID="cmbDefaultProdi" CssClass="form-control"/>
+                                        <com:TRequiredFieldValidator ID="FieldDefaultProdiValidator" ValidationGroup="settinggeneral" Display="Dynamic" ControlToValidate="cmbDefaultProdi" ErrorMessage="Pilih Program Studi" CssClass="has-error help-block">  
+                                            <prop:ClientSide.OnValidationError>
+                                                $('divDefaultProdi').addClassName('has-error');
+                                                jQuery('#<%=$this->FieldDefaultProdiValidator->ClientID%>').removeAttr('style');
+                                            </prop:ClientSide.OnValidationError>
+                                            <prop:ClientSide.OnValidationSuccess>
+                                                $('divDefaultProdi').removeClassName('has-error');
+                                            </prop:ClientSide.OnValidationSuccess>
+                                        </com:TRequiredFieldValidator>       
+                                    </div>
                                 </div> 
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-md-6">
                             <div class="form-horizontal">
                                 <div class="form-group" id="divJumlahBarisRepeater">
-                                    <label class="col-lg-4 control-label">Jumlah Baris Repeater :</label>
-                                    <div class="col-lg-3">                                
+                                    <label class="col-md-4 control-label">Jumlah Baris Repeater :</label>
+                                    <div class="col-md-8">                                
                                         <com:TTextBox ID="txtJumlahBarisRepeater" CssClass="form-control" Attributes.OnKeyUp="formatangka(this,true)" />
                                         <com:TRequiredFieldValidator ID="FieldJumlahBarisRepeater" ValidationGroup="settinggeneral" Display="Dynamic" ControlToValidate="txtJumlahBarisRepeater" ErrorMessage="Isi Jumlah Baris Repeater" CssClass="has-error help-block">	
                                             <prop:ClientSide.OnValidationError>
@@ -83,8 +98,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group" id="divMinimalNilaiKelulusan">
-                                    <label class="col-lg-4 control-label">Minimal Nilai Kelulusan :</label>
-                                    <div class="col-lg-3">                                
+                                    <label class="col-md-4 control-label">Minimal Nilai Kelulusan :</label>
+                                    <div class="col-md-8">                                
                                         <com:TTextBox ID="txtMinimalNilaiKelulusan" CssClass="form-control" Attributes.OnKeyUp="formatangka(this,true)" />
                                         <com:TRequiredFieldValidator ID="FieldMinimalNilaiKelulusan" ValidationGroup="settinggeneral" Display="Dynamic" ControlToValidate="txtMinimalNilaiKelulusan" ErrorMessage="Isi Minimal Nilai Kelulusan" CssClass="has-error help-block">	
                                             <prop:ClientSide.OnValidationError>
@@ -98,8 +113,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group" id="divShowJSLogger">
-                                    <label class="col-lg-4 control-label">Tampilkan JS Logger :</label>
-                                    <div class="col-lg-3">                                
+                                    <label class="col-md-4 control-label">Tampilkan JS Logger :</label>
+                                    <div class="col-md-8">                                
                                         <com:TCheckBox ID="chklogger" />                                       
                                     </div>
                                 </div>
@@ -107,7 +122,7 @@
                         </div>                        
                     </div>                    
                     <div class="form-group">
-                        <div class="col-lg-offset-2 col-lg-10">
+                        <div class="col-md-offset-2 col-md-10">
                             <com:TActiveCustomButton ID="btnSaveSettingUmum" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="settinggeneral">
                                 <prop:Text><i class="fa fa-save"></i> Simpan</span></prop:Text>
                                 <prop:ClientSide.OnPreDispatch>                                                                   
@@ -129,7 +144,7 @@
         </div>    
     </div>
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-12">
             <div class="main-box">
                 <header class="main-box-header clearfix">
                     <h2 class="pull-left"><i class="fa fa-cogs"></i> Kartu Rencana Studi (KRS)</h2>                 
@@ -137,8 +152,8 @@
                 <div class="main-box-body clearfix">
                     <div class="form-horizontal">
                         <div class="form-group" id="divKRSJumlahSKSSetelahCuti">
-                            <label class="col-lg-2 control-label">Jumlah SKS Setelah Cuti :</label>
-                            <div class="col-lg-3">                                
+                            <label class="col-md-2 control-label">Jumlah SKS Setelah Cuti :</label>
+                            <div class="col-md-3">                                
                                 <com:TTextBox ID="txtKRSJumlahSKSSetelahCuti" CssClass="form-control" Text="0" Attributes.OnKeyUp="formatangka(this,true)" Width="75px" />
                                 <com:TRequiredFieldValidator ID="FieldKRSJumlahSKSSetelahCuti" ValidationGroup="settingkrs" Display="Dynamic" ControlToValidate="txtKRSJumlahSKSSetelahCuti" ErrorMessage="Isi Jumlah SKS KRS Setelah Cuti" CssClass="has-error help-block">	
                                     <prop:ClientSide.OnValidationError>
@@ -152,7 +167,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-10">
+                            <div class="col-md-offset-2 col-md-10">
                                 <com:TActiveCustomButton ID="btnSaveKRS" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="settingkrs">
                                     <prop:Text><i class="fa fa-save"></i> Simpan</span></prop:Text>
                                     <prop:ClientSide.OnPreDispatch>                                                                   
@@ -175,7 +190,7 @@
         </div>    
     </div>       
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-12">
             <div class="main-box">
                 <header class="main-box-header clearfix">
                     <h2 class="pull-left"><i class="fa fa-cogs"></i> Transkrip Nilai</h2>                 
@@ -183,8 +198,8 @@
                 <div class="main-box-body clearfix">
                     <div class="form-horizontal">
                         <div class="form-group" id="divTranskripNilaiNamaJabatan">
-                            <label class="col-lg-2 control-label">Nama Jabatan :</label>
-                            <div class="col-lg-3">                                
+                            <label class="col-md-2 control-label">Nama Jabatan :</label>
+                            <div class="col-md-3">                                
                                 <com:TTextBox ID="txtTranskripNilaiNamaJabatan" CssClass="form-control" />
                                 <com:TRequiredFieldValidator ID="FieldTranskripNilaiNamaJabatan" ValidationGroup="settingtranskripnilai" Display="Dynamic" ControlToValidate="txtTranskripNilaiNamaJabatan" ErrorMessage="Isi Nama Jabatan untuk Transkrip Nilai Asli dan Sementara" CssClass="has-error help-block">	
                                     <prop:ClientSide.OnValidationError>
@@ -198,8 +213,8 @@
                             </div>
                         </div>
                         <div class="form-group" id="divNamaPenandatangan">
-                            <label class="col-lg-2 control-label">Nama Penandatangan :</label>
-                            <div class="col-lg-4">                                
+                            <label class="col-md-2 control-label">Nama Penandatangan :</label>
+                            <div class="col-md-4">                                
                                 <com:TDropDownList ID="cmbNamaPenandatangan" CssClass="form-control" />
                                 <com:TRequiredFieldValidator ID="FieldTranskripNilaiNamaPenandatangan" ValidationGroup="settingtranskripnilai" Display="Dynamic" ControlToValidate="cmbNamaPenandatangan" ErrorMessage="Pilih Nama yang akan menandatangani Transkrip Nilai Asli atau Sementara" CssClass="has-error help-block">	
                                     <prop:ClientSide.OnValidationError>
@@ -213,7 +228,7 @@
                             </div>
                         </div>   
                         <div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-10">
+                            <div class="col-md-offset-2 col-md-10">
                                 <com:TActiveCustomButton ID="btnSaveTranskripNilai" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="settingtranskripnilai">
                                     <prop:Text><i class="fa fa-save"></i> Simpan</span></prop:Text>
                                     <prop:ClientSide.OnPreDispatch>                                                                   
@@ -236,7 +251,7 @@
         </div>    
     </div>   
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-12">
             <div class="main-box">
                 <header class="main-box-header clearfix">
                     <h2 class="pull-left"><i class="fa fa-cogs"></i> Kartu Hasil Studi (KHS)</h2>                 
@@ -244,8 +259,8 @@
                 <div class="main-box-body clearfix">
                     <div class="form-horizontal">
                         <div class="form-group" id="divKHSNamaJabatan">
-                            <label class="col-lg-2 control-label">Nama Jabatan :</label>
-                            <div class="col-lg-3">                                
+                            <label class="col-md-2 control-label">Nama Jabatan :</label>
+                            <div class="col-md-3">                                
                                 <com:TTextBox ID="txtKHSNamaJabatan" CssClass="form-control" />
                                 <com:TRequiredFieldValidator ID="FieldKHSNamaJabatan" ValidationGroup="settingkhs" Display="Dynamic" ControlToValidate="txtKHSNamaJabatan" ErrorMessage="Isi Nama Jabatan untuk KHS" CssClass="has-error help-block">	
                                     <prop:ClientSide.OnValidationError>
@@ -259,8 +274,8 @@
                             </div>
                         </div>
                         <div class="form-group" id="divNamaPenandatanganKHS">
-                            <label class="col-lg-2 control-label">Nama Penandatangan :</label>
-                            <div class="col-lg-4">                                
+                            <label class="col-md-2 control-label">Nama Penandatangan :</label>
+                            <div class="col-md-4">                                
                                 <com:TDropDownList ID="cmbNamaPenandatanganKHS" CssClass="form-control" />
                                 <com:TRequiredFieldValidator ID="FieldKHSNamaPenandatangan" ValidationGroup="settingkhs" Display="Dynamic" ControlToValidate="cmbNamaPenandatanganKHS" ErrorMessage="Pilih Nama yang akan menandatangani KHS" CssClass="has-error help-block">	
                                     <prop:ClientSide.OnValidationError>
@@ -274,7 +289,7 @@
                             </div>
                         </div>   
                         <div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-10">
+                            <div class="col-md-offset-2 col-md-10">
                                 <com:TActiveCustomButton ID="btnSaveKHS" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="settingkhs">
                                     <prop:Text><i class="fa fa-save"></i> Simpan</span></prop:Text>
                                     <prop:ClientSide.OnPreDispatch>                                                                   
@@ -297,7 +312,7 @@
         </div>    
     </div> 
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-12">
             <div class="main-box">
                 <header class="main-box-header clearfix">
                     <h2 class="pull-left"><i class="fa fa-cogs"></i> Daftar Peserta dan Nilai Akhir (DPNA)</h2>                 
@@ -305,8 +320,8 @@
                 <div class="main-box-body clearfix">
                     <div class="form-horizontal">
                         <div class="form-group" id="divDPNANamaJabatan">
-                            <label class="col-lg-2 control-label">Nama Jabatan :</label>
-                            <div class="col-lg-3">                                
+                            <label class="col-md-2 control-label">Nama Jabatan :</label>
+                            <div class="col-md-3">                                
                                 <com:TTextBox ID="txtDPNANamaJabatan" CssClass="form-control" />
                                 <com:TRequiredFieldValidator ID="FieldDPNANamaJabatan" ValidationGroup="settingdpna" Display="Dynamic" ControlToValidate="txtDPNANamaJabatan" ErrorMessage="Isi Nama Jabatan untuk DPNA" CssClass="has-error help-block">	
                                     <prop:ClientSide.OnValidationError>
@@ -320,8 +335,8 @@
                             </div>
                         </div>
                         <div class="form-group" id="divNamaPenandatanganDPNA">
-                            <label class="col-lg-2 control-label">Nama Penandatangan :</label>
-                            <div class="col-lg-4">                                
+                            <label class="col-md-2 control-label">Nama Penandatangan :</label>
+                            <div class="col-md-4">                                
                                 <com:TDropDownList ID="cmbNamaPenandatanganDPNA" CssClass="form-control" />
                                 <com:TRequiredFieldValidator ID="FieldDPNANamaPenandatangan" ValidationGroup="settingdpna" Display="Dynamic" ControlToValidate="cmbNamaPenandatanganDPNA" ErrorMessage="Pilih Nama yang akan menandatangani DPNA" CssClass="has-error help-block">	
                                     <prop:ClientSide.OnValidationError>
@@ -335,7 +350,7 @@
                             </div>
                         </div>   
                         <div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-10">
+                            <div class="col-md-offset-2 col-md-10">
                                 <com:TActiveCustomButton ID="btnSaveDPNA" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="settingdpna">
                                     <prop:Text><i class="fa fa-save"></i> Simpan</span></prop:Text>
                                     <prop:ClientSide.OnPreDispatch>                                                                   

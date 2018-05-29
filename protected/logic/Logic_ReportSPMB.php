@@ -17,7 +17,7 @@ class Logic_ReportSPMB extends Logic_Report {
         switch ($this->getDriver()) {
             case 'excel2003' :               
             case 'excel2007' :                
-//                $this->printOut("khs_$nim");
+
             break;
             case 'pdf' :                
                 $rpt=$this->rpt;
@@ -802,7 +802,38 @@ class Logic_ReportSPMB extends Logic_Report {
                 $row+=5;
                 $rpt->setXY(3,$row);
                 $rpt->Cell(50, 5, '4. Jika tidak datang pada waktu yang ditetapkan, peserta wajib melaporkan kepada pengawas ujian untuk mendapatkan jadwal ujian yang baru.');
+                              
+                $row+=5;
+                $rpt->setXY(3,$row);
+                $rpt->SetFont ('helvetica','B',6);
+                $rpt->Cell(65, 5, "PERLENGKAPAN YANG HARUS DIBAWA PADA SAAT UJIAN :",'B',0,'L');
+
+                $rpt->SetFont ('helvetica','',6);
+                $row+=5;
+                $rpt->setXY(3,$row);
+                $rpt->Cell(50, 5, '1. Kartu Tanda Peserta ini.');
+
+                $row+=5;
+                $rpt->setXY(3,$row);
+                $rpt->Cell(50, 5, '2. Bukti Pembayaran Formulir.');
                 
+                $row+=5;
+                $rpt->setXY(3,$row);
+                $rpt->Cell(50, 5, '3. Formulir Pendaftaran.');
+
+                $row+=5;
+                $rpt->setXY(3,$row);
+                $rpt->Cell(50, 5, '4. Fotocopy KTP dan KK @2 Lembar.');
+
+                $row+=5;
+                $rpt->setXY(3,$row);
+                $rpt->Cell(50, 5, '5. Fotocopy Ijazah dan SKHUN @3 Lembar di legalisir.');
+
+                $row+=5;
+                $rpt->setXY(3,$row);
+                $rpt->Cell(50, 5, '6. berkas dimasukan ke dalam map sesuai dengan jurusan yang dipilih. (IP MAP MERAH, AP MAP KUNING, SOS MAP HIJAU).');
+
+                //
                 $this->printOut("kartu_ujian_pmb");
             break;
         }

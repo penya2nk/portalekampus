@@ -135,8 +135,15 @@ class CNilaiUjianPMB extends MainPageM {
         $_SESSION['currentPageNilaiUjianPMB']['limit']=$limit;
         $this->DB->setFieldTable(array('no_formulir','nama_mhs','tgl_ujian','jumlah_soal','jawaban_benar','jawaban_salah','nilai','kjur1','kjur2','passing_grade_1','passing_grade_2','diterima_di_prodi'));				
 		$r = $this->DB->getRecord($str,$offset+1);
-        $result=array();
+        $result=array();        
+        
         while (list($k,$v)=each($r)) { 
+            $no_formulir=$v['no_formulir'];
+            $str = "SELECT nama_kegiatan FROM peserta_ujian_pmb pup,jadwal_ujian_pmb jup WHERE jup.idjadwal_ujian=pup.idjadwal_ujian AND pup.no_formulir=$no_formulir";
+            $this->DB->setFieldTable(array('nama_kegiatan'));
+            $jadwal_ujian=$this->DB->getRecord($str);
+            $v['nama_kegiatan']=isset($jadwal_ujian[1])?$jadwal_ujian[1]['nama_kegiatan']:'N.A';
+            
             if ($kjur=='none') {
                 $pil1='N.A';
                 $bool1=false;

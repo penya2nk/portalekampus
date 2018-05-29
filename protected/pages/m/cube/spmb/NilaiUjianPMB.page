@@ -373,7 +373,10 @@
                                             </prop:ClientSide.OnComplete>
                                         </com:TActiveLinkButton>
                                     </td>		
-                                </tr>                            
+                                </tr>   
+                                <tr>
+                                    <td colspan="10"><b>Periode Ujian</b>:<%#$this->Data['nama_kegiatan']%></td>
+                                </tr>                         
                             </prop:ItemTemplate>                        
                             <prop:FooterTemplate>
                                 <tbody>

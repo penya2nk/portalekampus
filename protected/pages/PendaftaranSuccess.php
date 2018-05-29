@@ -17,6 +17,7 @@ class PendaftaranSuccess extends MainPageF {
 		        if (!isset($r[1])) {
 		            throw new Exception("No. Registrasi ($no_registrasi) tidak terdaftar.");
 		        }
+		        $this->lblModulHeader->Text=$r[1]['ta'];
 		        $this->literalNoRegistrasi->Text=$no_registrasi;
 		    }catch (Exception $e){
 		        $this->idProcess='view';

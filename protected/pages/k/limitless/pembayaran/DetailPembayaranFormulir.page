@@ -96,7 +96,7 @@
         <div class="col-md-12">
             <div class="panel panel-flat">
                 <div class="panel-heading">
-                    <h5 class="panel-title"><i class="icon-calculator position-left"></i>  DAFTAR TRANSAKSI PEMBAYARAN FORMULIR T.A <%=$this->getDataMHS('nama_tahun_masuk')%></h5>                
+                    <h5 class="panel-title"><i class="icon-calculator position-left"></i>  DAFTAR TRANSAKSI PEMBAYARAN FORMULIR T.A <%=$this->DMaster->getNamaTA($_SESSION['currentPagePembayaranFormulir']['DataMHS']['tahun_masuk'])%></h5>                
                     <div class="heading-elements">
                         <div class="heading-btn">       
                             <com:TActiveLinkButton ID="btnAddTransaction" OnClick="addTransaction" ClientSide.PostState="false" CssClass="btn btn-info btn-icon" Attributes.Title="Tambah Transaksi">
@@ -123,7 +123,6 @@
                             <thead>
                             <tr class="bg-teal-700">
                                 <th scope="col">NO</th>
-								<th scope="col">NO. REGISTRASI</th>
                                 <th scope="col">NO. TRANSAKSI</th>						
                                 <th scope="col">NO. FAKTUR<br />BANK</th>
                                 <th scope="col">TANGGAL TRANSAKSI</th>			
@@ -137,7 +136,6 @@
                         <prop:ItemTemplate>
                             <tr>
                                 <td><%#$this->DataItem['no']%></td>
-								<td><%#$this->DataItem['no_pendaftaran']%></td>
                                 <td><%#$this->DataItem['no_transaksi']%></td>						
                                 <td><%#$this->DataItem['no_faktur']%></td>											
                                 <td><%=$this->Page->TGL->tanggal('l, j F Y',$this->DataItem['tanggal'])%></td>	

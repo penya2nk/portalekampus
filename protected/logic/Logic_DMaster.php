@@ -168,15 +168,6 @@ class Logic_DMaster extends Logic_Global {
         
         return $dataitem;        
     }       
-	 /**
-     * digunakan untuk mendapatkan nama ps
-     * @param type $kjur
-     * @return type
-     */
-    public function getNamaProgramStudiByID ($kjur,$mode=2) {
-		$daftar_prodi=$this->getListProgramStudi($mode);
-		return $daftar_prodi[$kjur];
-	}
     /**
      * digunakan untuk mendapatkan nama alias ps
      * @param type $kjur

@@ -5,14 +5,6 @@ class MainPageK extends MainPage {
      */
     public $showRekening=false;
     /**
-     * show menu SPMB [spmb]
-     */
-    public $showMenuSPMB=false;
-    /**
-     * show page Pendaftaran Online [spmb]
-     */
-    public $showPendaftaranOnline=false;
-    /**
      * show page PIN [spmb]
      */
     public $showPIN=false;

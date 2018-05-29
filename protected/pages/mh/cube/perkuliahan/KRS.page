@@ -134,7 +134,7 @@
                                             <td><%# $this->DataItem['semester']%></td>							
                                             <td><%# $this->DataItem['nama_dosen']%> [<%# $this->DataItem['nidn']%>]</td>	
                                             <td>
-                                                <com:TActiveDropDownList ID="cmbKelas" OnCallBack="page.prosesKelas" CssClass="form-control">
+                                                <com:TActiveDropDownList ID="cmbKelas" Text="<%# $this->Data['iddosen']%>" OnCallBack="page.prosesKelas" CssClass="form-control">
                                                     <prop:ClientSide.OnPreDispatch>
                                                         $('loading').show();                                             
                                                         $('<%=$this->cmbKelas->ClientId%>').disabled='disabled';						

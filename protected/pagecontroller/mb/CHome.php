@@ -5,7 +5,7 @@ class CHome extends MainPageMB {
 		parent::onLoad($param);		            
         $this->showDashboard=true;               
 		if (!$this->IsPostBack&&!$this->IsCallBack) {   
-			
+                               
 		}                
 	}
 }

@@ -11,19 +11,19 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label"><strong>KODE: </strong></label>
                                 <div class="col-md-8">
-                                    <p class="form-control-static"><%= $this->getInfoMatkul('kmatkul')%></p>
+                                    <p class="form-control-static"><%= $this->Demik->InfoMatkul['kmatkul']%></p>
                                 </div>                            
                             </div>
                             <div class="form-group">
                                 <label class="col-md-4 control-label"><strong>NAMA: </strong></label>
                                 <div class="col-md-8">
-                                    <p class="form-control-static"><%= $this->getInfoMatkul('nmatkul')%></p>
+                                    <p class="form-control-static"><%= $this->Demik->InfoMatkul['nmatkul']%></p>
                                 </div>                            
                             </div>
                             <div class="form-group">
                                 <label class="col-md-4 control-label"><strong>SKS: </strong></label>
                                 <div class="col-md-8">
-                                    <p class="form-control-static"><%= $this->getInfoMatkul('sks')%></p>
+                                    <p class="form-control-static"><%= $this->Demik->InfoMatkul['sks']%></p>
                                 </div>                            
                             </div>                            
                         </div>
@@ -33,19 +33,19 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label"><strong>SEMESTER: </strong></label>
                                 <div class="col-md-8">
-                                    <p class="form-control-static"><%= $this->getInfoMatkul('semester')%></p>
+                                    <p class="form-control-static"><%= $this->Demik->InfoMatkul['semester']%></p>
                                 </div>                            
                             </div>
                             <div class="form-group">
                                 <label class="col-md-4 control-label"><strong>DOSEN PENGAMPU UTAMA: </strong></label>
                                 <div class="col-md-8">
-                                    <p class="form-control-static"><%= $this->getInfoMatkul('nama_dosen')%> [<%= $this->getInfoMatkul('nidn')%>]</p>
+                                    <p class="form-control-static"><%= $this->Demik->InfoMatkul['nama_dosen']%> [<%= $this->Demik->InfoMatkul['nidn']%>]</p>
                                 </div>                            
                             </div>                            
                             <div class="form-group">
                                 <label class="col-md-4 control-label"><strong>JUMLAH PESERTA: </strong></label>
                                 <div class="col-md-8">
-                                    <p class="form-control-static"><%= $this->getInfoMatkul('jumlah_peserta')%></p>
+                                    <p class="form-control-static"><%= $this->Demik->InfoMatkul['jumlah_peserta']%></p>
                                 </div>                            
                             </div>
                         </div>

@@ -58,11 +58,6 @@ class Autorisasi extends TModule implements IUserManager {
                     $message="Mohon maaf status Anda diluar LULUS. Hubungi Bagian Administrasi.";		
                 }
             break;
-			case 'mb' :
-				$pass=hash('sha256', $result['salt'] . hash('sha256', $password));
-				$_SESSION['userpassword_mb']=$password;
-                $message="Gagal. Silahkan masukan username dan password dengan benar.";
-			break;
             case 'dw' :
             case 'd' :
             case 'k' :

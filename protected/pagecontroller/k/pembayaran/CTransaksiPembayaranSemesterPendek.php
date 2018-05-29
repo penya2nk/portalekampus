@@ -27,7 +27,7 @@ class CTransaksiPembayaranSemesterPendek Extends MainPageK {
             }      
 		}	
 	}
-    public function getDataMHS($idx) {			
+    public function getDataMHS($idx) {		        
         return $this->Finance->getDataMHS($idx);
     }
     public function populateData () {

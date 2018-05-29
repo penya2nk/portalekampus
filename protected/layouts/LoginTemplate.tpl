@@ -21,7 +21,7 @@
     <div id="bg-overlay" class="bg-img my-bg"></div>
     <div class="cls-header cls-header-lg">
         <div class="cls-brand">
-            <a class="box-inline" href="<%=$this->Page->constructUrl('Home')%>">                
+            <a class="box-inline" href="<%=$this->Page->constructUrl('Login')%>">                
                 <span class="brand-title">Portal E-Kampus<span class="text-thin"> <%=$this->Page->setup->getSettingValue('nama_pt_alias')%></span></span>
             </a>
         </div>

@@ -145,7 +145,7 @@
                                     <th scope="col">NAMA MHS</th>																		
                                     <th scope="col">DOSEN WALI</th>
                                     <th scope="col">TANGGAL <br/>DAFTAR ULANG</th>
-                                    <th scope="col">T.A dan SMT <br/>DAFTAR ULANG</th>									
+                                    <th scope="col">T.A dan SMT <br/>DAFTAR ULANG</th>
                                     <th scope="col" width="80">AKSI</th>					
                                 </tr>			
                                 </thead>

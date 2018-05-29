@@ -144,7 +144,6 @@ class Logic_Global extends TModule {
 	*/
 	public function removeIdFromArray ($arr=array(),$id) {
 		if (isset($arr[$id])) {
-			$arr2=array();
 			while (list($k,$v)=each($arr)) {
 				if ($k != $id) {
 					$arr2[$k]=$v;

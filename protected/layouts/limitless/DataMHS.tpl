@@ -7,7 +7,7 @@
                     <ul class="icons-list">
                         <li><a data-action="collapse"></a></li>   
                         <li>
-                            <com:TActiveLinkButton ID="btnCloseDetail" Attributes.data-action="closeredirect" OnCallback="Page.closeDetail" ClientSide.PostState="false" Attributes.Title="Keluar dari detail">
+                            <com:TActiveLinkButton ID="btnCloseDetail" Attributes.data-action="closeredirect" OnClick="Page.closeDetail" ClientSide.PostState="false" Attributes.Title="Keluar dari detail">
                                <prop:ClientSide.OnPreDispatch>
                                     $('<%=$this->btnCloseDetail->ClientId%>').disabled='disabled';
                                     Pace.stop();

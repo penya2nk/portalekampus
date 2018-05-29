@@ -17,8 +17,8 @@ class CDetailFormulir extends MainPageM {
     public function changeView ($sender,$param) {                
         try {
             $no_formulir=addslashes($this->request['id']);
-            $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.jk,fp.tempat_lahir,fp.tanggal_lahir,fp.alamat_rumah,fp.telp_hp,fp.kjur1,fp.kjur2,num.kjur,fp.ta AS tahun_masuk,fp.idkelas,ke.nkelas,pm.theme,fp.waktu_mendaftar FROM formulir_pendaftaran fp LEFT JOIN profiles_mahasiswa pm ON pm.no_formulir=fp.no_formulir LEFT JOIN kelas ke ON (fp.idkelas=ke.idkelas) LEFT JOIN nilai_ujian_masuk num ON (num.no_formulir=fp.no_formulir)  WHERE fp.no_formulir='$no_formulir'";
-            $this->DB->setFieldTable(array('no_formulir','nama_mhs','jk','tempat_lahir','tanggal_lahir','alamat_rumah','kjur1','kjur2','kjur','telp_hp','tahun_masuk','idkelas','nkelas','theme','waktu_mendaftar'));
+            $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.jk,fp.tempat_lahir,fp.tanggal_lahir,fp.alamat_rumah,fp.telp_hp,fp.kjur1,fp.kjur2,fp.ta AS tahun_masuk,fp.idkelas,ke.nkelas,pm.theme,fp.waktu_mendaftar FROM formulir_pendaftaran fp LEFT JOIN profiles_mahasiswa pm ON pm.no_formulir=fp.no_formulir LEFT JOIN kelas ke ON (fp.idkelas=ke.idkelas)  WHERE fp.no_formulir='$no_formulir'";
+            $this->DB->setFieldTable(array('no_formulir','nama_mhs','jk','tempat_lahir','tanggal_lahir','alamat_rumah','kjur1','kjur2','telp_hp','tahun_masuk','idkelas','nkelas','theme','waktu_mendaftar'));
             $r=$this->DB->getRecord($str);	           
             if (!isset($r[1])) {
                 unset($_SESSION['currentPageDetailFormulir']);
@@ -26,12 +26,10 @@ class CDetailFormulir extends MainPageM {
             }
             $datamhs=$r[1];
             $datamhs['nama_ps1']=$_SESSION['daftar_jurusan'][$datamhs['kjur1']];
-            $datamhs['nama_ps2']=$datamhs['kjur2'] > 0 ?$_SESSION['daftar_jurusan'][$datamhs['kjur2']]:'N.A';
-            $kjur1=$datamhs['kjur1'];
-            $kjur2=$datamhs['kjur2'];
-            $datamhs['diterima_ps1']=($kjur1 > 0 && $datamhs['kjur'] == $kjur1)?'<span class="label label-success">DI TERIMA</span>':'';
-            $datamhs['diterima_ps2']=($kjur2 > 0 && $datamhs['kjur'] == $kjur2)?'<span class="label label-success">DI TERIMA</span>':'';
-            $datamhs['waktu_mendaftar']=$this->TGL->tanggal('d F Y H:m:s',$datamhs['waktu_mendaftar']);
+            $datamhs['nama_ps2']=$_SESSION['daftar_jurusan'][$datamhs['kjur2']];
+            $datamhs['diterima_ps1']='';
+            $datamhs['diterima_ps2']='';
+            $datamhs['waktu_mendaftar']=$this->TGL->tanggal('d F Y',$datamhs['waktu_mendaftar']);
             //theme
             $this->cmbTheme->DataSource=$this->setup->getListThemes();
             $this->cmbTheme->Text=$datamhs['theme'];
@@ -150,14 +148,6 @@ class CDetailFormulir extends MainPageM {
                 $this->DB->insertRecord($str);
                 //profiles mahasiswa
                 $str = "INSERT INTO profiles_mahasiswa (idprofile,no_formulir,email,nim,userpassword,theme,photo_profile)SELECT NULL,$no_formulir,email,nim,userpassword,theme,photo_profile FROM profiles_mahasiswa WHERE no_formulir=$old_no_formulir";
-                $this->DB->insertRecord($str);
-
-                $waktu_mendaftar="$tahun_masuk-08-05 ".date("H:m:s");          
-                $no_pendaftaran=$tahun_masuk.mt_rand(1000,9999).$semester_masuk;
-                $data=$this->Pengguna->createHashPassword($no_pendaftaran);
-                $salt=$data['salt'];
-                $password=$data['password'];       
-                $str  = "INSERT INTO formulir_pendaftaran_temp (no_pendaftaran,nama_mhs,tempat_lahir,tanggal_lahir,jk,email,telp_hp,kjur1,kjur2,idkelas,ta,idsmt,salt,userpassword,waktu_mendaftar) SELECT $no_pendaftaran,nama_mhs,tempat_lahir,tanggal_lahir,jk,email,telp_hp,kjur1,kjur2,'$idkelas','$tahun_masuk','$semester_masuk','$salt','$password','$waktu_mendaftar' FROM formulir_pendaftaran fp,profiles_mahasiswa pm WHERE fp.no_formulir=pm.no_formulir AND fp.no_formulir=$old_no_formulir";
                 $this->DB->insertRecord($str);
                 
                 $this->DB->query('COMMIT');

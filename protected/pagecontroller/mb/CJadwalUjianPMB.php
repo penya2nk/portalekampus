@@ -11,7 +11,7 @@ class CJadwalUjianPMB extends MainPageMB {
 			}
             $this->lblModulHeader->Text=$this->getInfoToolbar();
             try {
-                $no_formulir=$this->Pengguna->getDataUser('no_formulir');
+                $no_formulir=$this->Pengguna->getDataUser('username');
                 $this->Demik->setDataMHS(array('no_formulir'=>$no_formulir));
                 if (!$this->Demik->isNoFormulirExist()) {
                     throw new Exception ('Untuk mengikuti ujian silahkan isi formulir terlebih dahulu');

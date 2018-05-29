@@ -122,7 +122,7 @@ class CDulangMHSNonAktifMassal Extends MainPageM {
         }else{
             $str = "SELECT vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.tahun_masuk,vdm.k_status,vdm.idkelas,vdm.iddosen_wali FROM v_datamhs vdm WHERE vdm.nim NOT IN (SELECT nim FROM dulang WHERE idsmt=$idsmt AND tahun=$ta) AND vdm.kjur=$kjur AND vdm.k_status != 'K' AND vdm.k_status!='L' AND vdm.k_status!='D' AND vdm.tahun_masuk=$tahun_masuk";
         }			        
-		$this->DB->setFieldTable(array('no_formulir','nim','nirm','nama_mhs','tahun_masuk','k_status','idkelas','iddosen_wali','idkelas'));
+		$this->DB->setFieldTable(array('iddulang','no_formulir','nim','nirm','nama_mhs','tahun_masuk','k_status','idkelas','iddosen_wali'));
 		$result=$this->DB->getRecord("$str ORDER BY vdm.nama_mhs ASC LIMIT 10");
 		$this->RepeaterS->DataSource=$result;
 		$this->RepeaterS->dataBind();

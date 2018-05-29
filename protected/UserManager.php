@@ -72,14 +72,17 @@ class UserManager extends TAuthManager {
                 $this->db->updateRecord("UPDATE user SET logintime=NOW() WHERE userid=$userid");
 			break;            
 			case 'Mahasiswa' :	                
-                $str = "SELECT vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.tempat_lahir,vdm.tanggal_lahir,vdm.jk,vdm.alamat_rumah,vdm.email,vdm.kjur,vdm.idkonsentrasi,k.nama_konsentrasi,vdm.iddosen_wali,vdm.tahun_masuk,vdm.semester_masuk,vdm.nama_ps,vdm.k_status AS k_status,sm.n_status AS status,vdm.idkelas,ke.nkelas,perpanjang,theme,photo_profile FROM v_datamhs vdm LEFT JOIN status_mhs sm ON (vdm.k_status=sm.k_status) LEFT JOIN konsentrasi k ON (vdm.idkonsentrasi=k.idkonsentrasi) LEFT JOIN kelas ke ON (ke.idkelas=vdm.idkelas) WHERE nim='$username'";
-                $this->db->setFieldTable(array('no_formulir','nim','nirm','nama_mhs','tempat_lahir','tanggal_lahir','jk','alamat_rumah','email','kjur','idkonsentrasi','nama_konsentrasi','iddosen_wali','tahun_masuk','semester_masuk','nama_ps','k_status','status','idkelas','nkelas','perpanjang','theme','photo_profile'));
+                $str = "SELECT vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.tempat_lahir,vdm.tanggal_lahir,vdm.jk,vdm.alamat_rumah,vdm.email,vdm.kjur,vdm.idkonsentrasi,k.nama_konsentrasi,vdm.iddosen_wali,vdm.tahun_masuk,vdm.semester_masuk,vdm.nama_ps,vdm.k_status AS k_status,sm.n_status AS status,perpanjang,theme,photo_profile FROM v_datamhs vdm LEFT JOIN status_mhs sm ON (vdm.k_status=sm.k_status) LEFT JOIN konsentrasi k ON (vdm.idkonsentrasi=k.idkonsentrasi) WHERE nim='$username'";
+                $this->db->setFieldTable(array('no_formulir','nim','nirm','nama_mhs','tempat_lahir','tanggal_lahir','jk','alamat_rumah','email','kjur','idkonsentrasi','nama_konsentrasi','iddosen_wali','tahun_masuk','semester_masuk','nama_ps','k_status','status','perpanjang','theme','photo_profile'));
                 $r=$this->db->getRecord($str);					
                 if (isset($r[1])) {
                     $dataMhs=$r[1];	
                     $logic=$this->Application->getModule('logic');
                     $mhs=$logic->getInstanceOfClass('Mahasiswa');							
-                    $mhs->setDataMHS (array('nim'=>$username));									                    
+                    $mhs->setDataMHS (array('nim'=>$username));										
+                    $kelas=$mhs->getKelasMhs();																	
+                    $dataMhs['idkelas']=($kelas['idkelas']=='')?null:$kelas['idkelas'];
+                    $dataMhs['nkelas']=($kelas['nkelas']=='')?'Belum ada':$kelas['nkelas'];			                    
                     $dataMhs['nama_konsentrasi']=($dataMhs['idkonsentrasi']==0) ? '-':$dataMhs['nama_konsentrasi'];
                     $dataMhs['iddata_konversi']=$mhs->isMhsPindahan($username,true);
                     
@@ -91,18 +94,6 @@ class UserManager extends TAuthManager {
                 $this->dataUser['data_user']['userid']=$username;
 				$this->dataUser['data_user']['username']=$username;
 				$this->dataUser['data_user']['page']='mh';						
-			break;
-			case 'MahasiswaBaru' :				
-                $this->db->setFieldTable(array('no_pendaftaran','no_formulir','nama_mhs','tempat_lahir','tanggal_lahir','jk','email','telp_hp','kjur1','kjur2','idkelas','tahun_masuk','semester_masuk'));
-                $str = "SELECT no_pendaftaran,no_formulir,nama_mhs,tempat_lahir,tanggal_lahir,jk,email,telp_hp,kjur1,kjur2,idkelas,ta AS tahun_masuk,idsmt AS semester_masuk FROM formulir_pendaftaran_temp WHERE no_pendaftaran='$username' AND no_formulir > 0";						
-                $r=$this->db->getRecord($str);
-                
-				$r[1]['theme']='cube';
-				$r[1]['photo_profile']='resources/photomhs/no_photo.png';
-			
-				$this->dataUser['data_user']=$r[1];
-				$this->dataUser['data_user']['username']=$username;
-				$this->dataUser['data_user']['page']='mb';
 			break;
             case 'Alumni' :	                
                 $str = "SELECT vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.tempat_lahir,vdm.tanggal_lahir,vdm.jk,vdm.alamat_rumah,vdm.email,vdm.kjur,vdm.idkonsentrasi,k.nama_konsentrasi,vdm.iddosen_wali,vdm.tahun_masuk,vdm.semester_masuk,vdm.nama_ps,vdm.k_status AS k_status,sm.n_status AS status,perpanjang,theme,photo_profile FROM v_datamhs vdm LEFT JOIN status_mhs sm ON (vdm.k_status=sm.k_status) LEFT JOIN konsentrasi k ON (vdm.idkonsentrasi=k.idkonsentrasi) WHERE nim='$username'";
@@ -148,7 +139,22 @@ class UserManager extends TAuthManager {
 				$this->dataUser['data_user']['username']=$username;
 				$this->dataUser['data_user']['page']='dw';		
                 $this->db->updateRecord("UPDATE user SET logintime=NOW() WHERE username='$username'");
-			break;			
+			break;
+			case 'MahasiswaBaru' :				
+                $str = "SELECT pm.no_formulir,fp.ta AS tahun_masuk,fp.idsmt AS semester_masuk,pm.theme,pm.photo_profile FROM formulir_pendaftaran fp,profiles_mahasiswa pm WHERE pm.no_formulir=fp.no_formulir AND fp.no_formulir='$username'";						
+                $this->db->setFieldTable(array('no_formulir','tahun_masuk','semester_masuk','theme','photo_profile'));
+                $r=$this->db->getRecord($str);
+                if (!isset($r[1])) {
+                    $str = "SELECT pin.no_formulir,pin.tahun_masuk,pin.semester_masuk,pin.no_pin,pin.idkelas FROM transaksi t JOIN pin ON (t.no_formulir=pin.no_formulir) JOIN transaksi_detail td ON (t.no_transaksi=td.no_transaksi) WHERE pin.no_formulir=t.no_formulir AND td.idkombi=1 AND pin.no_formulir='$username'";						
+                    $this->db->setFieldTable(array('no_formulir','tahun_masuk','semester_masuk','no_pin','idkelas'));
+                    $r=$this->db->getRecord($str);
+                    $r[1]['theme']='cube';
+                    $r[1]['photo_profile']='resources/photomhs/no_photo.png';
+                }
+				$this->dataUser['data_user']=$r[1];
+				$this->dataUser['data_user']['username']=$username;
+				$this->dataUser['data_user']['page']='mb';
+			break;
 			case 'OrangtuaWali' :				
 				$str="SELECT idprofile AS userid,nim,email,theme FROM profiles_ortu WHERE username='$username'";
 				$this->db->setFieldTable (array('userid','nim','email'));					
@@ -235,16 +241,24 @@ class UserManager extends TAuthManager {
                 }                
 			break;			
 			case 'MahasiswaBaru' :
-				$str = "SELECT no_formulir AS username,userpassword,salt FROM formulir_pendaftaran_temp WHERE no_pendaftaran='$username' AND no_formulir > 0";
-                $this->db->setFieldTable (array('username','userpassword','salt'));							
-                $result = $this->db->getRecord($str);
-				if (isset($result[1])) {
-					 $data_user=$result[1];
-					 $data_user['page']='mb';
-					 $data_user['active']=1;
-				}else{
-					$data_user=array('page'=>'','userpassword'=>'','active'=>0);
-				}               		
+				$this->db->setFieldTable (array('username','userpassword'));					
+                $str = "SELECT no_formulir AS username,no_formulir AS userpassword FROM profiles_mahasiswa WHERE no_formulir='$username'";
+                $result = $this->db->getRecord($str);	
+                if (isset($result[1])) {
+                    $data_user=$result[1];
+                    $data_user['userpassword']=md5($result[1]['userpassword']);
+                    $data_user['active']=$result[1]['nim']==''?1:0;
+                    $data_user['page']='mb';
+                }else{
+                    $str = "SELECT pin.no_formulir AS username,pin.no_formulir AS userpassword FROM transaksi t JOIN pin ON (t.no_formulir=pin.no_formulir) JOIN transaksi_detail td ON (t.no_transaksi=td.no_transaksi) WHERE pin.no_formulir=t.no_formulir AND td.idkombi=1 AND pin.no_formulir='$username'";
+                    $result = $this->db->getRecord($str);
+                    if (isset($result[1])) {
+                        $data_user=$result[1];
+                        $data_user['userpassword']=md5($result[1]['userpassword']);
+                        $data_user['active']=1;
+                        $data_user['page']='mb';
+                    }                   
+                }				
 			break;
             case 'Alumni' :
 				$nim=$this->username;

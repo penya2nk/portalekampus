@@ -38,7 +38,7 @@ class MainPageDW extends MainPage {
     public $showTranskripFinal=false;
     /**
      * ID Dosen Wali
-     * @var integer
+     * @var type integer
      */
     public $iddosen_wali;
 	public function onLoad ($param) {		

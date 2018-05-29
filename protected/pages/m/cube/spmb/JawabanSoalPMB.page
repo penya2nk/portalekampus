@@ -27,7 +27,7 @@
     </div>
 </com:TPanel>
 <com:TPanel Visible="<%= $this->getDefaultProcess()%>">
-    <%include Application.layouts.cube.DataMHSBaru%>
+    <%include Application.layouts.cube.DataMHS%>
     <div class="row">            
         <div class="col-lg-12">
             <div class="main-box clearfix">

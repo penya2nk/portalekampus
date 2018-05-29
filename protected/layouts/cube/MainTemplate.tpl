@@ -395,12 +395,6 @@
                                                 <span>PIN</span>                                                
                                             </a>
                                         </li>
-                                        <li<%=$this->Page->showPendaftaranOnline==true ? ' class="active" ':''%>>                                            
-                                            <a href="<%=$this->Page->constructUrl('spmb.PendaftaranOnline',true)%>">
-                                                <i class="fa fa-globe"></i>
-                                                <span>Pendaftaran Online</span>                                                
-                                            </a>
-                                        </li>
                                         <li<%=$this->Page->showFormulirPendaftaran==true ? ' class="active" ':''%>>                                            
                                             <a href="<%=$this->Page->constructUrl('spmb.FormulirPendaftaran',true)%>">
                                                 <i class="fa fa-sign-in"></i>

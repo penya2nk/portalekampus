@@ -21,7 +21,7 @@ class CFormulirPendaftaran extends MainPageMB {
                 if ($reguler <= 0 || $karyawan <= 0 || $ekstensi <= 0){                    
                     throw new Exception ("Biaya Pendaftaran kelas Reguler, Karyawan, Ekstensi belum di set oleh Manajemen");
                 }
-                $this->Finance->setDataMHS(array('no_formulir'=>$this->Pengguna->getDataUser('no_formulir')));
+                $this->Finance->setDataMHS(array('no_formulir'=>$this->Pengguna->getDataUser('username')));
                 if ($this->Finance->isMhsRegistered(true)) {
                     throw new Exception ("Anda sudah ter-register sebagai mahasiswa,maka dari itu tidak bisa mengisi atau mengubah formulir lagi");
                 }elseif ($this->Finance->isNoFormulirExist()) {	
@@ -132,25 +132,8 @@ class CFormulirPendaftaran extends MainPageMB {
     }
     private function addProcess() {     
         $this->idProcess='add';        
-		$no_formulir= $this->Pengguna->getDataUser('no_formulir');
-		$str ="SELECT nama_mhs,tempat_lahir,tanggal_lahir,jk,email,telp_hp,kjur1,kjur2,idkelas FROM formulir_pendaftaran_temp WHERE no_formulir=$no_formulir";
-		$this->DB->setFieldTable(array('nama_mhs','tempat_lahir','tanggal_lahir','jk','email','telp_hp','kjur1','kjur2','idkelas'));
-        $r=$this->DB->getRecord($str);
-		
-		$this->txtAddNoFormulir->Text=$no_formulir;		
-		
-		$this->txtAddNamaMhs->Text=$r[1]['nama_mhs'];			
-		$this->txtAddTempatLahir->Text=$r[1]['tempat_lahir'];						
-		$this->txtAddTanggalLahir->Text=$this->TGL->tanggal('d-m-Y',$r[1]['tanggal_lahir'],'entoid');
-		 if ($r[1]['jk']=='L')
-            $this->rdAddPria->Checked=true;
-        else
-            $this->rdAddWanita->Checked=true;
-		
-		$this->txtAddNoTelpHP->Text=$r[1]['telp_hp'];
-		$this->txtAddEmail->Text=$r[1]['email'];  
-        $this->hiddenemail->Value=$r[1]['email'];
-		
+        $this->txtAddNoFormulir->Text = $this->Pengguna->getDataUser('no_formulir');		
+
         $this->cmbAddAgama->DataSource=$this->DMaster->getListAgama();        
         $this->cmbAddAgama->dataBind();		
 
@@ -158,21 +141,14 @@ class CFormulirPendaftaran extends MainPageMB {
         $this->cmbAddPekerjaanOrtu->dataBind();		
         
         $this->cmbAddKelas->DataSource=$this->DMaster->getListKelas();
-        $this->cmbAddKelas->Text=$r[1]['idkelas'];
+        $this->cmbAddKelas->Text=$this->Pengguna->getDataUser('idkelas');
         $this->cmbAddKelas->Enabled=false;
         $this->cmbAddKelas->dataBind();
         
-        $this->cmbAddKjur1->DataSource=$_SESSION['daftar_jurusan'];    
-		$this->cmbAddKjur1->Text=$r[1]['kjur1'];
+        $this->cmbAddKjur1->DataSource=$_SESSION['daftar_jurusan'];            
         $this->cmbAddKjur1->dataBind();
-		if ($r[1]['kjur2'] >0) {
-			$jurusan=$this->DMaster->removeKjur($_SESSION['daftar_jurusan'],$r[1]['kjur2']);			
-			$this->cmbAddKjur2->DataSource=$jurusan;    
-			$this->cmbAddKjur2->Text=$r[1]['kjur2'];
-			$this->cmbAddKjur2->dataBind();
-		}else{
-			$this->cmbAddKjur2->Enabled=false;
-		}
+        $this->cmbAddKjur2->Enabled=false;
+        
         $this->imgEditFoto->ImageUrl=$this->Pengguna->getDataUser('photo_profile');
     }
 	public function changePs($sender,$param) {
@@ -267,12 +243,8 @@ class CFormulirPendaftaran extends MainPageMB {
 			$str ="INSERT INTO formulir_pendaftaran (no_formulir,nama_mhs,tempat_lahir,tanggal_lahir,jk,idagama,nama_ibu_kandung,idwarga,nik,idstatus,alamat_kantor,alamat_rumah,kelurahan,kecamatan,telp_kantor,telp_rumah,telp_hp,idjp,pendidikan_terakhir,jurusan,kota,provinsi,tahun_pa,jenis_slta,asal_slta,status_slta,nomor_ijazah,kjur1,kjur2,waktu_mendaftar,ta,idsmt,idkelas,daftar_via) VALUES ('$no_formulir','$nama_mhs','$tempat_lahir','$tgl_lahir','$jk',$idagama,'$nama_ibu_kandung','$idwarga','$no_ktp','$idstatus','$alamat_kantor','$alamat_rumah','$kelurahan','$kecamatan','$telp_kantor','$telp_rumah','$telp_hp',$idjp,'$pendidikan_terakhir','$jurusan','$kota','$provinsi','$tahun_pa','$jenisslta','$asal_slta','$statusslta','$nomor_ijazah','$kjur1','$kjur2','$waktu_mendaftar',$ta,$idsmt,'$idkelas','WEB')";		
             $this->DB->query('BEGIN');
 			if ($this->DB->insertRecord($str)) {
-				
-				$str  = "UPDATE formulir_pendaftaran_temp SET nama_mhs='$nama_mhs',tempat_lahir='$tempat_lahir',tanggal_lahir='$tgl_lahir',jk='$jk',email='$email',telp_hp='$telp_hp',kjur1='$kjur1',kjur2='$kjur2',idkelas='$idkelas' WHERE no_formulir=$no_formulir";
-				$this->DB->updateRecord($str);
-				
                 $photo_profile=$this->hiddenAddFoto->Value;
-                $userpassword=md5($_SESSION['userpassword_mb']);
+                $userpassword=md5($this->Pengguna->getDataUser('no_pin'));
                 $str = "INSERT INTO profiles_mahasiswa (idprofile,no_formulir,email,userpassword,theme,photo_profile) VALUES (NULL,$no_formulir,'$email','$userpassword','cube','$photo_profile')";
                 $this->DB->insertRecord($str);
                 $ket="Input Via WEB";
@@ -330,12 +302,8 @@ class CFormulirPendaftaran extends MainPageMB {
             $str ="UPDATE formulir_pendaftaran SET nama_mhs='$nama_mhs',tempat_lahir='$tempat_lahir',tanggal_lahir='$tgl_lahir',jk='$jk',idagama=$idagama,nama_ibu_kandung='$nama_ibu_kandung',idwarga='$idwarga',nik='$no_ktp',idstatus='$idstatus',alamat_kantor='$alamat_kantor',alamat_rumah='$alamat_rumah',kelurahan='$kelurahan',kecamatan='$kecamatan',telp_kantor='$telp_kantor',telp_rumah='$telp_rumah',telp_hp='$telp_hp',idjp=$idjp,pendidikan_terakhir='$pendidikan_terakhir',jurusan='$jurusan',kota='$kota',provinsi='$provinsi',tahun_pa='$tahun_pa',jenis_slta='$jenisslta',asal_slta='$asal_slta',status_slta='$statusslta',nomor_ijazah='$nomor_ijazah',kjur1='$kjur1',kjur2='$kjur2',waktu_mendaftar='$waktu_mendaftar',ta=$ta,idsmt=$idsmt,idkelas='$idkelas',daftar_via='WEB' WHERE no_formulir='$no_formulir'";
             $this->DB->query('BEGIN');
 			if ($this->DB->updateRecord($str)) {
-				$str  = "UPDATE formulir_pendaftaran_temp SET nama_mhs='$nama_mhs',tempat_lahir='$tempat_lahir',tanggal_lahir='$tgl_lahir',jk='$jk',email='$email',telp_hp='$telp_hp',kjur1='$kjur1',kjur2='$kjur2',idkelas='$idkelas' WHERE no_formulir=$no_formulir";
-				$this->DB->updateRecord($str);
-				
-                $email=$this->txtEditEmail->Text; 
-				$userpassword=md5($_SESSION['userpassword_mb']);				
-                $str = "UPDATE profiles_mahasiswa SET userpassword='$userpassword',email='$email',photo_profile='$photo_profile' WHERE no_formulir=$no_formulir";
+                $email=$this->txtEditEmail->Text;                
+                $str = "UPDATE profiles_mahasiswa SET email='$email',photo_profile='$photo_profile' WHERE no_formulir=$no_formulir";
                 $this->DB->updateRecord($str);
                 $_SESSION['foto']=$photo_profile;
                 $this->DB->query('COMMIT');

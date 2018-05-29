@@ -12,7 +12,7 @@ class CVariables extends MainPageSA {
 		}
 	}    
     public function populateData () { 
-        $ta=$this->DMaster->getListTA();  
+        $ta=$this->DMaster->removeIdFromArray($this->DMaster->getListTA(),'none');  
         $this->cmbDefaultTahunPendaftaran->DataSource=$ta;        
         $this->cmbDefaultTahunPendaftaran->Text=$this->setup->getSettingValue('default_tahun_pendaftaran');
         $this->cmbDefaultTahunPendaftaran->dataBind();
@@ -21,16 +21,11 @@ class CVariables extends MainPageSA {
         $this->cmbDefaultTahunAkademik->Text=$this->setup->getSettingValue('default_ta');
         $this->cmbDefaultTahunAkademik->dataBind();
         
-        $semester=$this->setup->getSemester();        
+        $semester=$this->DMaster->removeIdFromArray($this->setup->getSemester(),'none');        
         $this->cmbDefaultSemester->DataSource=$semester;        
         $this->cmbDefaultSemester->Text=$this->setup->getSettingValue('default_semester');
         $this->cmbDefaultSemester->dataBind();
-                
-        $daftar_prodi=$this->DMaster->getListProgramStudi(2);        
-        $this->cmbDefaultProdi->DataSource=$daftar_prodi;        
-        $this->cmbDefaultProdi->Text=$this->setup->getSettingValue('default_kjur');
-        $this->cmbDefaultProdi->dataBind();
-
+        
         $this->txtJumlahBarisRepeater->Text=$this->setup->getSettingValue('default_pagesize');
         $this->txtMinimalNilaiKelulusan->Text=$this->setup->getSettingValue('minimal_nilai_kelulusan');
         
@@ -70,10 +65,6 @@ class CVariables extends MainPageSA {
 
                     $semester= $this->cmbDefaultSemester->Text;
                     $str = "UPDATE setting SET value='$semester' WHERE setting_id=2";            
-                    $this->DB->updateRecord($str);
-
-                    $kjur= $this->cmbDefaultProdi->Text;
-                    $str = "UPDATE setting SET value='$semester' WHERE setting_id=6";            
                     $this->DB->updateRecord($str);
                     
                     $jumlah_baris= $this->txtJumlahBarisRepeater->Text;

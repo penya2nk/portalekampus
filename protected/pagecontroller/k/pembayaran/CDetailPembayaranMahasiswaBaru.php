@@ -14,8 +14,8 @@ class CDetailPembayaranMahasiswaBaru Extends MainPageK {
 			}        
             try {
                 $no_formulir=addslashes($this->request['id']);
-                $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.tempat_lahir,fp.tanggal_lahir,fp.jk,fp.alamat_rumah,fp.telp_rumah,fp.telp_kantor,fp.telp_hp,pm.email,fp.kjur1,fp.kjur2,idkelas,fp.ta AS tahun_masuk,fp.idsmt AS semester_masuk,pm.photo_profile FROM formulir_pendaftaran fp,profiles_mahasiswa pm WHERE fp.no_formulir=pm.no_formulir AND fp.no_formulir='$no_formulir'";
-                $this->DB->setFieldTable(array('no_formulir','nama_mhs','tempat_lahir','tanggal_lahir','jk','alamat_rumah','telp_rumah','telp_kantor','telp_hp','email','kjur1','kjur2','idkelas','tahun_masuk','semester_masuk','photo_profile'));
+                $str = "SELECT fp.no_formulir,fp.nama_mhs,fp.tempat_lahir,fp.tanggal_lahir,fp.jk,fp.alamat_rumah,fp.telp_rumah,fp.telp_kantor,fp.telp_hp,pm.email,fp.kjur1,fp.kjur2,idkelas,fp.ta AS tahun_masuk,fp.idsmt AS semester_masuk FROM formulir_pendaftaran fp,profiles_mahasiswa pm WHERE fp.no_formulir=pm.no_formulir AND fp.no_formulir='$no_formulir'";
+                $this->DB->setFieldTable(array('no_formulir','nama_mhs','tempat_lahir','tanggal_lahir','jk','alamat_rumah','telp_rumah','telp_kantor','telp_hp','email','kjur1','kjur2','idkelas','tahun_masuk','semester_masuk'));
                 $r=$this->DB->getRecord($str);
                 if (!isset($r[1])) {                                
                     throw new Exception ("Calon Mahasiswa dengan Nomor Formulir ($no_formulir) tidak terdaftar di Database, silahkan ganti dengan yang lain.");		
@@ -27,20 +27,15 @@ class CDetailPembayaranMahasiswaBaru Extends MainPageK {
                     throw new Exception ("Calon Mahasiswa dengan Nomor Formulir ($no_formulir) tidak lulus dalam SPMB.");		
                 }
                 $datamhs['nama_ps1']=$_SESSION['daftar_jurusan'][$datamhs['kjur1']];
-                $datamhs['nama_ps2']=$datamhs['kjur2'] == '' || $datamhs['kjur2'] == 0 ?'N.A' : $_SESSION['daftar_jurusan'][$datamhs['kjur2']];
-                if ($spmb['kjur']==$datamhs['kjur1']) {
+                $datamhs['nama_ps2']=$datamhs['kjur2'] == '' ?'N.A' : $_SESSION['daftar_jurusan'][$datamhs['kjur2']];
+                if ($spmb['kjur']==$datamhs['kjur1'])
                     $datamhs['diterima_ps1']='<span class="label label-flat border-info text-info-600">DITERIMA</span>';
-                    $datamhs['diterima_ps2']='<span class="label label-flat border-info text-warning-600">TIDAK DITERIMA</span>';
-                }else{
+                else
                     $datamhs['diterima_ps2']='<span class="label label-flat border-info text-info-600">DITERIMA</span>';
-                    $datamhs['diterima_ps1']='<span class="label label-flat border-info text-warning-600">TIDAK DITERIMA</span>';
-                }
-
                 $datamhs['kjur']=$spmb['kjur'];
                 $datamhs['nkelas']=$this->DMaster->getNamaKelasByID($datamhs['idkelas']);
-                $datamhs['perpanjang']=false;
                 $this->Finance->setDataMHS($datamhs);                
-                $datamhs['no_transaksi']=isset($_SESSION['currentPagePembayaranMahasiswaBaru']['DataMHS']['no_transaksi']) ? $_SESSION['currentPagePembayaranMahasiswaBaru']['DataMHS']['no_transaksi'] : 'none';                
+                $datamhs['no_transaksi']=isset($_SESSION['currentPagePembayaranMahasiswaBaru']['DataMHS']['no_transaksi']) ? $_SESSION['currentPagePembayaranMahasiswaBaru']['DataMHS']['no_transaksi'] : 'none';
                 $_SESSION['currentPagePembayaranMahasiswaBaru']['DataMHS']=$datamhs;                
                 CDetailPembayaranMahasiswaBaru::$KewajibanMahasiswa=$this->Finance->getTotalBiayaMhsPeriodePembayaran ();
                 $this->populateTransaksi();
@@ -90,11 +85,7 @@ class CDetailPembayaranMahasiswaBaru Extends MainPageK {
             $ta=$datamhs['tahun_masuk'];                        
             $idsmt=$datamhs['semester_masuk'];
             $this->Finance->setDataMHS($datamhs);
-            if ($this->Finance->getTotalBiayaMhsPeriodePembayaran()<=0) {
-                $nama_semester=$this->setup->getSemester($idsmt);
-                $this->lblContentMessageError->Text="Tidak bisa menambah Transaksi baru karena komponen biaya di Tahun Masuk $ta semester $nama_semester belum disetting.";
-                $this->modalMessageError->show();
-            }elseif ($this->Finance->getLunasPembayaran($ta,$idsmt)) {
+            if ($this->Finance->getLunasPembayaran($ta,$idsmt)) {
                 $this->lblContentMessageError->Text='Tidak bisa menambah Transaksi baru karena sudah lunas.';
                 $this->modalMessageError->show();
             }elseif ($this->DB->checkRecordIsExist('no_formulir','transaksi',$no_formulir," AND tahun='$ta' AND idsmt='$idsmt' AND commited=0")) {
@@ -125,8 +116,7 @@ class CDetailPembayaranMahasiswaBaru Extends MainPageK {
                     while (list($k,$v)=each($r)) {
                         $biaya=$v['biaya'];
                         $idkombi=$v['idkombi'];
-                        $sudah_dibayar=isset($sudah_dibayarkan[$idkombi])?$sudah_dibayarkan[$idkombi]:0;
-                        $sisa_bayar=$biaya-$sudah_dibayar;
+                        $sisa_bayar=$biaya-$sudah_dibayarkan[$idkombi];
                         $str = "INSERT INTO transaksi_detail (idtransaksi_detail,no_transaksi,idkombi,dibayarkan) VALUES(NULL,$no_transaksi,$idkombi,$sisa_bayar)";
                         $this->DB->insertRecord($str);
                     }

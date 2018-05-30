@@ -67,13 +67,13 @@ class CHome extends MainPageM {
         $this->literalTotalPendaftaran->Text=$totalpendaftaran;
         $this->literalTotalDulang->Text=$totaldulang;
         
-        $mendaftartahunini=$datamendaftar[$_SESSION['ta']];
+        $mendaftartahunini=$datamendaftar[$_SESSION['tahun_pendaftaran']];
         $this->TotalMendaftarTahunINI=$mendaftartahunini;
-        $dulangtahunini=isset($datadulang[$_SESSION['ta']]) ? $datadulang[$_SESSION['ta']] :0;
+        $dulangtahunini=isset($datadulang[$_SESSION['tahun_pendaftaran']]) ? $datadulang[$_SESSION['tahun_pendaftaran']] :0;
         $this->TotalDulangTahunINI=$dulangtahunini;
         
-        $mendaftartahunlalu=isset($datamendaftar[$_SESSION['ta']-1])?$datamendaftar[$_SESSION['ta']-1]:0;
-        $dulangtahunlalu=isset($datadulang[$_SESSION['ta']-1])?$datadulang[$_SESSION['ta']-1]:0;
+        $mendaftartahunlalu=isset($datamendaftar[$_SESSION['tahun_pendaftaran']-1])?$datamendaftar[$_SESSION['tahun_pendaftaran']-1]:0;
+        $dulangtahunlalu=isset($datadulang[$_SESSION['tahun_pendaftaran']-1])?$datadulang[$_SESSION['tahun_pendaftaran']-1]:0;
         
         $persenmendaftartahunini=($mendaftartahunini > 0) ? @ number_format(($mendaftartahunini/$mendaftartahunlalu)*100,2):0;
         $this->PersentaseMendaftarTahunINI=$persenmendaftartahunini;

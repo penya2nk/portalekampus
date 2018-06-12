@@ -126,4 +126,3 @@ class PostgreSQL extends DBGlobal implements DBInterface {
 		return $this->query ($str);
 	}
 }
-?>

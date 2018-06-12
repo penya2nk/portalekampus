@@ -130,4 +130,3 @@ class MSSQL extends DBGlobal implements DBInterface {
 		return $this->query ($str);
 	}
 }
-?>

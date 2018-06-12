@@ -61,4 +61,3 @@ interface DBInterface {
 	*/
 	public function deleteRecord ($sqlString);
 }
-?>

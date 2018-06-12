@@ -209,4 +209,3 @@ class MySQL extends DBGlobal implements DBInterface {
 	
 	
 }
-?>

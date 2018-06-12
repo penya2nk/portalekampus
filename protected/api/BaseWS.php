@@ -1,12 +1,6 @@
 <?php
-/**
-* Ini file digunakan untuk koneksi ke database
-*
-* @author Mochammad Rizki Romdoni <m_rizki_r>@yahoo.com
-* @date start Senin 29 Desember 2008 / 01 Muharram 1430 H Modified ...
-* 
-*/
-class DBFactory extends TModule {
+
+class BaseWS extends TJsonResponse {
 	/**
 	* link
 	*/
@@ -41,11 +35,15 @@ class DBFactory extends TModule {
 	* Tipe Database => Postgres, MySQL, dll
 	*/
 	private $DbType;
-	
-	public function init ($config) {
-		$this->linkOpen();	
-	}
-	
+	/**
+	* Object Variable "Database"
+	*
+	*/
+	protected $DB;
+	public function init($config) {
+		parent::init($config);
+		//open connection to database	
+		$this->linkOpen();			}
 	/**
 	* digunakan untuk membuka koneksi ke server, dan memilih database
 	*
@@ -55,7 +53,7 @@ class DBFactory extends TModule {
 		switch ($this->DbType) {
 			case 'postgres' :
 				prado::using ('Application.lib.Database.PostgreSQL');
-				$this->Link = new PostgreSQL ();
+				$this->DB = new PostgreSQL ();
 				$config=array("host"=>$this->Host,
 							"port"=>$this->DbPort,
 							"user"=>$this->UserName,
@@ -64,7 +62,7 @@ class DBFactory extends TModule {
 			break;
 			case 'mysql' :
 				prado::using ('Application.lib.Database.MySQL');
-				$this->Link = new MySQL ();
+				$this->DB = new MySQL ();
 				$config=array("host"=>$this->Host,
 							"user"=>$this->UserName,
 			 				"password"=>$this->UserPassword,
@@ -74,7 +72,7 @@ class DBFactory extends TModule {
 			default :
 				throw new Exception ('No Driver Found.');
 		}
-		$this->Link->connectDB ($config);
+		$this->DB->connectDB ($config);
 	}
 	
 	/**
@@ -91,11 +89,10 @@ class DBFactory extends TModule {
 		$this->DbPort=$db['db_port'];			
 	}	
 	/**
-	* mendapatkan link dari tiap koneksi
-	*
+	* generate json content	
 	*/
-	public function getLink () {
-		return $this->Link;
+	public function getJsonContent() {
+		
+		return array('apps'=>'Portal Ekampus API v1.0');
 	}
-	
 }

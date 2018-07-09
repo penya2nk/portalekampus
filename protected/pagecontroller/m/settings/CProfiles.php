@@ -29,6 +29,7 @@ class CProfiles extends MainPageM {
             $this->redirect('settings.Profiles',true);
         }
     }
+
     public function uploadPhotoProfile ($sender,$param) {
 		if ($sender->getHasFile()) {
             $this->lblTipeFileError->Text='';
@@ -100,6 +101,20 @@ class CProfiles extends MainPageM {
                         </div>';   
             $this->lblTipeFileError->Text=$error;
             return;   
+        }
+    }
+
+    public function saveDataPassword ($sender,$param) {
+        if ($this->IsValid) {
+            $userid=$this->Pengguna->getDataUser('userid');
+            if ($this->txtPassword->Text != '') {                
+                $data=$this->Pengguna->createHashPassword($this->txtPassword->Text);
+                $salt=$data['salt'];
+                $password=$data['password'];
+                $str = "UPDATE user SET userpassword='$password',salt='$salt' WHERE userid=$userid";               
+            }
+            $this->DB->updateRecord($str);
+            $this->redirect('settings.Profiles',true);
         }
     }
 }

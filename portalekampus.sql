@@ -1418,6 +1418,63 @@ CREATE TABLE `setting` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
 -- --------------------------------------------------------
+-- phpMyAdmin SQL Dump
+-- version 4.7.7
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost:3306
+-- Generation Time: Jul 13, 2018 at 06:13 AM
+-- Server version: 5.6.39-cll-lve
+-- PHP Version: 5.6.30
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+--
+-- Database: `stisipol_portal`
+--
+
+--
+-- Dumping data for table `setting`
+--
+
+INSERT INTO `setting` (`setting_id`, `group`, `key`, `value`) VALUES
+(1, 'general', 'default_ta', '2017'),
+(2, 'general', 'default_semester', '2'),
+(3, 'general', 'default_pagesize', '15'),
+(10, 'path', 'config_logo', 'resources/headerLogo.jpg'),
+(20, 'transkripnilai', 'id_penandatangan_transkrip', '6'),
+(21, 'transkripnilai', 'nama_jabatan_transkrip', 'KETUA'),
+(22, 'transkripnilai', 'nama_penandatangan_transkrip', 'ENDRI SANOPAKA, MPM'),
+(23, 'transkripnilai', 'jabfung_penandatangan_transkrip', 'Lektor'),
+(24, 'transkripnilai', 'nipy_penandatangan_transkrip', '125 133 050'),
+(25, 'transkripnilai', 'nidn_penandatangan_transkrip', '1005118101'),
+(30, 'nilaikhs', 'id_penandatangan_khs', '4'),
+(31, 'nilaikhs', 'nama_jabatan_khs', 'PEMBANTU KETUA I BIDANG AKADEMIK'),
+(32, 'nilaikhs', 'nama_penandatangan_khs', 'FERIZONE, MPM'),
+(33, 'nilaikhs', 'jabfung_penandatangan_khs', 'LEKTOR'),
+(34, 'nilaikhs', 'nipy_penandatangan_khs', '125 133 056'),
+(35, 'nilahkhs', 'nidn_penandatangan_khs', '1013068702'),
+(40, 'dpna', 'id_penandatangan_dpna', '4'),
+(41, 'dpna', 'nama_jabatan_dpna', 'PEMBANTU KETUA I BIDANG AKADEMIK'),
+(42, 'dpna', 'nama_penandatangan_dpna', 'FERIZONE, MPM'),
+(43, 'dpna', 'jabfung_penandatangan_dpna', 'LEKTOR'),
+(44, 'dpna', 'nipy_penandatangan_dpna', '125 133 056'),
+(45, 'dpna', 'nidn_penandatangan_dpna', '1013068702'),
+(55, 'spmb', 'minimal_nilai_kelulusan', '30'),
+(4, 'general', 'nama_pt', 'SEKOLAH TINGGI ILMU SOSIAL DAN ILMU POLITIK RAJA HAJI'),
+(100, 'report', 'header_line_1', 'SEKOLAH TINGGI ILMU SOSIAL DAN ILMU POLITIK'),
+(101, 'report', 'header_line_2', 'RAJA HAJI TANJUNGPINANG'),
+(102, 'report', 'header_line_3', 'JL. RAJA HAJI FISABILILLAH NO. 48 TANJUNGPINANG - KEPULAUAN RIAU'),
+(103, 'report', 'header_line_4', 'TELP. (0771) 7000652 Website : http://www.stisipolrajahaji.ac.id Email : info@stisipolrajahaji.ac.id'),
+(5, 'general', 'nama_pt_alias', 'STISIPOL Raja Haji Tanjungpinang'),
+(6, 'general', 'default_kjur', '1'),
+(60, 'krs', 'jumlah_sks_krs_setelah_cuti', '12'),
+(56, 'spmb', 'default_tahun_pendaftaran', '2018'),
+(7, 'general', 'minimal_sks_daftar_konsentrasi', '60'),
+(8, 'general', 'jslogger', '');
 
 --
 -- Table structure for table `soal`

@@ -428,6 +428,18 @@ CREATE TABLE `jenjang_studi` (
   `njenjang` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+INSERT INTO `jenjang_studi` (`kjenjang`, `njenjang`) VALUES
+('A', 'S-3'),
+('B', 'S-2'),
+('C', 'S-1'),
+('D', 'D-4'),
+('E', 'D-3'),
+('F', 'D-2'),
+('G', 'D-1'),
+('H', 'SP-1'),
+('I', 'SP-2'),
+('J', 'PROFESI'),
+('X', 'NON-AKADEMIK');
 -- --------------------------------------------------------
 
 --

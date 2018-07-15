@@ -1,9 +1,13 @@
 <?php
 class MainPageSA extends MainPage {
+    /**     
+     * show page program studi [dmaster]
+     */
+    public $showProdi=false;
     /**
      * show sub menu [dmaster perkuliahan]
      */
-    public $showSubMenuDMasterPerkuliahan=false;
+    public $showSubMenuDMasterPerkuliahan=false;    
     /**     
      * show page tahun akademik [dmaster perkuliahan]
      */

@@ -182,6 +182,12 @@
                                         <li class="nav-header nav-header-first hidden-sm hidden-xs">
                                             DATA MASTER
                                         </li>
+                                        <li<%=$this->Page->showProdi==true?' class="active"':''%>>
+                                            <a href="<%=$this->Page->constructUrl('dmaster.Prodi',true)%>">
+                                                <i class="fa fa-qrcode"></i>
+                                                <span>Program Studi</span>                                          
+                                            </a>                                        
+                                        </li>
                                         <li<%=$this->Page->showSubMenuDMasterPerkuliahan==true?' class="active"':''%>>
                                             <a href="#" class="dropdown-toggle">
                                                 <i class="fa fa-truck"></i>

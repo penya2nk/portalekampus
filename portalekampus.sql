@@ -1,4 +1,6 @@
-
+--
+-- Table structure for table `agama`
+--
 CREATE TABLE `agama` (
   `idagama` tinyint(4) NOT NULL,
   `nama_agama` varchar(30) NOT NULL

@@ -1,38 +1,17 @@
--- phpMyAdmin SQL Dump
--- version 4.7.4
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Generation Time: Jun 16, 2018 at 01:45 PM
--- Server version: 10.1.29-MariaDB
--- PHP Version: 7.2.0
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `portalekampus`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `agama`
---
 
 CREATE TABLE `agama` (
   `idagama` tinyint(4) NOT NULL,
   `nama_agama` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+INSERT INTO `agama` (`idagama`, `nama_agama`) VALUES
+(0, 'none'),
+(1, 'ISLAM'),
+(2, 'PROTESTAN'),
+(3, 'KHATOLIK'),
+(4, 'HINDU DARMA'),
+(5, 'BUDHA'),
+(6, 'LAIN-LAIN');
 -- --------------------------------------------------------
 
 --

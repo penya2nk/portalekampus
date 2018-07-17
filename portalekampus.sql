@@ -542,7 +542,27 @@ CREATE TABLE `kombi` (
   `nama_kombi` varchar(50) NOT NULL,
   `periode_pembayaran` enum('none','semesteran','sekali') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+--
+-- Dumping data for table kombi
+--
 
+INSERT INTO kombi (idkombi, nama_kombi, periode_pembayaran) VALUES
+(1, 'Biaya Pendaftaran', 'none'),
+(2, 'Heregestrasi', 'semesteran'),
+(3, 'Aptisi', 'semesteran'),
+(4, 'MOPSPEK', 'sekali'),
+(5, 'Kartu Tanda Mahasiswa (KTM)', 'sekali'),
+(6, 'Asuransi Mahasiswa', 'semesteran'),
+(7, 'Dana Kemahasiswaan', 'semesteran'),
+(8, 'Dana Pemeliharaan Sarana', 'sekali'),
+(9, 'SPP', 'semesteran'),
+(10, 'Iuran Perpustakaan', 'semesteran'),
+(11, 'Jaket Almamater', 'sekali'),
+(12, 'Cuti', 'none'),
+(13, 'Wisuda', 'none'),
+(14, 'Per SKS', 'none'),
+(15, 'Iuran Kesehatan Mahasiswa', 'semesteran'),
+(16, 'Public Speaking Training', 'sekali');
 -- --------------------------------------------------------
 
 --

@@ -73,7 +73,7 @@ class CVariables extends MainPageSA {
                     $this->DB->updateRecord($str);
 
                     $kjur= $this->cmbDefaultProdi->Text;
-                    $str = "UPDATE setting SET value='$semester' WHERE setting_id=6";            
+                    $str = "UPDATE setting SET value='$kjur' WHERE setting_id=6";            
                     $this->DB->updateRecord($str);
                     
                     $jumlah_baris= $this->txtJumlahBarisRepeater->Text;

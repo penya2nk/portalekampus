@@ -8,7 +8,7 @@ class CDaftarMahasiswa extends MainPageK {
         $this->createObj('Nilai');
 		if (!$this->IsPostBack&&!$this->IsCallBack) {	
             if (!isset($_SESSION['currentPageDaftarMahasiswa'])||$_SESSION['currentPageDaftarMahasiswa']['page_name']!='k.kemahasiswaan.DaftarMahasiswa') {
-				$_SESSION['currentPageDaftarMahasiswa']=array('page_name'=>'k.kemahasiswaan.DaftarMahasiswa','page_num'=>0,'search'=>false);												
+				$_SESSION['currentPageDaftarMahasiswa']=array('page_name'=>'k.kemahasiswaan.DaftarMahasiswa','page_num'=>0,'search'=>false,'idkonsentrasi'=>'none','k_status'=>'none');												
 			}
             $_SESSION['currentPageDaftarMahasiswa']['search']=false;
             
@@ -95,9 +95,9 @@ class CDaftarMahasiswa extends MainPageK {
             $tahun_masuk=$_SESSION['tahun_masuk'];        
             $str_tahun_masuk=$tahun_masuk == 'none' ?'':"AND tahun_masuk=$tahun_masuk";
             $idkonsentrasi=$_SESSION['currentPageDaftarMahasiswa']['idkonsentrasi'];
-            $str_konsentrasi = $idkonsentrasi == 'none'?'':" AND idkonsentrasi=$idkonsentrasi";
+            $str_konsentrasi = ($idkonsentrasi == 'none' || $idkonsentrasi == '') ?'':" AND idkonsentrasi=$idkonsentrasi";
             $kelas=$_SESSION['kelas'];
-            $str_kelas = $kelas == 'none'?'':" AND idkelas='$kelas'";
+            $str_kelas = ($kelas == 'none' || $kelas == '')?'':" AND idkelas='$kelas'";
             $status=$_SESSION['currentPageDaftarMahasiswa']['k_status'];
             $str_status = $status == 'none'?'':" AND k_status='$status'";
             $jumlah_baris=$this->DB->getCountRowsOfTable("v_datamhs WHERE kjur=$kjur $str_tahun_masuk $str_konsentrasi $str_kelas $str_status",'nim');		

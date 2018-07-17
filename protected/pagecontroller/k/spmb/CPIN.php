@@ -113,11 +113,12 @@ class CPIN extends MainPageK {
 			$no_urut=($urut=='')?'0001':$urut;
 			$no_urut=$tahun_masuk.$no_urut;                        
             $jumlah=addslashes($this->txtJumlahFormulir->Text);
-            $jumlah_formulir=$no_urut+$jumlah;
+            $jumlah_formulir=$no_urut+$jumlah;            
             if ($jumlah <= 1) {                        
                 $no_pin=$no_urut.mt_rand(100000,999999);
                 $values="('$no_pin',$no_urut,$tahun_masuk,'$idkelas')";
             }else {
+                $values='';
                 for ($i=$no_urut;$i<$jumlah_formulir;$i++) {                    
                     $no_pin=$i.mt_rand(100000,999999);
                     if ($jumlah_formulir > $i+1) {

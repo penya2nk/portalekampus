@@ -93,11 +93,11 @@ class CDiskusi extends MainPageM {
         
         $this->paginationInfo->Text=$this->getInfoPaging($this->RepeaterS);
     }    
-    public function populateUnread () {
+    public function populateUnread ($search=false) {
         if ($search) {  
             
         }else{
-            $str = "SELECT fp.idpost,fk.nama_kategori,fp.title,fp.content,fp.nama_user,fp.tipe,fp.date_added FROM forumposts fp, forumkategori fk WHERE fp.idkategori=fk.idkategori AND parentpost=0 AND unread=1";
+            $str = "SELECT fp.idpost,fk.nama_kategori,fp.title,fp.content,fp.userid,fp.nama_user,fp.tipe,fp.date_added FROM forumposts fp, forumkategori fk WHERE fp.idkategori=fk.idkategori AND parentpost=0 AND unread=1";
             $jumlah_baris=$this->DB->getCountRowsOfTable("forumposts WHERE parentpost=0 AND unread=1",'idpost');						
         }        
         $this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageDiskusi']['page_num_unread'];

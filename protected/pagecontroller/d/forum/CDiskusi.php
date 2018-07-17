@@ -45,7 +45,7 @@ class CDiskusi extends MainPageD {
         if ($search) {  
             
         }else{
-            $str = "SELECT fp.idpost,fp.userid,fk.nama_kategori,fp.title,fp.content,fp.nama_user,fp.tipe,fp.date_added FROM forumposts fp, forumkategori fk WHERE fp.idkategori=fk.idkategori AND parentpost=0";
+            $str = "SELECT fp.idpost,fp.userid,fk.nama_kategori,fp.title,fp.content,fp.userid,fp.nama_user,fp.tipe,fp.date_added FROM forumposts fp, forumkategori fk WHERE fp.idkategori=fk.idkategori AND parentpost=0";
             $jumlah_baris=$this->DB->getCountRowsOfTable("forumposts WHERE parentpost=0",'idpost');						
         }        
         $this->RepeaterS->CurrentPageIndex=$_SESSION['currentPageDiskusi']['page_num'];
@@ -93,7 +93,7 @@ class CDiskusi extends MainPageD {
         
         $this->paginationInfo->Text=$this->getInfoPaging($this->RepeaterS);
     }    
-    public function populateUnread () {
+    public function populateUnread ($search=false) {
         if ($search) {  
             
         }else{

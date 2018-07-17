@@ -245,6 +245,14 @@ CREATE TABLE `forumkategori` (
   `nama_kategori` varchar(50) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+INSERT INTO `forumkategori` (`idkategori`, `nama_kategori`) VALUES
+(1, 'NILAI'),
+(2, 'KRS'),
+(3, 'AKADEMIK'),
+(4, 'DOSEN'),
+(5, 'KEUANGAN'),
+(6, 'HAL UMUM'),
+(7, 'BUG REPORT');
 -- --------------------------------------------------------
 
 --
@@ -542,7 +550,27 @@ CREATE TABLE `kombi` (
   `nama_kombi` varchar(50) NOT NULL,
   `periode_pembayaran` enum('none','semesteran','sekali') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+--
+-- Dumping data for table kombi
+--
 
+INSERT INTO kombi (idkombi, nama_kombi, periode_pembayaran) VALUES
+(1, 'Biaya Pendaftaran', 'none'),
+(2, 'Heregestrasi', 'semesteran'),
+(3, 'Aptisi', 'semesteran'),
+(4, 'MOPSPEK', 'sekali'),
+(5, 'Kartu Tanda Mahasiswa (KTM)', 'sekali'),
+(6, 'Asuransi Mahasiswa', 'semesteran'),
+(7, 'Dana Kemahasiswaan', 'semesteran'),
+(8, 'Dana Pemeliharaan Sarana', 'sekali'),
+(9, 'SPP', 'semesteran'),
+(10, 'Iuran Perpustakaan', 'semesteran'),
+(11, 'Jaket Almamater', 'sekali'),
+(12, 'Cuti', 'none'),
+(13, 'Wisuda', 'none'),
+(14, 'Per SKS', 'none'),
+(15, 'Iuran Kesehatan Mahasiswa', 'semesteran'),
+(16, 'Public Speaking Training', 'sekali');
 -- --------------------------------------------------------
 
 --
@@ -1410,25 +1438,6 @@ CREATE TABLE `setting` (
   `value` text COLLATE latin1_general_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
--- --------------------------------------------------------
--- phpMyAdmin SQL Dump
--- version 4.7.7
--- https://www.phpmyadmin.net/
---
--- Host: localhost:3306
--- Generation Time: Jul 13, 2018 at 06:13 AM
--- Server version: 5.6.39-cll-lve
--- PHP Version: 5.6.30
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
-SET time_zone = "+00:00";
-
---
--- Database: `stisipol_portal`
---
-
 --
 -- Dumping data for table `setting`
 --
@@ -1491,6 +1500,17 @@ CREATE TABLE `status_mhs` (
   `n_status` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `status_mhs`
+--
+
+INSERT INTO `status_mhs` (`k_status`, `n_status`) VALUES
+('A', 'AKTIF'),
+('C', 'CUTI'),
+('D', 'DROP-OUT / PUTUS'),
+('K', 'KELUAR'),
+('L', 'LULUS'),
+('N', 'NON-AKTIF');
 -- --------------------------------------------------------
 
 --

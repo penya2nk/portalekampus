@@ -245,6 +245,14 @@ CREATE TABLE `forumkategori` (
   `nama_kategori` varchar(50) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+INSERT INTO `forumkategori` (`idkategori`, `nama_kategori`) VALUES
+(1, 'NILAI'),
+(2, 'KRS'),
+(3, 'AKADEMIK'),
+(4, 'DOSEN'),
+(5, 'KEUANGAN'),
+(6, 'HAL UMUM'),
+(7, 'BUG REPORT');
 -- --------------------------------------------------------
 
 --

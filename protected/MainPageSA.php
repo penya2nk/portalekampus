@@ -1,13 +1,25 @@
 <?php
 class MainPageSA extends MainPage {
     /**     
-     * show page program studi [dmaster]
+     * show page sub menu lembaga [dmaster]
      */
-    public $showProdi=false;
+    public $showSubMenuLembaga=false;        
+    /**
+     * show page dosen [datamaster lembaga]
+     */
+    public $showDosen=false;
+    /**     
+     * show page program studi [dmaster lembaga]
+     */
+    public $showProdi=false;    
     /**
      * show sub menu [dmaster perkuliahan]
      */
     public $showSubMenuDMasterPerkuliahan=false;    
+    /**     
+     * show page kurikulum [dmaster lembaga]
+     */
+    public $showKurikulum=false;    
     /**     
      * show page tahun akademik [dmaster perkuliahan]
      */
@@ -31,11 +43,7 @@ class MainPageSA extends MainPage {
     /**     
      * show sub menu setting akademik[setting]
      */
-    public $showSubMenuSettingAkademik=false;    
-    /**     
-     * show page ketua prodi [setting sistem]
-     */
-    public $showKaprodi=false;
+    public $showSubMenuSettingAkademik=false; 
     /**     
      * show sub menu setting sistem[setting]
      */

@@ -38,6 +38,7 @@ class CVariables extends MainPageSA {
         
         //KRS
         $this->txtKRSJumlahSKSSetelahCuti->Text=$this->setup->getSettingValue('jumlah_sks_krs_setelah_cuti');  
+        $this->txtKRSJumlahSKSMhsBaru->Text=$this->setup->getSettingValue('jumlah_sks_krs_mhs_baru');  
         
         //Transkrip Nilai        
         $this->txtTranskripNilaiNamaJabatan->Text=$this->setup->getSettingValue('nama_jabatan_transkrip');
@@ -96,6 +97,10 @@ class CVariables extends MainPageSA {
                 case 'btnSaveKRS' :
                     $jumlah_sks_krs_setelah_cuti= $this->txtKRSJumlahSKSSetelahCuti->Text;
                     $str = "UPDATE setting SET value='$jumlah_sks_krs_setelah_cuti' WHERE setting_id=60";            
+                    $this->DB->updateRecord($str);
+
+                    $jumlah_sks_krs_mhs_baru= $this->txtKRSJumlahSKSMhsBaru->Text;
+                    $str = "UPDATE setting SET value='$jumlah_sks_krs_mhs_baru' WHERE setting_id=61";            
                     $this->DB->updateRecord($str);
                 break;
                 case 'btnSaveTranskripNilai' :                    

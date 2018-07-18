@@ -181,12 +181,25 @@
                                         </li>
                                         <li class="nav-header nav-header-first hidden-sm hidden-xs">
                                             DATA MASTER
-                                        </li>
-                                        <li<%=$this->Page->showProdi==true?' class="active"':''%>>
-                                            <a href="<%=$this->Page->constructUrl('dmaster.Prodi',true)%>">
-                                                <i class="fa fa-qrcode"></i>
-                                                <span>Program Studi</span>                                          
-                                            </a>                                        
+                                        </li>                                        
+                                        <li<%=$this->Page->showSubMenuLembaga==true?' class="active"':''%>>
+                                            <a href="#" class="dropdown-toggle">
+                                                <i class="fa fa-fax"></i>
+                                                <span>Lembaga</span>
+                                                <i class="fa fa-angle-right drop-icon"></i>
+                                            </a>
+                                            <ul class="submenu">                                                
+                                                <li<%=$this->Page->showDosen==true ? ' class="active" ':''%>>                                            
+                                                    <a href="<%=$this->Page->constructUrl('dmaster.Dosen',true)%>">                                                        
+                                                        Dosen                                                
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="<%=$this->Page->constructUrl('dmaster.Prodi',true)%>"<%=$this->Page->showProdi==true?' class="active"':''%>>                                                        
+                                                        Program Studi                                         
+                                                    </a>                                        
+                                                </li>
+                                            </ul>
                                         </li>
                                         <li<%=$this->Page->showSubMenuDMasterPerkuliahan==true?' class="active"':''%>>
                                             <a href="#" class="dropdown-toggle">
@@ -252,21 +265,7 @@
                                                 <i class="fa fa-legal"></i>
                                                 <span>Variables</span>											
                                             </a>                                        
-                                        </li> 
-                                        <li<%=$this->Page->showSubMenuSettingAkademik==true?' class="active"':''%>>
-                                            <a href="#" class="dropdown-toggle">
-                                                <i class="fa fa-medkit"></i>
-                                                <span>Akademik</span>
-                                                <i class="fa fa-angle-right drop-icon"></i>
-                                            </a>
-                                            <ul class="submenu">
-                                                <li>
-                                                    <a href="<%=$this->Page->constructUrl('settings.Kaprodi',true)%>"<%=$this->Page->showKaprodi==true ? ' class="active" ':''%>>
-                                                        Ketua Prodi
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
+                                        </li>                                         
                                         <li<%=$this->Page->showSubMenuSettingSistem==true?' class="active"':''%>>
                                             <a href="#" class="dropdown-toggle">
                                                 <i class="fa fa-cog"></i>

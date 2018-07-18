@@ -152,16 +152,31 @@
                 <div class="main-box-body clearfix">
                     <div class="form-horizontal">
                         <div class="form-group" id="divKRSJumlahSKSSetelahCuti">
-                            <label class="col-md-2 control-label">Jumlah SKS Setelah Cuti :</label>
+                            <label class="col-md-2 control-label">Maksimal Jumlah SKS Setelah Cuti :</label>
                             <div class="col-md-3">                                
                                 <com:TTextBox ID="txtKRSJumlahSKSSetelahCuti" CssClass="form-control" Text="0" Attributes.OnKeyUp="formatangka(this,true)" Width="75px" />
-                                <com:TRequiredFieldValidator ID="FieldKRSJumlahSKSSetelahCuti" ValidationGroup="settingkrs" Display="Dynamic" ControlToValidate="txtKRSJumlahSKSSetelahCuti" ErrorMessage="Isi Jumlah SKS KRS Setelah Cuti" CssClass="has-error help-block">	
+                                <com:TRequiredFieldValidator ID="FieldKRSJumlahSKSSetelahCuti" ValidationGroup="settingkrs" Display="Dynamic" ControlToValidate="txtKRSJumlahSKSSetelahCuti" ErrorMessage="Isi Maksimal Jumlah SKS KRS Setelah Cuti" CssClass="has-error help-block">	
                                     <prop:ClientSide.OnValidationError>
                                         $('divKRSJumlahSKSSetelahCuti').addClassName('has-error');
                                         jQuery('#<%=$this->FieldKRSJumlahSKSSetelahCuti->ClientID%>').removeAttr('style');
                                     </prop:ClientSide.OnValidationError>
                                     <prop:ClientSide.OnValidationSuccess>
                                         $('divKRSJumlahSKSSetelahCuti').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator>     
+                            </div>                            
+                        </div>
+                        <div class="form-group" id="divKRSJumlahSKSMhsBaru">
+                            <label class="col-md-2 control-label">Maksimal Jumlah SKS Mahasiswa Baru :</label>
+                            <div class="col-md-3">                                
+                                <com:TTextBox ID="txtKRSJumlahSKSMhsBaru" CssClass="form-control" Text="0" Attributes.OnKeyUp="formatangka(this,true)" Width="75px" />
+                                <com:TRequiredFieldValidator ID="FieldKRSJumlahSKSMhsBaru" ValidationGroup="settingkrs" Display="Dynamic" ControlToValidate="txtKRSJumlahSKSMhsBaru" ErrorMessage="Isi Jumlah Maksimal SKS Saat Mahasiswa Baru Masuk" CssClass="has-error help-block">    
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divKRSJumlahSKSMhsBaru').addClassName('has-error');
+                                        jQuery('#<%=$this->FieldKRSJumlahSKSMhsBaru->ClientID%>').removeAttr('style');
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divKRSJumlahSKSMhsBaru').removeClassName('has-error');
                                     </prop:ClientSide.OnValidationSuccess>
                                 </com:TRequiredFieldValidator>     
                             </div>

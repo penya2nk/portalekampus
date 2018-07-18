@@ -1,12 +1,13 @@
 <?php
-prado::using ('Application.MainPageM');
-class CDosen extends MainPageM {		    	
+prado::using ('Application.MainPageSA');
+class CDosen extends MainPageSA {		    	
 	public function onLoad($param) {
-		parent::onLoad($param);		     
+		parent::onLoad($param);
+        $this->showSubMenuLembaga=true;		     
         $this->showDosen=true;   
 		if (!$this->IsPostBack&&!$this->IsCallback) {
-            if (!isset($_SESSION['currentPageDosen'])||$_SESSION['currentPageDosen']['page_name']!='m.dmaster.Dosen') {
-				$_SESSION['currentPageDosen']=array('page_name'=>'m.dmaster.Dosen','page_num'=>0,'search'=>false);
+            if (!isset($_SESSION['currentPageDosen'])||$_SESSION['currentPageDosen']['page_name']!='sa.dmaster.Dosen') {
+				$_SESSION['currentPageDosen']=array('page_name'=>'sa.dmaster.Dosen','page_num'=>0,'search'=>false);
 			}
             $_SESSION['currentPageDosen']['search']=false;
             $this->populateData();            

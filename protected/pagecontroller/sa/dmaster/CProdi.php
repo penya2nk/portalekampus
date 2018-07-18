@@ -3,6 +3,7 @@ prado::using ('Application.MainPageSA');
 class CProdi extends MainPageSA {	
 	public function onLoad ($param) {		
 		parent::onLoad ($param);
+        $this->showSubMenuLembaga=true;
         $this->showProdi=true;
 		if (!$this->IsPostBack&&!$this->IsCallBack) {
             if (!isset($_SESSION['currentPageProdi'])||$_SESSION['currentPageProdi']['page_name']!='sa.dmaster.Prodi') {
@@ -13,7 +14,7 @@ class CProdi extends MainPageSA {
 		}
 	}
 	protected function populateData ($search=false) {        
-        $str = "SELECT ps.kjur,ps.kode_epsbed,ps.nama_ps,ps.nama_ps_alias,js.njenjang,ps.konsentrasi,ps.idkur,d.nama_dosen FROM program_studi ps LEFT JOIN jenjang_studi js ON (js.kjenjang=ps.kjenjang) LEFT JOIN dosen d ON (d.iddosen=ps.iddosen) WHERE kjur!=0 ORDER BY kjur ASC";	
+        $str = "SELECT ps.kjur,ps.kode_epsbed,ps.nama_ps,ps.nama_ps_alias,js.njenjang,ps.konsentrasi,ps.idkur,CONCAT(d.gelar_depan,' ',d.nama_dosen,' ',d.gelar_belakang) AS nama_dosen FROM program_studi ps LEFT JOIN jenjang_studi js ON (js.kjenjang=ps.kjenjang) LEFT JOIN dosen d ON (d.iddosen=ps.iddosen) WHERE kjur!=0 ORDER BY kjur ASC";	
        				
         $this->DB->setFieldTable(array('kjur','kode_epsbed','nama_ps','nama_ps_alias','njenjang','konsentrasi','idkur','nama_dosen'));
 		$r = $this->DB->getRecord($str);       
@@ -25,6 +26,10 @@ class CProdi extends MainPageSA {
         $this->idProcess='add';	 
         $this->cmbAddJenjang->dataSource=$this->DMaster->getListJenjang ();
         $this->cmbAddJenjang->dataBind();                   
+
+        $daftar_dosen=$this->DMaster->getDaftarDosen();
+        $this->cmbAddKaprodi->DataSource=$daftar_dosen;
+        $this->cmbAddKaprodi->DataBind();
     }
     public function checkPS ($sender,$param) {    
         $this->idProcess=$sender->getId()=='addkodeps'?'add':'edit';
@@ -66,8 +71,9 @@ class CProdi extends MainPageSA {
             $akronim_ps=addslashes($this->txtAddNamaAkronim->Text);
             $kjenjang=addslashes($this->cmbAddJenjang->Text);
             $konsentrasi=addslashes($this->txtAddKonsentrasi->Text);
+            $iddosen=$this->cmbAddKaprodi->Text;
 
-            $str = "INSERT INTO program_studi SET kjur=$kjur,kode_epsbed='$kjur_forlap',nama_ps='$nama_ps',nama_ps_alias='$akronim_ps',kjenjang='$kjenjang',konsentrasi='$konsentrasi'";
+            $str = "INSERT INTO program_studi SET kjur=$kjur,kode_epsbed='$kjur_forlap',nama_ps='$nama_ps',nama_ps_alias='$akronim_ps',kjenjang='$kjenjang',konsentrasi='$konsentrasi',iddosen=$iddosen";
             $this->DB->insertRecord($str);
             if ($this->Application->Cache) {                        
                 $str = 'SELECT ps.kjur,ps.kode_epsbed,ps.nama_ps,ps.kjenjang,js.njenjang,konsentrasi FROM program_studi ps,jenjang_studi js WHERE js.kjenjang=ps.kjenjang AND ps.kjur!=0';
@@ -82,8 +88,8 @@ class CProdi extends MainPageSA {
         $this->idProcess='edit';  
         $kjur=$this->getDataKeyField($sender,$this->RepeaterS);  
         $this->hiddenid->Value=$kjur;
-        $str = "SELECT kjur,kode_epsbed,nama_ps,nama_ps_alias,kjenjang,konsentrasi FROM program_studi WHERE kjur=$kjur";
-        $this->DB->setFieldTable(array('kjur','kode_epsbed','nama_ps','nama_ps_alias','kjenjang','konsentrasi'));
+        $str = "SELECT kjur,kode_epsbed,nama_ps,nama_ps_alias,kjenjang,konsentrasi,iddosen FROM program_studi WHERE kjur=$kjur";
+        $this->DB->setFieldTable(array('kjur','kode_epsbed','nama_ps','nama_ps_alias','kjenjang','konsentrasi','iddosen'));
         $r=$this->DB->getRecord($str);
 
         $this->txtEditKodePS->Text=$r[1]['kjur'];
@@ -95,7 +101,11 @@ class CProdi extends MainPageSA {
 
         $this->cmbEditJenjang->dataSource=$this->DMaster->getListJenjang ();
         $this->cmbEditJenjang->Text=$r[1]['kjenjang'];
-        $this->cmbEditJenjang->dataBind();                   
+        $this->cmbEditJenjang->dataBind();       
+
+        $daftar_dosen=$this->DMaster->getDaftarDosen();
+        $this->cmbEditKaprodi->DataSource=$daftar_dosen;
+        $this->cmbEditKaprodi->DataBind();            
     }
     public function updateData ($sender,$param) {
         if ($this->IsValid) {
@@ -106,8 +116,9 @@ class CProdi extends MainPageSA {
             $akronim_ps=addslashes($this->txtEditNamaAkronim->Text);
             $kjenjang=addslashes($this->cmbEditJenjang->Text);
             $konsentrasi=addslashes($this->txtEditKonsentrasi->Text);
+            $iddosen=$this->cmbEditKaprodi->Text;
 
-            $str = "UPDATE program_studi SET kjur=$kjur,kode_epsbed='$kjur_forlap',nama_ps='$nama_ps',nama_ps_alias='$akronim_ps',kjenjang='$kjenjang',konsentrasi='$konsentrasi' WHERE kjur=$id";
+            $str = "UPDATE program_studi SET kjur=$kjur,kode_epsbed='$kjur_forlap',nama_ps='$nama_ps',nama_ps_alias='$akronim_ps',kjenjang='$kjenjang',konsentrasi='$konsentrasi',iddosen=$iddosen WHERE kjur=$id";
             $this->DB->insertRecord($str);
             if ($this->Application->Cache) {                        
                 $str = 'SELECT ps.kjur,ps.kode_epsbed,ps.nama_ps,ps.kjenjang,js.njenjang,konsentrasi FROM program_studi ps,jenjang_studi js WHERE js.kjenjang=ps.kjenjang AND ps.kjur!=0';

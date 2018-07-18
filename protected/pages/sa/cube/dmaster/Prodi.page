@@ -121,7 +121,22 @@
                         <div class="col-md-10">
                             <com:TTextBox ID="txtAddKonsentrasi" CssClass="form-control" />                            
                         </div>
-                    </div>                    
+                    </div>     
+                    <div class="form-group" id="divAddKaprodi">
+                        <label class="col-md-2 control-label">Ketua Program Studi :</label>
+                        <div class="col-md-10">
+                            <com:TDropDownList ID="cmbAddKaprodi" CssClass="form-control" />
+                            <com:TRequiredFieldValidator ID="FieldAddKaprodiValidator" InitialValue="none" ControlToValidate="cmbAddKaprodi" Display="Dynamic" ErrorMessage="Pilih Ketua Program Studi, bila masih kosong mohon ditambahkan data Dosen" ValidationGroup="addps" CssClass="has-error help-block">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddKaprodi').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldAddKaprodiValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddKaprodi').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
                             <com:TActiveCustomButton ID="btnSave" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="addps">
@@ -258,7 +273,22 @@
                         <div class="col-md-10">
                             <com:TTextBox ID="txtEditKonsentrasi" CssClass="form-control" />                            
                         </div>
-                    </div>                    
+                    </div>       
+                    <div class="form-group" id="divEditKaprodi">
+                        <label class="col-md-2 control-label">Ketua Program Studi :</label>
+                        <div class="col-md-10">
+                            <com:TDropDownList ID="cmbEditKaprodi" CssClass="form-control" />
+                            <com:TRequiredFieldValidator ID="FieldEditKaprodiValidator" InitialValue="none" ControlToValidate="cmbEditKaprodi" Display="Dynamic" ErrorMessage="Pilih Ketua Program Studi, bila masih kosong mohon ditambahkan data Dosen" ValidationGroup="editps" CssClass="has-error help-block">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divEditKaprodi').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldEditKaprodiValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divEditKaprodi').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>             
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
                             <com:TActiveCustomButton ID="btnUpdate" CssClass="btn btn-primary" OnClick="updateData" ValidationGroup="editps">
@@ -301,10 +331,10 @@
                                     <th scope="col" width="10">NO</th>
                                     <th scope="col" width="50">KODE P.S</th>
                                     <th scope="col" width="100">KODE P.S FORLAP</th>
-                                    <th scope="col">NAMA P.S</th>                                    
-                                    <th scope="col">KONSENTRASI</th>   
-                                    <th scope="col">JENJANG</th>                                 
-                                    <th scope="col">KETUA P.S</th>
+                                    <th scope="col" width="250">NAMA P.S</th>                                    
+                                    <th scope="col" width="250">KONSENTRASI</th>   
+                                    <th scope="col" width="50">JENJANG</th>                                 
+                                    <th scope="col" width="250">KETUA P.S</th>
                                     <th scope="col" width="100">AKSI</th>
                                 </tr>								
                                 </thead>

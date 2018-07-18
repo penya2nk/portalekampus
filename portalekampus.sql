@@ -406,6 +406,22 @@ CREATE TABLE `jenis_pekerjaan` (
   `nama_pekerjaan` varchar(60) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `jenis_pekerjaan`
+--
+
+INSERT INTO `jenis_pekerjaan` (`idjp`, `nama_pekerjaan`) VALUES
+(0, 'none'),
+(1, 'PNS'),
+(2, 'PENSIUNAN, PURNAWIRAWAN'),
+(3, 'KARYAWAN SWASTA'),
+(4, 'PETANI'),
+(5, 'BURUH/TUKANG'),
+(6, 'TNI/POLRI'),
+(7, 'PENGUSAHA'),
+(8, 'PEDAGANG'),
+(9, 'NELAYAN'),
+(10, 'LAIN-LAIN');
 -- --------------------------------------------------------
 
 --
@@ -1548,6 +1564,13 @@ CREATE TABLE `tempat_spmb` (
   `nama_tempat` varchar(60) NOT NULL,
   `alamat` varchar(80) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tempat_spmb`
+--
+
+INSERT INTO `tempat_spmb` (`idtempat_spmb`, `nama_tempat`, `alamat`) VALUES
+(0, 'PORTAL EKAMPUS', 'http://portal.stisipolrajahaji.ac.id');
 
 -- --------------------------------------------------------
 

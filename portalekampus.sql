@@ -1794,6 +1794,15 @@ CREATE TABLE `user_group` (
   `group_name` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `user_group`
+--
+
+INSERT INTO `user_group` (`group_id`, `group_name`) VALUES
+(1, 'MANAJEMEN'),
+(2, 'BAAK'),
+(3, 'PRODI'),
+(4, 'FRONT OFFICE');
 -- --------------------------------------------------------
 
 --

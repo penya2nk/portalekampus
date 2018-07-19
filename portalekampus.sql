@@ -1490,6 +1490,7 @@ INSERT INTO `setting` (`setting_id`, `group`, `key`, `value`) VALUES
 (5, 'general', 'nama_pt_alias', 'STISIPOL Raja Haji Tanjungpinang'),
 (6, 'general', 'default_kjur', '1'),
 (60, 'krs', 'jumlah_sks_krs_setelah_cuti', '12'),
+(61, 'krs', 'jumlah_sks_krs_mhs_baru', '21'),
 (56, 'spmb', 'default_tahun_pendaftaran', '2018'),
 (7, 'general', 'minimal_sks_daftar_konsentrasi', '60'),
 (8, 'general', 'jslogger', '');

@@ -98,7 +98,7 @@ class CDulangMHSAktif Extends MainPageM {
         $str_dw = $iddosen_wali=='none'?'':" AND vdm.iddosen_wali=$iddosen_wali";
         $str_tahun_masuk=$tahun_masuk=='none'?'':" AND vdm.tahun_masuk=$tahun_masuk";      
         if ($search) {
-            $str = "SELECT d.iddulang,vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.iddosen_wali,d.tanggal,d.tahun,d.idsmt,d.idkelas FROM v_datamhs vdm,dulang d WHERE vdm.nim=d.nim AND d.k_status='A' AND vdm.kjur='$kjur'";
+            $str = "SELECT d.iddulang,vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.iddosen_wali,d.tanggal,d.tahun,d.idsmt,d.idkelas FROM v_datamhs vdm,dulang d WHERE vdm.nim=d.nim AND d.k_status='A'";
             $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {
                 case 'no_formulir' :

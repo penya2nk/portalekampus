@@ -72,27 +72,27 @@ class CDulangMHSBaru Extends MainPageM {
         $tahun_masuk=$_SESSION['tahun_masuk'];
         $semester_masuk=$_SESSION['currentPageDulangMHSBaru']['semester_masuk'];  
         if ($search) {
-            $str = "SELECT vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.iddosen_wali,d.tanggal,d.idkelas FROM v_datamhs vdm,dulang d WHERE vdm.nim=d.nim AND vdm.tahun_masuk='$tahun_masuk' AND vdm.semester_masuk='$semester_masuk' AND d.tahun=$tahun_masuk AND d.idsmt=$semester_masuk AND vdm.kjur='$kjur' AND d.k_status='A'";
+            $str = "SELECT vdm.no_formulir,vdm.nim,vdm.nirm,vdm.nama_mhs,vdm.iddosen_wali,d.tanggal,d.idkelas FROM v_datamhs vdm,dulang d WHERE vdm.nim=d.nim";
             $txtsearch=addslashes($this->txtKriteria->Text);
             switch ($this->cmbKriteria->Text) {                
                 case 'no_formulir' :
                     $clausa="AND vdm.no_formulir='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs vdm,dulang d WHERE vdm.nim=d.nim AND d.k_status='A' AND vdm.tahun_masuk='$tahun_masuk' AND vdm.semester_masuk='$semester_masuk' AND d.tahun=$tahun_masuk AND d.idsmt=$semester_masuk AND vdm.kjur='$kjur' $clausa",'vdm.nim');
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs vdm,dulang d WHERE vdm.nim=d.nim $clausa",'vdm.nim');
                     $str = "$str $clausa";
                 break;
                 case 'nim' :
                     $clausa="AND d.nim='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs vdm,dulang d WHERE vdm.nim=d.nim AND d.k_status='A' AND vdm.tahun_masuk='$tahun_masuk' AND vdm.semester_masuk='$semester_masuk' AND d.tahun=$tahun_masuk AND d.idsmt=$semester_masuk AND vdm.kjur='$kjur' $clausa",'vdm.nim');
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs vdm,dulang d WHERE vdm.nim=d.nim $clausa",'vdm.nim');
                     $str = "$str $clausa";
                 break;
                 case 'nirm' :
                     $clausa="AND vdm.nirm='$txtsearch'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs vdm,dulang d WHERE vdm.nim=d.nim AND d.k_status='A' AND vdm.tahun_masuk='$tahun_masuk' AND vdm.semester_masuk='$semester_masuk' AND d.tahun=$tahun_masuk AND d.idsmt=$semester_masuk AND vdm.kjur='$kjur' $clausa",'vdm.nim');
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs vdm,dulang d WHERE vdm.nim=d.nim $clausa",'vdm.nim');
                     $str = "$str $clausa";
                 break;
                 case 'nama' :
                     $clausa="AND vdm.nama_mhs LIKE '%$txtsearch%'";
-                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs vdm,dulang d WHERE vdm.nim=d.nim AND d.k_status='A' AND vdm.tahun_masuk='$tahun_masuk' AND vdm.semester_masuk='$semester_masuk' AND d.tahun=$tahun_masuk AND d.idsmt=$semester_masuk AND vdm.kjur='$kjur' $clausa",'vdm.nim');
+                    $jumlah_baris=$this->DB->getCountRowsOfTable ("v_datamhs vdm,dulang d WHERE vdm.nim=d.nim $clausa",'vdm.nim');
                     $str = "$str $clausa";
                 break;
             }

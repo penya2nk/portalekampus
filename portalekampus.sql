@@ -1591,7 +1591,7 @@ CREATE TABLE `tempat_spmb` (
 --
 
 INSERT INTO `tempat_spmb` (`idtempat_spmb`, `nama_tempat`, `alamat`) VALUES
-(0, 'PORTAL EKAMPUS', 'http://portal.stisipolrajahaji.ac.id');
+(1, 'PORTAL EKAMPUS', 'http://portal.stisipolrajahaji.ac.id');
 
 -- --------------------------------------------------------
 

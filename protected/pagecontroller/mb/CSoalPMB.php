@@ -9,62 +9,66 @@ class CSoalPMB extends MainPageMB {
         if (!$this->IsPostBack&&!$this->IsCallBack) {	            
             try {          
                 $no_formulir=$this->Pengguna->getDataUser('no_formulir');
-                $this->Demik->setDataMHS(array('no_formulir'=>$no_formulir));                
-                if ($this->Demik->isNoFormulirExist()) {
-                    if ($this->Demik->isMhsRegistered(true)) {
-                        throw new Exception ('Anda sudah ter-register sebagai mahasiswa,maka dari itu tidak bisa melakukan ujian');
-                    }else{
-                        $str = "SELECT ku.tgl_ujian,ku.tgl_selesai_ujian,ku.isfinish,num.jumlah_soal,num.jawaban_benar,num.jawaban_salah,num.soal_tidak_terjawab,num.nilai FROM kartu_ujian ku LEFT JOIN nilai_ujian_masuk num ON ku.no_formulir=num.no_formulir WHERE ku.no_formulir=$no_formulir";
-                        $this->DB->setFieldTable(array('tgl_ujian','tgl_selesai_ujian','isfinish','jumlah_soal','jawaban_benar','jawaban_salah','soal_tidak_terjawab','nilai'));
-                        $r = $this->DB->getRecord($str);      
-                        if (isset($r[1]) ) {
-                            $dataujian=$r[1];   
-                            if ($dataujian['isfinish']) {
-                                $this->idProcess='edit';
-                                if ($dataujian['nilai'] == '') {                                    
-                                    $jawaban_benar=$this->DB->getCountRowsOfTable("jawaban_ujian ju LEFT JOIN jawaban j ON (j.idjawaban=ju.idjawaban) WHERE no_formulir='$no_formulir' AND ju.idjawaban!=0 AND status=1",'ju.idjawaban');
-                                    $dataujian['jawaban_benar']=$jawaban_benar;
-                                    $jawaban_salah=$this->DB->getCountRowsOfTable("jawaban_ujian ju LEFT JOIN jawaban j ON (j.idjawaban=ju.idjawaban) WHERE no_formulir='$no_formulir' AND ju.idjawaban!=0 AND status=0",'ju.idjawaban');
-                                    $dataujian['jawaban_salah']=$jawaban_salah;
-                                    $soal_tidak_terjawab=$this->DB->getCountRowsOfTable("jawaban_ujian WHERE idjawaban=0 AND no_formulir='$no_formulir'",'idjawaban');
-                                    $dataujian['soal_tidak_terjawab']=$soal_tidak_terjawab;
-                                    $jumlah_soal=$jawaban_benar+$jawaban_salah+$soal_tidak_terjawab;
-                                    $dataujian['jumlah_soal']=$jumlah_soal;
-                                    $nilai=($jawaban_benar/$jumlah_soal)*100;
-                                    $dataujian['nilai']=$nilai;
-                                    
-                                    $str = "SELECT fp.kjur1,fp.kjur2,pp.kjur,pp.nilai FROM formulir_pendaftaran fp,peserta_ujian_pmb pup,passinggrade pp WHERE pup.no_formulir=fp.no_formulir AND pp.idjadwal_ujian=pup.idjadwal_ujian AND (pp.kjur=fp.kjur1 OR pp.kjur=fp.kjur2) AND fp.no_formulir=$no_formulir ORDER BY pp.kjur ASC";
-                                    $this->DB->setFieldTable(array('kjur1','kjur2','kjur','nilai')); 
-                                    $r=$this->DB->getRecord($str);   
-                                    
-                                    $passing_grade_1=0;
-                                    $passing_grade_2=0;
-                                    if (isset($r[1])) {
-                                        while (list($k,$v)=each($r)) {
-                                            if ($v['kjur1'] == $v['kjur']) {
-                                                $passing_grade_1=$v['nilai'];
-                                            }
-                                            if ($v['kjur2'] == $v['kjur']) {
-                                                $passing_grade_2=$v['nilai'];
-                                            }
-                                        }
+                $this->Demik->setDataMHS(array('no_formulir'=>$no_formulir));
+                if (!$this->DB->getCountRowsOfTable('soal') > 0) {
+                    throw new Exception ('Soal Ujian PMB belum di inputkan, silahkan hubungi panitia PMB');
+                }
+                if (!$this->Demik->isNoFormulirExist()) {
+                    throw new Exception ('Untuk mengikuti ujian silahkan isi formulir terlebih dahulu');
+                }         
+                if (!$this->DB->checkRecordIsExist ('no_formulir',' peserta_ujian_pmb',$no_formulir)){
+                    throw new Exception ("No. Formulir ($no_formulir) belum terdaftar menjadi peserta ujian. Silahkan pilih Jadwal Ujian PMB yang Anda inginkan");
+                }   
+                if ($this->Demik->isMhsRegistered(true)) {
+                    throw new Exception ('No. Formulir ($no_formulir) sudah terdaftar sebagai mahasiswa, maka dari itu tidak bisa melakukan ujian');
+                }                
+                $str = "SELECT ku.tgl_ujian,ku.tgl_selesai_ujian,ku.isfinish,num.jumlah_soal,num.jawaban_benar,num.jawaban_salah,num.soal_tidak_terjawab,num.nilai FROM kartu_ujian ku LEFT JOIN nilai_ujian_masuk num ON ku.no_formulir=num.no_formulir WHERE ku.no_formulir=$no_formulir";
+                $this->DB->setFieldTable(array('tgl_ujian','tgl_selesai_ujian','isfinish','jumlah_soal','jawaban_benar','jawaban_salah','soal_tidak_terjawab','nilai'));
+                $r = $this->DB->getRecord($str); 
+
+                if (isset($r[1]) ) {
+                    $dataujian=$r[1];
+                    if ($dataujian['isfinish']) {
+                        $this->idProcess='edit';
+                        if ($dataujian['nilai'] == '') {     
+                            $jawaban_benar=$this->DB->getCountRowsOfTable("jawaban_ujian ju LEFT JOIN jawaban j ON (j.idjawaban=ju.idjawaban) WHERE no_formulir='$no_formulir' AND ju.idjawaban!=0 AND status=1",'ju.idjawaban');
+                            $dataujian['jawaban_benar']=$jawaban_benar;
+                            $jawaban_salah=$this->DB->getCountRowsOfTable("jawaban_ujian ju LEFT JOIN jawaban j ON (j.idjawaban=ju.idjawaban) WHERE no_formulir='$no_formulir' AND ju.idjawaban!=0 AND status=0",'ju.idjawaban');
+                            $dataujian['jawaban_salah']=$jawaban_salah;
+                            $soal_tidak_terjawab=$this->DB->getCountRowsOfTable("jawaban_ujian WHERE idjawaban=0 AND no_formulir='$no_formulir'",'idjawaban');
+                            $dataujian['soal_tidak_terjawab']=$soal_tidak_terjawab;
+                            $jumlah_soal=$jawaban_benar+$jawaban_salah+$soal_tidak_terjawab;
+                            $dataujian['jumlah_soal']=$jumlah_soal;
+                            $nilai=($jawaban_benar/$jumlah_soal)*100;
+                            $dataujian['nilai']=$nilai;
+
+                            $str = "SELECT fp.kjur1,fp.kjur2,pp.kjur,pp.nilai FROM formulir_pendaftaran fp,peserta_ujian_pmb pup,passinggrade pp WHERE pup.no_formulir=fp.no_formulir AND pp.idjadwal_ujian=pup.idjadwal_ujian AND (pp.kjur=fp.kjur1 OR pp.kjur=fp.kjur2) AND fp.no_formulir=$no_formulir ORDER BY pp.kjur ASC";
+                            $this->DB->setFieldTable(array('kjur1','kjur2','kjur','nilai')); 
+                            $r=$this->DB->getRecord($str);   
+                            
+                            $passing_grade_1=0;
+                            $passing_grade_2=0;
+                            if (isset($r[1])) {
+                                while (list($k,$v)=each($r)) {
+                                    if ($v['kjur1'] == $v['kjur']) {
+                                        $passing_grade_1=$v['nilai'];
                                     }
-                                    
-                                    $str= "REPLACE INTO nilai_ujian_masuk SET no_formulir=$no_formulir,jumlah_soal=$jumlah_soal,jawaban_benar=$jawaban_benar,jawaban_salah=$jawaban_salah,soal_tidak_terjawab=$soal_tidak_terjawab,passing_grade_1=$passing_grade_1,passing_grade_2=$passing_grade_2,nilai=$nilai,ket_lulus=0";
-                                    $this->DB->insertRecord($str);                                   
+                                    if ($v['kjur2'] == $v['kjur']) {
+                                        $passing_grade_2=$v['nilai'];
+                                    }
                                 }
-                                $this->DataUjian=$dataujian;                                
-                            }else{
-                                $this->timerSoalPMB->StartTimerOnLoad=true;
-                                $this->populateSoal();
                             }
-                        }else{
-                            $this->idProcess='add';
+                            $str= "REPLACE INTO nilai_ujian_masuk SET no_formulir=$no_formulir,jumlah_soal=$jumlah_soal,jawaban_benar=$jawaban_benar,jawaban_salah=$jawaban_salah,soal_tidak_terjawab=$soal_tidak_terjawab,passing_grade_1=$passing_grade_1,passing_grade_2=$passing_grade_2,nilai=$nilai,ket_lulus=0";
+                            $this->DB->insertRecord($str);   
                         }
+                        $this->DataUjian=$dataujian;  
+                    }else{
+                        $this->timerSoalPMB->StartTimerOnLoad=true;
+                        $this->populateSoal();
                     }
                 }else{
-                    throw new Exception ('Untuk mengikuti ujian silahkan isi formulir terlebih dahulu');
-                }                                        
+                    $this->idProcess='add';
+                }                                                   
             }catch (Exception $e) {
                 $this->idProcess='view';
                 $this->errorMessage->Text=$e->getMessage();
@@ -88,7 +92,7 @@ class CSoalPMB extends MainPageMB {
     public function startUjian ($sender,$param) {        
         if ($this->IsValid) {
             $no_formulir=$this->Pengguna->getDataUser('no_formulir');
-            $str = "INSERT INTO kartu_ujian (no_formulir,no_ujian,tgl_ujian,idtempat_spmb) VALUES ($no_formulir,'$no_formulir',NOW(),0)";			
+            $str = "INSERT INTO kartu_ujian (no_formulir,no_ujian,tgl_ujian,idtempat_spmb) VALUES ($no_formulir,'$no_formulir',NOW(),1)";			
             $this->DB->query('BEGIN');
             if ($this->DB->insertRecord($str)) {              
                 $str = "INSERT INTO jawaban_ujian (idsoal,idjawaban,no_formulir) SELECT s.idsoal,0,$no_formulir FROM soal s ORDER BY RAND() LIMIT 80";

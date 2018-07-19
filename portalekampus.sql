@@ -329,6 +329,16 @@ CREATE TABLE `jabatan_akademik` (
   `nama_jabatan` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `jabatan_akademik`
+--
+
+INSERT INTO `jabatan_akademik` (`idjabatan`, `nama_jabatan`) VALUES
+(0, 'STAF PENGAJAR'),
+(1, 'ASISTEN AHLI'),
+(2, 'LEKTOR'),
+(3, 'LEKTOR KEPALA'),
+(4, 'GURU BESAR');
 -- --------------------------------------------------------
 
 --

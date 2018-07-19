@@ -104,6 +104,12 @@ class CPIN extends MainPageK {
 		$this->RepeaterS->dataBind();	
         $this->paginationInfo->Text=$this->getInfoPaging($this->RepeaterS); 
 	} 
+    public function checkRequirements ($sender,$param) {       
+        if (!($this->DB->getCountRowsOfTable ('kelas','idkelas') > 0 && $this->DB->getCountRowsOfTable ('ta','tahun') > 0)){
+            $param->IsValid=false;
+            $sender->ErrorMessage="Jenis Kelas atau Tahun Akademik belum di inputkan";
+        }
+    }
     public function generatePIN ($sender,$param) {
         if ($this->IsValid) {
             $idkelas=$_SESSION['currentPagePIN']['kelas'];

@@ -103,13 +103,8 @@
                     <div class="heading-form">       
                         <div class="form-group pull-left">
                             <com:TTextBox ID="txtJumlahFormulir" Attributes.PlaceHolder="Jumlah Formulir" CssClass="form-control" />                                                       
-                            <com:TRequiredFieldValidator ID="fieldValidatorFieldNIM" ControlToValidate="txtJumlahFormulir" Display="Dynamic" ErrorMessage="Isikan Jumlah Formulir" ValidationGroup="frmCheckPIN" CssClass="has-error help-block" FocusOnError="true"> 										
-                                <prop:ClientSide.OnValidationError>
-                                    jQuery('#<%=$this->fieldValidatorFieldNIM->ClientID%>').removeAttr('style');
-                                </prop:ClientSide.OnValidationError>
-                                <prop:ClientSide.OnValidationSuccess>
-                                </prop:ClientSide.OnValidationSuccess>
-                            </com:TRequiredFieldValidator>                                          
+                            <com:TRequiredFieldValidator ID="fieldValidatorFieldNIM" ControlToValidate="txtJumlahFormulir" Display="Dynamic" ErrorMessage="Isikan Jumlah Formulir" ValidationGroup="frmCheckPIN" FocusOnError="true" /> 										                                
+                            <com:TActiveCustomValidator ID="addJumlahFormulir" ControlToValidate="txtJumlahFormulir" Display="Dynamic" OnServerValidate="checkRequirements" ValidationGroup="frmCheckPIN" />                            
                         </div>
                         <com:TActiveCustomButton ID="btnGeneratePIN" CssClass="btn btn-info btn-icon heading-btn" OnClick="generatePIN" Attributes.Title="Generate PIN" ValidationGroup="frmCheckPIN">
                             <prop:Text><i class="icon-spinner"></i></prop:Text>

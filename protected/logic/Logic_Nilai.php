@@ -740,7 +740,8 @@ class Logic_Nilai extends Logic_Akademik {
 		$ta_masuk=$this->DataMHS['tahun_masuk'];
 		$semester_masuk=$this->DataMHS['semester_masuk'];		        
 		if ($ta==$ta_masuk && $idsmt==$semester_masuk) {
-			$jumlahsks=$this->setup->getSettingValue('jumlah_sks_krs_mhs_baru');
+            $setup=$this->getLogic('Setup');
+			$jumlahsks=$setup->getSettingValue('jumlah_sks_krs_mhs_baru');
 		}else {				
 			$this->getKHSBeforeCurrentSemester($ta,$idsmt);			
 			$jumlahsks=$this->getSKSNextSemester($this->getIPS());				

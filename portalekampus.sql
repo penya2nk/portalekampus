@@ -505,6 +505,16 @@ CREATE TABLE `kelas` (
   `nkelas` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `kelas`
+--
+
+INSERT INTO `kelas` (`idkelas`, `nkelas`) VALUES
+('A', 'REGULER (S1)'),
+('B', 'KARYAWAN (S1)'),
+('C', 'EKSTENSI (S1)'),
+('D', 'REGULER (S2)');
+
 -- --------------------------------------------------------
 
 --

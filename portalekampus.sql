@@ -1790,6 +1790,39 @@ INSERT INTO `user_group` (`group_id`, `group_name`) VALUES
 (4, 'FRONT OFFICE');
 -- --------------------------------------------------------
 
+-- phpMyAdmin SQL Dump
+-- version 4.7.4
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Jul 28, 2018 at 05:47 AM
+-- Server version: 10.1.29-MariaDB
+-- PHP Version: 5.6.14
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+--
+-- Database: `portalekampus`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `log_aktivitas_user`
+--
+
+CREATE TABLE `log_aktivitas_user` (
+  `idlog` bigint(20) NOT NULL,
+  `userid` int(11) NOT NULL,
+  `username` varchar(40) NOT NULL,
+  `halaman` varchar(100) NOT NULL,
+  `aktivitas` varchar(255) NOT NULL,
+  `date_activity` datetime NOT NULL
+) ENGINE=MyISAM;
+
 --
 -- Stand-in structure for view `v_datamhs`
 -- (See below for the actual view)
@@ -3273,6 +3306,23 @@ ALTER TABLE `tweetscomment`
 --
 ALTER TABLE `user`
   MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT;
+
+
+--
+-- Indexes for table `log_aktivitas_user`
+--
+ALTER TABLE `log_aktivitas_user`
+  ADD PRIMARY KEY (`idlog`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `log_aktivitas_user`
+--
+ALTER TABLE `log_aktivitas_user`
+  MODIFY `idlog` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables

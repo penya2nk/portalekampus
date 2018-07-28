@@ -1551,21 +1551,6 @@ INSERT INTO `status_mhs` (`k_status`, `n_status`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `system_log`
---
-
-CREATE TABLE `system_log` (
-  `log_id` int(11) NOT NULL,
-  `log_type` enum('staff','member','system') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'staff',
-  `id` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `log_location` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `log_msg` text COLLATE utf8_unicode_ci NOT NULL,
-  `log_date` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `ta`
 --
 
@@ -1765,7 +1750,7 @@ CREATE TABLE `user` (
   `username` varchar(40) NOT NULL,
   `userpassword` varchar(150) NOT NULL,
   `salt` varchar(7) NOT NULL,
-  `page` enum('sa','m','d','dw','mb','mh','k','on') NOT NULL DEFAULT 'm',
+  `page` enum('sa','m','d','dw','mb','mh','k','on','api') NOT NULL DEFAULT 'm',
   `group_id` smallint(6) NOT NULL,
   `kjur` tinyint(4) NOT NULL,
   `nama` varchar(70) NOT NULL,
@@ -1781,7 +1766,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `user` (`userid`, `idbank`, `username`, `userpassword`, `salt`, `page`, `group_id`, `kjur`, `nama`, `email`, `active`, `isdeleted`, `theme`, `foto`, `token`, `ipaddress`, `logintime`, `date_added`) VALUES
-(1, 0, 'admin', '7c4def070993d3a2d11d7fcdbed80e98cce4bbc9ef163fb79ce650e34cfcee21', '6d6f96', 'sa', 1, 0, 'Mochammad Rizki Romdoni', 'support@yacanet.com', 1, 1, 'cube', 'resources/userimages/3cab9012-fotoku_santai.jpg', NULL, NULL, '2018-05-29 15:19:02', '2016-09-15 05:44:48');
+(1, 0, 'admin', '7c4def070993d3a2d11d7fcdbed80e98cce4bbc9ef163fb79ce650e34cfcee21', '6d6f96', 'sa', 1, 0, 'pe', 'pe@portalekampus.com', 1, 1, 'cube', 'resources/userimages/3cab9012-fotoku_santai.jpg', NULL, NULL, '2018-05-29 15:19:02', '2016-09-15 05:44:48');
 
 -- --------------------------------------------------------
 

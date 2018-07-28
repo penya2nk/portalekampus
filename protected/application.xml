@@ -19,7 +19,7 @@
             <pages StatePersisterClass="System.Web.UI.TCachePageStatePersister" StatePersister.CacheModuleID="cache" StatePersister.CacheTimeout="7200" />
 		</service>
         <service id="json" class="System.Web.Services.TJsonService">
-            <json id="validate" class="Application.api.Validate"/>
+            <json id="get_transaction" class="Application.api.finance.getTransaction"/>
         </service>             
 	</services>        
     <parameters>

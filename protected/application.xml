@@ -19,7 +19,11 @@
             <pages StatePersisterClass="System.Web.UI.TCachePageStatePersister" StatePersister.CacheModuleID="cache" StatePersister.CacheTimeout="7200" />
 		</service>
         <service id="json" class="System.Web.Services.TJsonService">
-            <json id="get_transaction" class="Application.api.finance.getTransaction"/>
+			<json id="get_data_mhs" class="Application.api.mahasiswa.getDataMHS"/>          
+            <json id="get_transaction" class="Application.api.finance.getTransaction"/> 
+            <json id="get_list_transaction" class="Application.api.finance.getListTransaction"/>        
+            <json id="commit_transaction" class="Application.api.finance.commitTransaction"/>
+            <json id="rollback_transaction" class="Application.api.finance.rollbackTransaction"/>			
         </service>             
 	</services>        
     <parameters>

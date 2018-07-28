@@ -299,11 +299,22 @@
                                                     </a>
                                                 </li>
                                                 <li>                                                
+                                                    <a href="<%=$this->Page->constructUrl('settings.API',true)%>"<%=$this->Page->showAPI==true?' class="active"':''%>>                                                    
+                                                        API                                           
+                                                    </a>                                        
+                                                </li>
+                                                <li>                                                
                                                     <a href="<%=$this->Page->constructUrl('settings.Cache',true)%>"<%=$this->Page->showCache==true?' class="active"':''%>>                                                    
                                                         Cache											
                                                     </a>                                        
                                                 </li>
                                             </ul>
+                                        </li>
+                                        <li<%=$this->Page->showExportData==true?' class="active"':''%>>
+                                            <a href="<%=$this->Page->constructUrl('settings.ExportData',true)%>">
+                                                <i class="fa fa-send"></i>
+                                                <span>Export Data</span>                                           
+                                            </a>                                        
                                         </li> 
                                         <li<%=$this->Page->showProfiles==true?' class="active"':''%>>
                                             <a href="<%=$this->Page->constructUrl('settings.Profiles',true)%>">

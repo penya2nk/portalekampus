@@ -41,6 +41,7 @@ class CProfilMahasiswa extends MainPageM {
                 throw new Exception ("Mahasiswa Dengan NIM ($nim) tidak terdaftar di Portal.");
             }
             $datamhs=$r[1];
+            $datamhs['nama_ps']=$this->DMaster->getNamaProgramStudiByID($datamhs['kjur']);
             $datamhs['iddata_konversi']=$this->Nilai->isMhsPindahan($nim,true);
             $datamhs['nama_konsentrasi']=($datamhs['idkonsentrasi']==0) ? '-':strtoupper($datamhs['nama_konsentrasi']);
 

@@ -1,0 +1,475 @@
+<%@ Title="Sistem - API" %>
+<com:TContent ID="moduleheader">
+    <i class="fa fa-user"></i> API</small>
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li><a href="#">SETTING</a></li> 
+    <li><a href="#">SISTEM</a></li>
+    <li class="active"><span>API</span></li>
+</com:TContent>
+<com:TContent ID="maincontent">  
+<com:TPanel Visible="<%= $this->getAddProcess(false) %>" CssClass="row">                
+    <div class="col-md-12">
+        <div class="main-box">
+            <header class="main-box-header clearfix">
+                <h2 class="pull-left"><i class="fa fa-plus"></i> Tambah User</h2>
+                <div class="icon-box pull-right">                                       
+                    <a class="btn pull-left" href="<%=$this->constructUrl('settings.API',true)%>">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </header> 
+            <div class="main-box-body clearfix">
+                <div class="form-horizontal">
+                    <div class="form-group" id="divAddNama">
+                        <label class="col-md-2 control-label">Nama :</label>
+                        <div class="col-md-4">
+                            <com:TTextBox ID="txtAddNama" CssClass="form-control" />
+                            <com:TRequiredFieldValidator ID="FieldAddNamaValidator" ControlToValidate="txtAddNama" Display="Dynamic" ErrorMessage="Isi Nama User" ValidationGroup="addUser" CssClass="has-error help-block" FocusOnError="true">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddNama').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldAddNamaValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddNama').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAddEmail">
+                        <label class="col-md-2 control-label">Email :</label>
+                        <div class="col-md-3">
+                            <com:TTextBox ID="txtAddEmail" CssClass="form-control"  />
+                            <com:TRequiredFieldValidator ID="FieldAddEmailValidator" ControlToValidate="txtAddEmail" Display="Dynamic" ErrorMessage="Isi Email Pengguna" ValidationGroup="addUser" FocusOnError="true" CssClass="has-error help-block">             
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddEmail').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldAddEmailValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddEmail').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                            <com:TEmailAddressValidator ID="FieldAddFormatEmailValidator" ControlToValidate="txtAddEmail" Display="Dynamic" ErrorMessage="Format Email salah" ValidationGroup="addUser" FocusOnError="true" CheckMXRecord="false" CssClass="has-error help-block">
+                               
+                            </com:TEmailAddressValidator>
+                            <com:TActiveCustomValidator ID="addEmail" ControlToValidate="txtAddEmail" Display="Dynamic" OnServerValidate="checkEmail" ValidationGroup="addUser" ErrorMessage="Email Yang Anda Inputkan Sudah Ada" FocusOnError="true" CssClass="has-error help-block">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddEmail').addClassName('has-error');
+                                    jQuery('#<%=$this->addEmail->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddEmail').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TActiveCustomValidator>
+                        </div>
+                        
+                    </div>
+                    <div class="form-group" id="divAddUsername">
+                        <label class="col-md-2 control-label">Username :</label>
+                        <div class="col-md-10">
+                            <div class="row">
+                                <div class="col-md-4">                                
+                                    <com:TTextBox ID="txtAddUsername" CssClass="form-control" />
+                                </div>
+                                <div class="col-md-6">                                
+                                    <com:TRequiredFieldValidator ID="FieldAddUsernameValidator" ControlToValidate="txtAddUsername" Display="Dynamic" ErrorMessage="Isi Username yang digunakan untuk login" ValidationGroup="addUser" CssClass="has-error help-block" FocusOnError="true">
+                                        <prop:ClientSide.OnValidationError>
+                                            $('divAddUsername').addClassName('has-error');
+                                            jQuery('#<%=$this->FieldAddUsernameValidator->ClientID%>').removeAttr('style');
+                                        </prop:ClientSide.OnValidationError>
+                                        <prop:ClientSide.OnValidationSuccess>
+                                            $('divAddUsername').removeClassName('has-error');
+                                        </prop:ClientSide.OnValidationSuccess>
+                                    </com:TRequiredFieldValidator>
+                                    <com:TActiveCustomValidator ID="addUsername" ControlToValidate="txtAddUsername" Display="Dynamic" OnServerValidate="checkUsername" ValidationGroup="addUser" ErrorMessage="Username Yang Anda Inputkan Sudah Ada ..." CssClass="has-error help-block">
+                                        <prop:ClientSide.OnValidationError>
+                                            $('divAddUsername').addClassName('has-error');
+                                            jQuery('#<%=$this->addUsername->ClientID%>').removeAttr('style');
+                                        </prop:ClientSide.OnValidationError>
+                                        <prop:ClientSide.OnValidationSuccess>
+                                            $('divAddUsername').removeClassName('has-error');
+                                        </prop:ClientSide.OnValidationSuccess>
+                                    </com:TActiveCustomValidator>                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAddPassword1">
+                        <label class="col-lg-2 control-label">Password :</label>
+                        <div class="col-lg-2">
+                            <com:TTextBox ID="txtAddPassword1" CssClass="form-control" TextMode="Password" />
+                            <com:TRequiredFieldValidator ID="FieldAddPassword1Validator" ControlToValidate="txtAddPassword1" Display="Dynamic" ErrorMessage="Isi Password User" ValidationGroup="addUser" CssClass="has-error help-block">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddPassword1').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldAddPassword1Validator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddPassword1').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divAddPassword2">
+                        <label class="col-lg-2 control-label">Re-type Password :</label>
+                        <div class="col-lg-2">
+                            <com:TTextBox ID="txtAddPassword2" CssClass="form-control" TextMode="Password" />
+                            <com:TCompareValidator ID="FieldAddPassword2Validator" ControlToValidate="txtAddPassword1" ControlToCompare="txtAddPassword2" Display="Dynamic" ErrorMessage="Isi Password tidak sama" ValidationGroup="addUser" FocusOnError="true" CssClass="has-error help-block">               
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddPassword2').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldAddPassword2Validator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddPassword2').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TCompareValidator>
+                        </div>
+                    </div>            
+                    <div class="form-group" id="divAddIPAddress">
+                        <label class="col-md-2 control-label">IP Address :</label>
+                        <div class="col-md-10">
+                            <com:TTextBox ID="txtAddIPAddress" CssClass="form-control" />
+                            <com:TRequiredFieldValidator ID="FieldAddIPAddressValidator" ControlToValidate="txtAddIPAddress" Display="Dynamic" ErrorMessage="Isi IP Address" ValidationGroup="addUser" CssClass="has-error help-block">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divAddIPAddress').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldAddIPAddressValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divAddIPAddress').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <com:TActiveCustomButton ID="btnSave" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="addUser">
+                                <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
+                                <prop:ClientSide.OnPreDispatch>                                                                   
+                                    $('loading').show(); 
+                                    $('<%=$this->btnSave->ClientId%>').disabled='disabled';                     
+                                </prop:ClientSide.OnPreDispatch>
+                                <prop:ClientSide.OnLoading>
+                                    $('<%=$this->btnSave->ClientId%>').disabled='disabled';                     
+                                </prop:ClientSide.OnLoading>
+                                <prop:ClientSide.OnComplete>                                                                                                                                                                                                            
+                                    $('<%=$this->btnSave->ClientId%>').disabled='';
+                                    $('loading').hide(); 
+                                </prop:ClientSide.OnComplete>
+                            </com:TActiveCustomButton>
+                        </div>
+                    </div>     
+                </div>
+            </div>
+        </div>
+    </div>
+</com:TPanel>
+<com:TPanel Visible="<%= $this->getEditProcess(false) %>" CssClass="row">   
+    <com:THiddenField ID="hiddenid" /> 
+    <com:THiddenField ID="hiddenemail" />
+    <com:THiddenField ID="hiddenusername" />
+    <div class="col-md-12">
+        <div class="main-box">
+            <header class="main-box-header clearfix">
+                <h2 class="pull-left"><i class="fa fa-edit"></i> Ubah User</h2>
+                <div class="icon-box pull-right">                                       
+                    <a class="btn pull-left" href="<%=$this->constructUrl('settings.API',true)%>">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </header> 
+            <div class="main-box-body clearfix">
+                <div class="form-horizontal">
+                    <div class="form-group" id="divEditNama">
+                        <label class="col-md-2 control-label">Nama :</label>
+                        <div class="col-md-4">
+                            <com:TTextBox ID="txtEditNama" CssClass="form-control" />
+                            <com:TRequiredFieldValidator ID="FieldEditNamaValidator" ControlToValidate="txtEditNama" Display="Dynamic" ErrorMessage="Isi Nama User" ValidationGroup="editUser" CssClass="has-error help-block" FocusOnError="true">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divEditNama').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldEditNamaValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divEditNama').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divEditEmail">
+                        <label class="col-md-2 control-label">Email :</label>
+                        <div class="col-md-3">
+                            <com:TTextBox ID="txtEditEmail" CssClass="form-control"  />
+                            <com:TRequiredFieldValidator ID="FieldEditEmailValidator" ControlToValidate="txtEditEmail" Display="Dynamic" ErrorMessage="Isi Email Pengguna" ValidationGroup="editUser" FocusOnError="true" CssClass="has-error help-block">              
+                               
+                            </com:TRequiredFieldValidator>
+                            <com:TEmailAddressValidator ID="FieldEditFormatEmailValidator" ControlToValidate="txtEditEmail" Display="Dynamic" ErrorMessage="Format Email salah" ValidationGroup="editUser" FocusOnError="true" CheckMXRecord="false" CssClass="has-error help-block">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divEditEmail').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldEditFormatEmailValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divEditEmail').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TEmailAddressValidator>
+                            <com:TActiveCustomValidator ID="editEmail" ControlToValidate="txtEditEmail" Display="Dynamic" OnServerValidate="checkEmail" ValidationGroup="editUser" ErrorMessage="Email Yang Anda Inputkan Sudah Ada" FocusOnError="true">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divEditEmail').addClassName('has-error');
+                                    jQuery('#<%=$this->editEmail->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divEditEmail').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TActiveCustomValidator>
+                        </div>
+                        
+                    </div>
+                    <div class="form-group" id="divEditUsername">
+                        <label class="col-md-2 control-label">Username :</label>
+                        <div class="col-md-10">
+                            <div class="row">
+                                <div class="col-md-4">                                
+                                    <com:TTextBox ID="txtEditUsername" CssClass="form-control" />
+                                </div>
+                                <div class="col-md-6">                                
+                                    <com:TRequiredFieldValidator ID="FieldEditUsernameValidator" ControlToValidate="txtEditUsername" Display="Dynamic" ErrorMessage="Isi Username yang digunakan untuk login" ValidationGroup="editUser" CssClass="has-error help-block" FocusOnError="true">
+                                        <prop:ClientSide.OnValidationError>
+                                            $('divEditUsername').addClassName('has-error');
+                                            jQuery('#<%=$this->FieldEditUsernameValidator->ClientID%>').removeAttr('style');
+                                        </prop:ClientSide.OnValidationError>
+                                        <prop:ClientSide.OnValidationSuccess>
+                                            $('divEditUsername').removeClassName('has-error');
+                                        </prop:ClientSide.OnValidationSuccess>
+                                    </com:TRequiredFieldValidator>
+                                    <com:TActiveCustomValidator ID="editUsername" ControlToValidate="txtEditUsername" Display="Dynamic" OnServerValidate="checkUsername" ValidationGroup="editUser" ErrorMessage="Username Yang Anda Inputkan Sudah Ada ..." CssClass="has-error help-block">
+                                        <prop:ClientSide.OnValidationError>
+                                            $('divEditUsername').addClassName('has-error');
+                                            jQuery('#<%=$this->editUsername->ClientID%>').removeAttr('style');
+                                        </prop:ClientSide.OnValidationError>
+                                        <prop:ClientSide.OnValidationSuccess>
+                                            $('divEditUsername').removeClassName('has-error');
+                                        </prop:ClientSide.OnValidationSuccess>
+                                    </com:TActiveCustomValidator>                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                    <div class="form-group" id="divEditPassword1">
+                        <label class="col-lg-2 control-label">Password :</label>
+                        <div class="col-lg-2">
+                            <com:TTextBox ID="txtEditPassword1" CssClass="form-control" TextMode="Password" />
+                        </div>
+                    </div>
+                    <div class="form-group" id="divEditPassword2">
+                        <label class="col-lg-2 control-label">Re-type Password :</label>
+                        <div class="col-lg-2">
+                            <com:TTextBox ID="txtEditPassword2" CssClass="form-control" TextMode="Password" />
+                            <com:TCompareValidator ID="FieldEditPassword2Validator" ControlToValidate="txtEditPassword1" ControlToCompare="txtEditPassword2" Display="Dynamic" ErrorMessage="Isi Password tidak sama" ValidationGroup="editUser" FocusOnError="true" CssClass="has-error help-block">               
+                                <prop:ClientSide.OnValidationError>
+                                    $('divEditPassword2').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldEditPassword2Validator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divEditPassword2').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TCompareValidator>
+                        </div>
+                    </div>                       
+                    <div class="form-group" id="divEditIPAddress">
+                        <label class="col-md-2 control-label">IP Address :</label>
+                        <div class="col-md-10">
+                            <com:TTextBox ID="txtEditIPAddress" CssClass="form-control" />
+                            <com:TRequiredFieldValidator ID="FieldEditIPAddressValidator" ControlToValidate="txtEditIPAddress" Display="Dynamic" ErrorMessage="Isi IP Address" ValidationGroup="addUser" CssClass="has-error help-block">
+                                <prop:ClientSide.OnValidationError>
+                                    $('divEditIPAddress').addClassName('has-error');
+                                    jQuery('#<%=$this->FieldEditIPAddressValidator->ClientID%>').removeAttr('style');
+                                </prop:ClientSide.OnValidationError>
+                                <prop:ClientSide.OnValidationSuccess>
+                                    $('divEditIPAddress').removeClassName('has-error');
+                                </prop:ClientSide.OnValidationSuccess>
+                            </com:TRequiredFieldValidator>
+                        </div>
+                    </div>       
+                    <div class="form-group" id="divEditStatus">
+                        <label class="col-md-2 control-label">Status :</label>
+                        <div class="col-md-2">
+                            <com:TDropDownList ID="cmbEditStatus" CssClass="form-control">
+                                <com:TListItem Value="1" Text="AKTIF" />
+                                <com:TListItem Value="0" Text="TIDAK AKTIF" />
+                            </com:TDropDownList>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <com:TActiveCustomButton ID="btnUpdate" CssClass="btn btn-primary" OnClick="updateData" ValidationGroup="editUser">
+                                <prop:Text><i class="fa fa-save"></i> Simpan</prop:Text>
+                                <prop:ClientSide.OnPreDispatch>                                                                   
+                                    $('loading').show(); 
+                                    $('<%=$this->btnUpdate->ClientId%>').disabled='disabled';                       
+                                </prop:ClientSide.OnPreDispatch>
+                                <prop:ClientSide.OnLoading>
+                                    $('<%=$this->btnUpdate->ClientId%>').disabled='disabled';                       
+                                </prop:ClientSide.OnLoading>
+                                <prop:ClientSide.OnComplete>                                                                                                                                                                                                            
+                                    $('<%=$this->btnUpdate->ClientId%>').disabled='';
+                                    $('loading').hide(); 
+                                </prop:ClientSide.OnComplete>
+                            </com:TActiveCustomButton>
+                        </div>
+                    </div>     
+                </div>
+            </div>
+        </div>
+    </div>
+</com:TPanel>
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>">                
+    <div class="row">
+        <div class="col-md-12">
+            <div class="main-box">
+                <header class="main-box-header clearfix">
+                    <h2><i class="fa fa-search"></i> Pencarian Data</h2>
+                </header>
+                <div class="main-box-body clearfix">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">Kriteria :</label>
+                            <div class="col-md-10">
+                                <com:TDropDownList ID="cmbKriteria" CssClass="form-control">                                                           
+                                    <com:TListItem Text="username" Value="username" />
+                                    <com:TListItem Text="Nama User" Value="nama" />
+                                    <com:TListItem Text="Email" Value="email" />
+                                </com:TDropDownList>
+                            </div>
+                        </div>
+                        <div class="form-group" id="divtxtKriteria">
+                            <label class="col-md-2 control-label">Isi Kriteria :</label>
+                            <div class="col-md-10">
+                                <com:TActiveTextBox ID="txtKriteria" CssClass="form-control" />                                                                            
+                                <com:TRequiredFieldValidator ID="spanKriteriaValidator2" ValidationGroup="filterForm" Display="Dynamic" ControlToValidate="txtKriteria" ErrorMessage="Input apa yang Anda cari, sesuai dengan kriteria yang Anda tentukan." FocusOnError="true" CssClass="has-error help-block">    
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divtxtKriteria').addClassName('has-error');
+                                        jQuery('#<%=$this->spanKriteriaValidator2->ClientID%>').removeAttr('style');                                
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divtxtKriteria').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator>                                         
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <com:TActiveCustomButton ID="btnSearch" CssClass="btn btn-info"  OnClick="Page.searchRecord" ValidationGroup="filterForm" Attributes.Title="Cari">
+                                    <prop:Text>                                        
+                                        <i class="fa fa-search"></i> Cari                                        
+                                    </prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>         
+                                        $('loading').show();
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnSearch->ClientId%>').disabled='disabled';                       
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>                                                                    
+                                        $('<%=$this->btnSearch->ClientId%>').disabled='';                                                                                                                   
+                                        $('loading').hide();
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>          
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="main-box clearfix">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left"><i class="fa fa-user"></i> Daftar API</h2> 
+                    <div class="filter-block pull-right">   
+                        <com:TLinkButton ID="add" CssClass="btn btn-primary pull-right" Text="<i class='fa  fa-plus-circle fa-lg'></i>" Attributes.Title="Tambah Matakuliah" OnClick="addProcess" CausesValidation="false" />                        
+                    </div>
+                </header>
+                <div class="main-box-body clearfix">  
+                    <div class="table-responsive">
+                        <com:TActiveRepeater ID="RepeaterS" AllowPaging="true" AllowCustomPaging="true" DataKeyField="userid">
+                            <prop:HeaderTemplate>           
+                                <table class="table table-striped table-hover"> 
+                                    <thead>
+                                    <tr>                                            
+                                        <th scope="col" width="10">NO</th>
+                                        <th scope="col" width="150">USERNAME</th>
+                                        <th scope="col" width="250">NAMA</th>
+                                        <th scope="col" width="250">EMAIL</th>
+                                        <th scope="col" width="100">IP ADDRESS</th>
+                                        <th scope="col" width="100">LOGIN TERAKHIR</th>
+                                        <th scope="col" width="100">STATUS</th>
+                                        <th scope="col" width="150">AKSI</th>
+                                    </tr>                               
+                                    </thead>
+                                    <tbody>
+                            </prop:HeaderTemplate>
+                            <prop:ItemTemplate>
+                                <tr>
+                                    <td><%# $this->DataItem['no']%></td>
+                                    <td><%# $this->DataItem['username']%></td>
+                                    <td><%# $this->DataItem['nama']%></td>
+                                    <td><%# $this->DataItem['email']%></td>                          
+                                    <td><%# $this->DataItem['ipaddress']%></td>    
+                                    <td><%# $this->DataItem['logintime']%></td>
+                                    <td><%# $this->DataItem['active']%></td>                                
+                                    <td>                                        
+                                        <com:TLinkButton CssClass="table-link" OnClick="Page.editRecord" Attributes.Title="Ubah Matakuliah">
+                                            <prop:Text>
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </prop:Text>
+                                        </com:TLinkButton>
+                                        <com:TActiveLinkButton ID="btnDelete" ClientSide.PostState="false" CssClass="table-link danger" OnClick="Page.deleteRecord" Attributes.Title="Hapus Pengguna" Attributes.OnClick="if(!confirm('Anda ingin menghapus data User ini ?')) return false;">
+                                            <prop:Text>
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </prop:Text>
+                                            <prop:ClientSide.OnPreDispatch>
+                                                $('loading').show();                                             
+                                                $('<%=$this->btnDelete->ClientId%>').disabled='disabled';                       
+                                            </prop:ClientSide.OnPreDispatch>
+                                            <prop:ClientSide.OnLoading>
+                                                $('<%=$this->btnDelete->ClientId%>').disabled='disabled';                                                               
+                                            </prop:ClientSide.OnLoading>
+                                            <prop:ClientSide.onComplete>
+                                                $('loading').hide();                                                
+                                            </prop:ClientSide.OnComplete>
+                                        </com:TActiveLinkButton>
+                                    </td>                                                
+                                </tr>
+                                <tr>
+                                    <td colspan="9" class="text-center"><strong>TOKEN :</strong> <%# $this->DataItem['token']%></td>
+                                </tr>   
+                            </prop:ItemTemplate>                                
+                            <prop:FooterTemplate>               
+                                </tbody>                            
+                                </table>
+                            </prop:FooterTemplate>  
+                            <prop:EmptyTemplate>                                                       
+                                <div class="row">
+                                    <div class="main-box-body">
+                                        <div class="alert alert-info">
+                                            <i class="fa fa-info-circle fa-fw fa-lg"></i>
+                                            <strong>
+                                                Info!
+                                            </strong>
+                                             Tidak ada data yang bisa ditampilkan.
+                                        </div>
+                                    </div>
+                                </div>
+                            </prop:EmptyTemplate>
+                        </com:TActiveRepeater>   
+                        <%include Application.layouts.cube.CustomPaging%>                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>          
+</com:TPanel>
+</com:TContent>

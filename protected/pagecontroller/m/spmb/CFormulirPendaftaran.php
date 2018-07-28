@@ -334,25 +334,25 @@ class CFormulirPendaftaran extends MainPageM {
 	}
 	
 	public function deleteRecord($sender,$param) {
-		$no_formulir=$this->getDataKeyField($sender,$this->RepeaterS);
-        try {
-            if ($this->DB->checkRecordIsExist('no_formulir','register_mahasiswa',$no_formulir)) {
-                throw new Exception ("Tidak menghapus mahasiswa ini karena telah memiliki NIM.");
-            }
-            $str = "formulir_pendaftaran WHERE no_formulir='$no_formulir'";
-            $this->DB->query('BEGIN');
-            if ($this->DB->deleteRecord($str) ) {
-                $this->DB->deleteRecord ("transaksi WHERE no_formulir='$no_formulir'");
-                $this->DB->query ('COMMIT');
-                $this->redirect('spmb.FormulirPendaftaran',true);
-            }else {
-                $this->DB->query ('ROLLBACK');
-            }	
+		// $no_formulir=$this->getDataKeyField($sender,$this->RepeaterS);
+  //       try {
+  //           if ($this->DB->checkRecordIsExist('no_formulir','register_mahasiswa',$no_formulir)) {
+  //               throw new Exception ("Tidak menghapus mahasiswa ini karena telah memiliki NIM.");
+  //           }
+  //           $str = "formulir_pendaftaran WHERE no_formulir='$no_formulir'";
+  //           $this->DB->query('BEGIN');
+  //           if ($this->DB->deleteRecord($str) ) {
+  //               $this->DB->deleteRecord ("transaksi WHERE no_formulir='$no_formulir'");
+  //               $this->DB->query ('COMMIT');
+  //               $this->redirect('spmb.FormulirPendaftaran',true);
+  //           }else {
+  //               $this->DB->query ('ROLLBACK');
+  //           }	
             
-        } catch (Exception $e) {
-            $this->modalMessageError->show();
-			$this->lblContentMessageError->Text=$e->getMessage();
-        }    	
+  //       } catch (Exception $e) {
+  //           $this->modalMessageError->show();
+		// 	$this->lblContentMessageError->Text=$e->getMessage();
+  //       }    	
 	}
     
 	public function closeAddProcess ($sender,$param) {

@@ -64,14 +64,22 @@ class MainPageSA extends MainPage {
      * show page user dosen [setting sistem]
      */
     public $showUserDosen=false;
-     /**     
+    /**     
      * show page user operator nilai [setting sistem]
      */
     public $showUserON=false;
+        /**     
+     * show page user operator nilai [setting api]
+     */
+    public $showAPI=false;
     /**     
      * show page cache [setting sistem]
      */
     public $showCache=false;    
+     /**
+     * show page export data[setting]
+     */
+    public $showExportData=false;
 	public function onLoad ($param) {		
 		parent::onLoad($param);				
         if (!$this->IsPostBack&&!$this->IsCallBack) {	           

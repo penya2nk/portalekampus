@@ -1,0 +1,67 @@
+<%@ Title="Setting - Export Data" %>
+<com:TContent ID="moduleheader">
+    <i class="fa fa-send"></i> Export Data
+</com:TContent>
+<com:TContent ID="modulebreadcrumb">    
+    <li><a href="#">SETTING</a></li>
+    <li class="active">EXPORT DATA</li>
+</com:TContent>
+<com:TContent ID="maincontent">
+<com:TPanel Visible="<%= $this->getDefaultProcess() %>">   
+    <div class="row">
+        <div class="col-md-12">
+            <div class="main-box">
+                <header class="main-box-header clearfix">
+                    <h2 class="pull-left"><i class="fa fa-send"></i> Export Data Mahasiswa per NIM</h2>                 
+                </header>
+                <div class="main-box-body clearfix">                   
+                    <div class="form-horizontal">
+                        <div class="form-group" id="divNIM">
+                            <label class="col-md-2 control-label">NIM :</label>
+                            <div class="col-md-10">                                
+                                <com:TTextBox ID="txtNIM" CssClass="form-control" />
+                                <com:TRequiredFieldValidator ID="FieldNIMValidator" ValidationGroup="exportnim" Display="Dynamic" ControlToValidate="txtNIM" ErrorMessage="Isi NIM Mahasiswa yang akan diexport data-nya" CssClass="has-error help-block">	
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divNIM').addClassName('has-error');
+                                        jQuery('#<%=$this->FieldNIMValidator->ClientID%>').removeAttr('style');
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divNIM').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TRequiredFieldValidator> 
+                                <com:TActiveCustomValidator ID="customValidatorCheckNIM" ControlToValidate="txtNIM" Display="Dynamic" OnServerValidate="cekNIM" CssClass="has-error help-block" ValidationGroup="exportnim">
+                                    <prop:ClientSide.OnValidationError>
+                                        $('divNIM').addClassName('has-error');
+                                        jQuery('#<%=$this->customValidatorCheckNIM->ClientID%>').removeAttr('style');
+                                    </prop:ClientSide.OnValidationError>
+                                    <prop:ClientSide.OnValidationSuccess>
+                                        $('divNIM').removeClassName('has-error');
+                                    </prop:ClientSide.OnValidationSuccess>
+                                </com:TActiveCustomValidator>    
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <com:TActiveCustomButton ID="btnSaveExportNIM" CssClass="btn btn-primary" OnClick="saveData" ValidationGroup="exportnim">
+                                    <prop:Text><i class="fa fa-save"></i> Simpan</span></prop:Text>
+                                    <prop:ClientSide.OnPreDispatch>                                                                   
+                                        $('loading').show(); 
+                                        $('<%=$this->btnSaveExportNIM->ClientId%>').disabled='disabled';                        
+                                    </prop:ClientSide.OnPreDispatch>
+                                    <prop:ClientSide.OnLoading>
+                                        $('<%=$this->btnSaveExportNIM->ClientId%>').disabled='disabled';                        
+                                    </prop:ClientSide.OnLoading>
+                                    <prop:ClientSide.OnComplete>                                                                                                                                                                                                            
+                                        $('<%=$this->btnSaveExportNIM->ClientId%>').disabled='';
+                                        $('loading').hide(); 
+                                    </prop:ClientSide.OnComplete>
+                                </com:TActiveCustomButton>
+                            </div>
+                        </div>  
+                    </div>                        
+                </div>
+            </div>
+        </div>    
+    </div>    
+</com:TPanel>
+</com:TContent>

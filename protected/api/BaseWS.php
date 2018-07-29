@@ -97,14 +97,14 @@ class BaseWS extends TJsonResponse {
 	public function validate () {
 		$headers = getallheaders();
 		if (isset($headers['Username']) && isset($headers['Token'])) {
-			$username = $headers['Username'];
-			$token = $headers['Token'];			
+			$username = addslashes($headers['Username']);
+			$token = addslashes($headers['Token']);			
 			$ip=explode('.',$_SERVER['REMOTE_ADDR']);		        
 			$ipaddress=$ip[0];	       	
 			if ($ipaddress == '127' || $ipaddress == '::1') {
 				$alamat_ip='127.0.0.1';
 			}else{
-				$alamat_ip=$ip;
+				$alamat_ip=$_SERVER['REMOTE_ADDR'];
 			}
 			$str = "SELECT userid,username,token,ipaddress,active FROM user WHERE username='$username' AND token='$token'";
 			$this->DB->setFieldTable(array('userid','username','token','ipaddress','active'));

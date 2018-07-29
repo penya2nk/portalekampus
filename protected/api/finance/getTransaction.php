@@ -6,8 +6,8 @@ class getTransaction extends Finance {
 		if ($this->payload['connection'] >= 1) {
 			$data=$_POST;
 			if (isset($data['no_transaksi']) && isset($data['tipe_transaksi'])) {
-				$no_transaksi=$data['no_transaksi'];
-				switch ($data['tipe_transaksi']) {
+				$no_transaksi=addslashes($data['no_transaksi']);
+				switch (addslashes($data['tipe_transaksi'])) {
 					case 'common':
 						$str = "SELECT no_transaksi,no_faktur,kjur,tahun,idsmt,idkelas,no_formulir,nim,commited,tanggal,date_added FROM transaksi WHERE no_transaksi='$no_transaksi'";
 						$this->DB->setFieldTable(array('no_transaksi','no_faktur','kjur','tahun','idsmt','idkelas','no_formulir','nim','commited','tanggal','date_added'));		
